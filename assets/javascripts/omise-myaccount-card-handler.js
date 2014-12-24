@@ -82,7 +82,7 @@
 		}else{
 			hideError();
 			if(Omise){
-				Omise.config.defaultHost = "vault.omise.co";
+				Omise.config.defaultHost = omise_params.vault_url;
 				Omise.setPublicKey(omise_params.key);
 				Omise.createToken("card", card, function (statusCode, response) {
 				    if (statusCode == 200) {

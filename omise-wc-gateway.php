@@ -236,7 +236,8 @@ function register_omise_wc_gateway_plugin() {
 				wp_enqueue_script ( 'omise-payment-form-handler', plugins_url ( '/assets/javascripts/omise-payment-form-handler.js', __FILE__ ), array (
 						'omise-js', 'omise-util'), WC_VERSION, true );
 				wp_localize_script ( 'omise-payment-form-handler', 'omise_params', array (
-						'key' => $this->public_key
+						'key' => $this->public_key,
+						'vault_url' => OMISE_VAULT_HOST
 				) );
 			}
 		}

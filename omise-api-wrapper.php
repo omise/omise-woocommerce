@@ -32,7 +32,7 @@ class Omise{
 	
 	private static function call_api($apiKey, $method, $endpoint, $data = false)
 	{
-		$url = "https://api.omise.co".$endpoint;
+		$url = OMISE_PROTOCOL_PREFIX.OMISE_API_HOST.$endpoint;
 		$curl = curl_init();
 	
 		switch ($method)

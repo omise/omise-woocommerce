@@ -11,6 +11,10 @@ defined('ABSPATH') or die("No direct script access allowed.");
  * License: Copyright 2014. Omise Co.,Ltd.
  */
 
+define("OMISE_PROTOCOL_PREFIX", "https://");
+define("OMISE_VAULT_HOST", "vault-staging.omise.co");
+define("OMISE_API_HOST", "api-staging.omise.co");
+
 require_once 'omise-util.php';
 require_once 'omise-api-wrapper.php';
 require_once 'omise-wc-gateway.php';

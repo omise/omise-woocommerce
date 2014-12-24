@@ -21,18 +21,18 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			$settings = get_option ( "woocommerce_omise_settings", null );
 			
 			if ( is_null($settings) || ! is_array ( $settings )) {
-				throw new Exception ( "Cannot load omise settings" );
+				return;
 			}
 			
 			if (empty ( $settings ["sandbox"] ) || empty ( $settings ["test_private_key"] ) || empty ( $settings ["live_private_key"] )) {
-				throw new Exception ( "Incomplete gateway settings" );
+				return;
 			}
 			
 			$this->private_key = $settings ["sandbox"] ? $settings ["test_private_key"] : $settings ["live_private_key"];
 			$this->public_key = $settings ["sandbox"] ? $settings ["test_public_key"] : $settings ["live_public_key"];
 			
 			if (empty ( $this->private_key ) || empty ( $this->public_key )) {
-				throw new Exception ( "Incomplete gateway settings" );
+				return;
 			}
 			
 			if (is_user_logged_in ()) {
@@ -71,7 +71,8 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			wp_localize_script ( 'omise-myaccount-card-handler', 'omise_params', array (
 					'key' => $this->public_key,
 					'ajax_url' => admin_url ( 'admin-ajax.php' ) ,
-					'ajax_loader_url' => plugins_url ( '/assets/images/ajax-loader@2x.gif', __FILE__ )
+					'ajax_loader_url' => plugins_url ( '/assets/images/ajax-loader@2x.gif', __FILE__ ),
+					'vault_url' => OMISE_VAULT_HOST
 			) );
 		}
 		/**
@@ -81,14 +82,12 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			$card_id = isset ( $_POST ['card_id'] ) ? wc_clean ( $_POST ['card_id'] ) : '';
 			if (empty ( $card_id )) {
 				Omise_Util::render_json_error("card_id is required");
-				//echo json_encode('{ "object": "error", "message": "card_id is required" }');
 				die();
 			}
 			
 			$nonce = 'omise_delete_card_' . $_POST['card_id'];
 			if (! wp_verify_nonce($_POST['omise_nonce'], $nonce)) {
 				Omise_Util::render_json_error("Nonce verified failure");
-				//echo json_encode('{ "object": "error", "message": "Nonce verified failure" }');
 				die();
 			}
 			
@@ -101,13 +100,11 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			$token = isset ( $_POST ['omise_token'] ) ? wc_clean ( $_POST ['omise_token'] ) : '';
 			if (empty ( $token )) {
 				Omise_Util::render_json_error("omise_token is required");
-				//echo json_encode('{ "object": "error", "message": "omise_token is required" }');
 				die();
 			}
 			
 			if (! wp_verify_nonce($_POST['omise_nonce'], 'omise_add_card')) {
 				Omise_Util::render_json_error("Nonce verified failure");
-				//echo json_encode('{ "object": "error", "message": "Nonce verified failure" }');
 				die();
 			}
 			
