@@ -12,8 +12,8 @@ defined('ABSPATH') or die("No direct script access allowed.");
  */
 
 define("OMISE_PROTOCOL_PREFIX", "https://");
-define("OMISE_VAULT_HOST", "vault-staging.omise.co");
-define("OMISE_API_HOST", "api-staging.omise.co");
+define("OMISE_VAULT_HOST", "vault.omise.co");
+define("OMISE_API_HOST", "api.omise.co");
 
 require_once 'omise-util.php';
 require_once 'omise-api-wrapper.php';
