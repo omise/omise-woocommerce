@@ -8,9 +8,11 @@
 	<select name='card_id' id='card_id'>
 		<option value=''>-- Please select --</option>
 		<?php 
+		if (isset($viewData["existingCards"]->data)){
 			foreach($viewData["existingCards"]->data as $card){
 				echo "<option value='{$card->id}'>Card ends with {$card->last_digits}</option>";
 			}
+		}
 		?>
 	</select>
 	<br/>Or charge with a new card

@@ -10,13 +10,14 @@
 		</tr>
 		<tbody>
 <?php
-
-foreach ( $viewData ["existingCards"]->data as $card ) {
-	$nonce = wp_create_nonce ( "omise_delete_card_" . $card->id );
-	echo "<tr><td>{$card->name}</td><td>XXXX XXXX XXXX {$card->last_digits}</td>";
-	$created_date = date_i18n( get_option( 'date_format' ), strtotime($card->created));
-	echo "<td>{$created_date}</td>";
-	echo "<td><button class='button delete_card' data-card-id='{$card->id}' data-delete-card-nonce='{$nonce}'>Delete</button></td></tr>";
+if(isset($viewData ["existingCards"]->data)){
+	foreach ( $viewData ["existingCards"]->data as $card ) {
+		$nonce = wp_create_nonce ( "omise_delete_card_" . $card->id );
+		echo "<tr><td>{$card->name}</td><td>XXXX XXXX XXXX {$card->last_digits}</td>";
+		$created_date = date_i18n( get_option( 'date_format' ), strtotime($card->created));
+		echo "<td>{$created_date}</td>";
+		echo "<td><button class='button delete_card' data-card-id='{$card->id}' data-delete-card-nonce='{$nonce}'>Delete</button></td></tr>";
+	}
 }
 
 ?>

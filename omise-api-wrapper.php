@@ -22,12 +22,12 @@ class Omise{
 	
 	public static function create_card($apiKey, $customer_id, $token){
 		$result = self::call_api($apiKey, "PATCH", "/customers/{$customer_id}", "card=".$token);
-		return $result;
+		return json_decode($result);
 	}
 	
 	public static function delete_card($apiKey, $customer_id, $card_id){
 		$result = self::call_api($apiKey, "DELETE", "/customers/{$customer_id}/cards/{$card_id}");
-		return $result;
+		return json_decode($result);
 	}
 	
 	private static function call_api($apiKey, $method, $endpoint, $data = false)

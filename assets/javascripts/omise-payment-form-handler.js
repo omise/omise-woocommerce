@@ -28,7 +28,16 @@
 			$(".woocommerce-error").remove();
 		}
 		
-		if ( $( '#payment_method_omise' ).is( ':checked' ) && $("#card_id").val()=="" ) {
+		function getSelectedCardId(){
+			$card_id = $("#card_id");
+			if(0 === $card_id.size()){
+				return ""
+			}
+			
+			return $card_id.val();
+		}
+		
+		if ( $( '#payment_method_omise' ).is( ':checked' ) && getSelectedCardId()==="" ) {
 			if ( 0 === $( 'input.omise_token' ).size() ) {
 				$form.block({
 					message: null,

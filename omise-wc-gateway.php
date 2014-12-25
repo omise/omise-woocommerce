@@ -146,7 +146,7 @@ function register_omise_wc_gateway_plugin() {
 					if (! empty ( $omise_customer_id )) {
 						// attach a new card to customer
 						$omise_customer = Omise::create_card ( $this->private_key, $omise_customer_id, $token );
-						$omise_customer = json_decode($omise_customer);
+						
 						if($omise_customer->object=="error"){
 							throw new Exception($omise_customer->message);
 						}
@@ -155,7 +155,7 @@ function register_omise_wc_gateway_plugin() {
 					} else {
 						$first_name = $user->first_name;
 						$last_name = $user->last_name;
-						$email = $user->email;
+						$email = $user->user_email;
 						$description = "WooCommerce customer " . $user->id;
 						$customer_data = array (
 								"first_name" => $first_name,

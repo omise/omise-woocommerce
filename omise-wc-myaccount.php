@@ -92,7 +92,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			}
 			
 			$result = Omise::delete_card ( $this->private_key, $this->omise_customer_id, $card_id );
-			echo $result;
+			echo json_encode($result);
 			die();
 		}
 
@@ -109,7 +109,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			}
 			
 			$card = Omise::create_card (  $this->private_key, $this->omise_customer_id, $token );
-			echo $card;
+			echo json_encode($card);
 			die();
 		}
 
