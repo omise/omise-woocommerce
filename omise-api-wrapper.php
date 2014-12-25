@@ -30,48 +30,24 @@ class Omise{
 		return json_decode($result);
 	}
 	
-	private static function call_api($apiKey, $method, $endpoint, $data = false)
-	{
+	private static function call_api($apiKey, $method, $endpoint, $data = false){
+		global $wp_version;
 		$url = OMISE_PROTOCOL_PREFIX.OMISE_API_HOST.$endpoint;
-		$curl = curl_init();
-	
-		switch ($method)
-		{
-			case "POST":
-				curl_setopt($curl, CURLOPT_POST, 1);
-	
-				if ($data)
-					curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-				break;
-			case "PATCH":
-				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
-	
-				if ($data)
-					curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-				break;
-			case "DELETE":
-					curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-				
-					if ($data)
-						curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-					break;
-			default:
-				if ($data)
-					$url = sprintf("%s?%s", $url, http_build_query($data));
-		}
-	
-		// Optional Authentication:
-		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($curl, CURLOPT_USERPWD, $apiKey.":");
-	
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-	
-		$result = curl_exec($curl);
-	
-		curl_close($curl);
-	
-		return $result;
+		
+		$headers = array(
+				'Authorization'  => 'Basic ' . base64_encode( $apiKey.':' ),
+				'User-Agent' => 'OmiseWooCommerce/'.OMISE_WOOCOMMERCE_PLUGIN_VERSION.' WooCommerce/'.WC_VERSION.' Wordpress/'.$wp_version
+		);
+		
+		$request_info = array(
+				'method'    => $method,
+				'headers'   => $headers,
+				'body'      => $data
+		);
+		
+		$response = wp_remote_request($url, $request_info);
+		$response_body = wp_remote_retrieve_body($response);
+		return $response_body;
 	}
 }
 
