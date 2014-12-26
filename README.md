@@ -16,4 +16,6 @@ The plugin allows WooCommerce user to checkout with Omise Payment Gateway (Now o
 
 Documentation
 =============
-Read full documentation [here](https://docs.omise.co/omise-woocommerce) 
+Read full documentation [here](https://docs.omise.co/) 
+
+
