@@ -89,7 +89,11 @@ function register_omise_wc_gateway_plugin() {
 						) 
 				);
 			}
-
+			
+			/**
+			 * Settings on Admin page
+			 * @see WC_Settings_API::admin_options()
+			 */
 			public function admin_options() {
 				echo '<h3>' . __ ( 'Omise Payment Gateway', $this->gateway_name ) . '</h3>';
 				echo '<p>' . __ ( 'Omise payment gateway. The first PCI certified payment gateway in Thailand' ) . '</p>';
@@ -121,18 +125,10 @@ function register_omise_wc_gateway_plugin() {
 			 * 
 			 * @see WC_Payment_Gateway::process_payment()
 			 */
-			public function process_payment($order_id) {
-				if (! isset( $_POST['omise_nonce'] ) || 
-						! wp_verify_nonce( $_POST['omise_nonce'], 'omise_checkout' )) {
-				
-					throw new Exception ( "Nonce verified failure." );
-					exit;
-				}
-				
+			public function process_payment($order_id) {				
 				$order = wc_get_order ( $order_id );
 				$token = isset ( $_POST ['omise_token'] ) ? wc_clean ( $_POST ['omise_token'] ) : '';
 				$card_id = isset ( $_POST ['card_id'] ) ? wc_clean ( $_POST ['card_id'] ) : '';
-				$nonce = isset ( $_POST ['omise_nonce'] ) ? wc_clean ( $_POST ['omise_nonce'] ) : '';
 				
 				if (empty ( $token ) && empty ( $card_id )) {
 					throw new Exception ( "Please select a card or create new card" );
@@ -142,7 +138,7 @@ function register_omise_wc_gateway_plugin() {
 				$user = $order->get_user ();
 				$omise_customer_id = $user->omise_customer_id;
 				
-				if (isset ( $_POST ['omise_save_customer_card'] )) {
+				if (isset ( $_POST ['omise_save_customer_card'] ) && empty($card_id)) {
 					if (! empty ( $omise_customer_id )) {
 						// attach a new card to customer
 						$omise_customer = Omise::create_card ( $this->private_key, $omise_customer_id, $token );
@@ -212,6 +208,7 @@ function register_omise_wc_gateway_plugin() {
 					);
 				} else {
 					wc_add_notice( __('Payment error:', 'woothemes') . $result->message, 'error' );
+					$order->add_order_note ( 'Payment with Omise error : '.$result->message );
 					return;
 				}
 			}

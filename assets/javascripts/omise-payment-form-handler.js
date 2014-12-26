@@ -109,5 +109,15 @@
 		$( 'form.checkout' ).on( 'checkout_place_order_omise', function () {
 			return omiseFormHandler();
 		});
+		
+		/* Pay Page Form */
+		$( 'form#order_review' ).on( 'submit', function () {
+			return omiseFormHandler();
+		});
+		
+		/* Both Forms */
+		$( 'form.checkout, form#order_review' ).on( 'change', '#omise_cc_form input', function() {
+			$( '.omise_token' ).remove();
+		});
 	})
 })(jQuery)
