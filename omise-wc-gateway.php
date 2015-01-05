@@ -41,6 +41,10 @@ function register_omise_wc_gateway_plugin() {
 				));
 			}
 
+			/**
+			 * initialize settings fields
+			 * @see WC_Settings_API::init_form_fields()
+			 */
 			function init_form_fields() {
 				$this->form_fields = array (
 						'enabled' => array (
@@ -149,14 +153,8 @@ function register_omise_wc_gateway_plugin() {
 						
 						$card_id = $omise_customer->cards->data [$omise_customer->cards->total - 1]->id;
 					} else {
-						$first_name = $user->first_name;
-						$last_name = $user->last_name;
-						$email = $user->user_email;
 						$description = "WooCommerce customer " . $user->id;
 						$customer_data = array (
-								"first_name" => $first_name,
-								"last_name" => $last_name,
-								"email" => $email,
 								"description" => $description,
 								"card" => $token 
 						);
@@ -213,6 +211,10 @@ function register_omise_wc_gateway_plugin() {
 				}
 			}
 
+			/**
+			 * Get icons of all supported card types
+			 * @see WC_Payment_Gateway::get_icon()
+			 */
 			public function get_icon() {
 				$icon = '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/visa.png' ) . '" alt="Visa" />';
 				$icon .= '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/mastercard.png' ) . '" alt="Mastercard" />';
@@ -220,6 +222,9 @@ function register_omise_wc_gateway_plugin() {
 				return apply_filters ( 'woocommerce_gateway_icon', $icon, $this->id );
 			}
 
+			/**
+			 * Register all javascripts
+			 */
 			public function omise_scripts() {
 				if (! is_checkout () || ! $this->is_available ()) {
 					return;

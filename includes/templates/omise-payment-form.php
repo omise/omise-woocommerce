@@ -1,5 +1,4 @@
 <div id="omise_cc_form">
-<?php wp_nonce_field('omise_checkout','omise_nonce'); ?>
 <?php 
 	if($viewData["user_logged_in"]){
 		if (isset($viewData["existingCards"]->data) && sizeof($viewData["existingCards"]->data) > 0){

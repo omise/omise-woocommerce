@@ -48,6 +48,9 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			
 		}
 		
+		/**
+		 * Append Omise Settings panel to My Account page
+		 */
 		public function init_panel(){
 			
 				if (! empty ( $this->omise_customer_id )) {
@@ -59,6 +62,9 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 				}
 		}
 
+		/**
+		 * Register all javascripts
+		 */
 		public function register_omise_my_account_scripts() {
 			wp_enqueue_script ( 'omise-js', 'https://cdn.omise.co/omise.js', array (
 					'jquery' 
@@ -75,6 +81,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 					'vault_url' => OMISE_VAULT_HOST
 			) );
 		}
+		
 		/**
 		 * Public omise_delete_card ajax hook
 		 */
@@ -95,7 +102,10 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			echo json_encode($result);
 			die();
 		}
-
+		
+		/**
+		 * Public omise_create_card ajax hook
+		 */
 		public function omise_create_card() {
 			$token = isset ( $_POST ['omise_token'] ) ? wc_clean ( $_POST ['omise_token'] ) : '';
 			if (empty ( $token )) {
@@ -104,7 +114,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			}
 			
 			if (! wp_verify_nonce($_POST['omise_nonce'], 'omise_add_card')) {
-				Omise_Util::render_json_error("Nonce verified failure");
+				Omise_Util::render_json_error("Nonce verification failure");
 				die();
 			}
 			
@@ -112,7 +122,10 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			echo json_encode($card);
 			die();
 		}
-
+		
+		/**
+		 * No operation on no-priv ajax requests
+		 */
 		public function no_op() {
 			exit ( 'Not permitted' );
 		}
