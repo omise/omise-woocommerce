@@ -28,8 +28,9 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 				return;
 			}
 			
-			$this->private_key = $settings ["sandbox"] ? $settings ["test_private_key"] : $settings ["live_private_key"];
-			$this->public_key = $settings ["sandbox"] ? $settings ["test_public_key"] : $settings ["live_public_key"];
+			$test_mode = isset($settings ["sandbox"]) && $settings ["sandbox"] == 'yes';
+			$this->private_key = $test_mode ? $settings ["test_private_key"] : $settings ["live_private_key"];
+			$this->public_key = $test_mode ? $settings ["test_public_key"] : $settings ["live_public_key"];
 			
 			if (empty ( $this->private_key ) || empty ( $this->public_key )) {
 				return;
@@ -37,7 +38,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			
 			if (is_user_logged_in ()) {
 				$current_user = wp_get_current_user ();
-				$this->omise_customer_id = $current_user->omise_customer_id;
+				$this->omise_customer_id = $test_mode ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 			}
 			
 			add_action ('woocommerce_after_my_account',array($this, 'init_panel'));

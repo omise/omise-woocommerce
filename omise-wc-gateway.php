@@ -22,7 +22,7 @@ function register_omise_wc_gateway_plugin() {
 				
 				$this->title = $this->settings ['title'];
 				$this->description = $this->settings ['description'];
-				$this->sandbox = $this->settings ['sandbox'];
+				$this->sandbox = isset($this->settings ['sandbox']) && $this->settings ['sandbox'] == 'yes';
 				$this->test_private_key = $this->settings ['test_private_key'];
 				$this->test_public_key = $this->settings ['test_public_key'];
 				$this->live_private_key = $this->settings ['live_private_key'];
@@ -114,7 +114,7 @@ function register_omise_wc_gateway_plugin() {
 				if (is_user_logged_in ()) {
 					$viewData ["user_logged_in"] = true;
 					$current_user = wp_get_current_user ();
-					$omise_customer_id = $current_user->omise_customer_id;
+					$omise_customer_id = $this->sandbox ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 					if (! empty ( $omise_customer_id )) {
 						$cards = Omise::get_customer_cards ( $this->private_key, $omise_customer_id );
 						$viewData ["existingCards"] = $cards;
@@ -140,7 +140,7 @@ function register_omise_wc_gateway_plugin() {
 				}
 				
 				$user = $order->get_user ();
-				$omise_customer_id = $user->omise_customer_id;
+				$omise_customer_id = $this->sandbox ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 				
 				if (isset ( $_POST ['omise_save_customer_card'] ) && empty($card_id)) {
 					if (! empty ( $omise_customer_id )) {
@@ -166,7 +166,11 @@ function register_omise_wc_gateway_plugin() {
 						}
 						
 						$omise_customer_id = $omise_customer->id;
-						update_user_meta ( $user->ID, 'omise_customer_id', $omise_customer_id );
+						if($this->sandbox){
+							update_user_meta ( $user->ID, 'test_omise_customer_id', $omise_customer_id );
+						}else{
+							update_user_meta ( $user->ID, 'live_omise_customer_id', $omise_customer_id );
+						}
 						
 						if (0 == sizeof ( $omise_customer->cards->data )) {
 							throw new Exception ( "Something wrong with Omise gateway. No card available for creating a charge." );

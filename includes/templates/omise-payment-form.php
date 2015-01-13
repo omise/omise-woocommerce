@@ -24,7 +24,7 @@
 	?>
 	<p class="form-row form-row-wide">
 		<input type='checkbox' name='omise_save_customer_card' id='omise_save_customer_card' /> 
-		<label for="omise_save_customer_card" style="display:inline;">Save card for next time</label>
+		<label for="omise_save_customer_card" class="inline">Save card for next time</label>
 	</p>
 	<?php 
 		}
