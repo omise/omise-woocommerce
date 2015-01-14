@@ -16,7 +16,7 @@ function register_omise_wc_gateway_plugin() {
 				$this->method_title = "Omise";
 				$this->has_fields = true;
 				
-				// call base functions required for wooCommerce gateway
+				// call base functions required for WooCommerce gateway
 				$this->init_form_fields ();
 				$this->init_settings ();
 				
@@ -100,7 +100,7 @@ function register_omise_wc_gateway_plugin() {
 			 */
 			public function admin_options() {
 				echo '<h3>' . __ ( 'Omise Payment Gateway', $this->gateway_name ) . '</h3>';
-				echo '<p>' . __ ( 'Omise payment gateway. The first PCI certified payment gateway in Thailand' ) . '</p>';
+				echo '<p>' . __ ( 'Omise payment gateway. The first PCI 3.0 certified payment gateway in Thailand' ) . '</p>';
 				echo '<table class="form-table">';
 				$this->generate_settings_html ();
 				echo '</table>';
@@ -143,6 +143,11 @@ function register_omise_wc_gateway_plugin() {
 				$omise_customer_id = $this->sandbox ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 				
 				if (isset ( $_POST ['omise_save_customer_card'] ) && empty($card_id)) {
+					if (empty($token)){
+						throw new Exception ( "omise_token is required" );
+						return;
+					}
+					
 					if (! empty ( $omise_customer_id )) {
 						// attach a new card to customer
 						$omise_customer = Omise::create_card ( $this->private_key, $omise_customer_id, $token );
@@ -199,7 +204,7 @@ function register_omise_wc_gateway_plugin() {
 				}
 				
 				$result = Omise::create_charge ( $this->private_key, $data );
-				$success = isset ( $result->id );
+				$success = isset ( $result->id ) && isset( $result->object ) && $result->object == 'charge';
 				
 				if ($success) {
 					$order->payment_complete ();

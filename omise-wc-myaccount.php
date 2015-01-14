@@ -24,7 +24,11 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 				return;
 			}
 			
-			if (empty ( $settings ["sandbox"] ) || empty ( $settings ["test_private_key"] ) || empty ( $settings ["live_private_key"] )) {
+			if (empty ( $settings ["sandbox"] ) 
+				|| empty ( $settings ["test_private_key"] ) 
+				|| empty ( $settings ["live_private_key"] ) 
+				|| empty ( $settings ["test_public_key"] ) 
+				|| empty ( $settings ["live_public_key"] )) {
 				return;
 			}
 			
@@ -95,7 +99,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			
 			$nonce = 'omise_delete_card_' . $_POST['card_id'];
 			if (! wp_verify_nonce($_POST['omise_nonce'], $nonce)) {
-				Omise_Util::render_json_error("Nonce verified failure");
+				Omise_Util::render_json_error("Nonce verification failure");
 				die();
 			}
 			
