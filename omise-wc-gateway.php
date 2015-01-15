@@ -203,7 +203,7 @@ function register_omise_wc_gateway_plugin() {
 				}
 				
 				$result = Omise::create_charge ( $this->private_key, $data );
-				$success = isset ( $result->id ) && isset( $result->object ) && $result->object == 'charge';
+				$success = $this->is_charge_success($result);
 				
 				if ($success) {
 					$order->payment_complete ();
@@ -213,10 +213,33 @@ function register_omise_wc_gateway_plugin() {
 							'redirect' => $this->get_return_url ( $order ) 
 					);
 				} else {
-					wc_add_notice( __('Payment error:', 'woothemes') . $result->message, 'error' );
-					$order->add_order_note ( 'Payment with Omise error : '.$result->message );
+					$error_message = $this->get_charge_error_message($result);
+					wc_add_notice( __('Payment error:', 'woothemes') . $error_message, 'error' );
+					$order->add_order_note ( 'Payment with Omise error :'. $error_message );
 					return;
 				}
+			}
+			
+			private function is_charge_success($result){
+				return isset ( $result->id ) && isset( $result->object ) && $result->object == 'charge' && $result->captured == true;
+			}
+			
+			private function get_charge_error_message($result){
+				$message = "";
+				
+				if(isset($result->message) && !empty($result->message)){
+					$message .= $result->message." ";
+				}
+				
+				if(isset($result->failure_code) && !empty($result->failure_code)){
+					$message .= "[".$result-> failure_code."] ";
+				}
+				
+				if(isset($result->failure_message) && !empty($result->failure_message)){
+					$message .= $result-> failure_message;
+				}
+				
+				return trim($message);
 			}
 
 			/**
