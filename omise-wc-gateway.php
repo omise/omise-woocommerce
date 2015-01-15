@@ -72,9 +72,9 @@ function register_omise_wc_gateway_plugin() {
 								'default' => __ ( 'Omise payment gateway.', $this->gateway_name ) 
 						),
 						'test_private_key' => array (
-								'title' => __ ( 'Private key for test', $this->gateway_name ),
+								'title' => __ ( 'Secret key for test', $this->gateway_name ),
 								'type' => 'text',
-								'description' => __ ( 'The "Test" mode private key which can be found in Omise Dashboard"' ) 
+								'description' => __ ( 'The "Test" mode secret key which can be found in Omise Dashboard"' ) 
 						),
 						'test_public_key' => array (
 								'title' => __ ( 'Public key for test', $this->gateway_name ),
@@ -82,9 +82,9 @@ function register_omise_wc_gateway_plugin() {
 								'description' => __ ( 'The "Test" mode public key which can be found in Omise Dashboard"' ) 
 						),
 						'live_private_key' => array (
-								'title' => __ ( 'Private key for live', $this->gateway_name ),
+								'title' => __ ( 'Secret key for live', $this->gateway_name ),
 								'type' => 'text',
-								'description' => __ ( 'The "Live" mode private key which can be found in Omise Dashboard"' ) 
+								'description' => __ ( 'The "Live" mode secret key which can be found in Omise Dashboard"' ) 
 						),
 						'live_public_key' => array (
 								'title' => __ ( 'Public key for live', $this->gateway_name ),
@@ -189,8 +189,7 @@ function register_omise_wc_gateway_plugin() {
 				$data = array (
 					"amount" => $order->get_total () * 100,
 					"currency" => $order->get_order_currency (),
-					"description" => "WooCommerce Order id " . $order_id,
-					"ip" => Omise_Util::get_client_ip()
+					"description" => "WooCommerce Order id " . $order_id
 				);
 				
 				if (! empty ( $card_id ) && ! empty ( $omise_customer_id )) {
