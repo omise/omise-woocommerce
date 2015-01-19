@@ -28,16 +28,38 @@
 			$(".woocommerce-error").remove();
 		}
 		
-		function getSelectedCardId(){
-			$card_id = $("#card_id");
-			if(0 === $card_id.size()){
-				return ""
+		function validSelection(){
+			$card_list = $("input[name='card_id']");
+			$selected_card_id = $("input[name='card_id']:checked");
+			// there is some existing cards but nothing selected then warning
+			if($card_list.size() > 0 && $selected_card_id.size() === 0){
+				return false;
 			}
 			
-			return $card_id.val();
+			return true;
 		}
 		
-		if ( $( '#payment_method_omise' ).is( ':checked' ) && getSelectedCardId()==="" ) {
+		function getSelectedCardId(){
+			$selected_card_id = $("input[name='card_id']:checked");
+			if($selected_card_id.size() > 0){
+				return $selected_card_id.val();
+			}
+			
+			return "";
+		}
+		
+		if ( $( '#payment_method_omise' ).is( ':checked' ) ) {
+			if( !validSelection() ){
+				showError("Please select a card or enter new payment information");
+				return false;
+			}
+			
+			if( getSelectedCardId() !== "" )
+			{
+				//submit the form right away if the card_id is not blank
+				return true;
+			}
+			
 			if ( 0 === $( 'input.omise_token' ).size() ) {
 				$form.block({
 					message: null,
@@ -95,9 +117,8 @@
 					return false;
 				}
 			}
+			
 		}
-
-		return true;
 	}
 	
 	$(function(){

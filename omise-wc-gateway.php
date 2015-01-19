@@ -135,7 +135,7 @@ function register_omise_wc_gateway_plugin() {
 				$card_id = isset ( $_POST ['card_id'] ) ? wc_clean ( $_POST ['card_id'] ) : '';
 				
 				if (empty ( $token ) && empty ( $card_id )) {
-					throw new Exception ( "Please select a card or create new card" );
+					throw new Exception ( "Please select a card or enter new payment information" );
 					return;
 				}
 				
@@ -154,6 +154,7 @@ function register_omise_wc_gateway_plugin() {
 						
 						if($omise_customer->object=="error"){
 							throw new Exception($omise_customer->message);
+							return;
 						}
 						
 						$card_id = $omise_customer->cards->data [$omise_customer->cards->total - 1]->id;
@@ -168,6 +169,7 @@ function register_omise_wc_gateway_plugin() {
 						
 						if($omise_customer->object=="error"){
 							throw new Exception($omise_customer->message);
+							return;
 						}
 						
 						$omise_customer_id = $omise_customer->id;
@@ -179,6 +181,7 @@ function register_omise_wc_gateway_plugin() {
 						
 						if (0 == sizeof ( $omise_customer->cards->data )) {
 							throw new Exception ( "Something wrong with Omise gateway. No card available for creating a charge." );
+							return;
 						}
 						$card = $omise_customer->cards->data [0]; //use the latest card
 						$card_id = $card->id;
@@ -200,14 +203,17 @@ function register_omise_wc_gateway_plugin() {
 					$data["card"] = $token;
 				} else {
 					throw new Exception ( "Please select a card or create new card" );
+					return;
 				}
-				
+								
 				$result = Omise::create_charge ( $this->private_key, $data );
 				$success = $this->is_charge_success($result);
 				
 				if ($success) {
 					$order->payment_complete ();
 					$order->add_order_note ( 'Payment with Omise successful' );
+					// Remove cart
+					WC()->cart->empty_cart();
 					return array (
 							'result' => 'success',
 							'redirect' => $this->get_return_url ( $order ) 
@@ -261,13 +267,14 @@ function register_omise_wc_gateway_plugin() {
 					return;
 				}
 				
+				wp_enqueue_style('omise-css', plugins_url ( '/assets/css/omise-css.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION);
 				wp_enqueue_script ( 'omise-js', 'https://cdn.omise.co/omise.js', array (
 						'jquery' 
-				), WC_VERSION, true );
+				), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
 				wp_enqueue_script ( 'omise-util', plugins_url ( '/assets/javascripts/omise-util.js', __FILE__ ), array (
-				'omise-js'), WC_VERSION, true );
+				'omise-js'), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
 				wp_enqueue_script ( 'omise-payment-form-handler', plugins_url ( '/assets/javascripts/omise-payment-form-handler.js', __FILE__ ), array (
-						'omise-js', 'omise-util'), WC_VERSION, true );
+						'omise-js', 'omise-util'), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
 				wp_localize_script ( 'omise-payment-form-handler', 'omise_params', array (
 						'key' => $this->public_key,
 						'vault_url' => OMISE_VAULT_HOST

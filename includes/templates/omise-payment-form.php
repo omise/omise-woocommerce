@@ -1,23 +1,19 @@
 <div id="omise_cc_form">
 <?php 
-	if($viewData["user_logged_in"]){
-		if (isset($viewData["existingCards"]->data) && sizeof($viewData["existingCards"]->data) > 0){
+	$showExistingCards = $viewData["user_logged_in"] && isset($viewData["existingCards"]->data) && sizeof($viewData["existingCards"]->data) > 0;
+	if($showExistingCards){
 ?>
 <p class="form-row form-row-wide">
-	Select card : 
-	<select name='card_id' id='card_id'>
-		<option value=''>-- Please select --</option>
+	Select card : <br/>
 		<?php 
 			foreach($viewData["existingCards"]->data as $card){
-				echo "<option value='{$card->id}'>Card ends with {$card->last_digits}</option>";
+				echo "<input type='radio' name='card_id' value='{$card->id}' />Card ends with {$card->last_digits}<br/>";
 			}
 		?>
-	</select>
-	<br/>Or charge with a new card
 </p>
-<?php }} 
-?>
-<fieldset>
+&nbsp;<input type='radio' id='new_card_info' name='card_id' value='' />New payment information
+<?php } ?>
+<fieldset id="new_card_form" class="<?php echo $showExistingCards ? 'omise-hidden':''; ?>">
 	<?php 
 		require_once('omise-cc-form.php'); 
 		if($viewData["user_logged_in"]){

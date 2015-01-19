@@ -1,0 +1,11 @@
+fieldset.omise-hidden {
+	display:none;
+}
+
+input[name='card_id']:checked ~ #new_card_form {
+    display: none;
+}
+
+#new_card_info:checked ~ #new_card_form {
+    display: block;
+}

@@ -2,11 +2,11 @@ var OmiseUtil = new function(){
 	var _validate_card = function(card){
 		var errors = [];
 		if(!card.name || card.name==""){
-			errors.push("Name is required");
+			errors.push("Card holder's name is required");
 		}
 		
 		if(!card.number || card.number==""){
-			errors.push("Number is required");
+			errors.push("Card number is required");
 		}
 		
 		if(!card.expiration_month || card.expiration_month==""){

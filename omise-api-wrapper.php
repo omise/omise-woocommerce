@@ -80,14 +80,20 @@ class Omise{
 		);
 		
 		$request_info = array(
+				'timeout'	=> 60,
 				'method'    => $method,
 				'headers'   => $headers,
 				'body'      => $data
 		);
 		
 		$response = wp_remote_request($url, $request_info);
-		$response_body = wp_remote_retrieve_body($response);
-		return $response_body;
+		
+		if(is_wp_error($response)){
+			return '{ "object": "error", "message": "'.$response->get_error_message().'" }';
+		}else{
+			$response_body = wp_remote_retrieve_body($response);
+			return $response_body;
+		}
 	}
 }
 
