@@ -133,96 +133,97 @@ function register_omise_wc_gateway_plugin() {
 				$order = wc_get_order ( $order_id );
 				$token = isset ( $_POST ['omise_token'] ) ? wc_clean ( $_POST ['omise_token'] ) : '';
 				$card_id = isset ( $_POST ['card_id'] ) ? wc_clean ( $_POST ['card_id'] ) : '';
-				
-				if (empty ( $token ) && empty ( $card_id )) {
-					throw new Exception ( "Please select a card or enter new payment information" );
-					return;
-				}
-				
-				$user = $order->get_user ();
-				$omise_customer_id = $this->sandbox ? $user->test_omise_customer_id : $user->live_omise_customer_id;
-				
-				if (isset ( $_POST ['omise_save_customer_card'] ) && empty($card_id)) {
-					if (empty($token)){
-						throw new Exception ( "omise_token is required" );
-						return;
+				try{
+					if (empty ( $token ) && empty ( $card_id )) {
+						throw new Exception ( "Please select a card or enter new payment information." );
 					}
 					
-					if (! empty ( $omise_customer_id )) {
-						// attach a new card to customer
-						$omise_customer = Omise::create_card ( $this->private_key, $omise_customer_id, $token );
-						
-						if($omise_customer->object=="error"){
-							throw new Exception($omise_customer->message);
-							return;
+					$user = $order->get_user ();
+					$omise_customer_id = $this->sandbox ? $user->test_omise_customer_id : $user->live_omise_customer_id;
+					
+					if (isset ( $_POST ['omise_save_customer_card'] ) && empty($card_id)) {
+						if (empty($token)){
+							throw new Exception ( "Omise card token is required." );
 						}
 						
-						$card_id = $omise_customer->cards->data [$omise_customer->cards->total - 1]->id;
+						if (! empty ( $omise_customer_id )) {
+							// attach a new card to customer
+							$omise_customer = Omise::create_card ( $this->private_key, $omise_customer_id, $token );
+							
+							if($omise_customer->object=="error"){
+								throw new Exception($omise_customer->message);
+							}
+							
+							$card_id = $omise_customer->cards->data [$omise_customer->cards->total - 1]->id;
+						} else {
+							$description = "WooCommerce customer " . $user->id;
+							$customer_data = array (
+									"description" => $description,
+									"card" => $token 
+							);
+							
+							$omise_customer = Omise::create_customer ( $this->private_key, $customer_data );
+							
+							if($omise_customer->object=="error"){
+								throw new Exception($omise_customer->message);
+							}
+							
+							$omise_customer_id = $omise_customer->id;
+							if($this->sandbox){
+								update_user_meta ( $user->ID, 'test_omise_customer_id', $omise_customer_id );
+							}else{
+								update_user_meta ( $user->ID, 'live_omise_customer_id', $omise_customer_id );
+							}
+							
+							if (0 == sizeof ( $omise_customer->cards->data )) {
+								throw new Exception ( "Something wrong with Omise gateway. No card available for creating a charge." );
+							}
+							$card = $omise_customer->cards->data [0]; //use the latest card
+							$card_id = $card->id;
+						}
+					}
+					
+					$success = false;
+					$data = array (
+						"amount" => $order->get_total () * 100,
+						"currency" => $order->get_order_currency (),
+						"description" => "WooCommerce Order id " . $order_id
+					);
+					
+					if (! empty ( $card_id ) && ! empty ( $omise_customer_id )) {
+						// create charge with a specific card of customer
+						$data["customer"] =  $omise_customer_id;
+						$data["card"] = $card_id;
+					} else if (! empty ( $token )) {
+						$data["card"] = $token;
 					} else {
-						$description = "WooCommerce customer " . $user->id;
-						$customer_data = array (
-								"description" => $description,
-								"card" => $token 
+						throw new Exception ( "Please select a card or enter new payment information." );
+					}
+									
+					$result = Omise::create_charge ( $this->private_key, $data );
+					$success = $this->is_charge_success($result);
+					
+					if ($success) {
+						$order->payment_complete ();
+						$order->add_order_note ( 'Payment with Omise successful' );
+						// Remove cart
+						WC()->cart->empty_cart();
+						return array (
+								'result' => 'success',
+								'redirect' => $this->get_return_url ( $order ) 
 						);
-						
-						$omise_customer = Omise::create_customer ( $this->private_key, $customer_data );
-						
-						if($omise_customer->object=="error"){
-							throw new Exception($omise_customer->message);
-							return;
-						}
-						
-						$omise_customer_id = $omise_customer->id;
-						if($this->sandbox){
-							update_user_meta ( $user->ID, 'test_omise_customer_id', $omise_customer_id );
-						}else{
-							update_user_meta ( $user->ID, 'live_omise_customer_id', $omise_customer_id );
-						}
-						
-						if (0 == sizeof ( $omise_customer->cards->data )) {
-							throw new Exception ( "Something wrong with Omise gateway. No card available for creating a charge." );
-							return;
-						}
-						$card = $omise_customer->cards->data [0]; //use the latest card
-						$card_id = $card->id;
+					} else {
+						throw new Exception($this->get_charge_error_message($result));
 					}
 				}
-				
-				$success = false;
-				$data = array (
-					"amount" => $order->get_total () * 100,
-					"currency" => $order->get_order_currency (),
-					"description" => "WooCommerce Order id " . $order_id
-				);
-				
-				if (! empty ( $card_id ) && ! empty ( $omise_customer_id )) {
-					// create charge with a specific card of customer
-					$data["customer"] =  $omise_customer_id;
-					$data["card"] = $card_id;
-				} else if (! empty ( $token )) {
-					$data["card"] = $token;
-				} else {
-					throw new Exception ( "Please select a card or create new card" );
-					return;
-				}
-								
-				$result = Omise::create_charge ( $this->private_key, $data );
-				$success = $this->is_charge_success($result);
-				
-				if ($success) {
-					$order->payment_complete ();
-					$order->add_order_note ( 'Payment with Omise successful' );
-					// Remove cart
-					WC()->cart->empty_cart();
-					return array (
-							'result' => 'success',
-							'redirect' => $this->get_return_url ( $order ) 
+				catch( Exception $e ){
+					$error_message = $e->getMessage();
+					wc_add_notice( __('Payment error:', 'woothemes') . $error_message , 'error' );
+					$order->add_order_note ( 'Payment with Omise error : '. $error_message );
+					return array(
+							'result'   => 'fail',
+							'redirect' => ''
 					);
-				} else {
-					$error_message = $this->get_charge_error_message($result);
-					wc_add_notice( __('Payment error:', 'woothemes') . $error_message, 'error' );
-					$order->add_order_note ( 'Payment with Omise error :'. $error_message );
-					return;
 				}
 			}
 			

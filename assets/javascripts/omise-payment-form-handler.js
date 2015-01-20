@@ -105,7 +105,13 @@
 						    	$( '#omise_card_security_code' ).val("");
 								$form.submit();
 						    } else {
-						    	showError( response.responseJSON.message );
+						    	if(response.responseJSON && response.responseJSON.message){
+						    		showError( "Unable to process payment with Omise. " + response.responseJSON.message );
+						    	}else if(response.status==0){
+						    		showError( "Unable to process payment with Omise. No response from Omise Api." );
+						    	}else {
+						    		showError( "Unable to process payment with Omise [ status=" + response.status + " ]" );
+						    	}
 						    	$form.unblock();
 						    };
 						  });

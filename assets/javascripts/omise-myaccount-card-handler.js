@@ -107,7 +107,13 @@
 							}, "json"
 						);
 				    } else {
-				    	showError( response.responseJSON.message, $form );
+				    	if(response.responseJSON && response.responseJSON.message){
+				    		showError( "Unable to create a card. " + response.responseJSON.message, $form );
+				    	}else if(response.status==0){
+				    		showError( "Unable to create a card. No response from Omise Api.", $form );
+				    	}else {
+				    		showError( "Unable to create a card [ status=" + response.status + " ].", $form );
+				    	}
 				    };
 				  });
 			}else{
