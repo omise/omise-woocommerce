@@ -14,6 +14,10 @@ How it works
 
 The plugin allows WooCommerce user to checkout with Omise Payment Gateway (Now only available in Thailand). The supported currency is Thai Bath (THB). User can checkout by input credit card information or if they are logged in to wordpress they can save the card for further charge without having to fill out the card information everytime.
 
+Installation
+============
+Please refer to our full documentation [page](https://docs.omise.co/omise-woocommerce/)
+
 Documentation
 =============
 Developer Documentation [here](https://docs.omise.co/)
