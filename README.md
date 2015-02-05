@@ -16,15 +16,11 @@ The plugin allows WooCommerce user to checkout with Omise Payment Gateway (Now o
 
 Documentation
 =============
-Developer Documentation [here](https://docs.omise.co/) 
+Developer Documentation [here](https://docs.omise.co/)
 
 Other Libraries
 =============
 
 * [Omise Ruby Library](https://github.com/omise/omise-ruby)
-* [Omise Card.js](https://github.com/omise/card.js) 
-* [Omise Dotnet](https://github.com/omise/omise-dotnet) 
-
-
-
-
+* [Omise Card.js](https://github.com/omise/card.js)
+* [Omise Dotnet](https://github.com/omise/omise-dotnet)
