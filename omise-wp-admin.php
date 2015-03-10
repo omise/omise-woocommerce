@@ -16,10 +16,20 @@ if (! class_exists ( 'Omise_Admin' )) {
     }
 
     public function register_admin_page_and_actions() {
+      if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+      }
+
       add_action ( 'admin_post_omise_create_transfer', array (
           $this,
           'create_transfer' 
       ) );
+
+      add_action ( 'admin_post_nopriv_omise_create_transfer', array (
+          $this,
+          'no_op' 
+      ) );
+
       add_action ( 'admin_menu', array (
           $this,
           'add_dashboard_omise_menu' 
@@ -52,6 +62,10 @@ if (! class_exists ( 'Omise_Admin' )) {
       if (empty ( $this->private_key ) || empty ( $this->public_key )) {
         return;
       }
+    }
+
+    public function no_op(){
+      exit("Not permitted");
     }
 
     public function create_transfer() {
