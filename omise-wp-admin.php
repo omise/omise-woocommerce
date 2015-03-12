@@ -6,7 +6,7 @@ if (! class_exists ( 'Omise_Admin' )) {
   class Omise_Admin {
     
     private static $instance;
-    private $private_key, $public_key;
+    private $private_key;
 
     public static function get_instance() {
       if (! self::$instance) {
@@ -51,15 +51,19 @@ if (! class_exists ( 'Omise_Admin' )) {
         return;
       }
       
-      if (empty ( $settings ["sandbox"] ) || empty ( $settings ["test_private_key"] ) || empty ( $settings ["live_private_key"] ) || empty ( $settings ["test_public_key"] ) || empty ( $settings ["live_public_key"] )) {
+      $this->test_mode = isset ( $settings ["sandbox"] ) && $settings ["sandbox"] == 'yes';
+
+      if(empty ( $settings ["test_private_key"] ) && $this->test_mode){
         return;
       }
-      
-      $this->test_mode = isset ( $settings ["sandbox"] ) && $settings ["sandbox"] == 'yes';
+
+      if(empty ( $settings ["live_private_key"] ) && !$this->test_mode ){
+        return;
+      }
+
       $this->private_key = $this->test_mode ? $settings ["test_private_key"] : $settings ["live_private_key"];
-      $this->public_key = $this->test_mode ? $settings ["test_public_key"] : $settings ["live_public_key"];
       
-      if (empty ( $this->private_key ) || empty ( $this->public_key )) {
+      if (empty ( $this->private_key )) {
         return;
       }
     }
@@ -139,7 +143,7 @@ if (! class_exists ( 'Omise_Admin' )) {
           
           $this->register_dashboard_script ();
         } else {
-          echo "<div class='wrap'><div class='error'>Unable to get the balance information. " . esc_html ( $balance->message ) . "</div></div>";
+          echo "<div class='wrap'><div class='error'>Unable to get the balance information. Please verify that your private key is valid. [" . esc_html ( $balance->message ) . "]</div></div>";
         }
       } catch ( Exception $e ) {
         echo "<div class='wrap'><div class='error'>" . esc_html ( $e->getMessage () ) . "</div></div>";
