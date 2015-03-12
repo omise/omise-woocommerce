@@ -10,13 +10,13 @@ DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
-
-WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
+WP_TEST_ROOT_DIR=${WP_TEST_ROOT_DIR-/tmp}
+WP_TESTS_LIB_DIR=${WP_TESTS_LIB_DIR-$WP_TEST_ROOT_DIR/wordpress-tests-lib}
+WP_CORE_DIR=${WP_CORE_DIR-$WP_TEST_ROOT_DIR/wordpress/}
 
 set -ex
 
-install_wp() {
+install_wp_and_wc() {
 	mkdir -p $WP_CORE_DIR
 
 	if [ $WP_VERSION == 'latest' ]; then 
@@ -25,10 +25,13 @@ install_wp() {
 		local ARCHIVE_NAME="wordpress-$WP_VERSION"
 	fi
 
-	wget -nv -O /tmp/wordpress.tar.gz https://wordpress.org/${ARCHIVE_NAME}.tar.gz
-	tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
+	wget -nv -O $WP_TEST_ROOT_DIR/wordpress.tar.gz https://wordpress.org/${ARCHIVE_NAME}.tar.gz
+	tar --strip-components=1 -zxmf $WP_TEST_ROOT_DIR/wordpress.tar.gz -C $WP_CORE_DIR
 
 	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
+
+	wget -nv -O $WP_TEST_ROOT_DIR/woocommerce.zip http://downloads.wordpress.org/plugin/woocommerce.zip
+	unzip $WP_TEST_ROOT_DIR/woocommerce.zip -d ${WP_CORE_DIR}wp-content/plugins/
 }
 
 install_test_suite() {
@@ -40,8 +43,8 @@ install_test_suite() {
 	fi
 
 	# set up testing suite
-	mkdir -p $WP_TESTS_DIR
-	cd $WP_TESTS_DIR
+	mkdir -p $WP_TESTS_LIB_DIR
+	cd $WP_TESTS_LIB_DIR
 	svn co --quiet https://develop.svn.wordpress.org/trunk/tests/phpunit/includes/
 
 	wget -nv -O wp-tests-config.php https://develop.svn.wordpress.org/trunk/wp-tests-config-sample.php
@@ -73,6 +76,6 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
-install_wp
+install_wp_and_wc
 install_test_suite
 install_db
