@@ -82,7 +82,6 @@
 		}else{
 			hideError();
 			if(Omise){
-				Omise.config.defaultHost = omise_params.vault_url;
 				Omise.setPublicKey(omise_params.key);
 				Omise.createToken("card", card, function (statusCode, response) {
 				    if (statusCode == 200) {
@@ -107,7 +106,9 @@
 							}, "json"
 						);
 				    } else {
-				    	if(response.responseJSON && response.responseJSON.message){
+				    	if(response.message){
+				    		showError( "Unable to create a card. " + response.message, $form );
+				    	}else if(response.responseJSON && response.responseJSON.message){
 				    		showError( "Unable to create a card. " + response.responseJSON.message, $form );
 				    	}else if(response.status==0){
 				    		showError( "Unable to create a card. No response from Omise Api.", $form );
