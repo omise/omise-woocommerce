@@ -93,7 +93,6 @@
 				}else{
 					hideError();
 					if(Omise){
-						Omise.config.defaultHost = omise_params.vault_url;
 						Omise.setPublicKey(omise_params.key);
 						Omise.createToken("card", card, function (statusCode, response) {
 						    if (statusCode == 200) {
@@ -105,7 +104,9 @@
 						    	$( '#omise_card_security_code' ).val("");
 								$form.submit();
 						    } else {
-						    	if(response.responseJSON && response.responseJSON.message){
+						    	if(response.message){
+						    		showError( "Unable to process payment with Omise. " + response.message );
+						    	}else if(response.responseJSON && response.responseJSON.message){
 						    		showError( "Unable to process payment with Omise. " + response.responseJSON.message );
 						    	}else if(response.status==0){
 						    		showError( "Unable to process payment with Omise. No response from Omise Api." );
