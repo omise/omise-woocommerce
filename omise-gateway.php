@@ -22,6 +22,7 @@ require_once 'omise-wc-gateway.php';
 require_once 'omise-wc-myaccount.php';
 require_once 'omise-wp-admin.php';
 
+add_action ( 'init', 'register_omise_wc_gateway_post_type' );
 add_action ( 'plugins_loaded', 'register_omise_wc_gateway_plugin', 0 );
 add_action ( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
 add_action ( 'plugins_loaded', array ( Omise_Admin::get_instance(), 'register_admin_page_and_actions' ) );
