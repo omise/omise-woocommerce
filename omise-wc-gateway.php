@@ -31,6 +31,8 @@ function register_omise_wc_gateway_plugin() {
 				$this->public_key = $this->sandbox ? $this->test_public_key : $this->live_public_key;
 				$this->private_key = $this->sandbox ? $this->test_private_key : $this->live_private_key;
 				
+				add_action( 'woocommerce_api_wc_gateway_omise', array( $this, 'omise_3ds_handler' ) );
+
 				add_action ( 'woocommerce_update_options_payment_gateways_' . $this->id, array (
 						&$this,
 						'process_admin_options' 
@@ -40,6 +42,7 @@ function register_omise_wc_gateway_plugin() {
 						$this,
 						'omise_scripts' 
 				));
+
 			}
 
 			/**
@@ -195,7 +198,7 @@ function register_omise_wc_gateway_plugin() {
 						"amount" => $order->get_total () * 100,
 						"currency" => $order->get_order_currency (),
 						"description" => "WooCommerce Order id " . $order_id,
-						"return_uri" => $this->get_return_url($order)
+						"return_uri" => add_query_arg( 'order_id', $order_id, site_url()."?wc-api=wc_gateway_omise" )
 					);
 					
 					if (! empty ( $card_id ) && ! empty ( $omise_customer_id )) {
@@ -220,6 +223,7 @@ function register_omise_wc_gateway_plugin() {
 
 						add_post_meta($post_id, '_omise_charge_id', $result->id);
 						add_post_meta($post_id, '_wc_order_id', $order_id);
+						add_post_meta($post_id, '_wc_confirmed_url', $this->get_return_url($order));
 					}
 					
 					$success = false;
@@ -309,6 +313,50 @@ function register_omise_wc_gateway_plugin() {
 						'key' => $this->public_key,
 						'vault_url' => OMISE_VAULT_HOST
 				) );
+			}
+
+			public function omise_3ds_handler()
+			{
+				if (!$_GET['order_id'])
+					die("order_id");
+
+				$order_id 	= $_GET['order_id'];
+
+				$posts = get_posts(array(
+					'post_type'		=> 'omise_charge_items',
+					'meta_query' 	=> array(array(
+						'key' 		=> '_wc_order_id',
+						'value' 	=> $order_id,
+						'compare'	=> 'LIKE'
+					))
+				));
+
+				if (empty($posts))
+					die("charge was not found");
+
+				$order = wc_get_order($order_id);
+				if (!$order)
+					die("order was not found");
+
+				$confirmed_url 	= get_post_custom_values('_wc_confirmed_url', $posts[0]->ID);
+				$confirmed_url 	= $confirmed_url[0];
+
+				$charge_id 		= get_post_custom_values('_omise_charge_id', $posts[0]->ID);
+				$charge_id 		= $charge_id[0];
+
+				$result = Omise::get_charges($this->private_key, $charge_id);
+
+				if ($this->is_charge_success($result)) {
+					$order->payment_complete();
+					$order->add_order_note('Payment with Omise successful');
+
+					// Remove cart
+					WC()->cart->empty_cart();
+
+					header("Location: ".$confirmed_url);
+				}
+
+				die();
 			}
 		}
 	}
