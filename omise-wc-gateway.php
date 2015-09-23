@@ -31,7 +31,7 @@ function register_omise_wc_gateway_plugin() {
 				$this->public_key = $this->sandbox ? $this->test_public_key : $this->live_public_key;
 				$this->private_key = $this->sandbox ? $this->test_private_key : $this->live_private_key;
 				
-				add_action( 'woocommerce_api_wc_gateway_omise', array( $this, 'omise_3ds_handler' ) );
+				add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'omise_3ds_handler' ) );
 
 				add_action ( 'woocommerce_update_options_payment_gateways_' . $this->id, array (
 						&$this,
@@ -214,6 +214,8 @@ function register_omise_wc_gateway_plugin() {
 					$result = Omise::create_charge($this->private_key, $data);
 					if ($result->object === "error") {
 						throw new Exception ($result->message);
+					} if ($result->failure_code) {
+						throw new Exception ($result->failure_message);
 					} else {
 						$post_id = wp_insert_post(array(
 							'post_title' 	=> 'Omise Charge Id '.$result->id,
