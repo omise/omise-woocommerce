@@ -320,7 +320,7 @@ function register_omise_wc_gateway_plugin() {
 			public function omise_3ds_handler()
 			{
 				if (!$_GET['order_id'])
-					die("order_id");
+					wp_die( "Order was not found", "Omise Payment Gateway: Checkout", array( 'response' => 500 ) );
 
 				$order_id 	= $_GET['order_id'];
 
@@ -329,16 +329,16 @@ function register_omise_wc_gateway_plugin() {
 					'meta_query' 	=> array(array(
 						'key' 		=> '_wc_order_id',
 						'value' 	=> $order_id,
-						'compare'	=> 'LIKE'
+						'compare'	=> '='
 					))
 				));
 
 				if (empty($posts))
-					die("charge was not found");
+					wp_die( "Charge was not found", "Omise Payment Gateway: Checkout", array( 'response' => 500 ) );
 
 				$order = wc_get_order($order_id);
 				if (!$order)
-					die("order was not found");
+					wp_die( "Order was not found", "Omise Payment Gateway: Checkout", array( 'response' => 500 ) );
 
 				$confirmed_url 	= get_post_custom_values('_wc_confirmed_url', $posts[0]->ID);
 				$confirmed_url 	= $confirmed_url[0];
@@ -358,6 +358,7 @@ function register_omise_wc_gateway_plugin() {
 					header("Location: ".$confirmed_url);
 				}
 
+				wp_die( "Access denied", "Access Denied", array( 'response' => 401 ) );
 				die();
 			}
 		}
