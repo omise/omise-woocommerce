@@ -64,9 +64,9 @@ function register_omise_wc_gateway_plugin() {
 								'default' => 'yes' 
 						),
 						'omise_3ds' => array (
-								'title' => __ ( '3DS Support', $this->gateway_name ),
+								'title' => __ ( '3DSecure Support', $this->gateway_name ),
 								'type' => 'checkbox',
-								'label' => __ ( 'Enable the 3DS support', $this->gateway_name ),
+								'label' => __ ( 'Enables 3DSecure on this account', $this->gateway_name ),
 								'default' => 'no'
 						),
 						'title' => array (
