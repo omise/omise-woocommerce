@@ -356,6 +356,14 @@ function register_omise_wc_gateway_plugin() {
 					WC()->cart->empty_cart();
 
 					header("Location: ".$confirmed_url);
+					die();
+				} else {
+					if ($result->failure_code && $result->failure_message) {
+						$order->add_order_note('Charge was not completed, '.$result->failure_message);
+						wp_die($result->failure_message, "Charge was not completed", array( 'response' => 500 ));
+					} else {
+						wp_die("Charge still in progress", "Charge still in progress", array( 'response' => 500 ));
+					}
 				}
 
 				wp_die( "Access denied", "Access Denied", array( 'response' => 401 ) );
