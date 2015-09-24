@@ -23,6 +23,7 @@ function register_omise_wc_gateway_plugin() {
 				$this->title = $this->settings ['title'];
 				$this->description = $this->settings ['description'];
 				$this->sandbox = isset($this->settings ['sandbox']) && $this->settings ['sandbox'] == 'yes';
+				$this->omise_3ds = isset($this->settings ['omise_3ds']) && $this->settings ['omise_3ds'] == 'yes';
 				$this->test_private_key = $this->settings ['test_private_key'];
 				$this->test_public_key = $this->settings ['test_public_key'];
 				$this->live_private_key = $this->settings ['live_private_key'];
@@ -30,6 +31,8 @@ function register_omise_wc_gateway_plugin() {
 				$this->public_key = $this->sandbox ? $this->test_public_key : $this->live_public_key;
 				$this->private_key = $this->sandbox ? $this->test_private_key : $this->live_private_key;
 				
+				add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'omise_3ds_handler' ) );
+
 				add_action ( 'woocommerce_update_options_payment_gateways_' . $this->id, array (
 						&$this,
 						'process_admin_options' 
@@ -39,6 +42,7 @@ function register_omise_wc_gateway_plugin() {
 						$this,
 						'omise_scripts' 
 				));
+
 			}
 
 			/**
@@ -58,6 +62,12 @@ function register_omise_wc_gateway_plugin() {
 								'type' => 'checkbox',
 								'label' => __ ( 'Sandbox mode means everything is in TEST mode', $this->gateway_name ),
 								'default' => 'yes' 
+						),
+						'omise_3ds' => array (
+								'title' => __ ( '3DSecure Support', $this->gateway_name ),
+								'type' => 'checkbox',
+								'label' => __ ( 'Enables 3DSecure on this account', $this->gateway_name ),
+								'default' => 'no'
 						),
 						'title' => array (
 								'title' => __ ( 'Title:', $this->gateway_name ),
@@ -120,7 +130,7 @@ function register_omise_wc_gateway_plugin() {
 						$viewData ["existingCards"] = $cards;
 					}
 				}
-				
+
 				Omise_Util::render_view ( 'includes/templates/omise-payment-form.php', $viewData );
 			}
 			
@@ -137,7 +147,7 @@ function register_omise_wc_gateway_plugin() {
 					if (empty ( $token ) && empty ( $card_id )) {
 						throw new Exception ( "Please select a card or enter new payment information." );
 					}
-					
+
 					$user = $order->get_user ();
 					$omise_customer_id = $this->sandbox ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 					
@@ -187,7 +197,8 @@ function register_omise_wc_gateway_plugin() {
 					$data = array (
 						"amount" => $order->get_total () * 100,
 						"currency" => $order->get_order_currency (),
-						"description" => "WooCommerce Order id " . $order_id
+						"description" => "WooCommerce Order id " . $order_id,
+						"return_uri" => add_query_arg( 'order_id', $order_id, site_url()."?wc-api=wc_gateway_omise" )
 					);
 					
 					if (! empty ( $card_id ) && ! empty ( $omise_customer_id )) {
@@ -199,10 +210,34 @@ function register_omise_wc_gateway_plugin() {
 					} else {
 						throw new Exception ( "Please select a card or enter new payment information." );
 					}
-									
-					$result = Omise::create_charge ( $this->private_key, $data );
-					$success = $this->is_charge_success($result);
+
+					$result = Omise::create_charge($this->private_key, $data);
+					if ($result->object === "error") {
+						throw new Exception ($result->message);
+					} if ($result->failure_code) {
+						throw new Exception ($result->failure_message);
+					} else {
+						$post_id = wp_insert_post(array(
+							'post_title'	=> 'Omise Charge Id '.$result->id,
+							'post_type'		=> 'omise_charge_items',
+							'post_status'	=> 'publish'
+						));
+
+						add_post_meta($post_id, '_omise_charge_id', $result->id);
+						add_post_meta($post_id, '_wc_order_id', $order_id);
+						add_post_meta($post_id, '_wc_confirmed_url', $this->get_return_url($order));
+					}
 					
+					$success = false;
+					if ($this->omise_3ds) {
+						return array (
+							'result' => 'success',
+							'redirect' => $result->authorize_uri
+						);
+					} else {
+						$success = $this->is_charge_success($result);
+					}
+
 					if ($success) {
 						$order->payment_complete ();
 						$order->add_order_note ( 'Payment with Omise successful' );
@@ -281,6 +316,59 @@ function register_omise_wc_gateway_plugin() {
 						'vault_url' => OMISE_VAULT_HOST
 				) );
 			}
+
+			public function omise_3ds_handler()
+			{
+				if (!$_GET['order_id'])
+					wp_die( "Order was not found", "Omise Payment Gateway: Checkout", array( 'response' => 500 ) );
+
+				$order_id 	= $_GET['order_id'];
+
+				$posts = get_posts(array(
+					'post_type'		=> 'omise_charge_items',
+					'meta_query' 	=> array(array(
+						'key' 		=> '_wc_order_id',
+						'value' 	=> $order_id,
+						'compare'	=> '='
+					))
+				));
+
+				if (empty($posts))
+					wp_die( "Charge was not found", "Omise Payment Gateway: Checkout", array( 'response' => 500 ) );
+
+				$order = wc_get_order($order_id);
+				if (!$order)
+					wp_die( "Order was not found", "Omise Payment Gateway: Checkout", array( 'response' => 500 ) );
+
+				$confirmed_url 	= get_post_custom_values('_wc_confirmed_url', $posts[0]->ID);
+				$confirmed_url 	= $confirmed_url[0];
+
+				$charge_id 		= get_post_custom_values('_omise_charge_id', $posts[0]->ID);
+				$charge_id 		= $charge_id[0];
+
+				$result = Omise::get_charge($this->private_key, $charge_id);
+
+				if ($this->is_charge_success($result)) {
+					$order->payment_complete();
+					$order->add_order_note('Payment with Omise successful');
+
+					// Remove cart
+					WC()->cart->empty_cart();
+
+					header("Location: ".$confirmed_url);
+					die();
+				} else {
+					if ($result->failure_code && $result->failure_message) {
+						$order->add_order_note('Charge was not completed, '.$result->failure_message);
+						wp_die($result->failure_message, "Charge was not completed", array( 'response' => 500 ));
+					} else {
+						wp_die("Charge still in progress", "Charge still in progress", array( 'response' => 500 ));
+					}
+				}
+
+				wp_die( "Access denied", "Access Denied", array( 'response' => 401 ) );
+				die();
+			}
 		}
 	}
 
@@ -292,4 +380,14 @@ function register_omise_wc_gateway_plugin() {
 	add_filter ( 'woocommerce_payment_gateways', 'add_omise_gateway' );
 }
 
+function register_omise_wc_gateway_post_type() {
+	register_post_type('omise_charge_items', array(
+		'label' => 	'Omise Charge Items',
+		'labels' =>	array(
+			'name' => 'Omise Charge Items',
+			'singular_name' => 'Omise Charge Item'
+		),
+		'supports'	=> array('title','custom-fields')
+	));
+}
 ?>
