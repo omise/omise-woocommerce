@@ -20,10 +20,10 @@ if(!class_exists('Omise')){
 		/**
 		 * Retrieve a charge
 		 * @param string $apiKey
-		 * @param Array $chargeInfo
+		 * @param Array $charge_id
 		 * @return mixed
 		 */
-		public static function get_charges($apiKey, $charge_id=""){
+		public static function get_charge($apiKey, $charge_id){
 			$result = self::call_api($apiKey, "GET", "/charges/{$charge_id}");
 			return json_decode($result);
 		}

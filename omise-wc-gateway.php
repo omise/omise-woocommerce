@@ -218,7 +218,7 @@ function register_omise_wc_gateway_plugin() {
 						throw new Exception ($result->failure_message);
 					} else {
 						$post_id = wp_insert_post(array(
-							'post_title' 	=> 'Omise Charge Id '.$result->id,
+							'post_title'	=> 'Omise Charge Id '.$result->id,
 							'post_type'		=> 'omise_charge_items',
 							'post_status'	=> 'publish'
 						));
@@ -346,7 +346,7 @@ function register_omise_wc_gateway_plugin() {
 				$charge_id 		= get_post_custom_values('_omise_charge_id', $posts[0]->ID);
 				$charge_id 		= $charge_id[0];
 
-				$result = Omise::get_charges($this->private_key, $charge_id);
+				$result = Omise::get_charge($this->private_key, $charge_id);
 
 				if ($this->is_charge_success($result)) {
 					$order->payment_complete();
@@ -379,7 +379,6 @@ function register_omise_wc_gateway_post_type() {
 			'name' => 'Omise Charge Items',
 			'singular_name' => 'Omise Charge Item'
 		),
-		'public'	=> true,
 		'supports'	=> array('title','custom-fields')
 	));
 }
