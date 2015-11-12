@@ -16,11 +16,11 @@ The plugin allows WooCommerce user to checkout with Omise Payment Gateway (Now o
 
 Installation
 ============
-Please refer to our full documentation [page](https://docs.omise.co/woocommerce/)
+Please refer to our full documentation [page](https://www.omise.co/woocommerce-plugin)
 
 Documentation
 =============
-Developer Documentation [here](https://docs.omise.co/)
+Developer Documentation [here](https://www.omise.co/docs/)
 
 
 Installation Guide
@@ -34,25 +34,25 @@ and upload omise-woocommerce-1.1.0.zip
 
 3. Activate Omise plugin
 
-![Activate Plugin](https://omise-cdn.s3.amazonaws.com/assets/woocommerce/activate-plugin.png)
+![Activate Plugin](https://cdn.omise.co/assets/woocommerce/activate-plugin.png)
 
 4. Enable Omise as Checkout option: Go to Woocommerce -> Settings -> Checkout -> Payment Gateways
 
 Enable "Omise payment gateway" and save
 
-![Activate Plugin](https://omise-cdn.s3.amazonaws.com/assets/woocommerce/omise-settings-00.png)
+![Activate Plugin](https://cdn.omise.co/assets/woocommerce/omise-settings-00.png)
 
 5. Configure Omise Gateway settings with Keys
 
-![Configure Plugin](https://omise-cdn.s3.amazonaws.com/assets/woocommerce/omise-settings-01.png)
+![Configure Plugin](https://cdn.omise.co/assets/woocommerce/omise-settings-01.png)
 
 Add your API Keys
 
-![Add API Keys](https://omise-cdn.s3.amazonaws.com/assets/woocommerce/omise-settings-02.png)
+![Add API Keys](https://cdn.omise.co/assets/woocommerce/omise-settings-02.png)
 
 6. Your customers can now checkout with Omise Payment Gateway
 
-![Checkout](https://omise-cdn.s3.amazonaws.com/assets/woocommerce/checkout.png)
+![Checkout](https://cdn.omise.co/assets/woocommerce/checkout.png)
 
 
 
