@@ -1,20 +1,23 @@
 <?php
-defined('ABSPATH') or die("No direct script access allowed.");
-
 /**
- * Plugin Name: Omise Gateway Wordpress plugin
- * Plugin URI: http://docs.omise.co/omise-wp
- * Description: Allows easy integrating the Omise Payment gateway
- * Version: 1.0.2
- * Author: Omise Team
+ * Plugin Name: Omise Payment Gateway
+ * Plugin URI: https://www.omise.co/woocommerce-plugin
+ * Description: Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
+ * Version: 1.1.1
+ * Author: Omise
  * Author URI: https://www.omise.co
- * License: Copyright 2014. Omise Co.,Ltd.
+ *
+ * Copyright: Copyright 2014-2015. Omise Co., Ltd.
+ * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
  */
+
+defined('ABSPATH') or die("No direct script access allowed.");
 
 define("OMISE_PROTOCOL_PREFIX", "https://");
 define("OMISE_VAULT_HOST", "vault.omise.co");
 define("OMISE_API_HOST", "api.omise.co");
-define("OMISE_WOOCOMMERCE_PLUGIN_VERSION", "1.0.2");
+define("OMISE_WOOCOMMERCE_PLUGIN_VERSION", "1.1.1");
 
 require_once 'omise-util.php';
 require_once 'omise-api-wrapper.php';

@@ -99,6 +99,7 @@ if(!class_exists('Omise')){
 			
 			$headers = array(
 					'Authorization'  => 'Basic ' . base64_encode( $apiKey.':' ),
+					'Omise-Version' => '2014-07-27',
 					'User-Agent' => 'OmiseWooCommerce/'.OMISE_WOOCOMMERCE_PLUGIN_VERSION.' WooCommerce/'.WC_VERSION.' Wordpress/'.$wp_version
 			);
 			
