@@ -24,6 +24,15 @@ Documentation
 =============
 Developer Documentation [here](https://www.omise.co/docs/)
 
+To run, test, and develop the Omise WooCommerce plugin with Docker container, please simply follow these steps:
+
+1. Build the container:
+
+ `$ docker build -t wptest .`
+ 
+2. Test running the PHPUnit on this plugin:
+
+  `$ docker run -it wptest /bin/bash -c "service mysql start && phpunit"`
 
 Installation Guide
 =============
@@ -55,8 +64,6 @@ Add your API Keys
 6. Your customers can now checkout with Omise Payment Gateway
 
 ![Checkout](https://cdn.omise.co/assets/woocommerce/checkout.png)
-
-
 
 Other Libraries
 =============
