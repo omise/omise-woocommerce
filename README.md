@@ -28,11 +28,11 @@ To run, test, and develop the Omise WooCommerce plugin with Docker container, pl
 
 1. Build the container:
 
- `$ docker build -t wptest .`
+  `$ docker build -t wptest .`
  
 2. Test running the PHPUnit on this plugin:
 
-  `$ docker run -it wptest /bin/bash -c "service mysql start && phpunit"`
+  `$ docker run -it -v $(pwd):/app wptest /bin/bash -c "service mysql start && phpunit"`
 
 Installation Guide
 =============

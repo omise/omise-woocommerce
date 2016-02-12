@@ -143,5 +143,4 @@ RUN bash install-wp-tests-docker.sh wordpress_test root '' localhost latest \
     && rm install-wp-tests-docker.sh
 
 ENV APPLICATION_ROOT /app/
-ADD . $APPLICATION_ROOT
 WORKDIR $APPLICATION_ROOT
