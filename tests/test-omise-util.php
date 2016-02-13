@@ -126,4 +126,14 @@ class Omise_Util_Test extends WP_UnitTestCase {
         $expected = 'placeholder="CVC" name="omise_card_security_code">';
         $this->assertContains( $expected, $actual );
     }
+
+    function test_render_json_error_with_message_should_return_json_with_error_message() {
+        $expected = '"{ \"object\": \"error\", \"message\": \"omise_token is required\" }"';
+
+        ob_start();
+        Omise_Util::render_json_error( "omise_token is required" );
+        $actual = ob_get_clean();
+
+        $this->assertEquals( $expected, $actual );
+    }
 }
