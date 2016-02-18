@@ -1,6 +1,6 @@
 <?php
 
-require_once "omise-util.php";
+require_once( "omise-util.php" );
 
 class Omise_Util_Test extends WP_UnitTestCase {
     public function setUp() {
