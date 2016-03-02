@@ -1,13 +1,13 @@
 <p class="form-row form-row-wide omise-required-field">
     <label for="omise_card_name">Card Holder Name <span class="required">*</span></label>
     <input id="omise_card_name" class="input-text" type="text"
-        maxlength="255" autocomplete="off" placeholder="Name"
+        maxlength="255" autocomplete="off" placeholder="Card Holder Name"
         name="omise_card_name">
 </p>
 <p class="form-row form-row-wide omise-required-field">
     <label for="omise_card_number">Card Number <span class="required">*</span></label>
     <input id="omise_card_number" class="input-text" type="text"
-        maxlength="20" autocomplete="off" placeholder="Card number"
+        maxlength="20" autocomplete="off" placeholder="Card Number"
         name="omise_card_number">
 </p>
 <p class="form-row form-row-first omise-required-field">

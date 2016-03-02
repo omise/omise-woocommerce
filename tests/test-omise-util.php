@@ -87,7 +87,7 @@ class Omise_Util_Test extends WP_UnitTestCase {
         $this->assertContains( $expected, $actual );
         $expected = '<input id="omise_card_name" class="input-text" type="text"';
         $this->assertContains( $expected, $actual );
-        $expected = 'maxlength="255" autocomplete="off" placeholder="Name"';
+        $expected = 'maxlength="255" autocomplete="off" placeholder="Card Holder Name"';
         $this->assertContains( $expected, $actual );
         $expected = 'name="omise_card_name">';
         $this->assertContains( $expected, $actual );
@@ -96,7 +96,7 @@ class Omise_Util_Test extends WP_UnitTestCase {
         $this->assertContains( $expected, $actual );
         $expected = '<input id="omise_card_number" class="input-text" type="text"';
         $this->assertContains( $expected, $actual );
-        $expected = 'maxlength="20" autocomplete="off" placeholder="Card number"';
+        $expected = 'maxlength="20" autocomplete="off" placeholder="Card Number"';
         $this->assertContains( $expected, $actual );
         $expected = 'name="omise_card_number">';
         $this->assertContains( $expected, $actual );
