@@ -114,12 +114,18 @@ class Omise_Util_Test extends WP_UnitTestCase {
 
         $expected = '<label for="omise_card_expiration_year">Expiration Year <span';
         $this->assertContains( $expected, $actual );
-        $expected = '<input id="omise_card_expiration_year" class="input-text" type="text"';
+        $expected = '<select id="omise_card_expiration_year" name="omise_card_expiration_year">';
         $this->assertContains( $expected, $actual );
-        $expected = 'autocomplete="off" placeholder="YYYY"';
-        $this->assertContains( $expected, $actual );
-        $expected = 'name="omise_card_expiration_year">';
-        $this->assertContains( $expected, $actual );
+
+        $years = array();
+        $this_year = (int) date( "Y" );
+        for ( $year = $this_year; $year <= $this_year + 10; $year++ ) {
+            array_push( $years, $year );
+        }
+        foreach ( $years as $each ) {
+            $expected = '<option value="' . $each . '">' . $each . '</option>';
+            $this->assertContains( $expected, $actual );
+        }
 
         $expected = '<label for="omise_card_security_code">Security Code <span';
         $this->assertContains( $expected, $actual );

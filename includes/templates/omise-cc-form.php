@@ -31,9 +31,16 @@
 <p class="form-row form-row-last omise-required-field">
     <label for="omise_card_expiration_year">Expiration Year <span
         class="required">*</span></label>
-    <input id="omise_card_expiration_year" class="input-text" type="text"
-        autocomplete="off" placeholder="YYYY"
-        name="omise_card_expiration_year">
+    <select id="omise_card_expiration_year" name="omise_card_expiration_year">
+    <?php
+        $this_year = (int) date( "Y" );
+        for ( $year = $this_year; $year <= $this_year + 10; $year++ ) {
+    ?>
+            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+    <?php
+        }
+    ?>
+    </select>
 </p>
 <p class="form-row form-row-first omise-required-field">
     <label for="omise_card_security_code">Security Code <span
