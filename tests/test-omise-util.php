@@ -83,7 +83,7 @@ class Omise_Util_Test extends WP_UnitTestCase {
         $expected = '<fieldset id="new_card_form" class="">';
         $this->assertContains( $expected, $actual );
 
-        $expected = '<label for="omise_card_name">Name <span class="required">*</span></label>';
+        $expected = '<label for="omise_card_name">Card Holder Name <span class="required">*</span></label>';
         $this->assertContains( $expected, $actual );
         $expected = '<input id="omise_card_name" class="input-text" type="text"';
         $this->assertContains( $expected, $actual );
@@ -101,14 +101,14 @@ class Omise_Util_Test extends WP_UnitTestCase {
         $expected = 'name="omise_card_number">';
         $this->assertContains( $expected, $actual );
 
-        $expected = '<label for="omise_card_expiration_month">Expiration month <span';
+        $expected = '<label for="omise_card_expiration_month">Expiration Month <span';
         $this->assertContains( $expected, $actual );
         $expected = '<input id="omise_card_expiration_month" class="input-text" type="text"';
         $this->assertContains( $expected, $actual );
         $expected = 'autocomplete="off" placeholder="MM" name="omise_card_expiration_month">';
         $this->assertContains( $expected, $actual );
 
-        $expected = '<label for="omise_card_expiration_year">Expiration year <span';
+        $expected = '<label for="omise_card_expiration_year">Expiration Year <span';
         $this->assertContains( $expected, $actual );
         $expected = '<input id="omise_card_expiration_year" class="input-text" type="text"';
         $this->assertContains( $expected, $actual );
