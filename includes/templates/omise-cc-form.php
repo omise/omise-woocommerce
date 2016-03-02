@@ -13,8 +13,20 @@
 <p class="form-row form-row-first omise-required-field">
     <label for="omise_card_expiration_month">Expiration Month <span
         class="required">*</span></label>
-    <input id="omise_card_expiration_month" class="input-text" type="text"
-        autocomplete="off" placeholder="MM" name="omise_card_expiration_month">
+    <select id="omise_card_expiration_month" name="omise_card_expiration_month">
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+    </select>
 </p>
 <p class="form-row form-row-last omise-required-field">
     <label for="omise_card_expiration_year">Expiration Year <span
