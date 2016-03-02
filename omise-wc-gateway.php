@@ -209,7 +209,8 @@ function register_omise_wc_gateway_plugin() {
                         throw new Exception( "Please select a card or enter new payment information." );
                     }
 
-                    $result = Omise::create_charge( $this->private_key, $data );
+                    $omise = new Omise();
+                    $result = $omise->create_charge( $this->private_key, $data );
                     if ( "error" == $result->object ) {
                         throw new Exception( $result->message );
                     }

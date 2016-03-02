@@ -10,8 +10,8 @@ if ( ! class_exists( "Omise" ) ) {
          * @param Array $chargeInfo
          * @return mixed
          */
-        public static function create_charge( $apiKey, $chargeInfo ) {
-            $result = self::call_api( $apiKey, "POST", "/charges", $chargeInfo );
+        function create_charge( $apiKey, $chargeInfo ) {
+            $result = $this->call_api( $apiKey, "POST", "/charges", $chargeInfo );
             return json_decode( $result );
         }
 
@@ -91,7 +91,7 @@ if ( ! class_exists( "Omise" ) ) {
          * @param mixed $data
          * @return string
          */
-        private static function call_api( $apiKey, $method, $endpoint, $data = false ) {
+        function call_api( $apiKey, $method, $endpoint, $data = false ) {
             global $wp_version;
             $url = OMISE_PROTOCOL_PREFIX.OMISE_API_HOST . $endpoint;
 
