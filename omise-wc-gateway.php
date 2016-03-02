@@ -142,6 +142,8 @@ function register_omise_wc_gateway_plugin() {
                 $token = isset( $_POST["omise_token"] ) ? wc_clean ( $_POST["omise_token"] ) : "";
                 $card_id = isset( $_POST["card_id"] ) ? wc_clean ( $_POST["card_id"] ) : "";
                 try {
+                    $omise = new Omise();
+
                     if ( empty( $token ) && empty( $card_id ) ) {
                         throw new Exception( "Please select a card or enter new payment information." );
                     }
@@ -156,7 +158,7 @@ function register_omise_wc_gateway_plugin() {
 
                         if ( ! empty( $omise_customer_id ) ) {
                             // attach a new card to customer
-                            $omise_customer = Omise::create_card( $this->private_key, $omise_customer_id, $token );
+                            $omise_customer = $omise->create_card( $this->private_key, $omise_customer_id, $token );
 
                             if ( "error" == $omise_customer->object ) {
                                 throw new Exception( $omise_customer->message );
@@ -209,7 +211,6 @@ function register_omise_wc_gateway_plugin() {
                         throw new Exception( "Please select a card or enter new payment information." );
                     }
 
-                    $omise = new Omise();
                     $result = $omise->create_charge( $this->private_key, $data );
                     if ( "error" == $result->object ) {
                         throw new Exception( $result->message );

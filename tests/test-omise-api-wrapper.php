@@ -88,4 +88,47 @@ class Omise_Test extends WP_UnitTestCase {
 
         $this->assertEquals( $expected, $actual );
     }
+
+    function test_create_card_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "token",
+            "id": "tokn_test_id",
+            "livemode": false,
+            "location": "https://vault.omise.co/tokens/tokn_test_id",
+            "used": false,
+            "card": {
+                "object": "card",
+                "id": "card_test_id",
+                "livemode": false,
+                "country": "us",
+                "city": "Bangkok",
+                "postal_code": "10320",
+                "financing": "",
+                "bank": "",
+                "last_digits": "4242",
+                "brand": "Visa",
+                "expiration_month": 3,
+                "expiration_year": 2018,
+                "fingerprint": "test_fingerprint",
+                "name": "JOHN DOE",
+                "security_code_check": true,
+                "created": "2016-03-02T08:54:53Z"
+            },
+            "created": "2016-03-02T08:54:53Z"
+        }';
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "PATCH", "/customers/customer_id", "card=test_toker" )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->create_card( "private_key", "customer_id", "test_toker" );
+
+        $this->assertEquals( $expected, $actual );
+    }
 }

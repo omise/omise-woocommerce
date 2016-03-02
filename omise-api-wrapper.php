@@ -55,8 +55,8 @@ if ( ! class_exists( "Omise" ) ) {
          * @param string $token
          * @return mixed
          */
-        public static function create_card( $apiKey, $customer_id, $token ) {
-            $result = self::call_api( $apiKey, "PATCH", "/customers/{$customer_id}", "card=".$token );
+        function create_card( $apiKey, $customer_id, $token ) {
+            $result = $this->call_api( $apiKey, "PATCH", "/customers/{$customer_id}", "card=".$token );
             return json_decode( $result );
         }
 
