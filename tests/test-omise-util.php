@@ -117,12 +117,8 @@ class Omise_Util_Test extends WP_UnitTestCase {
         $expected = '<select id="omise_card_expiration_year" name="omise_card_expiration_year">';
         $this->assertContains( $expected, $actual );
 
-        $years = array();
         $this_year = (int) date( "Y" );
         for ( $year = $this_year; $year <= $this_year + 10; $year++ ) {
-            array_push( $years, $year );
-        }
-        foreach ( $years as $each ) {
             $expected = '<option value="' . $each . '">' . $each . '</option>';
             $this->assertContains( $expected, $actual );
         }
