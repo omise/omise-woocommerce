@@ -123,11 +123,54 @@ class Omise_Test extends WP_UnitTestCase {
 
         $omise->expects( $this->once() )
             ->method( "call_api" )
-            ->with( "private_key", "PATCH", "/customers/customer_id", "card=test_toker" )
+            ->with( "private_key", "PATCH", "/customers/customer_id", "card=test_token" )
             ->will( $this->returnValue( $result ) );
 
         $expected = json_decode( $result );
-        $actual = $omise->create_card( "private_key", "customer_id", "test_toker" );
+        $actual = $omise->create_card( "private_key", "customer_id", "test_token" );
+
+        $this->assertEquals( $expected, $actual );
+    }
+
+    function test_create_customer_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "customer",
+            "id": "cust_test_id",
+            "livemode": false,
+            "location": "/customers/cust_test_id",
+            "default_card": null,
+            "email": "john.doe@example.com",
+            "description": "John Doe (id: 30)",
+            "created": "2016-03-02T09:08:47Z",
+            "cards": {
+                "object": "list",
+                "from": "1970-01-01T00:00:00+00:00",
+                "to": "2016-03-02T09:08:47+00:00",
+                "offset": 0,
+                "limit": 20,
+                "total": 0,
+                "order": null,
+                "location": "/customers/cust_test_id/cards",
+                "data": []
+            }
+        }';
+
+        $customer_data = array(
+            "description" => "John Doe (id: 30)",
+            "card"        => "test_token"
+        );
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "POST", "/customers", $customer_data )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->create_customer( "private_key", $customer_data );
 
         $this->assertEquals( $expected, $actual );
     }

@@ -32,8 +32,8 @@ if ( ! class_exists( "Omise" ) ) {
          * @param Array $customer_data
          * @return mixed
          */
-        public static function create_customer( $apiKey, $customer_data ) {
-            $result = self::call_api( $apiKey, "POST", "/customers", $customer_data );
+        function create_customer( $apiKey, $customer_data ) {
+            $result = $this->call_api( $apiKey, "POST", "/customers", $customer_data );
             return json_decode( $result );
         }
 

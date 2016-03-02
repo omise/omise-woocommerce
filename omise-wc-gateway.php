@@ -172,7 +172,7 @@ function register_omise_wc_gateway_plugin() {
                                 "card"        => $token
                             );
 
-                            $omise_customer = Omise::create_customer( $this->private_key, $customer_data );
+                            $omise_customer = $omise->create_customer( $this->private_key, $customer_data );
 
                             if ( "error" == $omise_customer->object ) {
                                 throw new Exception( $omise_customer->message );
