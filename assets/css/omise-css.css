@@ -1,6 +1,9 @@
 fieldset.omise-hidden {
     display:none;
 }
+#payment fieldset.omise-hidden > .form-row {
+  padding: 0;
+}
 
 input[name='card_id']:checked ~ #new_card_form {
     display: none;
@@ -8,6 +11,7 @@ input[name='card_id']:checked ~ #new_card_form {
 
 #new_card_info:checked ~ #new_card_form {
     display: block;
+    margin: 10px 0;
 }
 
 .omise-dashboard-header{
@@ -15,10 +19,10 @@ input[name='card_id']:checked ~ #new_card_form {
 }
 
 .omise-dashboard-account-mode{
-    float:left; 
-    padding: 10px; 
+    float:left;
+    padding: 10px;
     border-radius: 5px;
-    background-color: white; 
+    background-color: white;
 }
 
 .omise-dashboard-balance{
@@ -27,35 +31,40 @@ input[name='card_id']:checked ~ #new_card_form {
 }
 
 .omise-dashboard-balance-label{
-    float:left; 
-    margin-left: 5px; 
-    padding: 10px; 
+    float:left;
+    margin-left: 5px;
+    padding: 10px;
     font-size:1.3em;
 }
 
 .omise-dashboard-balance-value{
-    float:left; 
-    margin-left: 5px; 
-    padding: 10px; 
+    float:left;
+    margin-left: 5px;
+    padding: 10px;
     border-radius: 5px;
     background-color: white;
     font-size:1.3em;
 }
 
 .omise-dashboard-white-box{
-    float:left; 
-    margin-left: 5px; 
-    padding: 10px; 
+    float:left;
+    margin-left: 5px;
+    padding: 10px;
     border-radius: 5px;
-    background-color: white; 
+    background-color: white;
     font-size:1.3em;
 }
 
 .omise-transfer-form{
-    margin-left: 5px; 
+    margin-left: 5px;
     padding: 10px;
 }
 
 .omise-clear-both{
     clear:both;
+}
+
+.omise-form-inline {
+  width: 30%;
+  display: inline-block;
 }

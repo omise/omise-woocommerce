@@ -163,7 +163,7 @@ if ( ! class_exists( "Omise_Admin" ) ) {
             );
             wp_enqueue_style(
                 "omise-css",
-                plugins_url ( "/assets/css/omise-css.css", __FILE__ ),
+                plugins_url( "/assets/css/omise-css.css", __FILE__ ),
                 array(),
                 OMISE_WOOCOMMERCE_PLUGIN_VERSION
             );
