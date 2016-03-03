@@ -89,6 +89,77 @@ class Omise_Test extends WP_UnitTestCase {
         $this->assertEquals( $expected, $actual );
     }
 
+    function test_get_charge_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "charge",
+            "id": "charge_id",
+            "livemode": false,
+            "location": "/charges/charge_id",
+            "amount": 12000,
+            "currency": "thb",
+            "description": "WooCommerce Order id 4450",
+            "status": "successful",
+            "capture": true,
+            "authorized": true,
+            "paid": true,
+            "transaction": "transaction_id",
+            "refunded": 0,
+            "refunds": {
+                "object": "list",
+                "from": "1970-01-01T00:00:00+00:00",
+                "to": "2016-03-02T23:50:08+00:00",
+                "offset": 0,
+                "limit": 20,
+                "total": 0,
+                "order": null,
+                "location": "/charges/charge_id/refunds",
+                "data": []
+            },
+            "return_uri": "http://www.example.com?wc-api=wc_gateway_omise&order_id=4450",
+            "reference": "payment_id",
+            "authorize_uri": "https://api.omise.co/payments/payment_id/authorize",
+            "failure_code": null,
+            "failure_message": null,
+            "card": {
+                "object": "card",
+                "id": "card_id",
+                "livemode": false,
+                "location": "/customers/customer_id/cards/card_id",
+                "country": "us",
+                "city": null,
+                "postal_code": null,
+                "financing": "",
+                "bank": "JPMORGAN CHASE BANK, N.A.",
+                "last_digits": "1111",
+                "brand": "Visa",
+                "expiration_month": 4,
+                "expiration_year": 2020,
+                "fingerprint": "test_fingerprint",
+                "name": "John Doe",
+                "security_code_check": true,
+                "created": "2016-03-02T15:53:45Z"
+            },
+            "customer": "customer_id",
+            "ip": null,
+            "dispute": null,
+            "created": "2016-03-02T15:53:48Z"
+        }';
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "GET", "/charges/charge_id" )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->get_charge( "private_key", "charge_id" );
+
+        $this->assertEquals( $expected, $actual );
+    }
+
     function test_create_card_should_call_method_call_api_with_required_params() {
         $omise = $this->getMockBuilder( "Omise" )
             ->setMethods( array( "call_api" ) )

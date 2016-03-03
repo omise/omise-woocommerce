@@ -21,8 +21,8 @@ if ( ! class_exists( "Omise" ) ) {
          * @param Array $charge_id
          * @return mixed
          */
-        public static function get_charge( $apiKey, $charge_id ) {
-            $result = self::call_api( $apiKey, "GET", "/charges/{$charge_id}" );
+        function get_charge( $apiKey, $charge_id ) {
+            $result = $this->call_api( $apiKey, "GET", "/charges/{$charge_id}" );
             return json_decode( $result );
         }
 

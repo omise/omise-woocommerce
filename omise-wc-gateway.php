@@ -375,7 +375,8 @@ function register_omise_wc_gateway_plugin() {
                 $charge_id = get_post_custom_values( "_omise_charge_id", $posts[0]->ID );
                 $charge_id = $charge_id[0];
 
-                $result = Omise::get_charge( $this->private_key, $charge_id );
+                $omise = new Omise();
+                $result = $omise->get_charge( $this->private_key, $charge_id );
 
                 if ( $this->is_charge_success( $result ) ) {
                     $order->payment_complete();
