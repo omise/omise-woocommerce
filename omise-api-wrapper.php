@@ -93,19 +93,19 @@ if ( ! class_exists( "Omise" ) ) {
          */
         function call_api( $apiKey, $method, $endpoint, $data = false ) {
             global $wp_version;
-            $url = OMISE_PROTOCOL_PREFIX.OMISE_API_HOST . $endpoint;
+            $url = OMISE_PROTOCOL_PREFIX . OMISE_API_HOST . $endpoint;
 
             $headers = array(
-                'Authorization' => 'Basic ' . base64_encode( $apiKey . ':' ),
-                'Omise-Version' => '2014-07-27',
-                'User-Agent'    => 'OmiseWooCommerce/' . OMISE_WOOCOMMERCE_PLUGIN_VERSION . ' WooCommerce/' . WC_VERSION . ' Wordpress/' . $wp_version
+                "Authorization" => "Basic " . base64_encode( $apiKey . ":" ),
+                "Omise-Version" => "2014-07-27",
+                "User-Agent"    => "OmiseWooCommerce/" . OMISE_WOOCOMMERCE_PLUGIN_VERSION . " WooCommerce/" . WC_VERSION . " Wordpress/" . $wp_version,
             );
 
             $request_info = array(
-                'timeout' => 60,
-                'method'  => $method,
-                'headers' => $headers,
-                'body'    => $data
+                "timeout" => 60,
+                "method"  => $method,
+                "headers" => $headers,
+                "body"    => $data,
             );
 
             $response = wp_remote_request( $url, $request_info );

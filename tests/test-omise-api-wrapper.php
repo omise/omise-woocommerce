@@ -2,9 +2,270 @@
 
 require_once( "omise-api-wrapper.php" );
 
+define( "WC_VERSION", "fake_wc_version" );
+
 class Omise_Test extends WP_UnitTestCase {
+    protected $http_request;
+    protected $url;
+
     public function setUp() {
         parent::setUp();
+
+        $this->http_request = null;
+        $this->url          = null;
+    }
+
+    function get_good_http_response( $preempt, $request, $url ) {
+        $this->http_request = $request;
+        $this->url          = $url;
+
+        $body = '{
+            "object": "list",
+            "from": "1970-01-01T00:00:00+00:00",
+            "to": "2016-03-03T00:09:59+00:00",
+            "offset": 0,
+            "limit": 20,
+            "total": 10,
+            "order": "chronological",
+            "data": [
+                {
+                    "object": "card",
+                    "id": "card_id_1",
+                    "livemode": false,
+                    "location": "/customers/customer_id/cards/card_id_1",
+                    "country": "us",
+                    "city": null,
+                    "postal_code": null,
+                    "financing": "",
+                    "bank": "JPMORGAN CHASE BANK, N.A.",
+                    "last_digits": "1111",
+                    "brand": "Visa",
+                    "expiration_month": 12,
+                    "expiration_year": 2019,
+                    "fingerprint": "test_fingerprint",
+                    "name": "Pronto Tools",
+                    "security_code_check": true,
+                    "created": "2016-03-01T04:27:00Z"
+                },
+                {
+                    "object": "card",
+                    "id": "card_id_2",
+                    "livemode": false,
+                    "location": "/customers/customer_id/cards/card_id_2",
+                    "country": "us",
+                    "city": null,
+                    "postal_code": null,
+                    "financing": "",
+                    "bank": "JPMORGAN CHASE BANK, N.A.",
+                    "last_digits": "1111",
+                    "brand": "Visa",
+                    "expiration_month": 12,
+                    "expiration_year": 2019,
+                    "fingerprint": "test_fingerprint",
+                    "name": "Pronto Tools",
+                    "security_code_check": true,
+                    "created": "2016-03-01T07:26:36Z"
+                }
+            ]
+        }';
+
+        $preempt = array(
+            "response" => array(
+                "code" => 200,
+            ),
+            "body" => $body,
+        );
+
+        return $preempt;
+    }
+
+    function test_call_api_should_call_wp_remote_request_with_desired_params_and_return_response_body_if_successful() {
+        add_filter( "pre_http_request", array( $this, "get_good_http_response" ), 10, 3 );
+
+        $this->assertNull( $this->http_request );
+        $this->assertNull( $this->url );
+
+        $expected = '{
+            "object": "list",
+            "from": "1970-01-01T00:00:00+00:00",
+            "to": "2016-03-03T00:09:59+00:00",
+            "offset": 0,
+            "limit": 20,
+            "total": 10,
+            "order": "chronological",
+            "data": [
+                {
+                    "object": "card",
+                    "id": "card_id_1",
+                    "livemode": false,
+                    "location": "/customers/customer_id/cards/card_id_1",
+                    "country": "us",
+                    "city": null,
+                    "postal_code": null,
+                    "financing": "",
+                    "bank": "JPMORGAN CHASE BANK, N.A.",
+                    "last_digits": "1111",
+                    "brand": "Visa",
+                    "expiration_month": 12,
+                    "expiration_year": 2019,
+                    "fingerprint": "test_fingerprint",
+                    "name": "Pronto Tools",
+                    "security_code_check": true,
+                    "created": "2016-03-01T04:27:00Z"
+                },
+                {
+                    "object": "card",
+                    "id": "card_id_2",
+                    "livemode": false,
+                    "location": "/customers/customer_id/cards/card_id_2",
+                    "country": "us",
+                    "city": null,
+                    "postal_code": null,
+                    "financing": "",
+                    "bank": "JPMORGAN CHASE BANK, N.A.",
+                    "last_digits": "1111",
+                    "brand": "Visa",
+                    "expiration_month": 12,
+                    "expiration_year": 2019,
+                    "fingerprint": "test_fingerprint",
+                    "name": "Pronto Tools",
+                    "security_code_check": true,
+                    "created": "2016-03-01T07:26:36Z"
+                }
+            ]
+        }';
+
+        $omise = new Omise();
+        $response = $omise->call_api( "private_key", "GET", "/customers/customer_id/cards" );
+        $this->assertEquals( $expected, $response );
+
+        global $wp_version;
+
+        $expected = "GET";
+        $actual   = $this->http_request["method"];
+        $this->assertEquals( $expected, $actual );
+        $expected = 60;
+        $actual   = $this->http_request["timeout"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "Basic cHJpdmF0ZV9rZXk6";
+        $actual   = $this->http_request["headers"]["Authorization"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "2014-07-27";
+        $actual   = $this->http_request["headers"]["Omise-Version"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "OmiseWooCommerce/" . OMISE_WOOCOMMERCE_PLUGIN_VERSION . " WooCommerce/" . WC_VERSION . " Wordpress/" . $wp_version;
+        $actual   = $this->http_request["headers"]["User-Agent"];
+        $this->assertEquals( $expected, $actual );
+
+        $expected = "https://api.omise.co/customers/customer_id/cards";
+        $this->assertEquals( $expected, $this->url );
+
+        remove_filter( "pre_http_request", array( $this, "get_good_http_response" ), 10, 3 );
+    }
+
+    function get_unauthorized_http_response( $preempt, $request, $url ) {
+        $this->http_request = $request;
+        $this->url          = $url;
+
+        $body = '{
+            "object": "error",
+            "location": "https://www.omise.co/api-errors#authentication-failure",
+            "code": "authentication_failure",
+            "message": "authentication failed"
+        }';
+
+        $preempt = array(
+            "response" => array(
+                "code" => 401,
+            ),
+            "body" => $body,
+        );
+
+        return $preempt;
+    }
+
+    function test_call_api_should_call_wp_remote_request_with_desired_params_and_return_unautorized_message_if_not_authorized() {
+        add_filter( "pre_http_request", array( $this, "get_unauthorized_http_response" ), 10, 3 );
+
+        $this->assertNull( $this->http_request );
+        $this->assertNull( $this->url );
+
+        $expected = '{
+            "object": "error",
+            "location": "https://www.omise.co/api-errors#authentication-failure",
+            "code": "authentication_failure",
+            "message": "authentication failed"
+        }';
+
+        $omise = new Omise();
+        $response = $omise->call_api( "private_key", "GET", "/customers/customer_id/cards" );
+        $this->assertEquals( $expected, $response );
+
+        global $wp_version;
+
+        $expected = "GET";
+        $actual   = $this->http_request["method"];
+        $this->assertEquals( $expected, $actual );
+        $expected = 60;
+        $actual   = $this->http_request["timeout"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "Basic cHJpdmF0ZV9rZXk6";
+        $actual   = $this->http_request["headers"]["Authorization"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "2014-07-27";
+        $actual   = $this->http_request["headers"]["Omise-Version"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "OmiseWooCommerce/" . OMISE_WOOCOMMERCE_PLUGIN_VERSION . " WooCommerce/" . WC_VERSION . " Wordpress/" . $wp_version;
+        $actual   = $this->http_request["headers"]["User-Agent"];
+        $this->assertEquals( $expected, $actual );
+
+        $expected = "https://api.omise.co/customers/customer_id/cards";
+        $this->assertEquals( $expected, $this->url );
+
+        remove_filter( "pre_http_request", array( $this, "get_unauthorized_http_response" ), 10, 3 );
+    }
+
+    function get_error_http_response( $preempt, $request, $url ) {
+        $this->http_request = $request;
+        $this->url          = $url;
+
+        return new WP_Error( "http_request_failed", __( "User has blocked requests through HTTP." ) );
+    }
+
+    function test_call_api_should_call_wp_remote_request_with_desired_params_and_return_error_if_not_successful() {
+        add_filter( "pre_http_request", array( $this, "get_error_http_response" ), 10, 3 );
+
+        $this->assertNull( $this->http_request );
+        $this->assertNull( $this->url );
+
+        $expected = '{ "object": "error", "message": "User has blocked requests through HTTP." }';
+
+        $omise = new Omise();
+        $response = $omise->call_api( "private_key", "GET", "/customers/customer_id/cards" );
+        $this->assertEquals( $expected, $response );
+
+        global $wp_version;
+
+        $expected = "GET";
+        $actual   = $this->http_request["method"];
+        $this->assertEquals( $expected, $actual );
+        $expected = 60;
+        $actual   = $this->http_request["timeout"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "Basic cHJpdmF0ZV9rZXk6";
+        $actual   = $this->http_request["headers"]["Authorization"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "2014-07-27";
+        $actual   = $this->http_request["headers"]["Omise-Version"];
+        $this->assertEquals( $expected, $actual );
+        $expected = "OmiseWooCommerce/" . OMISE_WOOCOMMERCE_PLUGIN_VERSION . " WooCommerce/" . WC_VERSION . " Wordpress/" . $wp_version;
+        $actual   = $this->http_request["headers"]["User-Agent"];
+        $this->assertEquals( $expected, $actual );
+
+        $expected = "https://api.omise.co/customers/customer_id/cards";
+        $this->assertEquals( $expected, $this->url );
+
+        remove_filter( "pre_http_request", array( $this, "get_error_http_response" ), 10, 3 );
     }
 
     function test_create_charge_should_call_method_call_api_with_required_params() {
