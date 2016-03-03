@@ -72,15 +72,15 @@ if ( ! class_exists( "Omise" ) ) {
             return json_decode( $result );
         }
 
-        public static function get_balance( $apiKey ) {
-          $result = self::call_api( $apiKey, "GET", "/balance" );
-          return json_decode( $result );
+        public function get_balance( $apiKey ) {
+            $result = $this->call_api( $apiKey, "GET", "/balance" );
+            return json_decode( $result );
         }
 
         public static function create_transfer( $apiKey, $amount = null ) {
-          $post_data = isset( $amount ) ? "amount=".$amount : null;
-          $result = self::call_api( $apiKey, "POST", "/transfers", $post_data );
-          return json_decode( $result );
+            $post_data = isset( $amount ) ? "amount=".$amount : null;
+            $result = self::call_api( $apiKey, "POST", "/transfers", $post_data );
+            return json_decode( $result );
         }
 
         /**

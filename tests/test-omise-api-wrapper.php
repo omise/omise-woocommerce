@@ -334,4 +334,29 @@ class Omise_Test extends WP_UnitTestCase {
 
         $this->assertEquals( $expected, $actual );
     }
+
+    function test_get_balance_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "balance",
+            "livemode": false,
+            "location": "/balance",
+            "available": 209318,
+            "total": 209318,
+            "currency": "thb"
+        }';
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "GET", "/balance" )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->get_balance( "private_key" );
+
+        $this->assertEquals( $expected, $actual );
+    }
 }

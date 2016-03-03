@@ -126,7 +126,8 @@ if ( ! class_exists( "Omise_Admin" ) ) {
 
         public function init_dashboard() {
             try {
-                $balance = Omise::get_balance( $this->private_key );
+                $omise = new Omise();
+                $balance = $omise->get_balance( $this->private_key );
                 if ( "balance" == $balance->object ) {
                     $balance->formatted_total     = wc_price( $balance->total / 100 );
                     $balance->formatted_available = wc_price( $balance->available / 100 );
