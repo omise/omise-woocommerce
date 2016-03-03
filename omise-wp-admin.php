@@ -84,7 +84,8 @@ if ( ! class_exists( "Omise_Admin" ) ) {
                     throw new Exception( "Transfer amount must be a numeric" );
                 }
 
-                $transfer = Omise::create_transfer( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount * 100 ); // transfer in satangs
+                $omise = new Omise();
+                $transfer = $omise->create_transfer( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount * 100 ); // transfer in satangs
 
                 if ( $this->is_transfer_success( $transfer ) ) {
                     $result_message = "A fund transfer request has been sent.";

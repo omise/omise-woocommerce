@@ -77,9 +77,9 @@ if ( ! class_exists( "Omise" ) ) {
             return json_decode( $result );
         }
 
-        public static function create_transfer( $apiKey, $amount = null ) {
+        public function create_transfer( $apiKey, $amount = null ) {
             $post_data = isset( $amount ) ? "amount=".$amount : null;
-            $result = self::call_api( $apiKey, "POST", "/transfers", $post_data );
+            $result = $this->call_api( $apiKey, "POST", "/transfers", $post_data );
             return json_decode( $result );
         }
 

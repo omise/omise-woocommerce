@@ -359,4 +359,44 @@ class Omise_Test extends WP_UnitTestCase {
 
         $this->assertEquals( $expected, $actual );
     }
+
+    function test_create_transfer_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "transfer",
+            "id": "transfer_id",
+            "livemode": false,
+            "location": "/transfers/transfer_id",
+            "recipient": "recipient_id",
+            "bank_account": {
+                "object": "bank_account",
+                "brand": "test",
+                "last_digits": "6789",
+                "name": "DEFAULT BANK ACCOUNT",
+                "created": "2016-02-22T08:11:15Z"
+            },
+            "sent": false,
+            "paid": false,
+            "amount": 20116,
+            "currency": "thb",
+            "fee": 3000,
+            "failure_code": null,
+            "failure_message": null,
+            "transaction": null,
+            "created": "2016-03-03T00:41:50Z"
+        }';
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "POST", "/transfers", "amount=69" )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->create_transfer( "private_key", $amount = 69 );
+
+        $this->assertEquals( $expected, $actual );
+    }
 }
