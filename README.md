@@ -1,7 +1,7 @@
 Omise WooCommerce
 =================
 
-[![Build Status](https://travis-ci.org/prontotools/omise-woocommerce.svg?branch=develop)](https://travis-ci.org/prontotools/omise-woocommerce)
+[![Build Status](https://travis-ci.org/prontotools/omise-woocommerce.svg?branch=develop)](https://travis-ci.org/prontotools/omise-woocommerce) [![Circle CI](https://circleci.com/gh/prontotools/omise-woocommerce.svg?style=svg)](https://circleci.com/gh/prontotools/omise-woocommerce)
 
 Omise WooCommerce Gateway Plugin is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce. 
 
