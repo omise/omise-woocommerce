@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+[1.1.2] 2016-03-03
+------------
+- Changed expiration month and expiration year on credit card form to dropdown and update form's style.
+- Added bootstrap files for Docker container for running unit tests with WP.
+- Updated developer guide: how to run tests with Docker container.
+- Created tests for `Omise_Util` class.
+- Created tests for `Omise` class (API wrapper).
+  - Changed method type from static to public in order to easily maintain test suites.
+- Revised code to follow WordPress coding standards.
+- Tested with WordPress 4.4.2 and WooCommerce 2.5.2.
+
 [1.1.1] 2015-11-16
 ------------
 - *`Added`* Added Omise-Version into the cURL request header.
