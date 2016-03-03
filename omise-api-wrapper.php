@@ -10,7 +10,7 @@ if ( ! class_exists( "Omise" ) ) {
          * @param Array $chargeInfo
          * @return mixed
          */
-        function create_charge( $apiKey, $chargeInfo ) {
+        public function create_charge( $apiKey, $chargeInfo ) {
             $result = $this->call_api( $apiKey, "POST", "/charges", $chargeInfo );
             return json_decode( $result );
         }
@@ -21,7 +21,7 @@ if ( ! class_exists( "Omise" ) ) {
          * @param Array $charge_id
          * @return mixed
          */
-        function get_charge( $apiKey, $charge_id ) {
+        public function get_charge( $apiKey, $charge_id ) {
             $result = $this->call_api( $apiKey, "GET", "/charges/{$charge_id}" );
             return json_decode( $result );
         }
@@ -32,7 +32,7 @@ if ( ! class_exists( "Omise" ) ) {
          * @param Array $customer_data
          * @return mixed
          */
-        function create_customer( $apiKey, $customer_data ) {
+        public function create_customer( $apiKey, $customer_data ) {
             $result = $this->call_api( $apiKey, "POST", "/customers", $customer_data );
             return json_decode( $result );
         }
@@ -43,7 +43,7 @@ if ( ! class_exists( "Omise" ) ) {
          * @param string $customer_id
          * @return mixed
          */
-        function get_customer_cards( $apiKey, $customer_id ) {
+        public function get_customer_cards( $apiKey, $customer_id ) {
             $result = $this->call_api( $apiKey, "GET", "/customers/{$customer_id}/cards" );
             return json_decode( $result );
         }
@@ -55,7 +55,7 @@ if ( ! class_exists( "Omise" ) ) {
          * @param string $token
          * @return mixed
          */
-        function create_card( $apiKey, $customer_id, $token ) {
+        public function create_card( $apiKey, $customer_id, $token ) {
             $result = $this->call_api( $apiKey, "PATCH", "/customers/{$customer_id}", "card=".$token );
             return json_decode( $result );
         }
@@ -67,8 +67,8 @@ if ( ! class_exists( "Omise" ) ) {
          * @param string $card_id
          * @return mixed
          */
-        public static function delete_card( $apiKey, $customer_id, $card_id ) {
-            $result = self::call_api( $apiKey, "DELETE", "/customers/{$customer_id}/cards/{$card_id}" );
+        public function delete_card( $apiKey, $customer_id, $card_id ) {
+            $result = $this->call_api( $apiKey, "DELETE", "/customers/{$customer_id}/cards/{$card_id}" );
             return json_decode( $result );
         }
 

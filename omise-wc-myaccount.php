@@ -126,7 +126,8 @@ if ( ! class_exists ( "Omise_MyAccount" ) ) {
                 die();
             }
 
-            $result = Omise::delete_card( $this->private_key, $this->omise_customer_id, $card_id );
+            $omise = new Omise();
+            $result = $omise->delete_card( $this->private_key, $this->omise_customer_id, $card_id );
             echo json_encode( $result );
             die();
         }

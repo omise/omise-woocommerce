@@ -311,4 +311,27 @@ class Omise_Test extends WP_UnitTestCase {
 
         $this->assertEquals( $expected, $actual );
     }
+
+    function test_delete_card_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "card",
+            "id": "card_id",
+            "livemode": false,
+            "deleted": true
+        }';
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "DELETE", "/customers/customer_id/cards/card_id" )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->delete_card( "private_key", "customer_id", "card_id" );
+
+        $this->assertEquals( $expected, $actual );
+    }
 }
