@@ -43,8 +43,8 @@ if ( ! class_exists( "Omise" ) ) {
          * @param string $customer_id
          * @return mixed
          */
-        public static function get_customer_cards( $apiKey, $customer_id ) {
-            $result = self::call_api( $apiKey, "GET", "/customers/{$customer_id}/cards" );
+        function get_customer_cards( $apiKey, $customer_id ) {
+            $result = $this->call_api( $apiKey, "GET", "/customers/{$customer_id}/cards" );
             return json_decode( $result );
         }
 

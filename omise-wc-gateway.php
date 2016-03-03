@@ -124,7 +124,8 @@ function register_omise_wc_gateway_plugin() {
                     $current_user = wp_get_current_user();
                     $omise_customer_id = $this->sandbox ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
                     if ( ! empty( $omise_customer_id ) ) {
-                        $cards = Omise::get_customer_cards( $this->private_key, $omise_customer_id );
+                        $omise = new Omise();
+                        $cards = $omise->get_customer_cards( $this->private_key, $omise_customer_id );
                         $viewData["existingCards"] = $cards;
                     }
                 }

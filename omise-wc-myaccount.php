@@ -57,7 +57,8 @@ if ( ! class_exists ( "Omise_MyAccount" ) ) {
          */
         public function init_panel() {
             if ( ! empty ( $this->omise_customer_id ) ) {
-                $cards = Omise::get_customer_cards( $this->private_key, $this->omise_customer_id );
+                $omise = new Omise();
+                $cards = $omise->get_customer_cards( $this->private_key, $this->omise_customer_id );
                 $viewData["existingCards"] = $cards;
 
                 Omise_Util::render_view( "includes/templates/omise-myaccount-panel.php", $viewData );

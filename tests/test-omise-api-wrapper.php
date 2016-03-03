@@ -160,49 +160,6 @@ class Omise_Test extends WP_UnitTestCase {
         $this->assertEquals( $expected, $actual );
     }
 
-    function test_create_card_should_call_method_call_api_with_required_params() {
-        $omise = $this->getMockBuilder( "Omise" )
-            ->setMethods( array( "call_api" ) )
-            ->getMock();
-
-        $result = '{
-            "object": "token",
-            "id": "tokn_test_id",
-            "livemode": false,
-            "location": "https://vault.omise.co/tokens/tokn_test_id",
-            "used": false,
-            "card": {
-                "object": "card",
-                "id": "card_test_id",
-                "livemode": false,
-                "country": "us",
-                "city": "Bangkok",
-                "postal_code": "10320",
-                "financing": "",
-                "bank": "",
-                "last_digits": "4242",
-                "brand": "Visa",
-                "expiration_month": 3,
-                "expiration_year": 2018,
-                "fingerprint": "test_fingerprint",
-                "name": "JOHN DOE",
-                "security_code_check": true,
-                "created": "2016-03-02T08:54:53Z"
-            },
-            "created": "2016-03-02T08:54:53Z"
-        }';
-
-        $omise->expects( $this->once() )
-            ->method( "call_api" )
-            ->with( "private_key", "PATCH", "/customers/customer_id", "card=test_token" )
-            ->will( $this->returnValue( $result ) );
-
-        $expected = json_decode( $result );
-        $actual = $omise->create_card( "private_key", "customer_id", "test_token" );
-
-        $this->assertEquals( $expected, $actual );
-    }
-
     function test_create_customer_should_call_method_call_api_with_required_params() {
         $omise = $this->getMockBuilder( "Omise" )
             ->setMethods( array( "call_api" ) )
@@ -242,6 +199,115 @@ class Omise_Test extends WP_UnitTestCase {
 
         $expected = json_decode( $result );
         $actual = $omise->create_customer( "private_key", $customer_data );
+
+        $this->assertEquals( $expected, $actual );
+    }
+
+    function test_get_customer_cards_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "list",
+            "from": "1970-01-01T00:00:00+00:00",
+            "to": "2016-03-03T00:09:59+00:00",
+            "offset": 0,
+            "limit": 20,
+            "total": 10,
+            "order": "chronological",
+            "data": [
+                {
+                    "object": "card",
+                    "id": "card_id_1",
+                    "livemode": false,
+                    "location": "/customers/customer_id/cards/card_id_1",
+                    "country": "us",
+                    "city": null,
+                    "postal_code": null,
+                    "financing": "",
+                    "bank": "JPMORGAN CHASE BANK, N.A.",
+                    "last_digits": "1111",
+                    "brand": "Visa",
+                    "expiration_month": 12,
+                    "expiration_year": 2019,
+                    "fingerprint": "test_fingerprint",
+                    "name": "Pronto Tools",
+                    "security_code_check": true,
+                    "created": "2016-03-01T04:27:00Z"
+                },
+                {
+                    "object": "card",
+                    "id": "card_id_2",
+                    "livemode": false,
+                    "location": "/customers/customer_id/cards/card_id_2",
+                    "country": "us",
+                    "city": null,
+                    "postal_code": null,
+                    "financing": "",
+                    "bank": "JPMORGAN CHASE BANK, N.A.",
+                    "last_digits": "1111",
+                    "brand": "Visa",
+                    "expiration_month": 12,
+                    "expiration_year": 2019,
+                    "fingerprint": "test_fingerprint",
+                    "name": "Pronto Tools",
+                    "security_code_check": true,
+                    "created": "2016-03-01T07:26:36Z"
+                }
+            ]
+        }';
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "GET", "/customers/customer_id/cards" )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->get_customer_cards( "private_key", "customer_id" );
+
+        $this->assertEquals( $expected, $actual );
+    }
+
+    function test_create_card_should_call_method_call_api_with_required_params() {
+        $omise = $this->getMockBuilder( "Omise" )
+            ->setMethods( array( "call_api" ) )
+            ->getMock();
+
+        $result = '{
+            "object": "token",
+            "id": "tokn_test_id",
+            "livemode": false,
+            "location": "https://vault.omise.co/tokens/tokn_test_id",
+            "used": false,
+            "card": {
+                "object": "card",
+                "id": "card_test_id",
+                "livemode": false,
+                "country": "us",
+                "city": "Bangkok",
+                "postal_code": "10320",
+                "financing": "",
+                "bank": "",
+                "last_digits": "4242",
+                "brand": "Visa",
+                "expiration_month": 3,
+                "expiration_year": 2018,
+                "fingerprint": "test_fingerprint",
+                "name": "JOHN DOE",
+                "security_code_check": true,
+                "created": "2016-03-02T08:54:53Z"
+            },
+            "created": "2016-03-02T08:54:53Z"
+        }';
+
+        $omise->expects( $this->once() )
+            ->method( "call_api" )
+            ->with( "private_key", "PATCH", "/customers/customer_id", "card=test_token" )
+            ->will( $this->returnValue( $result ) );
+
+        $expected = json_decode( $result );
+        $actual = $omise->create_card( "private_key", "customer_id", "test_token" );
 
         $this->assertEquals( $expected, $actual );
     }
