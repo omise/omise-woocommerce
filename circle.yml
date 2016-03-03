@@ -1,0 +1,7 @@
+machine:
+    pre:
+        - bash /home/ubuntu/omise-woocommerce/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+
+    environment:
+        WP_VERSION: latest
+        WP_MULTISITE: 0
