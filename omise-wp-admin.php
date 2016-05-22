@@ -37,10 +37,9 @@ if (! class_exists ( 'Omise_Admin' )) {
     }
 
     public function add_dashboard_omise_menu() {
-      add_menu_page ( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array (
-          $this,
-          'init_dashboard' 
-      ) );
+      add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array( $this, 'init_dashboard' ) );
+      add_submenu_page( 'omise-plugin-admin-page', 'Omise Dashboard', 'Dashboard', 'manage_options', 'omise-plugin-admin-page' );
+      add_submenu_page( 'omise-plugin-admin-page', 'Omise Setting', 'Setting', 'manage_options', 'wc-settings&tab=checkout&section=wc_gateway_omise' , function(){} );
     }
 
     private function __construct() {
