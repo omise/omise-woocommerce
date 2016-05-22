@@ -45,7 +45,7 @@ if (! class_exists('OmisePluginHelperTransaction')) {
          */
         public static function url($transaction, $account_type = '')
         {
-            if (! isset($transaction['object']) || $transaction['object'] !== 'transaction')
+            if (! isset($transaction['object']))
                 return OMISE_DASHBOARD_URL;
 
             if ($account_type !== '') {
@@ -53,30 +53,30 @@ if (! class_exists('OmisePluginHelperTransaction')) {
             } else {
                 // Pattern that would looks for `string_test_`
                 // i.e. chrg_test_51gussmcn7cu7j8feqw
-                preg_match('/^[a-zA-Z]+_test_/', $transaction['source'], $is_test_account);
+                preg_match('/^[a-zA-Z]+_test_/', $transaction['id'], $is_test_account);
                 $url = OMISE_DASHBOARD_URL . "/" . ($is_test_account ? 'test' : 'live');
             }
 
             // Pattern that would looks for `string_`
             // i.e. chrg_test_51gussmcn7cu7j8feqw
-            preg_match('/^[a-zA-Z]+_/', $transaction['source'], $matches);
+            preg_match('/^[a-zA-Z]+_/', $transaction['id'], $matches);
             $transaction_type = substr($matches[0], 0, -1);
 
             switch ($transaction_type) {
                 case 'chrg':
-                    $url .= "/charges/{$transaction['source']}";
+                    $url .= "/charges/{$transaction['id']}";
                     break;
 
                 case 'trsf':
-                    $url .= "/transfers/{$transaction['source']}";
+                    $url .= "/transfers/{$transaction['id']}";
                     break;
 
                 case 'rfnd':
-                    $url .= "/refunds/{$transaction['source']}";
+                    $url .= "/refunds/{$transaction['id']}";
                     break;
 
                 case 'dspt':
-                    $url .= "/disputes/{$transaction['source']}";
+                    $url .= "/disputes/{$transaction['id']}";
                     break;
 
                 default:

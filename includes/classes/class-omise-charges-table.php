@@ -89,7 +89,7 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
         }
 
         function column_chrg_failure( $record ) {
-            echo $record['failure_code'] ? '(' . $record['failure_code'] . ') ' . $record['failure_code'] : '-';
+            echo $record['failure_code'] ? '(' . $record['failure_code'] . ') ' . $record['failure_message'] : '-';
         }
 
         function column_chrg_datetime( $record ) {

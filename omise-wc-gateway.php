@@ -129,6 +129,8 @@ function register_omise_wc_gateway_plugin() {
 						$cards = Omise::get_customer_cards ( $this->private_key, $omise_customer_id );
 						$viewData ["existingCards"] = $cards;
 					}
+				} else {
+					$viewData["user_logged_in"] = false;
 				}
 
 				Omise_Util::render_view ( 'includes/templates/omise-payment-form.php', $viewData );
