@@ -86,11 +86,11 @@ if (! class_exists ( 'Omise_Admin' )) {
         }
         
         $balance = Omise::get_balance( $this->private_key );
-        if ( $balance->currency === "thb" ) {
+        if ( strtoupper( $balance->currency ) === "THB" ) {
           $transfer_amount = $transfer_amount * 100;
         }
 
-        $transfer = Omise::create_transfer ( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount ); // transfer in satangs
+        $transfer = Omise::create_transfer ( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount );
         
         if ($this->is_transfer_success($transfer)) {
           $result_message_type = 'updated';
