@@ -131,13 +131,24 @@ if (! class_exists ( 'Omise_Admin' )) {
       try {
         $balance = Omise::get_balance ( $this->private_key );
         if ($balance->object == 'balance') {
-          $balance->formatted_total = wc_price ( $balance->total / 100 );
-          $balance->formatted_available = wc_price ( $balance->available / 100 );
-          $viewData ['balance'] = $balance;
+          $paged  = isset( $_GET['paged'] ) ? $_GET['paged'] : 1;
+          $limit  = 10;
+          $offset = $paged > 1 ? ( $paged - 1 ) * $limit : 0;
+          $order  = 'reverse_chronological';
+
+          $charge_filters = '?' . http_build_query( array(
+            'limit'  => $limit,
+            'offset' => $offset,
+            'order'  => $order
+          ) );
+
+          $omise_account = OmiseAccount::retrieve( '', $this->private_key );
+
+          $viewData['balance'] = $balance;
+          $viewData['email']   = $omise_account['email'];
+          $viewData['charges'] = OmiseCharge::retrieve( $charge_filters, '', $this->private_key );
           
           $this->extract_result_message ( $viewData );
-          
-          $viewData ["current_account_mode"] = $this->test_mode ? "TEST" : "LIVE";
           
           Omise_Util::render_view ( 'includes/templates/omise-wp-admin-page.php', $viewData );
           

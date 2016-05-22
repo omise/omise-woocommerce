@@ -6,11 +6,12 @@
 	<?php
 	if ( isset( $viewData['balance'] ) ) :
 		$balance       = $viewData["balance"];
+		$charges       = $viewData["charges"];
 		$redirect_back = urlencode( remove_query_arg( 'omise_result_msg', $_SERVER['REQUEST_URI'] ) );
 
 		$omise = array(
 			'account' => array(
-				'email' => 'nam@omise.co',
+				'email' => $viewData["email"],
 			),
 			'balance' => array(
 				'livemode'  => $balance->livemode,
@@ -45,17 +46,39 @@
 			<div class="right"><span class="Omise-BalanceAmount"><?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['available'] ); ?></span><br/>Transferable Balance</div>
 		</div>
 
+		<div>
+			<span id="Omise-BalanceTransferTab" class="Omise-BalanceTransferTab">Setup a transfer</span>
+		</div>
+
+		<h1>Transactions History</h1>
+
+		<h2 class="nav-tab-wrapper wp-clearfix">
+			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'omise-plugin-admin-page' ), admin_url( 'admin.php' ) ) ); ?>" class="nav-tab<?php if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'locations' != $_GET['action'] ) echo ' nav-tab-active'; ?>"><?php esc_html_e( 'Charges' ); ?></a>
+		</h2>
+
+		<!-- Charge list -->
+		<div id="Omise-ChargeList">
+			<form id="Omise-ChargeFilters" method="GET">
+				<input type="hidden" name="page" value="Omise-dashboard" />
+				<?php
+				$charge_table = new Omise_Charges_Table( $charges );
+				$charge_table->prepare_items();
+				$charge_table->display();
+				?>
+			</form>
+		</div>
+
 		<h2>Request a transfer</h2>
 		<div class="omise-transfer-form">
 			<form id='omise_create_transfer_form' action='<?php echo admin_url( 'admin-post.php' ); ?>' method='POST'>
 				<input type="hidden" name="action" value="omise_create_transfer" />
 				<?php wp_nonce_field( 'omise_create_transfer', 'omise_create_transfer_nonce', FALSE ); ?>
 				<input type="hidden" name="_wp_http_referer" value="<?php echo $redirect_back; ?>"> <input type="checkbox" name="full_transfer" id="omise_transfer_full_amount" value="full_amount" />
-				<label for="omise_transfer_full_amount">Full available amount (<?php echo $balance->formatted_available ?>)</label>
+				<label for="omise_transfer_full_amount">Full available amount (<?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['available'] ); ?>)</label>
 				<br />
 				<div id="omise_transfer_specific_amount">
 					<div>------ Or ------</div>
-					Partial amount : <input type='text' name='omise_transfer_amount' id='omise_transfer_amount' required /> THB
+					Partial amount : <input type='text' name='omise_transfer_amount' id='omise_transfer_amount' required /> <?php echo $omise['balance']['currency']; ?>
 				</div>
 				<br /> <input type='submit' value='submit' class='button button-primary' />
 			</form>

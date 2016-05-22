@@ -1,13 +1,13 @@
 <?php
-defined( 'ABSPATH' ) or die( "No direct script access allowed." );
-
-if ( ! class_exists( 'OmisePluginHelperCurrency' ) ) {
+if (! class_exists('OmisePluginHelperCurrency')) {
     class OmisePluginHelperCurrency
     {
         /**
          * @param string $currency_code
+         * @return boolean
          */
-        public static function isSupport($currency_code) {
+        public static function isSupport($currency_code)
+        {
             switch (strtoupper($currency_code)) {
                 case 'THB':
                 case 'JPY':
@@ -21,8 +21,10 @@ if ( ! class_exists( 'OmisePluginHelperCurrency' ) ) {
         /**
          * @param string  $currency
          * @param integer $amount
+         * @return string
          */
-        public static function format($currency, $amount) {
+        public static function format($currency, $amount)
+        {
             switch (strtoupper($currency)) {
                 case 'THB':
                     $amount = "฿" . number_format(($amount / 100), 2);

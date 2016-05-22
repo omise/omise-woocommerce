@@ -41,6 +41,9 @@ input[name='card_id']:checked ~ #new_card_form {
 .Omise-TextLeft                  { text-align: left; }
 .Omise-TextCenter                { text-align: center; }
 .Omise-TextRight                 { text-align: right; }
+.Omise-TextDanger                { color: #d9534f; }
+.Omise-TextWarning               { color: #f0ad4e; }
+.Omise-TextSuccess               { color: #5cb85c; }
 
 .Omise-TableTextTitle            { font-size: 1.5em; }
 
