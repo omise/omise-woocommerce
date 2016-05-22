@@ -195,12 +195,18 @@ function register_omise_wc_gateway_plugin() {
 						}
 					}
 					
-					$success = false;
+					$success        = false;
+					$order_currency = $order->get_order_currency();
+					if ( 'THB' === strtoupper( $order_currency ) )
+						$amount = $order->get_total() * 100;
+					else
+						$amount = $order->get_total();
+
 					$data = array (
-						"amount" => $order->get_total () * 100,
-						"currency" => $order->get_order_currency (),
+						"amount"      => $amount,
+						"currency"    => $order_currency,
 						"description" => "WooCommerce Order id " . $order_id,
-						"return_uri" => add_query_arg( 'order_id', $order_id, site_url()."?wc-api=wc_gateway_omise" )
+						"return_uri"  => add_query_arg( 'order_id', $order_id, site_url()."?wc-api=wc_gateway_omise" )
 					);
 					
 					if (! empty ( $card_id ) && ! empty ( $omise_customer_id )) {
@@ -293,6 +299,7 @@ function register_omise_wc_gateway_plugin() {
 			public function get_icon() {
 				$icon = '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/visa.png' ) . '" alt="Visa" />';
 				$icon .= '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/mastercard.png' ) . '" alt="Mastercard" />';
+				$icon .= '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/jcb.png' ) . '" alt="JCB" />';
 				
 				return apply_filters ( 'woocommerce_gateway_icon', $icon, $this->id );
 			}
