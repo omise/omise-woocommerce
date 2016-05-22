@@ -10,38 +10,6 @@ input[name='card_id']:checked ~ #new_card_form {
     display: block;
 }
 
-.omise-dashboard-header{
-	float:left;
-}
-
-.omise-dashboard-account-mode{
-	float:left; 
-	padding: 10px; 
-	border-radius: 5px;
-	background-color: white; 
-}
-
-.omise-dashboard-balance{
-	float:left;
-	margin-left:20px;
-}
-
-.omise-dashboard-balance-label{
-	float:left; 
-	margin-left: 5px; 
-	padding: 10px; 
-	font-size:1.3em;
-}
-
-.omise-dashboard-balance-value{
-	float:left; 
-	margin-left: 5px; 
-	padding: 10px; 
-	border-radius: 5px;
-	background-color: white;
-	font-size:1.3em;
-}
-
 .omise-dashboard-white-box{
 	float:left; 
 	margin-left: 5px; 
@@ -59,3 +27,42 @@ input[name='card_id']:checked ~ #new_card_form {
 .omise-clear-both{
 	clear:both;
 }
+
+
+/**
+ * General
+ */
+.Omise-Box                       { background: #fff; padding: 0 10px; color: #666; border: 1px solid #e5e5e5; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
+
+.Omise-Clearfix:before,
+.Omise-Clearfix:after            { display: table; content: " "; }
+.Omise-Clearfix:after            { clear: both; }
+
+.Omise-TextLeft                  { text-align: left; }
+.Omise-TextCenter                { text-align: center; }
+.Omise-TextRight                 { text-align: right; }
+
+.Omise-TableTextTitle            { font-size: 1.5em; }
+
+.Omise-TESTMODE                  { color: #d1002a; }
+.Omise-LIVEMODE                  { color: #74c418; }
+
+.Omise-DEBIT                     { color: #d1002a; }
+.Omise-CREDIT                    { color: #74c418; }
+
+/**
+ * Dashboard page
+ */
+.Omise-Account                   { margin: 8px 0; }
+.Omise-Account dl dt,
+.Omise-Account dl dd             { display: inline; }
+.Omise-Account dl dt             { display: inline; font-weight: 700; margin-left: 30px; }
+.Omise-Account dl dt:first-child { margin-left: 0; }
+.Omise-Account dl dd             { margin-left: 5px; }
+
+.Omise-Balance                   { margin: 8px 0 0; background: #60c0e1; color: #106986; padding: 25px 0; border-bottom: 1px solid #8dd7f0; }
+.Omise-Balance .left,
+.Omise-Balance .right            { float: left; width: 50%; text-align: center; }
+.Omise-BalanceAmount             { font-size: 2.75em; color: #fff; line-height: 1.3em; }
+.Omise-BalanceTransferTab        { display: block; cursor: pointer; margin: 0 0 8px; color: #106986; background: #60c0e1; padding: 10px 0; text-align: center; border-radius: 0 0 3px 3px; -webkit-transition: all ease-in-out .15s; transition: all ease-in-out .15s; }
+.Omise-BalanceTransferTab:hover  { background: #106986; color: #fff; }
