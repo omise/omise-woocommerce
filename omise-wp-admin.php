@@ -37,10 +37,9 @@ if (! class_exists ( 'Omise_Admin' )) {
     }
 
     public function add_dashboard_omise_menu() {
-      add_menu_page ( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array (
-          $this,
-          'init_dashboard' 
-      ) );
+      add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array( $this, 'init_dashboard' ) );
+      add_submenu_page( 'omise-plugin-admin-page', 'Omise Dashboard', 'Dashboard', 'manage_options', 'omise-plugin-admin-page' );
+      add_submenu_page( 'omise-plugin-admin-page', 'Omise Setting', 'Setting', 'manage_options', 'wc-settings&tab=checkout&section=wc_gateway_omise' , function(){} );
     }
 
     private function __construct() {
@@ -86,22 +85,36 @@ if (! class_exists ( 'Omise_Admin' )) {
           throw new Exception ( "Transfer amount must be a numeric" );
         }
         
-        $transfer = Omise::create_transfer ( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount * 100 ); // transfer in satangs
+        $balance = Omise::get_balance( $this->private_key );
+        if ( $balance->currency === "thb" ) {
+          $transfer_amount = $transfer_amount * 100;
+        }
+
+        $transfer = Omise::create_transfer ( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount ); // transfer in satangs
         
         if ($this->is_transfer_success($transfer)) {
-          $result_message = "A fund transfer request has been sent.";
+          $result_message_type = 'updated';
+          $result_message      = "A fund transfer request has been sent.";
         } else {
-          $result_message = $this->get_transfer_error_message($transfer);
+          $result_message_type = 'error';
+          $result_message      = $this->get_transfer_error_message($transfer);
         }
       
       } catch ( Exception $e ) {
-        $result_message = $e->getMessage ();
+        $result_message_type = 'error';
+        $result_message      = $e->getMessage();
       }
       
-      $url = add_query_arg ( 'omise_result_msg', urlencode ( $result_message ), urldecode ( $_POST ['_wp_http_referer'] ) );
+      $url = add_query_arg(
+        array(
+          'omise_result_msg_type' => $result_message_type,
+          'omise_result_msg'      => urlencode( $result_message )
+        ),
+        urldecode( $_POST['_wp_http_referer'] )
+      );
       
-      wp_safe_redirect ( $url );
-      exit ();
+      wp_safe_redirect( $url );
+      exit();
     }
     
     private function is_transfer_success($transfer){
@@ -131,13 +144,24 @@ if (! class_exists ( 'Omise_Admin' )) {
       try {
         $balance = Omise::get_balance ( $this->private_key );
         if ($balance->object == 'balance') {
-          $balance->formatted_total = wc_price ( $balance->total / 100 );
-          $balance->formatted_available = wc_price ( $balance->available / 100 );
-          $viewData ['balance'] = $balance;
+          $paged  = isset( $_GET['paged'] ) ? $_GET['paged'] : 1;
+          $limit  = 10;
+          $offset = $paged > 1 ? ( $paged - 1 ) * $limit : 0;
+          $order  = 'reverse_chronological';
+
+          $charge_filters = '?' . http_build_query( array(
+            'limit'  => $limit,
+            'offset' => $offset,
+            'order'  => $order
+          ) );
+
+          $omise_account = OmiseAccount::retrieve( '', $this->private_key );
+
+          $viewData['balance'] = $balance;
+          $viewData['email']   = $omise_account['email'];
+          $viewData['charges'] = OmiseCharge::retrieve( $charge_filters, '', $this->private_key );
           
           $this->extract_result_message ( $viewData );
-          
-          $viewData ["current_account_mode"] = $this->test_mode ? "TEST" : "LIVE";
           
           Omise_Util::render_view ( 'includes/templates/omise-wp-admin-page.php', $viewData );
           
@@ -152,7 +176,13 @@ if (! class_exists ( 'Omise_Admin' )) {
     }
 
     function extract_result_message(&$viewData) {
-      $viewData ["message"] = isset ( $_GET ['omise_result_msg'] ) ? $_GET ['omise_result_msg'] : '';
+      if ( isset( $_GET['omise_result_msg'] ) ) {
+        $viewData["message"]      = $_GET['omise_result_msg'];
+        $viewData["message_type"] = isset( $_GET['omise_result_msg_type'] ) ? $_GET['omise_result_msg_type'] : 'updated';
+      } else {
+        $viewData["message"]      = '';
+        $viewData["message_type"] = '';
+      }
     }
 
     function register_dashboard_script() {

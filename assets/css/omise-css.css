@@ -10,52 +10,62 @@ input[name='card_id']:checked ~ #new_card_form {
     display: block;
 }
 
-.omise-dashboard-header{
-	float:left;
-}
+/**
+ * General
+ */
+.Omise-Box                                { background: #fff; padding: 0 10px; color: #666; border: 1px solid #e5e5e5; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
 
-.omise-dashboard-account-mode{
-	float:left; 
-	padding: 10px; 
-	border-radius: 5px;
-	background-color: white; 
-}
+.Omise-Clearfix:before,
+.Omise-Clearfix:after                     { display: table; content: " "; }
+.Omise-Clearfix:after                     { clear: both; }
 
-.omise-dashboard-balance{
-	float:left;
-	margin-left:20px;
-}
+.Omise-TextLeft                           { text-align: left; }
+.Omise-TextCenter                         { text-align: center; }
+.Omise-TextRight                          { text-align: right; }
+.Omise-TextDanger                         { color: #d9534f; }
+.Omise-TextWarning                        { color: #f0ad4e; }
+.Omise-TextSuccess                        { color: #5cb85c; }
 
-.omise-dashboard-balance-label{
-	float:left; 
-	margin-left: 5px; 
-	padding: 10px; 
-	font-size:1.3em;
-}
+.Omise-TableTextTitle                     { font-size: 1.5em; }
 
-.omise-dashboard-balance-value{
-	float:left; 
-	margin-left: 5px; 
-	padding: 10px; 
-	border-radius: 5px;
-	background-color: white;
-	font-size:1.3em;
-}
+.Omise-TESTMODE                           { color: #d9534f; }
+.Omise-LIVEMODE                           { color: #5cb85c; }
 
-.omise-dashboard-white-box{
-	float:left; 
-	margin-left: 5px; 
-	padding: 10px; 
-	border-radius: 5px;
-	background-color: white; 
-	font-size:1.3em;
-}
+.Omise-DEBIT                              { color: #d9534f; }
+.Omise-CREDIT                             { color: #5cb85c; }
 
-.omise-transfer-form{
-	margin-left: 5px; 
-	padding: 10px;
-}
+/**
+ * OmiseElement
+ */
+.Omise-Element.RadioBox                   { position: relative; border: 1px solid #c8dae0; border-radius: 4px; margin: 0 0 16px; padding: 15px 24px 0 3.5em; background: #f8fafb; -webkit-transition: 200ms box-shadow ease; -moz-transition: 200ms box-shadow ease; -ms-transition: 200ms box-shadow ease; -o-transition: 200ms box-shadow ease; transition: 200ms box-shadow ease; }
+.Omise-Element.RadioBox:hover             { box-shadow: 0 0 4px rgba(96,192,225,.36); cursor: pointer; }
+.Omise-Element.RadioBox .Field            { display: none; }
+.Omise-Element.RadioBox input[type=radio] { position: absolute; top: 20px; left: 16px; }
+.Omise-Element.RadioBox.SELECTED          { background: white; border: 1px solid #60c0e1; box-shadow: 0 0 4px rgba(96,192,225,.66); }
+.Omise-Element.RadioBox.SELECTED .Field   { display: block; }
+.Omise-Element.RadioBoxLabel              { margin: 0; padding: 0 0 .3em; font-size: 1em; cursor: pointer; }
+.Omise-Element.RadioBoxDescription        { margin: 0 0 16px; font-size: .875em; color: #97a8ae; cursor: pointer; }
+.Omise-Element.SeparatedFootnote          { margin-top: 2em; padding: 1em 0 0; border-top: 1px solid #e3ecef; color: #97a8ae; font-size: .8em; }
+.Omise-Element.Field                      { margin:0 0 20px }
+.Omise-Element.FieldLabel                 { font-size: .875em; color: #97a8ae; }
+.Omise-Element.TextField                  { width: 100%; padding: .4em .4em; border: 1px solid white; border-radius: 4px; color: #23282d; font-size: 1.2em; background: #f7f7f7; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); -webkit-transition: all ease-in-out .15s; transition: all ease-in-out .15s; }
 
-.omise-clear-both{
-	clear:both;
-}
+/**
+ * Dashboard page
+ */
+.Omise-Account                            { margin: 8px 0; }
+.Omise-Account dl dt,
+.Omise-Account dl dd                      { display: inline; }
+.Omise-Account dl dt                      { display: inline; font-weight: 700; margin-left: 30px; }
+.Omise-Account dl dt:first-child          { margin-left: 0; }
+.Omise-Account dl dd                      { margin-left: 5px; }
+
+.Omise-Balance                            { margin: 8px 0 0; background: #60c0e1; color: #106986; padding: 25px 0; border-bottom: 1px solid #8dd7f0; }
+.Omise-Balance .left,
+.Omise-Balance .right                     { float: left; width: 50%; text-align: center; }
+.Omise-BalanceAmount                      { font-size: 2.75em; color: #fff; line-height: 1.3em; }
+.Omise-BalanceTransferTab                 { display: block; cursor: pointer; margin: 0 0 8px; color: #106986; background: #60c0e1; padding: 10px 0; text-align: center; border-radius: 0 0 3px 3px; -webkit-transition: all ease-in-out .15s; transition: all ease-in-out .15s; }
+.Omise-BalanceTransferTab:hover           { background: #106986; color: #fff; }
+
+#Omise-TransferBoxWrapper                 { visibility: hidden; opacity: 0; background-color: rgba(0,0,0,0.77); z-index: 999999; position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; overflow-x: hidden; border: none; }
+#Omise-TransferBox                        { position: relative; width: 400px; min-height: 200px; box-shadow: 0 1px 3px; border-radius: 0 0 8px 8px; margin: 0 auto 0; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); background: white; top: 0; border: none; opacity: 0; -webkit-transform: scale(.1); -moz-transform: scale(.1); -ms-transform: scale(.1); -o-transform: scale(.1); transform: scale(.1); -webkit-transition: 200ms opacity ease, -webkit-transform 200ms; -moz-transition: 200ms opacity ease, -moz-transform 200ms; -ms-transition: 200ms opacity ease, -ms-transform 200ms; -o-transition: 200ms opacity ease, -o-transform 200ms; transition: 200ms opacity ease, transform 200ms; }
