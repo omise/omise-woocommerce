@@ -20,8 +20,7 @@
 				'currency'  => $balance->currency,
 				'total'     => $balance->total,
 				'available' => $balance->available,
-			),
-			'transactions' => array()
+			)
 		);
 		?>
 

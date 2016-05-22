@@ -39,7 +39,6 @@ if (! class_exists('OmisePluginHelperTransaction')) {
         }
 
         /**
-         *
          * @param OmiseTransaction object $transaction
          * @param string                  $account_type
          * @return string
