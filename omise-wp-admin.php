@@ -85,22 +85,36 @@ if (! class_exists ( 'Omise_Admin' )) {
           throw new Exception ( "Transfer amount must be a numeric" );
         }
         
-        $transfer = Omise::create_transfer ( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount * 100 ); // transfer in satangs
+        $balance = Omise::get_balance( $this->private_key );
+        if ( $balance->currency === "thb" ) {
+          $transfer_amount = $transfer_amount * 100;
+        }
+
+        $transfer = Omise::create_transfer ( $this->private_key, empty ( $transfer_amount ) ? null : $transfer_amount ); // transfer in satangs
         
         if ($this->is_transfer_success($transfer)) {
-          $result_message = "A fund transfer request has been sent.";
+          $result_message_type = 'updated';
+          $result_message      = "A fund transfer request has been sent.";
         } else {
-          $result_message = $this->get_transfer_error_message($transfer);
+          $result_message_type = 'error';
+          $result_message      = $this->get_transfer_error_message($transfer);
         }
       
       } catch ( Exception $e ) {
-        $result_message = $e->getMessage ();
+        $result_message_type = 'error';
+        $result_message      = $e->getMessage();
       }
       
-      $url = add_query_arg ( 'omise_result_msg', urlencode ( $result_message ), urldecode ( $_POST ['_wp_http_referer'] ) );
+      $url = add_query_arg(
+        array(
+          'omise_result_msg_type' => $result_message_type,
+          'omise_result_msg'      => urlencode( $result_message )
+        ),
+        urldecode( $_POST['_wp_http_referer'] )
+      );
       
-      wp_safe_redirect ( $url );
-      exit ();
+      wp_safe_redirect( $url );
+      exit();
     }
     
     private function is_transfer_success($transfer){
@@ -164,7 +178,7 @@ if (! class_exists ( 'Omise_Admin' )) {
     function extract_result_message(&$viewData) {
       if ( isset( $_GET['omise_result_msg'] ) ) {
         $viewData["message"]      = $_GET['omise_result_msg'];
-        $viewData["message_type"] = 'updated';
+        $viewData["message_type"] = isset( $_GET['omise_result_msg_type'] ) ? $_GET['omise_result_msg_type'] : 'updated';
       } else {
         $viewData["message"]      = '';
         $viewData["message_type"] = '';

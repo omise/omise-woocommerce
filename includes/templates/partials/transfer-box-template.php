@@ -10,7 +10,7 @@
 			<?php wp_nonce_field( 'omise_create_transfer', 'omise_create_transfer_nonce', FALSE ); ?>
 
 			<div class="Omise-Element RadioBox SELECTED">
-				<input checked="checked" id="transfer_type_full" name="full_transfer" type="radio" value="full_amount">
+				<input checked="checked" id="transfer_type_full" name="transfer[type]" type="radio" value="full_amount">
 				<h3 class="Omise-Element RadioBoxLabel">Full transfer</h3>
 				<p class="Omise-Element RadioBoxDescription">
 					Transfer the whole available balance (<?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['available'] ); ?>) to your account
@@ -24,8 +24,8 @@
 					Transfer only part of the available balance (<?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['available'] ); ?>) to your account
 				</p>
 				<div class="Omise-Element Field">
-					<label class="Omise-Element FieldLabel" for="transfer_amount">Amount</label>
-					<input class="Omise-Element TextField" id="transfer_amount" name="omise_transfer_amount" type="text" placeholder="0">
+					<label class="Omise-Element FieldLabel" for="omise_transfer_amount">Amount</label>
+					<input class="Omise-Element TextField" id="omise_transfer_amount" name="omise_transfer_amount" type="text" placeholder="0">
 				</div>
 			</div>
 
