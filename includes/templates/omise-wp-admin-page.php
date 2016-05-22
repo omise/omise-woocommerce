@@ -3,6 +3,8 @@
 <div class='wrap'>
 	<h1>Omise Dashboard</h1>
 
+	<?php Omise_Util::render_partial( 'message-box', array( 'message' => $viewData['message'], 'message_type' => $viewData['message_type'] ) ); ?>
+
 	<?php
 	if ( isset( $viewData['balance'] ) ) :
 		$balance       = $viewData["balance"];
@@ -67,25 +69,7 @@
 				?>
 			</form>
 		</div>
-
-		<h2>Request a transfer</h2>
-		<div class="omise-transfer-form">
-			<form id='omise_create_transfer_form' action='<?php echo admin_url( 'admin-post.php' ); ?>' method='POST'>
-				<input type="hidden" name="action" value="omise_create_transfer" />
-				<?php wp_nonce_field( 'omise_create_transfer', 'omise_create_transfer_nonce', FALSE ); ?>
-				<input type="hidden" name="_wp_http_referer" value="<?php echo $redirect_back; ?>"> <input type="checkbox" name="full_transfer" id="omise_transfer_full_amount" value="full_amount" />
-				<label for="omise_transfer_full_amount">Full available amount (<?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['available'] ); ?>)</label>
-				<br />
-				<div id="omise_transfer_specific_amount">
-					<div>------ Or ------</div>
-					Partial amount : <input type='text' name='omise_transfer_amount' id='omise_transfer_amount' required /> <?php echo $omise['balance']['currency']; ?>
-				</div>
-				<br /> <input type='submit' value='submit' class='button button-primary' />
-			</form>
-		</div>
 	<?php endif; ?>
 
-	<?php if ( ! empty( $viewData['message'] ) ) : ?>
-		<div class="omise-dashboard-white-box"><?php echo esc_html( $viewData["message"] ) ?></div>
-	<?php endif; ?>
+	<?php Omise_Util::render_partial( 'transfer-box', $omise ); ?>
 </div>

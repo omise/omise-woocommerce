@@ -45,6 +45,15 @@ if(!class_exists('Omise_Util')){
 		}
 
 		/**
+		 * @param string $partial_name
+		 * @param mixed  $partial_data
+		 * @return void
+		 */
+		public static function render_partial( $partial_name, $partial_data = null ) {
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/partials/' . $partial_name . '-template.php' );
+		}
+
+		/**
 		 * @return string
 		 */
 		public static function date_format( $date, $format = null ) {

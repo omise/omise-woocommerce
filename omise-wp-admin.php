@@ -163,7 +163,13 @@ if (! class_exists ( 'Omise_Admin' )) {
     }
 
     function extract_result_message(&$viewData) {
-      $viewData ["message"] = isset ( $_GET ['omise_result_msg'] ) ? $_GET ['omise_result_msg'] : '';
+      if ( isset( $_GET['omise_result_msg'] ) ) {
+        $viewData["message"]      = $_GET['omise_result_msg'];
+        $viewData["message_type"] = 'updated';
+      } else {
+        $viewData["message"]      = '';
+        $viewData["message_type"] = '';
+      }
     }
 
     function register_dashboard_script() {
