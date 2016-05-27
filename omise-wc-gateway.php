@@ -156,10 +156,10 @@ function register_omise_wc_gateway_plugin() {
 						throw new Exception( "Please select a card or enter new payment information." );
 					}
 
-					$user = $order->get_user ();
+					$user              = $order->get_user();
 					$omise_customer_id = $this->sandbox ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 
-					if (isset ( $_POST ['omise_save_customer_card'] ) && empty($card_id)) {
+					if ( isset( $_POST['omise_save_customer_card'] ) && empty( $card_id ) ) {
 						if (empty($token)){
 							throw new Exception ( "Omise card token is required." );
 						}
@@ -223,6 +223,13 @@ function register_omise_wc_gateway_plugin() {
 						$data["card"] = $token;
 					} else {
 						throw new Exception ( "Please select a card or enter new payment information." );
+					}
+
+					// Auto capture or not?
+					if ( "auto_capture" === $this->payment_action ) {
+						$data['capture'] = true;
+					} else if ( "manual_capture" === $this->payment_action ) {
+						$data['capture'] = false;
 					}
 
 					$result = Omise::create_charge($this->private_key, $data);
