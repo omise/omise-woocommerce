@@ -6,7 +6,21 @@ if (! class_exists ( 'Omise_Admin' )) {
   class Omise_Admin {
     
     private static $instance;
+
+    /**
+     * @var string
+     */
     private $private_key;
+
+    /**
+     * @var string
+     */
+    private $payment_action;
+
+    /**
+     * @var string ('yes' or 'no')
+     */
+    private $support_3dsecure;
 
     public static function get_instance() {
       if (! self::$instance) {
@@ -60,7 +74,9 @@ if (! class_exists ( 'Omise_Admin' )) {
         return;
       }
 
-      $this->private_key = $this->test_mode ? $settings ["test_private_key"] : $settings ["live_private_key"];
+      $this->private_key      = $this->test_mode ? $settings ["test_private_key"] : $settings ["live_private_key"];
+      $this->payment_action   = $settings['payment_action'];
+      $this->support_3dsecure = $settings['omise_3ds'];
       
       if (empty ( $this->private_key )) {
         return;
@@ -157,9 +173,11 @@ if (! class_exists ( 'Omise_Admin' )) {
 
           $omise_account = OmiseAccount::retrieve( '', $this->private_key );
 
-          $viewData['balance'] = $balance;
-          $viewData['email']   = $omise_account['email'];
-          $viewData['charges'] = OmiseCharge::retrieve( $charge_filters, '', $this->private_key );
+          $viewData['auto_capture']     = $this->payment_action === 'auto_capture' ? 'YES' : 'NO';
+          $viewData['support_3dsecure'] = $this->support_3dsecure === 'yes' ? 'ENABLED' : 'DISABLED';
+          $viewData['balance']          = $balance;
+          $viewData['email']            = $omise_account['email'];
+          $viewData['charges']          = OmiseCharge::retrieve( $charge_filters, '', $this->private_key );
           
           $this->extract_result_message ( $viewData );
           

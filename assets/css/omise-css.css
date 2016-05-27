@@ -56,8 +56,8 @@ input[name='card_id']:checked ~ #new_card_form {
 .Omise-Account                            { margin: 8px 0; }
 .Omise-Account dl dt,
 .Omise-Account dl dd                      { display: inline; }
-.Omise-Account dl dt                      { display: inline; font-weight: 700; margin-left: 30px; }
-.Omise-Account dl dt:first-child          { margin-left: 0; }
+.Omise-Account dl dt                      { display: inline; font-weight: 700; margin-left: 14px; padding-left: 15px; border-left: 1px solid #ececec; }
+.Omise-Account dl dt:first-child          { margin-left: 0; padding-left: 0; border: none; }
 .Omise-Account dl dd                      { margin-left: 5px; }
 
 .Omise-Balance                            { margin: 8px 0 0; background: #60c0e1; color: #106986; padding: 25px 0; border-bottom: 1px solid #8dd7f0; }

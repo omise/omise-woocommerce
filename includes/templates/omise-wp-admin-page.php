@@ -38,6 +38,14 @@
 				<!-- Current Currency -->
 				<dt>Currency: </dt>
 				<dd><?php echo strtoupper( $omise['balance']['currency'] ); ?></dd>
+
+				<!-- Payment Action -->
+				<dt>Auto Capture: </dt>
+				<dd><?php echo $viewData['auto_capture']; ?></dd>
+
+				<!-- 3D Secure enabled? -->
+				<dt>3D-Secure: </dt>
+				<dd><?php echo $viewData['support_3dsecure']; ?></dd>
 			</dl>
 		</div>
 
