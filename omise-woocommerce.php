@@ -19,8 +19,7 @@ defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( "OMISE_WOOCOMMERCE_PLUG
 defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2014-07-27' );
 
 require_once dirname( __FILE__ ) . '/includes/libraries/omise-php/lib/Omise.php';
-require_once dirname( __FILE__ ) . '/includes/libraries/omise-plugin/helpers/currency.php';
-require_once dirname( __FILE__ ) . '/includes/libraries/omise-plugin/helpers/transaction.php';
+require_once dirname( __FILE__ ) . '/includes/libraries/omise-plugin/Omise.php';
 
 require_once 'omise-util.php';
 require_once 'omise-api-wrapper.php';
