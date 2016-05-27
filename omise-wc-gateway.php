@@ -23,6 +23,7 @@ function register_omise_wc_gateway_plugin() {
 				$this->title            = $this->settings['title'];
 				$this->description      = $this->settings['description'];
 				$this->sandbox          = isset( $this->settings['sandbox'] ) && $this->settings['sandbox'] == 'yes';
+				$this->payment_action   = $this->settings['payment_action'];
 				$this->omise_3ds        = isset( $this->settings['omise_3ds'] ) && $this->settings['omise_3ds'] == 'yes';
 				$this->test_private_key = $this->settings['test_private_key'];
 				$this->test_public_key  = $this->settings['test_public_key'];
@@ -43,54 +44,68 @@ function register_omise_wc_gateway_plugin() {
 			function init_form_fields() {
 				$this->form_fields = array(
 					'enabled' => array(
-							'title'       => __( 'Enable/Disable', $this->gateway_name ),
-							'type'        => 'checkbox',
-							'label'       => __( 'Enable Omise Payment Module.', $this->gateway_name ),
-							'default'     => 'no'
+						'title'       => __( 'Enable/Disable', $this->gateway_name ),
+						'type'        => 'checkbox',
+						'label'       => __( 'Enable Omise Payment Module.', $this->gateway_name ),
+						'default'     => 'no'
 					),
 					'sandbox' => array(
-							'title'       => __( 'Sandbox', $this->gateway_name ),
-							'type'        => 'checkbox',
-							'label'       => __( 'Sandbox mode means everything is in TEST mode', $this->gateway_name ),
-							'default'     => 'yes'
+						'title'       => __( 'Sandbox', $this->gateway_name ),
+						'type'        => 'checkbox',
+						'label'       => __( 'Sandbox mode means everything is in TEST mode', $this->gateway_name ),
+						'default'     => 'yes'
 					),
-					'omise_3ds' => array(
-							'title'       => __( '3DSecure Support', $this->gateway_name ),
-							'type'        => 'checkbox',
-							'label'       => __( 'Enables 3DSecure on this account', $this->gateway_name ),
-							'default'     => 'no'
-					),
-					'title' => array(
-							'title'       => __( 'Title:', $this->gateway_name ),
-							'type'        => 'text',
-							'description' => __( 'This controls the title which the user sees during checkout.', $this->gateway_name ),
-							'default'     => __( 'Omise payment gateway', $this->gateway_name )
-					),
-					'description' => array(
-							'title'       => __( 'Description:', $this->gateway_name ),
-							'type'        => 'textarea',
-							'description' => __( 'This controls the description which the user sees during checkout.', $this->gateway_name ),
-							'default'     => __( 'Omise payment gateway.', $this->gateway_name )
-					),
-					'test_public_key'     => array(
-							'title'       => __( 'Public key for test', $this->gateway_name ),
-							'type'        => 'text',
-							'description' => __( 'The "Test" mode public key which can be found in Omise Dashboard' )
+					'test_public_key' => array(
+						'title'       => __( 'Public key for test', $this->gateway_name ),
+						'type'        => 'text',
+						'description' => __( 'The "Test" mode public key which can be found in Omise Dashboard' )
 					),
 					'test_private_key' => array(
-							'title'       => __( 'Secret key for test', $this->gateway_name ),
-							'type'        => 'password',
-							'description' => __( 'The "Test" mode secret key which can be found in Omise Dashboard' )
+						'title'       => __( 'Secret key for test', $this->gateway_name ),
+						'type'        => 'password',
+						'description' => __( 'The "Test" mode secret key which can be found in Omise Dashboard' )
 					),
 					'live_public_key' => array(
-							'title'       => __( 'Public key for live', $this->gateway_name ),
-							'type'        => 'text',
-							'description' => __( 'The "Live" mode public key which can be found in Omise Dashboard' )
+						'title'       => __( 'Public key for live', $this->gateway_name ),
+						'type'        => 'text',
+						'description' => __( 'The "Live" mode public key which can be found in Omise Dashboard' )
 					),
 					'live_private_key' => array(
-							'title'       => __( 'Secret key for live', $this->gateway_name ),
-							'type'        => 'password',
-							'description' => __( 'The "Live" mode secret key which can be found in Omise Dashboard' )
+						'title'       => __( 'Secret key for live', $this->gateway_name ),
+						'type'        => 'password',
+						'description' => __( 'The "Live" mode secret key which can be found in Omise Dashboard' )
+					),
+					'advanced' => array(
+						'title'       => __( 'Advanced options', 'woocommerce' ),
+						'type'        => 'title',
+						'description' => '',
+					),
+					'title' => array(
+						'title'       => __( 'Title:', $this->gateway_name ),
+						'type'        => 'text',
+						'description' => __( 'This controls the title which the user sees during checkout.', $this->gateway_name ),
+						'default'     => __( 'Omise Payment Gateway', $this->gateway_name )
+					),
+					'payment_action' => array(
+						'title'       => __( 'Payment Action', $this->gateway_name ),
+						'type'        => 'select',
+						'description' => __( 'Manual Capture or Capture Automatically', $this->gateway_name ),
+						'default'     => 'auto_capture',
+						'class'       => 'wc-enhanced-select',
+						'options'     => $this->form_field_payment_actions(),
+						'desc_tip'    => true
+					),
+					'omise_3ds' => array(
+						'title'       => __( '3DSecure Support', $this->gateway_name ),
+						'type'        => 'checkbox',
+						'label'       => __( 'Enables 3DSecure on this account', $this->gateway_name ),
+						'default'     => 'no'
+					),
+					'description' => array(
+						'title'       => __( 'Description:', $this->gateway_name ),
+						'type'        => 'textarea',
+						'description' => __( 'This controls the description which the user sees during checkout.', $this->gateway_name ),
+						'default'     => __( 'Omise payment gateway.', $this->gateway_name )
 					)
 				);
 			}
@@ -368,6 +383,16 @@ function register_omise_wc_gateway_plugin() {
 
 				wp_die( "Access denied", "Access Denied", array( 'response' => 401 ) );
 				die();
+			}
+
+			/**
+			 * @return array
+			 */
+			public function form_field_payment_actions() {
+				return array(
+					'auto_capture'   => __( "Auto Capture", $this->gateway_name ),
+					'manual_capture' => __( "Manual Capture", $this->gateway_name )
+				);
 			}
 		}
 	}
