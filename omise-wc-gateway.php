@@ -1,48 +1,39 @@
 <?php
-defined ( 'ABSPATH' ) or die ( "No direct script access allowed." );
+defined( 'ABSPATH' ) or die ( "No direct script access allowed." );
 
 function register_omise_wc_gateway_plugin() {
 	// prevent running directly without wooCommerce
-	if (! class_exists ( 'WC_Payment_Gateway' ))
+	if ( ! class_exists ( 'WC_Payment_Gateway' ) )
 		return;
-	
-	if (! class_exists ( 'WC_Gateway_Omise' )) {
-		
+
+	if ( ! class_exists ( 'WC_Gateway_Omise' ) ) {
+
 		class WC_Gateway_Omise extends WC_Payment_Gateway {
 			var $gateway_name = "Omise";
 
 			public function __construct() {
-				$this->id = 'omise';
-				$this->method_title = "Omise";
-				$this->has_fields = true;
+				$this->id               = 'omise';
+				$this->method_title     = "Omise";
+				$this->has_fields       = true;
 				
 				// call base functions required for WooCommerce gateway
-				$this->init_form_fields ();
-				$this->init_settings ();
-				
-				$this->title = $this->settings ['title'];
-				$this->description = $this->settings ['description'];
-				$this->sandbox = isset($this->settings ['sandbox']) && $this->settings ['sandbox'] == 'yes';
-				$this->omise_3ds = isset($this->settings ['omise_3ds']) && $this->settings ['omise_3ds'] == 'yes';
-				$this->test_private_key = $this->settings ['test_private_key'];
-				$this->test_public_key = $this->settings ['test_public_key'];
-				$this->live_private_key = $this->settings ['live_private_key'];
-				$this->live_public_key = $this->settings ['live_public_key'];
-				$this->public_key = $this->sandbox ? $this->test_public_key : $this->live_public_key;
-				$this->private_key = $this->sandbox ? $this->test_private_key : $this->live_private_key;
-				
+				$this->init_form_fields();
+				$this->init_settings();
+
+				$this->title            = $this->settings['title'];
+				$this->description      = $this->settings['description'];
+				$this->sandbox          = isset( $this->settings['sandbox'] ) && $this->settings['sandbox'] == 'yes';
+				$this->omise_3ds        = isset( $this->settings['omise_3ds'] ) && $this->settings['omise_3ds'] == 'yes';
+				$this->test_private_key = $this->settings['test_private_key'];
+				$this->test_public_key  = $this->settings['test_public_key'];
+				$this->live_private_key = $this->settings['live_private_key'];
+				$this->live_public_key  = $this->settings['live_public_key'];
+				$this->public_key       = $this->sandbox ? $this->test_public_key : $this->live_public_key;
+				$this->private_key      = $this->sandbox ? $this->test_private_key : $this->live_private_key;
+
 				add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'omise_3ds_handler' ) );
-
-				add_action ( 'woocommerce_update_options_payment_gateways_' . $this->id, array (
-						&$this,
-						'process_admin_options' 
-				));
-				
-				add_action ( 'wp_enqueue_scripts', array (
-						$this,
-						'omise_scripts' 
-				));
-
+				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( &$this, 'process_admin_options' ) );
+				add_action( 'wp_enqueue_scripts', array( $this, 'omise_scripts' ) );
 			}
 
 			/**
@@ -50,122 +41,122 @@ function register_omise_wc_gateway_plugin() {
 			 * @see WC_Settings_API::init_form_fields()
 			 */
 			function init_form_fields() {
-				$this->form_fields = array (
-						'enabled' => array (
-								'title' => __ ( 'Enable/Disable', $this->gateway_name ),
-								'type' => 'checkbox',
-								'label' => __ ( 'Enable Omise Payment Module.', $this->gateway_name ),
-								'default' => 'no' 
-						),
-						'sandbox' => array (
-								'title' => __ ( 'Sandbox', $this->gateway_name ),
-								'type' => 'checkbox',
-								'label' => __ ( 'Sandbox mode means everything is in TEST mode', $this->gateway_name ),
-								'default' => 'yes' 
-						),
-						'omise_3ds' => array (
-								'title' => __ ( '3DSecure Support', $this->gateway_name ),
-								'type' => 'checkbox',
-								'label' => __ ( 'Enables 3DSecure on this account', $this->gateway_name ),
-								'default' => 'no'
-						),
-						'title' => array (
-								'title' => __ ( 'Title:', $this->gateway_name ),
-								'type' => 'text',
-								'description' => __ ( 'This controls the title which the user sees during checkout.', $this->gateway_name ),
-								'default' => __ ( 'Omise payment gateway', $this->gateway_name ) 
-						),
-						'description' => array (
-								'title' => __ ( 'Description:', $this->gateway_name ),
-								'type' => 'textarea',
-								'description' => __ ( 'This controls the description which the user sees during checkout.', $this->gateway_name ),
-								'default' => __ ( 'Omise payment gateway.', $this->gateway_name ) 
-						),
-						'test_public_key' => array (
-								'title' => __ ( 'Public key for test', $this->gateway_name ),
-								'type' => 'text',
-								'description' => __ ( 'The "Test" mode public key which can be found in Omise Dashboard' ) 
-						),
-						'test_private_key' => array (
-								'title' => __ ( 'Secret key for test', $this->gateway_name ),
-								'type' => 'password',
-								'description' => __ ( 'The "Test" mode secret key which can be found in Omise Dashboard' ) 
-						),
-						'live_public_key' => array (
-								'title' => __ ( 'Public key for live', $this->gateway_name ),
-								'type' => 'text',
-								'description' => __ ( 'The "Live" mode public key which can be found in Omise Dashboard' ) 
-						),
-						'live_private_key' => array (
-								'title' => __ ( 'Secret key for live', $this->gateway_name ),
-								'type' => 'password',
-								'description' => __ ( 'The "Live" mode secret key which can be found in Omise Dashboard' ) 
-						)
+				$this->form_fields = array(
+					'enabled' => array(
+							'title'       => __( 'Enable/Disable', $this->gateway_name ),
+							'type'        => 'checkbox',
+							'label'       => __( 'Enable Omise Payment Module.', $this->gateway_name ),
+							'default'     => 'no'
+					),
+					'sandbox' => array(
+							'title'       => __( 'Sandbox', $this->gateway_name ),
+							'type'        => 'checkbox',
+							'label'       => __( 'Sandbox mode means everything is in TEST mode', $this->gateway_name ),
+							'default'     => 'yes'
+					),
+					'omise_3ds' => array(
+							'title'       => __( '3DSecure Support', $this->gateway_name ),
+							'type'        => 'checkbox',
+							'label'       => __( 'Enables 3DSecure on this account', $this->gateway_name ),
+							'default'     => 'no'
+					),
+					'title' => array(
+							'title'       => __( 'Title:', $this->gateway_name ),
+							'type'        => 'text',
+							'description' => __( 'This controls the title which the user sees during checkout.', $this->gateway_name ),
+							'default'     => __( 'Omise payment gateway', $this->gateway_name )
+					),
+					'description' => array(
+							'title'       => __( 'Description:', $this->gateway_name ),
+							'type'        => 'textarea',
+							'description' => __( 'This controls the description which the user sees during checkout.', $this->gateway_name ),
+							'default'     => __( 'Omise payment gateway.', $this->gateway_name )
+					),
+					'test_public_key'     => array(
+							'title'       => __( 'Public key for test', $this->gateway_name ),
+							'type'        => 'text',
+							'description' => __( 'The "Test" mode public key which can be found in Omise Dashboard' )
+					),
+					'test_private_key' => array(
+							'title'       => __( 'Secret key for test', $this->gateway_name ),
+							'type'        => 'password',
+							'description' => __( 'The "Test" mode secret key which can be found in Omise Dashboard' )
+					),
+					'live_public_key' => array(
+							'title'       => __( 'Public key for live', $this->gateway_name ),
+							'type'        => 'text',
+							'description' => __( 'The "Live" mode public key which can be found in Omise Dashboard' )
+					),
+					'live_private_key' => array(
+							'title'       => __( 'Secret key for live', $this->gateway_name ),
+							'type'        => 'password',
+							'description' => __( 'The "Live" mode secret key which can be found in Omise Dashboard' )
+					)
 				);
 			}
-			
+
 			/**
 			 * Settings on Admin page
 			 * @see WC_Settings_API::admin_options()
 			 */
 			public function admin_options() {
-				echo '<h3>' . __ ( 'Omise Payment Gateway', $this->gateway_name ) . '</h3>';
-				echo '<p>' . __ ( 'Omise payment gateway. The first PCI 3.0 certified payment gateway in Thailand' ) . '</p>';
+				echo '<h3>' . __( 'Omise Payment Gateway', $this->gateway_name ) . '</h3>';
+				echo '<p>' . __( 'Omise payment gateway. The first PCI 3.0 certified payment gateway in Thailand' ) . '</p>';
 				echo '<table class="form-table">';
-				$this->generate_settings_html ();
+				$this->generate_settings_html();
 				echo '</table>';
 			}
-			
+
 			/**
 			 * Payment fields which will be rendered on checkout page
 			 * @see WC_Payment_Gateway::payment_fields()
 			 */
 			function payment_fields() {
-				if (is_user_logged_in ()) {
-					$viewData ["user_logged_in"] = true;
-					$current_user = wp_get_current_user ();
+				if ( is_user_logged_in() ) {
+					$viewData["user_logged_in"] = true;
+					$current_user = wp_get_current_user();
 					$omise_customer_id = $this->sandbox ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
-					if (! empty ( $omise_customer_id )) {
-						$cards = Omise::get_customer_cards ( $this->private_key, $omise_customer_id );
-						$viewData ["existingCards"] = $cards;
+					if ( ! empty( $omise_customer_id ) ) {
+						$cards = Omise::get_customer_cards( $this->private_key, $omise_customer_id );
+						$viewData["existingCards"] = $cards;
 					}
 				} else {
 					$viewData["user_logged_in"] = false;
 				}
 
-				Omise_Util::render_view ( 'includes/templates/omise-payment-form.php', $viewData );
+				Omise_Util::render_view( 'includes/templates/omise-payment-form.php', $viewData );
 			}
-			
+
 			/**
 			 * Process payment
 			 * 
 			 * @see WC_Payment_Gateway::process_payment()
 			 */
-			public function process_payment($order_id) {				
-				$order = wc_get_order ( $order_id );
-				$token = isset ( $_POST ['omise_token'] ) ? wc_clean ( $_POST ['omise_token'] ) : '';
-				$card_id = isset ( $_POST ['card_id'] ) ? wc_clean ( $_POST ['card_id'] ) : '';
-				try{
-					if (empty ( $token ) && empty ( $card_id )) {
-						throw new Exception ( "Please select a card or enter new payment information." );
+			public function process_payment( $order_id ) {				
+				$order   = wc_get_order( $order_id );
+				$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
+				$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
+				try {
+					if ( empty( $token ) && empty( $card_id ) ) {
+						throw new Exception( "Please select a card or enter new payment information." );
 					}
 
 					$user = $order->get_user ();
 					$omise_customer_id = $this->sandbox ? $user->test_omise_customer_id : $user->live_omise_customer_id;
-					
+
 					if (isset ( $_POST ['omise_save_customer_card'] ) && empty($card_id)) {
 						if (empty($token)){
 							throw new Exception ( "Omise card token is required." );
 						}
-						
+
 						if (! empty ( $omise_customer_id )) {
 							// attach a new card to customer
 							$omise_customer = Omise::create_card ( $this->private_key, $omise_customer_id, $token );
-							
+
 							if($omise_customer->object=="error"){
 								throw new Exception($omise_customer->message);
 							}
-							
+
 							$card_id = $omise_customer->cards->data [$omise_customer->cards->total - 1]->id;
 						} else {
 							$description = "WooCommerce customer " . $user->id;
@@ -173,20 +164,20 @@ function register_omise_wc_gateway_plugin() {
 									"description" => $description,
 									"card" => $token 
 							);
-							
+
 							$omise_customer = Omise::create_customer ( $this->private_key, $customer_data );
-							
+
 							if($omise_customer->object=="error"){
 								throw new Exception($omise_customer->message);
 							}
-							
+
 							$omise_customer_id = $omise_customer->id;
 							if($this->sandbox){
 								update_user_meta ( $user->ID, 'test_omise_customer_id', $omise_customer_id );
 							}else{
 								update_user_meta ( $user->ID, 'live_omise_customer_id', $omise_customer_id );
 							}
-							
+
 							if (0 == sizeof ( $omise_customer->cards->data )) {
 								throw new Exception ( "Something wrong with Omise gateway. No card available for creating a charge." );
 							}
@@ -194,7 +185,7 @@ function register_omise_wc_gateway_plugin() {
 							$card_id = $card->id;
 						}
 					}
-					
+
 					$success        = false;
 					$order_currency = $order->get_order_currency();
 					if ( 'THB' === strtoupper( $order_currency ) )
@@ -235,7 +226,7 @@ function register_omise_wc_gateway_plugin() {
 						add_post_meta($post_id, '_wc_order_id', $order_id);
 						add_post_meta($post_id, '_wc_confirmed_url', $this->get_return_url($order));
 					}
-					
+
 					$success = false;
 					if ($this->omise_3ds) {
 						return array (
@@ -269,26 +260,26 @@ function register_omise_wc_gateway_plugin() {
 					);
 				}
 			}
-			
+
 			private function is_charge_success($result){
 				return isset ( $result->id ) && isset( $result->object ) && $result->object == 'charge' && $result->captured == true;
 			}
-			
+
 			private function get_charge_error_message($result){
 				$message = "";
 				
 				if(isset($result->message) && !empty($result->message)){
 					$message .= $result->message." ";
 				}
-				
+
 				if(isset($result->failure_code) && !empty($result->failure_code)){
 					$message .= "[".$result-> failure_code."] ";
 				}
-				
+
 				if(isset($result->failure_message) && !empty($result->failure_message)){
 					$message .= $result-> failure_message;
 				}
-				
+
 				return trim($message);
 			}
 
@@ -381,12 +372,12 @@ function register_omise_wc_gateway_plugin() {
 		}
 	}
 
-	function add_omise_gateway($methods) {
+	function add_omise_gateway( $methods ) {
 		$methods [] = 'WC_Gateway_Omise';
 		return $methods;
 	}
-	
-	add_filter ( 'woocommerce_payment_gateways', 'add_omise_gateway' );
+
+	add_filter( 'woocommerce_payment_gateways', 'add_omise_gateway' );
 }
 
 function register_omise_wc_gateway_post_type() {
