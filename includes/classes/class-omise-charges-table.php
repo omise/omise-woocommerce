@@ -52,6 +52,7 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
                 'chrg_paid'       => __( 'Paid' ),
                 'chrg_failure'    => __( 'Failure Message' ),
                 'chrg_datetime'   => __( 'Created' ),
+                'chrg_action'     => '',
             );
         }
 
@@ -94,6 +95,14 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
 
         function column_chrg_datetime( $record ) {
             echo Omise_Util::date_format( $record['created'] );
+        }
+
+        function column_chrg_action( $record ) {
+            if ( true === $record['authorized'] && false === $record['captured'] ) {
+                echo "<button>capture</button>";
+            }
+
+            echo "<a href='" . OmisePluginHelperTransaction::url( $record ) . "'>view detail</a>";
         }
     }
 }
