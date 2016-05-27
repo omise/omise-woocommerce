@@ -409,7 +409,13 @@ function register_omise_wc_gateway_plugin() {
 		return $methods;
 	}
 
+	function add_omise_capture_action( $order_actions ) {
+		$order_actions['omise_charge_capture'] = __( "Capture charge (via Omise)" );
+		return $order_actions;
+	}
+
 	add_filter( 'woocommerce_payment_gateways', 'add_omise_gateway' );
+	add_filter( 'woocommerce_order_actions', 'add_omise_capture_action' );
 }
 
 function register_omise_wc_gateway_post_type() {
