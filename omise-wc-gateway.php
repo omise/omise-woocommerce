@@ -256,7 +256,12 @@ function register_omise_wc_gateway_plugin() {
 							'redirect' => $result->authorize_uri
 						);
 					} else {
-						$success = $this->is_charge_success($result);
+						// Auto capture or not?
+						if ( "auto_capture" === $this->payment_action ) {
+							$success = $this->is_charge_success( $result );
+						} else if ( "manual_capture" === $this->payment_action ) {
+							$success = $this->is_authorized_success( $result );
+						}
 					}
 
 					if ($success) {
@@ -281,6 +286,16 @@ function register_omise_wc_gateway_plugin() {
 							'redirect' => ''
 					);
 				}
+			}
+
+			private function is_authorized_success( $result ) {
+				if ( ! isset( $result->object ) || 'charge' !== $result->object )
+				    return false;
+
+				if ( true === $charge['authorized'] )
+				    return true;
+
+				return false;
 			}
 
 			private function is_charge_success($result){
