@@ -27,10 +27,10 @@ Installation Guide
 =============
 
 1. Download the latest release packed as zip format from Releases page: https://github.com/omise/omise-woocommerce/releases
-( latest: https://github.com/omise/omise-woocommerce/archive/v1.1.1.zip )
+( latest: https://github.com/omise/omise-woocommerce/archive/v1.2.0.zip )
 
 2. Install plugin in wordpress using Plugin Upload method, i.e. https://yourwebsite.com/wp-admin/plugin-install.php?tab=upload 
-and upload omise-woocommerce-1.1.1.zip
+and upload omise-woocommerce-1.2.0.zip
 
 3. Activate Omise plugin
 
