@@ -154,6 +154,8 @@ function register_omise_wc_gateway_plugin() {
 				$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
 				$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
 				try {
+					$order->add_order_note( "Starting to process payment with Omise" );
+
 					if ( empty( $token ) && empty( $card_id ) ) {
 						throw new Exception( "Please select a card or enter new payment information." );
 					}
@@ -245,6 +247,7 @@ function register_omise_wc_gateway_plugin() {
 						throw new Exception( Omise_Charge::get_error_message( $charge ) );
 
 					if ( $this->omise_3ds ) {
+						$order->add_order_note( "Processing payment with Omise 3D-Secure" );
 						return array (
 							'result'   => 'success',
 							'redirect' => $charge['authorize_uri'],
