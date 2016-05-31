@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+[1.2.0] 2016-06-01
+------------
+- *`Added`* manual capture feature
+- *`Added`* supported JPY currency
+- *`Added`* shortcut menu to Omise's setting page
+- *`Added`* Included Omise-PHP 2.4.1 library to the project.
+- *`Improved`* Redesigned Omise Dashboard
+- *`Improved`* Re-ordered fields in Omise Setting page.
+- *`Improved`* Better handle error cases (error messages)
+- *`Improved`* Better handle WC order note to trace Omise's actions back.
+- *`Improved`* Revised PHP code to following the WordPress Coding Standards.
+- *`Improved`* Fixed/Improved various things.
+
 [1.1.1] 2015-11-16
 ------------
 - *`Added`* Added Omise-Version into the cURL request header.
