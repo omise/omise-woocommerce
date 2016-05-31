@@ -98,7 +98,7 @@ function register_omise_wc_gateway_plugin() {
 					'omise_3ds' => array(
 						'title'       => __( '3DSecure Support', $this->gateway_name ),
 						'type'        => 'checkbox',
-						'label'       => __( 'Enables 3DSecure on this account', $this->gateway_name ),
+						'label'       => __( 'Enables 3DSecure on this account (does not support for Japan account)', $this->gateway_name ),
 						'default'     => 'no'
 					),
 					'description' => array(
@@ -148,6 +148,8 @@ function register_omise_wc_gateway_plugin() {
 			 * @see WC_Payment_Gateway::process_payment()
 			 */
 			public function process_payment( $order_id ) {
+				Omise_Hooks::set_omise_user_agent();
+
 				$order   = wc_get_order( $order_id );
 				$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
 				$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
@@ -298,16 +300,16 @@ function register_omise_wc_gateway_plugin() {
 				}
 			}
 
-			private function register_omise_charge_post( $result, $order, $order_id ) {
+			private function register_omise_charge_post( $charge, $order, $order_id ) {
 				$post_id = wp_insert_post(
 					array(
-						'post_title'  => 'Omise Charge Id ' . $result->id,
+						'post_title'  => 'Omise Charge Id ' . $charge['id'],
 						'post_type'   => 'omise_charge_items',
 						'post_status' => 'publish'
 					)
 				);
 
-				add_post_meta( $post_id, '_omise_charge_id', $result->id );
+				add_post_meta( $post_id, '_omise_charge_id', $charge['id'] );
 				add_post_meta( $post_id, '_wc_order_id', $order_id );
 				add_post_meta( $post_id, '_wc_confirmed_url', $this->get_return_url( $order ) );
 			}

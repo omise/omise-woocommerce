@@ -55,13 +55,15 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 		 * @return void
 		 */
 		public function charge_capture( $order ) {
+			Omise_Hooks::set_omise_user_agent();
+
 			try {
 				$post = Omise_Charge::get_post_charge( $order->id );
 				if ( ! $post )
 					throw new Exception( 'Order id was not found' );
 
 				$id = Omise_Charge::get_charge_id_from_post( $post );
-				if ( $id === '' )
+				if ( is_null( $id ) || $id === '' )
 					throw new Exception( 'Charge id was not found' );
 
 				$charge = OmiseCharge::retrieve( $id, '', $this->secret_key );
@@ -82,6 +84,8 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 		 * @return void
 		 */
 		public function charge_3ds_callback() {
+			Omise_Hooks::set_omise_user_agent();
+
 			try {
 				if ( ! isset( $_GET['order_id'] ) )
 					throw new Exception( "Order was not found. Please check carefully, your card might be charged already, contact our support if possible." );
@@ -156,6 +160,16 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 
 			wp_die( "Access denied", "Access Denied", array( 'response' => 401 ) );
 			die();
+		}
+
+		public static function set_omise_user_agent() {
+			// Set OMISE_USER_AGENT_SUFFIX
+			global $wp_version;
+
+			$user_agent  = "OmiseWooCommerce/" . OMISE_WOOCOMMERCE_PLUGIN_VERSION;
+			$user_agent .= " WordPress/" . $wp_version;
+			$user_agent .= " WooCommerce/" . WC_VERSION;
+			defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', $user_agent );
 		}
 	}
 }
