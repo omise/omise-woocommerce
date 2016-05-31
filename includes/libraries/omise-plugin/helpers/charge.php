@@ -29,13 +29,24 @@ if (! class_exists('OmisePluginHelperCharge')) {
          * @param \omise-php\OmiseCharge $charge
          * @return boolean
          */
-        public static function isAuthorized($charge)
+        public static function isChargeObject($charge)
         {
             if (! isset($charge['object']) || $charge['object'] !== 'charge')
                 return false;
 
-            if ($charge['authorized'] === true)
-                return true;
+            return true;
+        }
+
+        /**
+         * @param \omise-php\OmiseCharge $charge
+         * @return boolean
+         */
+        public static function isAuthorized($charge)
+        {
+            if (self::isChargeObject($charge)) {
+                if ($charge['authorized'] === true)
+                    return true;
+            }
 
             return false;
         }
@@ -46,12 +57,30 @@ if (! class_exists('OmisePluginHelperCharge')) {
          */
         public static function isPaid($charge)
         {
-            if (! isset($charge['object']) || $charge['object'] !== 'charge')
-                return false;
+            if (self::isChargeObject($charge)) {
+                // support Omise API version '2014-07-27' by checking if 'captured' exist.
+                $paid = isset($charge['captured']) ? $charge['captured'] : $charge['paid'];
+                if ($paid === true)
+                    return true;
+            }
 
-            // support Omise API version '2014-07-27' by checking if 'captured' exist.
-            $paid = isset($charge['captured']) ? $charge['captured'] : $charge['paid'];
-            if ($paid === true)
+            return false;
+        }
+
+        /**
+         * @param \omise-php\OmiseCharge $charge
+         * @return boolean
+         */
+        public static function isFailed($charge)
+        {
+            if (! self::isChargeObject($charge))
+                return true;
+
+            if ((! is_null($charge['failure_code']) && $charge['failure_code'] !== "")
+                || (! is_null($charge['failure_message']) && $charge['failure_message'] !== ""))
+                return true;
+
+            if (strtoupper($charge['status']) === 'FAILED')
                 return true;
 
             return false;

@@ -98,10 +98,6 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
         }
 
         function column_chrg_action( $record ) {
-            if ( true === $record['authorized'] && false === $record['captured'] ) {
-                echo "<button>capture</button>";
-            }
-
             echo "<a href='" . OmisePluginHelperTransaction::url( $record ) . "'>view detail</a>";
         }
     }

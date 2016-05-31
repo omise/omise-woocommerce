@@ -29,17 +29,25 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			return self::$instance;
 		}
 
+		/**
+		 * Register Omise to WordPress, WooCommerce 
+		 * @return void
+		 */
 		public function register_admin_page_and_actions() {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return;
 			}
 
-			add_action( 'woocommerce_order_action_omise_charge_capture', array( $this, 'charge_capture' ) );
+			add_action( 'woocommerce_order_action_omise_charge_capture', array( Omise_Hooks::get_instance(), 'charge_capture' ) );
 			add_action( 'admin_post_omise_create_transfer', array( $this, 'create_transfer' ) );
 			add_action( 'admin_post_nopriv_omise_create_transfer', array( $this, 'no_op' ) );
 			add_action( 'admin_menu', array( $this, 'add_dashboard_omise_menu' ) );
 		}
 
+		/**
+		 * Add Omise menu to sidebar admin menu
+		 * @return void
+		 */
 		public function add_dashboard_omise_menu() {
 			add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array( $this, 'init_dashboard' ) );
 			add_submenu_page( 'omise-plugin-admin-page', 'Omise Dashboard', 'Dashboard', 'manage_options', 'omise-plugin-admin-page' );
@@ -74,37 +82,6 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 		public function no_op() {
 			exit( "Not permitted" );
-		}
-
-		public function charge_capture( $order ) {
-			$posts = get_posts( array(
-				'post_type'   => 'omise_charge_items',
-				'meta_query'  => array( array(
-					'key'     => '_wc_order_id',
-					'value'   => $order->id,
-					'compare' => '='
-				) )
-			) );
-
-			if ( empty( $posts ) )
-				return;
-
-			$charge_id  = get_post_custom_values( '_omise_charge_id', $posts[0]->ID );
-			$charge_id  = $charge_id[0];
-
-			try {
-				$charge_obj = OmiseCharge::retrieve( $charge_id, '', $this->private_key );
-				$charge_obj->capture();
-
-				if ( OmisePluginHelperCharge::isPaid( $charge_obj ) ) {
-					$order->payment_complete();
-					$order->add_order_note( 'Payment with Omise successful (manual captured)' );
-				} else {
-					throw new Exception( "Error Processing Request", 1 );
-				}
-			} catch ( Exception $e ) {
-				$order->add_order_note( $e->getMessage() );
-			}
 		}
 
 		public function create_transfer() {
@@ -204,7 +181,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 					Omise_Util::render_view ( 'includes/templates/omise-wp-admin-page.php', $viewData );
 
-					$this->register_dashboard_script ();
+					$this->register_dashboard_script();
 				} else {
 					echo "<div class='wrap'><div class='error'>Unable to get the balance information. Please verify that your private key is valid. [" . esc_html( $balance->message ) . "]</div></div>";
 				}
