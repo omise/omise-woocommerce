@@ -36,6 +36,7 @@ add_action( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
 // Include these files only when we are in the admin pages
 if ( is_admin() ) {
     require_once dirname( __FILE__ ) . '/includes/classes/class-omise-charges-table.php';
+    require_once dirname( __FILE__ ) . '/includes/classes/class-omise-transfers-table.php';
 
     add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_page_and_actions' ) );
 }
