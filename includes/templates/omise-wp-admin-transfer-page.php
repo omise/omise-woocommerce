@@ -62,19 +62,15 @@
 		<h1>Transfers History</h1>
 
 		<h2 class="nav-tab-wrapper wp-clearfix">
-			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'omise_list_transfer' ), admin_url( 'admin.php' ) ) ); ?>" class="nav-tab nav-tab-active"><?php esc_html_e( 'Transfers' ); ?></a>
+			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'omise-plugin-admin-transfer-page' ), admin_url( 'admin.php' ) ) ); ?>" class="nav-tab nav-tab-active"><?php esc_html_e( 'Transfers' ); ?></a>
 		</h2>
 
-		<!-- Charge list -->
-		<div id="Omise-ChargeList">
-			<form id="Omise-ChargeFilters" method="GET">
-				<input type="hidden" name="page" value="Omise-dashboard" />
-				<?php
-				$transfer_table = new Omise_Transfers_Table( $transfers );
-				$transfer_table->prepare_items();
-				$transfer_table->display();
-				?>
-			</form>
+		<div id="Omise-TransferList">
+			<?php
+			$transfer_table = new Omise_Transfers_Table( $transfers );
+			$transfer_table->prepare_items();
+			$transfer_table->display();
+			?>
 		</div>
 	<?php endif; ?>
 
