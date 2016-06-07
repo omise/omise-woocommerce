@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die ( "No direct script access allowed." );
+defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( ! class_exists( 'Omise_Admin' ) ) {
 	class Omise_Admin {
@@ -30,7 +30,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		}
 
 		/**
-		 * Register Omise to WordPress, WooCommerce 
+		 * Register Omise to WordPress, WooCommerce
 		 * @return void
 		 */
 		public function register_admin_page_and_actions() {
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			$message = "";
 
 			if( isset( $transfer->message ) && ! empty( $transfer->message ) ) {
-				$message .= $transfer->message." ";
+				$message .= $transfer->message . " ";
 			}
 
 			if ( isset( $transfer->failure_code ) && ! empty( $transfer->failure_code ) ) {
@@ -155,10 +155,14 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			return trim($message);
 		}
 
-		public function init_dashboard() {
+		/**
+		 * Retrieve and prepare balance and account information
+		 * @return mixed
+		 */
+		function init() {
 			try {
 				$balance = Omise::get_balance( $this->private_key );
-				
+
 				if ( $balance->object == 'balance' ) {
 					$omise_account = OmiseAccount::retrieve( '', $this->private_key );
 
@@ -166,45 +170,53 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 					$viewData['support_3dsecure'] = $this->support_3dsecure === 'yes' ? 'ENABLED' : 'DISABLED';
 					$viewData['balance']          = $balance;
 					$viewData['email']            = $omise_account['email'];
-					$viewData['charges']          = $this->list_charges();
 
-					$this->extract_result_message( $viewData );
-
-					Omise_Util::render_view ( 'includes/templates/omise-wp-admin-page.php', $viewData );
-
-					$this->register_dashboard_script();
+					return $viewData;
 				} else {
 					echo "<div class='wrap'><div class='error'>Unable to get the balance information. Please verify that your private key is valid. [" . esc_html( $balance->message ) . "]</div></div>";
+					die();
 				}
+			} catch ( Exception $e ) {
+				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage() ) . "</div></div>";
+			}
+		}
+
+		/**
+		 * Retrieve charges and render page
+		 * @return void
+		 */
+		public function init_dashboard() {
+			$viewData = $this->init();
+
+			try {
+				$viewData['charges'] = $this->list_charges();
+				$this->render_view( 'includes/templates/omise-wp-admin-page.php', $viewData );
 			} catch( Exception $e ) {
 				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage () ) . "</div></div>";
 			}
 		}
 
+		/**
+		 * Retrieve transfers and render page
+		 * @return void
+		 */
 		public function init_transfers() {
+			$viewData = $this->init();
+
 			try {
-				$balance = Omise::get_balance( $this->private_key );
-				
-				if ( $balance->object == 'balance' ) {
-					$omise_account = OmiseAccount::retrieve( '', $this->private_key );
-
-					$viewData['auto_capture']     = $this->payment_action === 'auto_capture' ? 'YES' : 'NO';
-					$viewData['support_3dsecure'] = $this->support_3dsecure === 'yes' ? 'ENABLED' : 'DISABLED';
-					$viewData['balance']          = $balance;
-					$viewData['email']            = $omise_account['email'];
-					$viewData['transfers']        = $this->list_transfers();
-
-					$this->extract_result_message( $viewData );
-
-					Omise_Util::render_view ( 'includes/templates/omise-wp-admin-transfer-page.php', $viewData );
-
-					$this->register_dashboard_script();
-				} else {
-					echo "<div class='wrap'><div class='error'>Unable to get the balance information. Please verify that your private key is valid. [" . esc_html( $balance->message ) . "]</div></div>";
-				}
-			} catch( Exception $e ) {
-				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage () ) . "</div></div>";
+				$viewData['transfers'] = $this->list_transfers();
+				$this->render_view( 'includes/templates/omise-wp-admin-transfer-page.php', $viewData );
+			} catch ( Exception $e ) {
+				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage() ) . "</div></div>";
 			}
+		}
+
+		function render_view( $view, $viewData ) {
+			$this->extract_result_message( $viewData );
+
+			Omise_Util::render_view( $view, $viewData );
+
+			$this->register_dashboard_script();
 		}
 
 		function extract_result_message( &$viewData ) {
@@ -227,13 +239,13 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			$limit  = 10;
 			$offset = $paged > 1 ? ( $paged - 1 ) * $limit : 0;
 			$order  = 'reverse_chronological';
-			
+
 			$filters = '?' . http_build_query( array(
 					'limit'  => $limit,
 					'offset' => $offset,
 					'order'  => $order
 			) );
-			
+
 			return OmiseCharge::retrieve( $filters, '', $this->private_key );
 		}
 
@@ -242,13 +254,13 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			$limit  = 10;
 			$offset = $paged > 1 ? ( $paged - 1 ) * $limit : 0;
 			$order  = 'reverse_chronological';
-			
+
 			$filters = '?' . http_build_query( array(
 					'limit'  => $limit,
 					'offset' => $offset,
 					'order'  => $order
 			) );
-			
+
 			return OmiseTransfer::retrieve( $filters, '', $this->private_key );
 		}
 	}
