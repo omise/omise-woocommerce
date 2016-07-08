@@ -3,7 +3,7 @@
 <div class='wrap'>
 	<?php if ( isset( $viewData['balance'] ) ) : ?>
 
-		<?php require_once ('omise-wp-admin-page-main.php'); ?>
+		<?php Omise_Util::render_partial( 'header', $viewData ); ?>
 
 		<h1>Transfers History</h1>
 
