@@ -174,7 +174,6 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 					return $viewData;
 				} else {
 					echo "<div class='wrap'><div class='error'>Unable to get the balance information. Please verify that your private key is valid. [" . esc_html( $balance->message ) . "]</div></div>";
-					die();
 				}
 			} catch ( Exception $e ) {
 				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage() ) . "</div></div>";
