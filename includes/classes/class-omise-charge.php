@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die ( "No direct script access allowed." );
+defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( ! class_exists( 'Omise_Charge' ) ) {
 	class Omise_Charge {
@@ -98,7 +98,7 @@ if ( ! class_exists( 'Omise_Charge' ) ) {
 		
 		/**
 		 * Retrieve the charge information by Omise secret key
-		 * 
+		 *
 		 * @param  string $private_key The Omise secret key
 		 * @return object OmisCharge
 		 */
@@ -109,9 +109,9 @@ if ( ! class_exists( 'Omise_Charge' ) ) {
 			$order  = 'reverse_chronological';
 		
 			$filters = '?' . http_build_query( array(
-					'limit'  => $limit,
-					'offset' => $offset,
-					'order'  => $order
+				'limit'  => $limit,
+				'offset' => $offset,
+				'order'  => $order
 			) );
 		
 			return OmiseCharge::retrieve( $filters, '', $private_key );
