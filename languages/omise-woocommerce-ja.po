@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-07-10 12:37+0700\n"
-"PO-Revision-Date: 2016-07-12 15:04+0700\n"
+"POT-Creation-Date: 2016-07-12 16:00+0700\n"
+"PO-Revision-Date: 2016-07-12 16:05+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -85,6 +85,72 @@ msgstr "振込は完了していませんでした"
 #: includes/classes/class-omise-hooks.php:156 omise-wc-gateway.php:297
 msgid "Payment error"
 msgstr "決済エラー"
+
+#: includes/templates/omise-cc-form.php:2
+msgctxt "Card holder name at payment form"
+msgid "Name"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:4
+msgctxt "Placeholder for card holder name"
+msgid "Name"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:8
+msgctxt "Card number at payment form"
+msgid "Card Number"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:10
+msgctxt "Placeholder for card number"
+msgid "Card Number"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:14
+msgctxt "Expiration month at payment form"
+msgid "Expiration Month"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:16
+msgctxt "Placeholder for expiration month"
+msgid "MM"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:19
+msgctxt "Expiration year at payment form"
+msgid "Expiration Year"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:21
+msgctxt "Placeholder for expiration year"
+msgid "YYYY"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:25
+msgctxt "Security Code at payment form"
+msgid "Security Code"
+msgstr ""
+
+#: includes/templates/omise-cc-form.php:28
+msgctxt "Placeholder for security Code"
+msgid "Security Code"
+msgstr ""
+
+#: includes/templates/omise-payment-form.php:7
+msgid "Select card"
+msgstr ""
+
+#: includes/templates/omise-payment-form.php:11
+msgid "Card ends with"
+msgstr ""
+
+#: includes/templates/omise-payment-form.php:15
+msgid "New payment information"
+msgstr ""
+
+#: includes/templates/omise-payment-form.php:24
+msgid "Save card for next time"
+msgstr ""
 
 #: includes/templates/omise-wp-admin-page.php:4
 msgid "Omise Dashboard"
