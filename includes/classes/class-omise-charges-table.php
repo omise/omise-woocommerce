@@ -7,6 +7,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 
 if ( ! class_exists( 'Omise_Charges_Table' ) ) {
     class Omise_Charges_Table extends WP_List_Table {
+
         function __construct( $omise_list_object ) {            
             parent::__construct( array(
                 'singular' => 'omise_charge',
@@ -18,7 +19,11 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
         }
 
         function get_table_classes() {
-            return array( 'widefat', 'striped', $this->_args['plural'] );
+            return array(
+                'widefat',
+                'striped',
+                $this->_args['plural']
+            );
         }
 
         function prepare_items() {
@@ -34,14 +39,19 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
             $this->set_pagination_args( array(
                 'total_items' => $totalitems,
                 'total_pages' => $totalpages,
-                'per_page'    => $perpage,
+                'per_page'    => $perpage
             ) );
 
-            $this->_column_headers = array( $columns, $hidden, $sortable );
+            $this->_column_headers = array(
+                $columns,
+                $hidden,
+                $sortable
+            );
 
             // Clear item property to call `no_items` method.
-            if ( $this->items['total'] <= 0 )
+            if ( $this->items['total'] <= 0 ) {
                 $this->items = array();
+            }
         }
 
         function get_columns() {
