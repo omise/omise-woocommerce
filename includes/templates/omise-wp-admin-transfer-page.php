@@ -12,11 +12,14 @@
 		</h2>
 
 		<div id="Omise-TransferList">
-			<?php
-			$transfer_table = new Omise_Transfers_Table( $viewData["transfers"] );
-			$transfer_table->prepare_items();
-			$transfer_table->display();
-			?>
+			<form method="get">
+				<input type="hidden" name="page" value="omise-plugin-admin-transfer-page" />
+				<?php
+				$transfer_table = new Omise_Transfers_Table( $viewData["transfers"] );
+				$transfer_table->prepare_items();
+				$transfer_table->display();
+				?>
+			</form>
 		</div>
 	<?php endif; ?>
 </div>
