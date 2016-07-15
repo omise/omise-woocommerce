@@ -68,7 +68,7 @@ return array(
 		'label'       => Omise_Card_Image::get_amex_image(),
 		'css'         => Omise_Card_Image::get_css(),
 		'default'     => Omise_Card_Image::get_amex_default_display(),
-		'description' => __( 'This controls the credit card icons to display on checkout.<br />It is not related to card processing on Omise payment gateway.' )
+		'description' => __( 'This controls the card icons to display on checkout.<br />It is not related to card processing on Omise payment gateway.' )
 	),
 	'title' => array(
 		'title'       => __( 'Title:', $this->gateway_name ),
