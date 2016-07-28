@@ -11,8 +11,12 @@ msgstr ""
 >>>>>>> Translate to Japanese
 =======
 "POT-Creation-Date: 2016-07-12 16:00+0700\n"
+<<<<<<< 25554923166e93ad9a5ce1d471c6c91658f465b1
 "PO-Revision-Date: 2016-07-12 16:05+0700\n"
 >>>>>>> Add words that need to translate
+=======
+"PO-Revision-Date: 2016-07-27 13:57+0700\n"
+>>>>>>> Add additional Japanese translation
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -204,68 +208,68 @@ msgstr "Omise ダッシュボード"
 #: includes/templates/omise-cc-form.php:2
 msgctxt "Card holder name at payment form"
 msgid "Name"
-msgstr ""
+msgstr "名"
 
 #: includes/templates/omise-cc-form.php:4
 msgctxt "Placeholder for card holder name"
 msgid "Name"
-msgstr ""
+msgstr "名"
 
 #: includes/templates/omise-cc-form.php:8
 msgctxt "Card number at payment form"
 msgid "Card Number"
-msgstr ""
+msgstr "カード番号"
 
 #: includes/templates/omise-cc-form.php:10
 msgctxt "Placeholder for card number"
 msgid "Card Number"
-msgstr ""
+msgstr "カード番号"
 
 #: includes/templates/omise-cc-form.php:14
 msgctxt "Expiration month at payment form"
 msgid "Expiration Month"
-msgstr ""
+msgstr "有効期間　月"
 
 #: includes/templates/omise-cc-form.php:16
 msgctxt "Placeholder for expiration month"
 msgid "MM"
-msgstr ""
+msgstr "月"
 
 #: includes/templates/omise-cc-form.php:19
 msgctxt "Expiration year at payment form"
 msgid "Expiration Year"
-msgstr ""
+msgstr "有効期間　年"
 
 #: includes/templates/omise-cc-form.php:21
 msgctxt "Placeholder for expiration year"
 msgid "YYYY"
-msgstr ""
+msgstr "年"
 
 #: includes/templates/omise-cc-form.php:25
 msgctxt "Security Code at payment form"
 msgid "Security Code"
-msgstr ""
+msgstr "セキュリティコード"
 
 #: includes/templates/omise-cc-form.php:28
 msgctxt "Placeholder for security Code"
 msgid "Security Code"
-msgstr ""
+msgstr "セキュリティコード"
 
 #: includes/templates/omise-payment-form.php:7
 msgid "Select card"
-msgstr ""
+msgstr "カードを選択"
 
 #: includes/templates/omise-payment-form.php:11
 msgid "Card ends with"
-msgstr ""
+msgstr "カードの最後の４桁"
 
 #: includes/templates/omise-payment-form.php:15
 msgid "New payment information"
-msgstr ""
+msgstr "新しいお支払い方法"
 
 #: includes/templates/omise-payment-form.php:24
 msgid "Save card for next time"
-msgstr ""
+msgstr "カードを保存する"
 
 #: includes/templates/omise-wp-admin-page.php:4
 msgid "Omise Dashboard"
@@ -476,8 +480,12 @@ msgstr "タイトル"
 
 #: omise-wc-gateway.php:86
 msgid "This controls the title which the user sees during checkout."
+<<<<<<< 25554923166e93ad9a5ce1d471c6c91658f465b1
 msgstr ""
 "ユーザーがチェックアウト時にみる、支払いオプションのタイトルを設定します"
+=======
+msgstr "チェックアウトページのタイトルを設定する"
+>>>>>>> Add additional Japanese translation
 
 #: omise-wc-gateway.php:87
 msgctxt "Default title"
@@ -528,7 +536,7 @@ msgstr "説明"
 
 #: omise-wc-gateway.php:107
 msgid "This controls the description which the user sees during checkout."
-msgstr ""
+msgstr "チェックアウトページの説明を設定する"
 
 #: omise-wc-gateway.php:108
 msgctxt "Default description"
@@ -545,11 +553,20 @@ msgid ""
 "Omise payment gateway, the first PCI 3.0 certified payment gateway in "
 "Thailand."
 msgstr ""
+<<<<<<< 25554923166e93ad9a5ce1d471c6c91658f465b1
 "Omiseは誰でも簡単にオンライン決済が導入できるサービスを提供しています。"
 
 #: omise-wc-gateway.php:157
 msgid "Starting to process payment with Omise"
 msgstr "Omise: 課金処理を開始します"
+=======
+"Omise payment gateway, the first PCI 3.0 certified payment gateway in "
+"Thailand."
+
+#: omise-wc-gateway.php:157
+msgid "Starting to process payment with Omise"
+msgstr "Omiseでの決済始まります"
+>>>>>>> Add additional Japanese translation
 
 #: omise-wc-gateway.php:160 omise-wc-gateway.php:229
 msgid "Please select a card or enter new payment information."
@@ -572,9 +589,13 @@ msgstr "Omiseのトークンが必要です"
 #: omise-wc-gateway.php:201
 msgid ""
 "Something wrong with Omise gateway. No card available for creating a charge."
+<<<<<<< 25554923166e93ad9a5ce1d471c6c91658f465b1
 msgstr ""
 "システムエラーが発生しました（課金情報を作成するための有効なカード情報が存在"
 "しません）。"
+=======
+msgstr "ご利用できるカードはありません"
+>>>>>>> Add additional Japanese translation
 
 #: omise-wc-gateway.php:241
 msgid "Charge was failed, please contact our support"
