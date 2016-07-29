@@ -3,34 +3,34 @@ defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 return array(
 	'enabled' => array(
-		'title'       => __( 'Enable/Disable', $this->gateway_name ),
+		'title'       => __( 'Enable/Disable' ),
 		'type'        => 'checkbox',
-		'label'       => __( 'Enable Omise Payment Module.', $this->gateway_name ),
+		'label'       => __( 'Enable Omise Payment Module.' ),
 		'default'     => 'no'
 	),
 	'sandbox' => array(
-		'title'       => __( 'Sandbox', $this->gateway_name ),
+		'title'       => __( 'Sandbox' ),
 		'type'        => 'checkbox',
-		'label'       => __( 'Sandbox mode means everything is in TEST mode', $this->gateway_name ),
+		'label'       => __( 'Sandbox mode means everything is in TEST mode' ),
 		'default'     => 'yes'
 	),
 	'test_public_key' => array(
-		'title'       => __( 'Public key for test', $this->gateway_name ),
+		'title'       => __( 'Public key for test' ),
 		'type'        => 'text',
 		'description' => __( 'The "Test" mode public key which can be found in Omise Dashboard' )
 	),
 	'test_private_key' => array(
-		'title'       => __( 'Secret key for test', $this->gateway_name ),
+		'title'       => __( 'Secret key for test' ),
 		'type'        => 'password',
 		'description' => __( 'The "Test" mode secret key which can be found in Omise Dashboard' )
 	),
 	'live_public_key' => array(
-		'title'       => __( 'Public key for live', $this->gateway_name ),
+		'title'       => __( 'Public key for live' ),
 		'type'        => 'text',
 		'description' => __( 'The "Live" mode public key which can be found in Omise Dashboard' )
 	),
 	'live_private_key' => array(
-		'title'       => __( 'Secret key for live', $this->gateway_name ),
+		'title'       => __( 'Secret key for live' ),
 		'type'        => 'password',
 		'description' => __( 'The "Live" mode secret key which can be found in Omise Dashboard' )
 	),
@@ -71,30 +71,30 @@ return array(
 		'description' => __( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.' )
 	),
 	'title' => array(
-		'title'       => __( 'Title:', $this->gateway_name ),
+		'title'       => __( 'Title:' ),
 		'type'        => 'text',
-		'description' => __( 'This controls the title which the user sees during checkout.', $this->gateway_name ),
-		'default'     => __( 'Omise Payment Gateway', $this->gateway_name )
+		'description' => __( 'This controls the title which the user sees during checkout.' ),
+		'default'     => __( 'Omise Payment Gateway' )
 	),
 	'payment_action' => array(
-		'title'       => __( 'Payment Action', $this->gateway_name ),
+		'title'       => __( 'Payment Action' ),
 		'type'        => 'select',
-		'description' => __( 'Manual Capture or Capture Automatically', $this->gateway_name ),
+		'description' => __( 'Manual Capture or Capture Automatically' ),
 		'default'     => 'auto_capture',
 		'class'       => 'wc-enhanced-select',
 		'options'     => $this->form_field_payment_actions(),
 		'desc_tip'    => true
 	),
 	'omise_3ds' => array(
-		'title'       => __( '3DSecure Support', $this->gateway_name ),
+		'title'       => __( '3DSecure Support' ),
 		'type'        => 'checkbox',
-		'label'       => __( 'Enables 3DSecure on this account (does not support for Japan account)', $this->gateway_name ),
+		'label'       => __( 'Enables 3DSecure on this account (does not support for Japan account)' ),
 		'default'     => 'no'
 	),
 	'description' => array(
-		'title'       => __( 'Description:', $this->gateway_name ),
+		'title'       => __( 'Description:' ),
 		'type'        => 'textarea',
-		'description' => __( 'This controls the description which the user sees during checkout.', $this->gateway_name ),
-		'default'     => __( 'Omise payment gateway.', $this->gateway_name )
+		'description' => __( 'This controls the description which the user sees during checkout.' ),
+		'default'     => __( 'Omise payment gateway.' )
 	)
 );
