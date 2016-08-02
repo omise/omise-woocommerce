@@ -124,9 +124,9 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		public static function is_amex_enabled( $setting ) {
 			if ( isset( $setting['accept_amex'] ) && $setting['accept_amex'] == 'yes' ) {
 				return true;
-			} else {
-				return false;
 			}
+
+			return false;
 		}
 
 		/**
@@ -138,9 +138,9 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		public static function is_diners_enabled( $setting ) {
 			if ( isset( $setting['accept_diners'] ) && $setting['accept_diners'] == 'yes' ) {
 				return true;
-			} else {
-				return false;
 			}
+
+			return false;
 		}
 
 		/**
@@ -152,9 +152,9 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		public static function is_jcb_enabled( $setting ) {
 			if ( isset( $setting['accept_jcb'] ) && $setting['accept_jcb'] == 'yes' ) {
 				return true;
-			} else {
-				return false;
 			}
+
+			return false;
 		}
 
 		/**
@@ -166,14 +166,14 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		public static function is_mastercard_enabled( $setting ) {
 			// Make it backward compatible. If the setting is not configured, the MasterCard logo is display by default.
 			if ( ! isset( $setting['accept_mastercard'] ) ) {
-				return true;
-			} else {
-				if ( $setting['accept_mastercard'] == 'yes' ) {
-					return true;
-				} else {
-					return false;
-				}
+				return self::get_mastercard_default_display();
 			}
+
+			if ( $setting['accept_mastercard'] == 'yes' ) {
+				return true;
+			}
+
+			return false;
 		}
 
 		/**
@@ -185,14 +185,14 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		public static function is_visa_enabled( $setting ) {
 			// Make it backward compatible. If the setting is not configured, the Visa logo is display by default.
 			if ( ! isset( $setting['accept_visa'] ) ) {
-				return true;
-			} else {
-				if ( $setting['accept_visa'] == 'yes' ) {
-					return true;
-				} else {
-					return false;
-				}
+				return self::get_visa_default_display();
 			}
+
+			if ( $setting['accept_visa'] == 'yes' ) {
+				return true;
+			}
+
+			return false;
 		}
 	}
 }
