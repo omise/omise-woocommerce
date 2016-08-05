@@ -5,7 +5,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 	class Omise_Card_Image {
 		/**
 		 * Compose the given parameters into the string of HTML &lt;img&gt; element
-		 * 
+		 *
 		 * @param string $file Image file name with extension such as image.jpg
 		 * @param string $alternate_text Alternate text for the image
 		 * @return string HTML &lt;img&gt; element
@@ -17,7 +17,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the default setting of display the American Express logo
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_amex_default_display() {
@@ -26,7 +26,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the HTML &lt;img&gt; element of American Express logo
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_amex_image() {
@@ -36,7 +36,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		/**
 		 * Return the CSS used to format the image to be displayed vertical center align with checkbox
 		 * at the back-end setting page
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_css() {
@@ -45,7 +45,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the default setting of display the Diners Club logo
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_diners_default_display() {
@@ -54,7 +54,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the HTML &lt;img&gt; element of Diners Club logo
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_diners_image() {
@@ -63,7 +63,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the default setting of display the JCB logo
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_jcb_default_display() {
@@ -72,7 +72,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the HTML &lt;img&gt; element of JCB logo
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_jcb_image() {
@@ -90,7 +90,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the HTML &lt;img&gt; element of MasterCard logo
-		 * 
+		 *
 		 * @return string
 		 */
 		public static function get_mastercard_image() {
@@ -108,7 +108,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Return the HTML &lt;img&gt; element of Visa logo
-		 * 
+		 *
 		 * @return string
 		 */
 		 public static function get_visa_image() {
@@ -117,7 +117,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Check whether the setting for American Express logo is configured and it was set to display or not display
-		 * 
+		 *
 		 * @param mixed $setting The array that contains key for checking the flag
 		 * @return boolean
 		 */
@@ -131,7 +131,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Check whether the setting for Diners Club logo is configured and it was set to display or not display
-		 * 
+		 *
 		 * @param mixed $setting The array that contains key for checking the flag
 		 * @return boolean
 		 */
@@ -145,7 +145,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Check whether the setting for JCB logo is configured and it was set to display or not display
-		 * 
+		 *
 		 * @param mixed $setting The array that contains key for checking the flag
 		 * @return boolean
 		 */
@@ -159,7 +159,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Check whether the setting for MasterCard logo is configured and it was set to display or not display
-		 * 
+		 *
 		 * @param mixed $setting The array that contains key for checking the flag
 		 * @return boolean
 		 */
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 
 		/**
 		 * Check whether the setting for Visa logo is configured and it was set to display or not display
-		 * 
+		 *
 		 * @param mixed $setting The array that contains key for checking the flag
 		 * @return boolean
 		 */
