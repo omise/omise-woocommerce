@@ -29,5 +29,3 @@
   - Charge a card
   - Save a card
   - Delete a card
-
-
