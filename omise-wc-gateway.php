@@ -15,22 +15,27 @@ function register_omise_wc_gateway_plugin() {
 				$this->id               = 'omise';
 				$this->method_title     = "Omise";
 				$this->has_fields       = true;
-				
+
 				// call base functions required for WooCommerce gateway
 				$this->init_form_fields();
 				$this->init_settings();
 
-				$this->title            = $this->settings['title'];
-				$this->description      = $this->settings['description'];
-				$this->sandbox          = isset( $this->settings['sandbox'] ) && $this->settings['sandbox'] == 'yes';
-				$this->payment_action   = $this->settings['payment_action'];
-				$this->omise_3ds        = isset( $this->settings['omise_3ds'] ) && $this->settings['omise_3ds'] == 'yes';
-				$this->test_private_key = $this->settings['test_private_key'];
-				$this->test_public_key  = $this->settings['test_public_key'];
-				$this->live_private_key = $this->settings['live_private_key'];
-				$this->live_public_key  = $this->settings['live_public_key'];
-				$this->public_key       = $this->sandbox ? $this->test_public_key : $this->live_public_key;
-				$this->private_key      = $this->sandbox ? $this->test_private_key : $this->live_private_key;
+				$this->title             = $this->settings['title'];
+				$this->description       = $this->settings['description'];
+				$this->sandbox           = isset( $this->settings['sandbox'] ) && $this->settings['sandbox'] == 'yes';
+				$this->payment_action    = $this->settings['payment_action'];
+				$this->omise_3ds         = isset( $this->settings['omise_3ds'] ) && $this->settings['omise_3ds'] == 'yes';
+				$this->test_private_key  = $this->settings['test_private_key'];
+				$this->test_public_key   = $this->settings['test_public_key'];
+				$this->live_private_key  = $this->settings['live_private_key'];
+				$this->live_public_key   = $this->settings['live_public_key'];
+				$this->public_key        = $this->sandbox ? $this->test_public_key : $this->live_public_key;
+				$this->private_key       = $this->sandbox ? $this->test_private_key : $this->live_private_key;
+				$this->accept_amex       = isset( $this->settings['accept_amex'] ) && $this->settings['accept_amex'] == 'yes';
+				$this->accept_diners     = isset( $this->settings['accept_diners'] ) && $this->settings['accept_diners'] == 'yes';
+				$this->accept_jcb        = isset( $this->settings['accept_jcb'] ) && $this->settings['accept_jcb'] == 'yes';
+				$this->accept_mastercard = isset( $this->settings['accept_mastercard'] ) && $this->settings['accept_mastercard'] == 'yes';
+				$this->accept_visa       = isset( $this->settings['accept_visa'] ) && $this->settings['accept_visa'] == 'yes';
 
 				add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( Omise_Hooks::get_instance(), 'charge_3ds_callback' ) );
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( &$this, 'process_admin_options' ) );
@@ -42,72 +47,7 @@ function register_omise_wc_gateway_plugin() {
 			 * @see WC_Settings_API::init_form_fields()
 			 */
 			function init_form_fields() {
-				$this->form_fields = array(
-					'enabled' => array(
-						'title'       => __( 'Enable/Disable', $this->gateway_name ),
-						'type'        => 'checkbox',
-						'label'       => __( 'Enable Omise Payment Module.', $this->gateway_name ),
-						'default'     => 'no'
-					),
-					'sandbox' => array(
-						'title'       => __( 'Sandbox', $this->gateway_name ),
-						'type'        => 'checkbox',
-						'label'       => __( 'Sandbox mode means everything is in TEST mode', $this->gateway_name ),
-						'default'     => 'yes'
-					),
-					'test_public_key' => array(
-						'title'       => __( 'Public key for test', $this->gateway_name ),
-						'type'        => 'text',
-						'description' => __( 'The "Test" mode public key which can be found in Omise Dashboard' )
-					),
-					'test_private_key' => array(
-						'title'       => __( 'Secret key for test', $this->gateway_name ),
-						'type'        => 'password',
-						'description' => __( 'The "Test" mode secret key which can be found in Omise Dashboard' )
-					),
-					'live_public_key' => array(
-						'title'       => __( 'Public key for live', $this->gateway_name ),
-						'type'        => 'text',
-						'description' => __( 'The "Live" mode public key which can be found in Omise Dashboard' )
-					),
-					'live_private_key' => array(
-						'title'       => __( 'Secret key for live', $this->gateway_name ),
-						'type'        => 'password',
-						'description' => __( 'The "Live" mode secret key which can be found in Omise Dashboard' )
-					),
-					'advanced' => array(
-						'title'       => __( 'Advanced options', 'woocommerce' ),
-						'type'        => 'title',
-						'description' => '',
-					),
-					'title' => array(
-						'title'       => __( 'Title:', $this->gateway_name ),
-						'type'        => 'text',
-						'description' => __( 'This controls the title which the user sees during checkout.', $this->gateway_name ),
-						'default'     => __( 'Omise Payment Gateway', $this->gateway_name )
-					),
-					'payment_action' => array(
-						'title'       => __( 'Payment Action', $this->gateway_name ),
-						'type'        => 'select',
-						'description' => __( 'Manual Capture or Capture Automatically', $this->gateway_name ),
-						'default'     => 'auto_capture',
-						'class'       => 'wc-enhanced-select',
-						'options'     => $this->form_field_payment_actions(),
-						'desc_tip'    => true
-					),
-					'omise_3ds' => array(
-						'title'       => __( '3DSecure Support', $this->gateway_name ),
-						'type'        => 'checkbox',
-						'label'       => __( 'Enables 3DSecure on this account (does not support for Japan account)', $this->gateway_name ),
-						'default'     => 'no'
-					),
-					'description' => array(
-						'title'       => __( 'Description:', $this->gateway_name ),
-						'type'        => 'textarea',
-						'description' => __( 'This controls the description which the user sees during checkout.', $this->gateway_name ),
-						'default'     => __( 'Omise payment gateway.', $this->gateway_name )
-					)
-				);
+				$this->form_fields = include( 'includes/omise-wc-setting.php' );
 			}
 
 			/**
@@ -218,7 +158,7 @@ function register_omise_wc_gateway_plugin() {
 						"description" => "WooCommerce Order id " . $order_id,
 						"return_uri"  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=wc_gateway_omise" )
 					);
-					
+
 					if ( ! empty( $card_id ) && ! empty( $omise_customer_id ) ) {
 						// create charge with a specific card of customer
 						$data["customer"] = $omise_customer_id;
@@ -322,11 +262,29 @@ function register_omise_wc_gateway_plugin() {
 			 * @see WC_Payment_Gateway::get_icon()
 			 */
 			public function get_icon() {
-				$icon = '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/visa.png' ) . '" alt="Visa" />';
-				$icon .= '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/mastercard.png' ) . '" alt="Mastercard" />';
-				$icon .= '<img src="' . WC_HTTPS::force_https_url ( WC ()->plugin_url () . '/assets/images/icons/credit-cards/jcb.png' ) . '" alt="JCB" />';
+				$icon = '';
 
-				return apply_filters ( 'woocommerce_gateway_icon', $icon, $this->id );
+				if ( Omise_Card_Image::is_visa_enabled( $this->settings ) ) {
+					$icon .= Omise_Card_Image::get_visa_image();
+				}
+
+				if ( Omise_Card_Image::is_mastercard_enabled( $this->settings ) ) {
+					$icon .= Omise_Card_Image::get_mastercard_image();
+				}
+
+				if ( Omise_Card_Image::is_jcb_enabled( $this->settings ) ) {
+					$icon .= Omise_Card_Image::get_jcb_image();
+				}
+
+				if ( Omise_Card_Image::is_diners_enabled( $this->settings ) ) {
+					$icon .= Omise_Card_Image::get_diners_image();
+				}
+
+				if ( Omise_Card_Image::is_amex_enabled( $this->settings ) ) {
+					$icon .= Omise_Card_Image::get_amex_image();
+				}
+
+				return empty( $icon ) ? '' : apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 			}
 
 			/**
@@ -347,16 +305,6 @@ function register_omise_wc_gateway_plugin() {
 					'key'       => $this->public_key,
 					'vault_url' => OMISE_VAULT_HOST
 				) );
-			}
-
-			/**
-			 * @return array
-			 */
-			public function form_field_payment_actions() {
-				return array(
-					'auto_capture'   => __( "Auto Capture", $this->gateway_name ),
-					'manual_capture' => __( "Manual Capture", $this->gateway_name )
-				);
 			}
 		}
 	}
