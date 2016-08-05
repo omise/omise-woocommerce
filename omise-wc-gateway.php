@@ -15,7 +15,7 @@ function register_omise_wc_gateway_plugin() {
 				$this->id               = 'omise';
 				$this->method_title     = "Omise";
 				$this->has_fields       = true;
-				
+
 				// call base functions required for WooCommerce gateway
 				$this->init_form_fields();
 				$this->init_settings();
@@ -158,7 +158,7 @@ function register_omise_wc_gateway_plugin() {
 						"description" => "WooCommerce Order id " . $order_id,
 						"return_uri"  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=wc_gateway_omise" )
 					);
-					
+
 					if ( ! empty( $card_id ) && ! empty( $omise_customer_id ) ) {
 						// create charge with a specific card of customer
 						$data["customer"] = $omise_customer_id;
@@ -305,16 +305,6 @@ function register_omise_wc_gateway_plugin() {
 					'key'       => $this->public_key,
 					'vault_url' => OMISE_VAULT_HOST
 				) );
-			}
-
-			/**
-			 * @return array
-			 */
-			public function form_field_payment_actions() {
-				return array(
-					'auto_capture'   => __( "Auto Capture", $this->gateway_name ),
-					'manual_capture' => __( "Manual Capture", $this->gateway_name )
-				);
 			}
 		}
 	}

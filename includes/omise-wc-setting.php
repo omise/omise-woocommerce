@@ -84,7 +84,10 @@ return array(
 		'description' => __( 'Manual Capture or Capture Automatically', $text_domain ),
 		'default'     => 'auto_capture',
 		'class'       => 'wc-enhanced-select',
-		'options'     => $this->form_field_payment_actions(),
+		'options'     => array(
+			'auto_capture'   => __( 'Auto Capture', $text_domain ),
+			'manual_capture' => __( 'Manual Capture', $text_domain )
+		),
 		'desc_tip'    => true
 	),
 	'omise_3ds' => array(
