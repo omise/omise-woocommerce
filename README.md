@@ -4,7 +4,7 @@ Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically for
 
 ## Requirement
 
-The plugin was built and tested with Wordpress 4.0.1 and WooCommerce 2.2.8.
+The plugin was built and tested with Wordpress 4.5.3 and WooCommerce 2.6.4.
 The plugin dependencies are jQuery and [Omise.js](https://cdn.omise.co/omise.js) library.
 
 ## How it works
@@ -23,10 +23,10 @@ Developer Documentation [here](https://www.omise.co/docs/)
 ## Installation Guide
 
 1. Download the latest release packed as zip format from Releases page: https://github.com/omise/omise-woocommerce/releases
-( latest: https://github.com/omise/omise-woocommerce/archive/v1.2.0.zip )
+( latest: https://github.com/omise/omise-woocommerce/archive/v1.2.1.zip )
 
 2. Install plugin in wordpress using Plugin Upload method, i.e. https://yourwebsite.com/wp-admin/plugin-install.php?tab=upload 
-and upload omise-woocommerce-1.2.0.zip
+and upload omise-woocommerce-1.2.1.zip
 
 3. Activate Omise plugin
 

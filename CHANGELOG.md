@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.2.1] 2016-08-05
+- *`Added`* Configuration for card brand logo display
+- *`Added`* List of transfers
+- *`Fixed`* Changing page by specify the page number which is not functional
+
 ## [1.2.0] 2016-06-01
 - *`Added`* manual capture feature
 - *`Added`* supported JPY currency
