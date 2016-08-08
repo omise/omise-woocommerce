@@ -1,8 +1,11 @@
-Change Log
-==========
+# Change Log
 
-[1.2.0] 2016-06-01
-------------
+## [1.2.1] 2016-08-05
+- *`Added`* Configuration for card brand logo display
+- *`Added`* List of transfers
+- *`Fixed`* Changing page by specify the page number which is not functional
+
+## [1.2.0] 2016-06-01
 - *`Added`* manual capture feature
 - *`Added`* supported JPY currency
 - *`Added`* shortcut menu to Omise's setting page
@@ -14,27 +17,20 @@ Change Log
 - *`Improved`* Revised PHP code to following the WordPress Coding Standards.
 - *`Improved`* Fixed/Improved various things.
 
-[1.1.1] 2015-11-16
-------------
+## [1.1.1] 2015-11-16
 - *`Added`* Added Omise-Version into the cURL request header.
 
-[1.1.0] 2015-09-24
---------------------
+## [1.1.0] 2015-09-24
 - *`Added`* Adds support for 3-D Secure.
 
-[1.0.2] 2015-03-23
---------------------
+## [1.0.2] 2015-03-23
 - *`Fixed`* Fix create token issue.
 
-[1.0.1] 2015-03-10
---------------------
+## [1.0.1] 2015-03-10
 - *`Added`* Support fund transfers.
 
-[1.0.0] 2015-01-20
---------------------
+## [1.0.0] 2015-01-20
 - *`Added`* First version supports.
   - Charge a card
   - Save a card
   - Delete a card
-
-
