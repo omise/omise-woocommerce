@@ -5,6 +5,7 @@ msgstr ""
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 "POT-Creation-Date: 2016-07-12 16:00+0700\n"
 "PO-Revision-Date: 2016-08-07 22:32+0700\n"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 =======
 "POT-Creation-Date: 2016-07-10 12:37+0700\n"
 "PO-Revision-Date: 2016-07-12 15:04+0700\n"
@@ -17,6 +18,8 @@ msgstr ""
 =======
 "PO-Revision-Date: 2016-07-27 13:57+0700\n"
 >>>>>>> Add additional Japanese translation
+=======
+>>>>>>> Update Japanese translation
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -60,15 +63,20 @@ msgstr "振込ID"
 #: includes/classes/class-omise-hooks.php:63
 #: includes/classes/class-omise-hooks.php:103
 msgid "Order id was not found"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "お探しの受注IDは見つかりませんでした"
 =======
 msgstr "お探しの注文IDは見つかりませんでした"
 >>>>>>> Translate to Japanese
+=======
+msgstr "お探しの受注IDは見つかりませんでした"
+>>>>>>> Update Japanese translation
 
 #: includes/classes/class-omise-hooks.php:67
 #: includes/classes/class-omise-hooks.php:108
 msgid "Charge id was not found"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "お探しの課金IDは見つかりませんでした"
 
@@ -82,6 +90,13 @@ msgstr "お探しの振込IDは見つかりませんでした"
 msgid "Payment with Omise successful (manual captured)"
 msgstr "Omiseでの決済成功しました（手動売上処理）"
 >>>>>>> Translate to Japanese
+=======
+msgstr "お探しの課金IDは見つかりませんでした"
+
+#: includes/classes/class-omise-hooks.php:76
+msgid "Payment with Omise successful (manual captured)"
+msgstr "Omise: 課金情報（手動売上）が実売上化されました"
+>>>>>>> Update Japanese translation
 
 #: includes/classes/class-omise-hooks.php:91
 #: includes/classes/class-omise-hooks.php:98
@@ -89,6 +104,7 @@ msgid ""
 "Order was not found. Please check carefully, your card might be charged "
 "already, contact our support if possible."
 msgstr ""
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 "システムエラーが発生しました（受注IDがみつかりません）。大変お手数ですが、受"
 "注および支払完了の確認をサポートにお問い合わせください。"
@@ -111,23 +127,31 @@ msgstr "課金処理を完了できませんでした"
 =======
 "ご注文は見つかりませんでした、カードを課金しました可能性がありますのでもう一"
 "度確認してください もしくはサポートへお問い合わせください"
+=======
+"システムエラーが発生しました（受注IDがみつかりません）。大変お手数ですが、受"
+"注および支払完了の確認をサポートにお問い合わせください。"
+>>>>>>> Update Japanese translation
 
 #: includes/classes/class-omise-hooks.php:113
 msgid "Confirm url was not found"
-msgstr "確認urlは見つかりませんでした"
+msgstr "システムエラーが発生しました（確認URLがみつかりません）。"
 
 #: includes/classes/class-omise-hooks.php:120 omise-wc-gateway.php:260
 msgid "Authorize with Omise successful"
-msgstr "Omiseでの認証済は成功しました"
+msgstr "Omise: 課金情報（手動売上）が認証されました"
 
 #: includes/classes/class-omise-hooks.php:129 omise-wc-gateway.php:269
 msgid "Payment with Omise successful"
-msgstr "Omiseでの決済成功しました"
+msgstr "Omise: 課金情報（自動売上）が実売上化されました"
 
 #: includes/classes/class-omise-hooks.php:154
 msgid "Charge was not completed"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 msgstr "振込は完了していませんでした"
 >>>>>>> Translate to Japanese
+=======
+msgstr "課金処理を完了できませんでした"
+>>>>>>> Update Japanese translation
 
 #: includes/classes/class-omise-hooks.php:156 omise-wc-gateway.php:297
 msgid "Payment error"
@@ -208,12 +232,12 @@ msgstr "Omise ダッシュボード"
 #: includes/templates/omise-cc-form.php:2
 msgctxt "Card holder name at payment form"
 msgid "Name"
-msgstr "名"
+msgstr "氏名"
 
 #: includes/templates/omise-cc-form.php:4
 msgctxt "Placeholder for card holder name"
 msgid "Name"
-msgstr "名"
+msgstr "氏名"
 
 #: includes/templates/omise-cc-form.php:8
 msgctxt "Card number at payment form"
@@ -228,22 +252,22 @@ msgstr "カード番号"
 #: includes/templates/omise-cc-form.php:14
 msgctxt "Expiration month at payment form"
 msgid "Expiration Month"
-msgstr "有効期間　月"
+msgstr "有効期限（月）"
 
 #: includes/templates/omise-cc-form.php:16
 msgctxt "Placeholder for expiration month"
 msgid "MM"
-msgstr "月"
+msgstr "MM"
 
 #: includes/templates/omise-cc-form.php:19
 msgctxt "Expiration year at payment form"
 msgid "Expiration Year"
-msgstr "有効期間　年"
+msgstr "有効期限（年）"
 
 #: includes/templates/omise-cc-form.php:21
 msgctxt "Placeholder for expiration year"
 msgid "YYYY"
-msgstr "年"
+msgstr "YYYY"
 
 #: includes/templates/omise-cc-form.php:25
 msgctxt "Security Code at payment form"
@@ -253,7 +277,7 @@ msgstr "セキュリティコード"
 #: includes/templates/omise-cc-form.php:28
 msgctxt "Placeholder for security Code"
 msgid "Security Code"
-msgstr "セキュリティコード"
+msgstr "CVC"
 
 #: includes/templates/omise-payment-form.php:7
 msgid "Select card"
@@ -261,7 +285,7 @@ msgstr "カードを選択"
 
 #: includes/templates/omise-payment-form.php:11
 msgid "Card ends with"
-msgstr "カードの最後の４桁"
+msgstr "カードの下４桁"
 
 #: includes/templates/omise-payment-form.php:15
 msgid "New payment information"
@@ -269,12 +293,16 @@ msgstr "新しいお支払い方法"
 
 #: includes/templates/omise-payment-form.php:24
 msgid "Save card for next time"
-msgstr "カードを保存する"
+msgstr "カード情報を保存する"
 
 #: includes/templates/omise-wp-admin-page.php:4
 msgid "Omise Dashboard"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 msgstr "ダッシュボード"
 >>>>>>> Translate to Japanese
+=======
+msgstr "Omise ダッシュボード"
+>>>>>>> Update Japanese translation
 
 #: includes/templates/omise-wp-admin-page.php:31
 msgid "Account"
@@ -313,11 +341,15 @@ msgstr "無効"
 
 #: includes/templates/omise-wp-admin-page.php:47
 msgid "3-D Secure"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "3Dセキュア"
 =======
 msgstr "3-D Secure"
 >>>>>>> Translate to Japanese
+=======
+msgstr "3Dセキュア"
+>>>>>>> Update Japanese translation
 
 #: includes/templates/omise-wp-admin-page.php:48
 msgctxt "3-D Secure status is enabled"
@@ -343,11 +375,15 @@ msgstr "振込を行う"
 
 #: includes/templates/omise-wp-admin-page.php:62
 msgid "Transactions History"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "決済履歴"
 =======
 msgstr "トランザクション履歴"
 >>>>>>> Translate to Japanese
+=======
+msgstr "決済履歴"
+>>>>>>> Update Japanese translation
 
 #: includes/templates/omise-wp-admin-transfer-page.php:8
 msgid "Transfers History"
@@ -378,11 +414,15 @@ msgstr "金額"
 
 #: includes/templates/partials/transfer-box-template.php:33
 msgid "Transfer"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "振込"
 =======
 msgstr "振込ID"
 >>>>>>> Translate to Japanese
+=======
+msgstr "振込"
+>>>>>>> Update Japanese translation
 
 #: includes/templates/partials/transfer-box-template.php:34
 msgid "Cancel"
@@ -402,11 +442,15 @@ msgstr "有効/無効"
 
 #: omise-wc-gateway.php:49
 msgid "Enable Omise Payment Module."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "Omise Payment モジュールを有効にする"
 =======
 msgstr "Omiseのモジュール有効"
 >>>>>>> Translate to Japanese
+=======
+msgstr "Omise Payment モジュールを有効にする"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:53
 msgid "Sandbox"
@@ -414,11 +458,15 @@ msgstr "テスト環境"
 
 #: omise-wc-gateway.php:55
 msgid "Enabling sandbox means that all your transactions will be in TEST mode."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "テスト環境を有効にすると全てテストモードで課金が処理されます"
 =======
 msgstr "テスト環境を有効にすると全てテストで実行します"
 >>>>>>> Translate to Japanese
+=======
+msgstr "テスト環境を有効にすると全てテストモードで課金が処理されます"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:59
 msgid "Public key for test"
@@ -426,11 +474,15 @@ msgstr "テスト用のパブリックキー"
 
 #: omise-wc-gateway.php:61
 msgid "The \"Test\" mode public key can be found in Omise Dashboard."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "テスト用のパブリックキーはOmiseのテストダッシュボード上で確認できます"
 =======
 msgstr "テスト用のパブリックキーはOmiseのテストダッシュボードの中にあります"
 >>>>>>> Translate to Japanese
+=======
+msgstr "テスト用のパブリックキーはOmiseのテストダッシュボード上で確認できます"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:64
 msgid "Secret key for test"
@@ -438,12 +490,17 @@ msgstr "テスト用のシークレットキー"
 
 #: omise-wc-gateway.php:66
 msgid "The \"Test\" mode secret key can be found in Omise Dashboard."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr ""
 "テスト用のシークレットキーはOmiseのテストダッシュボード上で確認できます"
 =======
 msgstr "テスト用のシークレットキーはOmiseのテストダッシュボードの中にあります"
 >>>>>>> Translate to Japanese
+=======
+msgstr ""
+"テスト用のシークレットキーはOmiseのテストダッシュボード上で確認できます"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:69
 msgid "Public key for live"
@@ -451,11 +508,15 @@ msgstr "ライブ用のパブリックキー"
 
 #: omise-wc-gateway.php:71
 msgid "The \"Live\" mode public key can be found in Omise Dashboard."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "ライブ用のパブリックキーはOmiseのライブダッシュボード上で確認できます"
 =======
 msgstr "ライブ用のパブリックキーはOmiseのライブダッシュボードの中にあります"
 >>>>>>> Translate to Japanese
+=======
+msgstr "ライブ用のパブリックキーはOmiseのライブダッシュボード上で確認できます"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:74
 msgid "Secret key for live"
@@ -463,11 +524,15 @@ msgstr "ライブ用のシークレットキー"
 
 #: omise-wc-gateway.php:76
 msgid "The \"Live\" mode secret key can be found in Omise Dashboard."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "ライブ用のシークレットキーはOmiseのライブダッシュボードで確認できます"
 =======
 msgstr "ライブ用のシークレットキーはOmiseのライブダッシュボードの中にあります"
 >>>>>>> Translate to Japanese
+=======
+msgstr "ライブ用のシークレットキーはOmiseのライブダッシュボードで確認できます"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:79
 msgid "Advance Settings"
@@ -480,21 +545,30 @@ msgstr "タイトル"
 
 #: omise-wc-gateway.php:86
 msgid "This controls the title which the user sees during checkout."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 25554923166e93ad9a5ce1d471c6c91658f465b1
 msgstr ""
 "ユーザーがチェックアウト時にみる、支払いオプションのタイトルを設定します"
 =======
 msgstr "チェックアウトページのタイトルを設定する"
 >>>>>>> Add additional Japanese translation
+=======
+msgstr ""
+"ユーザーがチェックアウト時にみる、支払いオプションのタイトルを設定します"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:87
 msgctxt "Default title"
 msgid "Omise Payment Gateway"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "クレジットカード"
 =======
 msgstr "Omise Payment Gateway"
 >>>>>>> Translate to Japanese
+=======
+msgstr "クレジットカード"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:90
 msgid "Payment action"
@@ -502,11 +576,15 @@ msgstr "売上方法を選択"
 
 #: omise-wc-gateway.php:92
 msgid "Manual Capture or Capture Automatically"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
+=======
+>>>>>>> Update Japanese translation
 msgstr ""
 "手動売上もしくは自動売上。手動売上モードでは、課金発生時に仮売上としてのみ処"
 "理されるため、決済を確定したい時点で実売上化を実施する必要があります。自動売"
 "上モードでは課金発生時に売上処理が自動で実施されます。"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 
 #: omise-wc-gateway.php:99
 msgid "3-D Secure support"
@@ -518,25 +596,35 @@ msgstr "手動売上/自動売上"
 msgid "3-D Secure support"
 msgstr "3-D Secure のサポート"
 >>>>>>> Translate to Japanese
+=======
+
+#: omise-wc-gateway.php:99
+msgid "3-D Secure support"
+msgstr "3Dセキュアのサポート"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:101
 msgid ""
 "Enable or disable 3-D Secure for the account. (Japan-based accounts are not "
 "eligible for the service.)"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "3Dセキュアを有効にする（日本では現在ご利用出来ません）"
 =======
 msgstr "アカウントを3-D Secure 有効/無効にする（日本派にはご利用出来ません）"
 >>>>>>> Translate to Japanese
+=======
+msgstr "3Dセキュアを有効にする（日本では現在ご利用出来ません）"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:105
 msgctxt "Setting description"
 msgid "Description"
-msgstr "説明"
+msgstr ""
 
 #: omise-wc-gateway.php:107
 msgid "This controls the description which the user sees during checkout."
-msgstr "チェックアウトページの説明を設定する"
+msgstr ""
 
 #: omise-wc-gateway.php:108
 msgctxt "Default description"
@@ -553,6 +641,7 @@ msgid ""
 "Omise payment gateway, the first PCI 3.0 certified payment gateway in "
 "Thailand."
 msgstr ""
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 25554923166e93ad9a5ce1d471c6c91658f465b1
 "Omiseは誰でも簡単にオンライン決済が導入できるサービスを提供しています。"
 
@@ -585,10 +674,28 @@ msgstr "お支払い情報を入力するか、カードを選んでください
 msgid "Omise card token is required."
 msgstr "Omiseのトークンが必要です"
 >>>>>>> Translate to Japanese
+=======
+"Omiseは誰でも簡単にオンライン決済が導入できるサービスを提供しています。"
+
+#: omise-wc-gateway.php:157
+msgid "Starting to process payment with Omise"
+msgstr "Omise: 課金処理を開始します"
+
+#: omise-wc-gateway.php:160 omise-wc-gateway.php:229
+msgid "Please select a card or enter new payment information."
+msgstr ""
+"システムエラーが発生しました（カード情報もしくは新規の支払情報がみつかりませ"
+"ん）。"
+
+#: omise-wc-gateway.php:168
+msgid "Omise card token is required."
+msgstr "システムエラーが発生しました（カードトークン情報がみつかりません）。"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:201
 msgid ""
 "Something wrong with Omise gateway. No card available for creating a charge."
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 25554923166e93ad9a5ce1d471c6c91658f465b1
 msgstr ""
 "システムエラーが発生しました（課金情報を作成するための有効なカード情報が存在"
@@ -620,19 +727,37 @@ msgid "Payment with Omise error"
 msgstr "Omise: 決済エラーが生じました"
 =======
 msgstr "課金は失敗しました、サポートへお問い合わせください"
+=======
+msgstr ""
+"システムエラーが発生しました（課金情報を作成するための有効なカード情報が存在"
+"しません）。"
+
+#: omise-wc-gateway.php:241
+msgid "Charge was failed, please contact our support"
+msgstr ""
+"システムエラーが発生しました（決済を処理できませんでした）。大変お手数です"
+"が、サポートにお問い合わせください。"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:250
 msgid "Processing payment with Omise 3D-Secure"
-msgstr "Omise 3D セキュアで決済"
+msgstr "Omise: 3Dセキュアを用いて課金処理を開始します"
 
 #: omise-wc-gateway.php:286
 msgid "This charge cannot authorize or capture, please contact our support."
-msgstr "この課金は認証済と売上出来ません、サポートへお問い合わせください"
+msgstr ""
+"認証もしくは実売上化できませんでした。カード情報が正しく記入されたことをご確"
+"認ください。他の有効なクレジットカードでも決済できない場合、大変お手数ですが"
+"サポートへお問い合わせください"
 
 #: omise-wc-gateway.php:298
 msgid "Payment with Omise error"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 msgstr "Omise決済エラー"
 >>>>>>> Translate to Japanese
+=======
+msgstr "Omise: 決済エラーが生じました"
+>>>>>>> Update Japanese translation
 
 #: omise-wc-gateway.php:357
 msgctxt "Setting auto capture"
@@ -661,6 +786,7 @@ msgstr "設定"
 
 #: omise-wp-admin.php:99
 msgid "Transfer amount must be a numeric"
+<<<<<<< bbb4db64d78231708ddc7bacc28c587752abdb7d
 <<<<<<< 30772b28dcf79d2415b0838e4b7b2070eb5e2e5b
 msgstr "振込金額は数字のみでご指定ください"
 
@@ -674,6 +800,13 @@ msgstr "振込の金額は数字のみになります"
 msgid "A fund transfer request has been sent."
 msgstr "振込の送信が完了しました"
 >>>>>>> Translate to Japanese
+=======
+msgstr "振込金額は数字のみでご指定ください"
+
+#: omise-wp-admin.php:111
+msgid "A fund transfer request has been sent."
+msgstr "振込要求が送信されました"
+>>>>>>> Update Japanese translation
 
 #: omise-wp-admin.php:186
 #, php-format
