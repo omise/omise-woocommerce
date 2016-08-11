@@ -322,9 +322,7 @@ function register_omise_wc_gateway_plugin() {
 	add_filter( 'woocommerce_payment_gateways', 'add_omise_gateway' );
 	add_filter( 'woocommerce_order_actions', 'add_omise_capture_action' );
 
-	$locale = get_locale();
-	load_textdomain( 'omise-woocommerce', plugin_basename( dirname( __FILE__ ) ) . '/languages/' . $locale . '.mo' );
-	load_plugin_textdomain( 'omise-woocommerce', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( OMISE_WOOCOMMERCE_TEXT_DOMAIN, false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 
 function register_omise_wc_gateway_post_type() {
