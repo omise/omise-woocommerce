@@ -20,7 +20,7 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 				$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
 			else if ( $_SERVER['HTTP_FORWARDED'] )
 				$ipaddress = $_SERVER['HTTP_FORWARDED'];
-			else if ($_SERVER['REMOTE_ADDR'] )
+			else if ( $_SERVER['REMOTE_ADDR'] )
 				$ipaddress = $_SERVER['REMOTE_ADDR'];
 			else
 				$ipaddress = 'UNKNOWN';
@@ -73,21 +73,19 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 
 		/**
 		 * Translate the given text for text domain, omise-woocommerce
-		 * 
+		 *
 		 * To translate the text for WordPress, it need to define the text domain for each plugins.
 		 * This function wraps the text domain to prevent the spreading text domain throughout the source code.
-		 * 
+		 *
 		 * @param string $text The text to translate
 		 * @param string $context The text that used to distinguish the same words but those words will be displayed in the different context
 		 * @return string
 		 */
 		public static function translate( $text, $context = '' ) {
-			$text_domain = 'omise-woocommerce';
-			
 			if ( empty( $context ) ) {
-				return __( $text, $text_domain );
+				return __( $text, OMISE_WOOCOMMERCE_TEXT_DOMAIN );
 			} else {
-				return _x( $text, $context, $text_domain );
+				return _x( $text, $context, OMISE_WOOCOMMERCE_TEXT_DOMAIN );
 			}
 		}
 	}
