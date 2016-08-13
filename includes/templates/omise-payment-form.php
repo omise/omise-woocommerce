@@ -8,7 +8,7 @@
 	
 		<?php 
 			foreach ( $viewData["existingCards"]->data as $card ) {
-				echo "<input type='radio' name='card_id' value='{$card->id}' />" . Omise_Util::translate( 'Card ends with' ) . "{$card->last_digits}<br/>";
+				echo "<input type='radio' name='card_id' value='{$card->id}' />" . Omise_Util::translate( 'Card ends with' ) . " {$card->last_digits}<br/>";
 			}
 		?>
 </p>
