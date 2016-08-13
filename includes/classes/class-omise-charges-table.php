@@ -91,14 +91,14 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
 		}
 
 		function column_chrg_authorized( $record ) {
-			$authorized = Omise_Util::translate( 'Yes', 'Charge was authorized' );
+			$authorized   = Omise_Util::translate( 'Yes', 'Charge was authorized' );
 			$unauthorized = Omise_Util::translate( 'No', 'Charge was not authorized' );
 
 			echo $record['authorized'] ? '<strong class="Omise-TextSuccess">' . $authorized . '</strong>' : $unauthorized;
 		}
 
 		function column_chrg_paid( $record ) {
-			$captured = Omise_Util::translate( 'Yes', 'Charge was captured' );
+			$captured     = Omise_Util::translate( 'Yes', 'Charge was captured' );
 			$not_captured = Omise_Util::translate( 'No', 'Charge was not captured' );
 
 			echo $record['captured'] ? '<strong class="Omise-TextSuccess">' . $captured . '</strong>' : $not_captured;

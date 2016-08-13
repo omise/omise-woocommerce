@@ -100,14 +100,14 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 		}
 
 		function column_trsf_sent( $record ) {
-			$sent = Omise_Util::translate( 'Yes', 'Transfer was sent' );
+			$sent     = Omise_Util::translate( 'Yes', 'Transfer was sent' );
 			$not_sent = Omise_Util::translate( 'No', 'Transfer was not sent' );
 
 			echo $record['sent'] ? '<strong class="Omise-TextSuccess">' . $sent . '</strong>' : $not_sent;
 		}
 
 		function column_trsf_paid( $record ) {
-			$paid = Omise_Util::translate( 'Yes', 'Transfer was paid' );
+			$paid   = Omise_Util::translate( 'Yes', 'Transfer was paid' );
 			$unpaid = Omise_Util::translate( 'No', 'Transfer was not paid' );
 
 			echo $record['paid'] ? '<strong class="Omise-TextSuccess">' . $paid . '</strong>' : $unpaid;
