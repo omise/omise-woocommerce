@@ -11,7 +11,7 @@
 			<form method="get">
 				<input type="hidden" name="page" value="omise-plugin-admin-page" />
 				<?php
-				$charge_table = new Omise_Charges_Table( $viewData["charges"] );
+				$charge_table = new Omise_Charges_Table( $viewData['charges'] );
 				$charge_table->prepare_items();
 				$charge_table->display();
 				?>

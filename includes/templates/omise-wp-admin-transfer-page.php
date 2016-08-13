@@ -11,7 +11,7 @@
 			<form method="get">
 				<input type="hidden" name="page" value="omise-plugin-admin-transfer-page" />
 				<?php
-				$transfer_table = new Omise_Transfers_Table( $viewData["transfers"] );
+				$transfer_table = new Omise_Transfers_Table( $viewData['transfers'] );
 				$transfer_table->prepare_items();
 				$transfer_table->display();
 				?>

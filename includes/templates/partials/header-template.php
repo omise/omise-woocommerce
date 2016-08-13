@@ -6,17 +6,17 @@
 
 <?php
 if ( isset( $viewData['balance'] ) ) :
-	$balance       = $viewData["balance"];
+	$balance = $viewData["balance"];
 
 	$omise = array(
 		'account' => array(
-			'email' => $viewData["email"],
+			'email' => $viewData['email']
 		),
 		'balance' => array(
 			'livemode'  => $balance->livemode,
 			'currency'  => $balance->currency,
 			'total'     => $balance->total,
-			'available' => $balance->available,
+			'available' => $balance->available
 		)
 	);
 ?>
