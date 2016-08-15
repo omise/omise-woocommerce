@@ -84,9 +84,9 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 		public static function translate( $text, $context = '' ) {
 			if ( empty( $context ) ) {
 				return __( $text, OMISE_WOOCOMMERCE_TEXT_DOMAIN );
-			} else {
-				return _x( $text, $context, OMISE_WOOCOMMERCE_TEXT_DOMAIN );
 			}
+
+			return _x( $text, $context, OMISE_WOOCOMMERCE_TEXT_DOMAIN );
 		}
 	}
 }
