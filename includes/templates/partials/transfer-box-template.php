@@ -30,7 +30,7 @@
 			</div>
 
 			<div class="Omise-Element FooterAction">
-				<input id="Omise-TransferCreateAction" class="Omise-Element FooterActionElement button button-primary" data-confirm="Do you really want to create this transfer?" name="commit" type="submit" value="<?php echo Omise_Util::translate( 'Transfer' ); ?>">
+				<input id="Omise-TransferCreateAction" class="Omise-Element FooterActionElement button button-primary" name="commit" type="submit" value="<?php echo Omise_Util::translate( 'Transfer' ); ?>">
 				<span id="Omise-TransferCancelAction" class="Omise-Element FooterActionElement button action"><?php echo Omise_Util::translate( 'Cancel' ); ?></span>
 				<span class="Omise-Element FooterActionElement Spinner"></span>
 			</div>
