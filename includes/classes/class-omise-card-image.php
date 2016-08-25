@@ -12,7 +12,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		 */
 		private static function get_image( $file, $alternate_text ) {
 			$url = WC_HTTPS::force_https_url( WC()->plugin_url() . '/assets/images/icons/credit-cards/' );
-			return "<img src='$url/$file' style='width: 38px;' alt='$alternate_text' />";
+			return "<img src='$url/$file' class='Omise-CardBrandImage' style='width: 38px;' alt='$alternate_text' />";
 		}
 
 		/**
