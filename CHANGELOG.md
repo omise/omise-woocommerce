@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.2.2] 2016-08-26
+- *`Improved`* Specify the display size of card brand image and allow customer to define their own style
+- *`Removed`* Remove an unused unit test of the library, omise-php
+
 ## [1.2.1] 2016-08-05
 - *`Added`* Configuration for card brand logo display
 - *`Added`* List of transfers
