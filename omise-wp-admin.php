@@ -50,9 +50,9 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 */
 		public function add_dashboard_omise_menu() {
 			add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array( $this, 'render_dashboard_page' ) );
-			add_submenu_page( 'omise-plugin-admin-page', 'Omise Dashboard', 'Dashboard', 'manage_options', 'omise-plugin-admin-page' );
-			add_submenu_page( 'omise-plugin-admin-page', 'Omise Transfers', 'Transfers', 'manage_options', 'omise-plugin-admin-transfer-page', array( $this, 'render_transfers_page' ) );
-			add_submenu_page( 'omise-plugin-admin-page', 'Omise Setting', 'Setting', 'manage_options', 'wc-settings&tab=checkout&section=wc_gateway_omise' , function(){} );
+			add_submenu_page( 'omise-plugin-admin-page', 'Omise Dashboard', Omise_Util::translate( 'Dashboard', 'Menu' ), 'manage_options', 'omise-plugin-admin-page' );
+			add_submenu_page( 'omise-plugin-admin-page', 'Omise Transfers', Omise_Util::translate( 'Transfers', 'Menu' ), 'manage_options', 'omise-plugin-admin-transfer-page', array( $this, 'render_transfers_page' ) );
+			add_submenu_page( 'omise-plugin-admin-page', 'Omise Setting', Omise_Util::translate( 'Setting', 'Menu' ), 'manage_options', 'wc-settings&tab=checkout&section=wc_gateway_omise' , function(){} );
 		}
 
 		private function __construct() {
@@ -99,7 +99,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 			try {
 				if ( ! empty( $transfer_amount ) && ! is_numeric( $transfer_amount ) ) {
-					throw new Exception ( "Transfer amount must be a numeric" );
+					throw new Exception ( Omise_Util::translate( 'Transfer amount must be a numeric' ) );
 				}
 
 				$balance = Omise::get_balance( $this->private_key );
@@ -111,7 +111,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 				if ( $this->is_transfer_success( $transfer ) ) {
 					$result_message_type = 'updated';
-					$result_message      = "A fund transfer request has been sent.";
+					$result_message      = Omise_Util::translate( 'A fund transfer request has been sent.' );
 				} else {
 					$result_message_type = 'error';
 					$result_message      = $this->get_transfer_error_message($transfer);
@@ -173,7 +173,8 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 					return $viewData;
 				} else {
-					echo "<div class='wrap'><div class='error'>Unable to get the balance information. Please verify that your private key is valid. [" . esc_html( $balance->message ) . "]</div></div>";
+					$message = sprintf( Omise_Util::translate( 'Unable to get the balance information. Please verify that your secret key is valid. [%s]' ), esc_html( $balance->message ) );
+					echo "<div class='wrap'><div class='error'>$message</div></div>";
 				}
 			} catch ( Exception $e ) {
 				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage() ) . "</div></div>";
