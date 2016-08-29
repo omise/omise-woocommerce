@@ -74,10 +74,10 @@ return array(
 		'description' => Omise_Util::translate( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.' )
 	),
 	'title' => array(
-		'title'       => Omise_Util::translate( 'Title', 'Setting title' ),
+		'title'       => Omise_Util::translate( 'Title', 'Label for setting of checkout form title' ),
 		'type'        => 'text',
 		'description' => Omise_Util::translate( 'This controls the title which the user sees during checkout.' ),
-		'default'     => Omise_Util::translate( 'Omise Payment Gateway', 'Default title' )
+		'default'     => Omise_Util::translate( 'Omise Payment Gateway', 'Default title at checkout form' )
 	),
 	'payment_action' => array(
 		'title'       => Omise_Util::translate( 'Payment action' ),
