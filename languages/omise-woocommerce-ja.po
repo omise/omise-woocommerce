@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-08-11 16:14+0700\n"
-"PO-Revision-Date: 2016-08-11 16:14+0700\n"
+"POT-Creation-Date: 2016-08-18 18:43+0700\n"
+"PO-Revision-Date: 2016-08-18 18:43+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -90,11 +90,11 @@ msgstr ""
 msgid "Confirm url was not found"
 msgstr "システムエラーが発生しました（確認URLがみつかりません）。"
 
-#: includes/classes/class-omise-hooks.php:120 omise-wc-gateway.php:200
+#: includes/classes/class-omise-hooks.php:120 omise-wc-gateway.php:199
 msgid "Authorize with Omise successful"
 msgstr "Omise: 課金情報（手動売上）が認証されました"
 
-#: includes/classes/class-omise-hooks.php:129 omise-wc-gateway.php:209
+#: includes/classes/class-omise-hooks.php:129 omise-wc-gateway.php:208
 msgid "Payment with Omise successful"
 msgstr "Omise: 課金情報（自動売上）が実売上化されました"
 
@@ -102,7 +102,7 @@ msgstr "Omise: 課金情報（自動売上）が実売上化されました"
 msgid "Charge was not completed"
 msgstr "課金処理を完了できませんでした"
 
-#: includes/classes/class-omise-hooks.php:156 omise-wc-gateway.php:237
+#: includes/classes/class-omise-hooks.php:156 omise-wc-gateway.php:236
 msgid "Payment error"
 msgstr "決済エラー"
 
@@ -308,19 +308,19 @@ msgctxt "Placeholder for security Code"
 msgid "Security Code"
 msgstr "CVC"
 
-#: includes/templates/omise-payment-form.php:7
+#: includes/templates/omise-payment-form.php:6
 msgid "Select card"
 msgstr "カードを選択"
 
-#: includes/templates/omise-payment-form.php:11
+#: includes/templates/omise-payment-form.php:9
 msgid "Card ends with"
 msgstr "カードの下４桁"
 
-#: includes/templates/omise-payment-form.php:15
+#: includes/templates/omise-payment-form.php:12
 msgid "New payment information"
 msgstr "新しいお支払い方法"
 
-#: includes/templates/omise-payment-form.php:24
+#: includes/templates/omise-payment-form.php:22
 msgid "Save card for next time"
 msgstr "カード情報を保存する"
 
@@ -441,52 +441,45 @@ msgctxt "Header at setting page"
 msgid "Omise Payment Gateway"
 msgstr "Omise Payment Gateway"
 
-#: omise-wc-gateway.php:59
-msgid ""
-"Omise payment gateway, the first PCI 3.0 certified payment gateway in "
-"Thailand."
-msgstr ""
-"Omiseは誰でも簡単にオンライン決済が導入できるサービスを提供しています。"
-
-#: omise-wc-gateway.php:97
+#: omise-wc-gateway.php:96
 msgid "Starting to process payment with Omise"
 msgstr "Omise: 課金処理を開始します"
 
-#: omise-wc-gateway.php:100 omise-wc-gateway.php:169
+#: omise-wc-gateway.php:99 omise-wc-gateway.php:168
 msgid "Please select a card or enter new payment information."
 msgstr ""
 "システムエラーが発生しました（カード情報もしくは新規の支払情報がみつかりませ"
 "ん）。"
 
-#: omise-wc-gateway.php:108
+#: omise-wc-gateway.php:107
 msgid "Omise card token is required."
 msgstr "システムエラーが発生しました（カードトークン情報がみつかりません）。"
 
-#: omise-wc-gateway.php:141
+#: omise-wc-gateway.php:140
 msgid ""
 "Something wrong with Omise gateway. No card available for creating a charge."
 msgstr ""
 "システムエラーが発生しました（課金情報を作成するための有効なカード情報が存在"
 "しません）。"
 
-#: omise-wc-gateway.php:181
+#: omise-wc-gateway.php:180
 msgid "Charge was failed, please contact our support"
 msgstr ""
 "システムエラーが発生しました（決済を処理できませんでした）。大変お手数です"
 "が、サポートにお問い合わせください。"
 
-#: omise-wc-gateway.php:190
+#: omise-wc-gateway.php:189
 msgid "Processing payment with Omise 3D-Secure"
 msgstr "Omise: 3Dセキュアを用いて課金処理を開始します"
 
-#: omise-wc-gateway.php:226
+#: omise-wc-gateway.php:225
 msgid "This charge cannot authorize or capture, please contact our support."
 msgstr ""
 "認証もしくは実売上化できませんでした。カード情報が正しく記入されたことをご確"
 "認ください。他の有効なクレジットカードでも決済できない場合、大変お手数ですが"
 "サポートへお問い合わせください"
 
-#: omise-wc-gateway.php:238
+#: omise-wc-gateway.php:237
 msgid "Payment with Omise error"
 msgstr "Omise: 決済エラーが生じました"
 

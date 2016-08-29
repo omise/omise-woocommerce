@@ -56,7 +56,6 @@ function register_omise_wc_gateway_plugin() {
 			 */
 			public function admin_options() {
 				echo '<h3>' . Omise_Util::translate( 'Omise Payment Gateway', 'Header at setting page' ) . '</h3>';
-				echo '<p>' . Omise_Util::translate( 'Omise payment gateway, the first PCI 3.0 certified payment gateway in Thailand.' ) . '</p>';
 				echo '<table class="form-table">';
 				$this->generate_settings_html();
 				echo '</table>';
