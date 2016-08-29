@@ -96,11 +96,5 @@ return array(
 		'type'        => 'checkbox',
 		'label'       => Omise_Util::translate( 'Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.)' ),
 		'default'     => 'no'
-	),
-	'description' => array(
-		'title'       => Omise_Util::translate( 'Description', 'Setting description' ),
-		'type'        => 'textarea',
-		'description' => Omise_Util::translate( 'This controls the description which the user sees during checkout.' ),
-		'default'     => Omise_Util::translate( 'Omise payment gateway.', 'Default description' )
 	)
 );

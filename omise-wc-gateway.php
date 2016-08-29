@@ -21,7 +21,6 @@ function register_omise_wc_gateway_plugin() {
 				$this->init_settings();
 
 				$this->title             = $this->settings['title'];
-				$this->description       = $this->settings['description'];
 				$this->sandbox           = isset( $this->settings['sandbox'] ) && $this->settings['sandbox'] == 'yes';
 				$this->payment_action    = $this->settings['payment_action'];
 				$this->omise_3ds         = isset( $this->settings['omise_3ds'] ) && $this->settings['omise_3ds'] == 'yes';
