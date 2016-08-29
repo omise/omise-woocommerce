@@ -5,11 +5,7 @@
 
 		<?php Omise_Util::render_partial( 'header', $viewData ); ?>
 
-		<h1>Transactions History</h1>
-
-		<h2 class="nav-tab-wrapper wp-clearfix">
-			<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'omise-plugin-admin-page' ), admin_url( 'admin.php' ) ) ); ?>" class="nav-tab<?php if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'locations' != $_GET['action'] ) echo ' nav-tab-active'; ?>"><?php esc_html_e( 'Charges' ); ?></a>
-		</h2>
+		<h1><?php echo Omise_Util::translate( 'Transactions History' ); ?></h1>
 
 		<div id="Omise-ChargeList">
 			<form method="get">

@@ -1,0 +1,377 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-07-10 12:37+0700\n"
+"PO-Revision-Date: 2016-07-10 20:57+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: translate;translate:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/classes/class-omise-charges-table.php:49
+msgid "Amount"
+msgstr ""
+
+#: includes/classes/class-omise-charges-table.php:50
+msgid "Charge Id"
+msgstr ""
+
+#: includes/classes/class-omise-charges-table.php:51
+msgid "Authorized"
+msgstr ""
+
+#: includes/classes/class-omise-charges-table.php:52
+msgid "Paid"
+msgstr ""
+
+#: includes/classes/class-omise-charges-table.php:53
+msgid "Failure Message"
+msgstr ""
+
+#: includes/classes/class-omise-charges-table.php:54
+msgid "Created"
+msgstr ""
+
+#: includes/classes/class-omise-transfers-table.php:60
+msgid "Transfer Id"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:63
+#: includes/classes/class-omise-hooks.php:103
+msgid "Order id was not found"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:67
+#: includes/classes/class-omise-hooks.php:108
+msgid "Charge id was not found"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:76
+msgid "Payment with Omise successful (manual captured)"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:91
+#: includes/classes/class-omise-hooks.php:98
+msgid ""
+"Order was not found. Please check carefully, your card might be charged "
+"already, contact our support if possible."
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:113
+msgid "Confirm url was not found"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:120 omise-wc-gateway.php:260
+msgid "Authorize with Omise successful"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:129 omise-wc-gateway.php:269
+msgid "Payment with Omise successful"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:154
+msgid "Charge was not completed"
+msgstr ""
+
+#: includes/classes/class-omise-hooks.php:156 omise-wc-gateway.php:297
+msgid "Payment error"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:4
+msgid "Omise Dashboard"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:31
+msgid "Account"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:35
+msgid "Mode"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:36
+msgid "LIVE"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:36
+msgid "TEST"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:39
+msgid "Currency"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:43
+msgctxt "Account information"
+msgid "Auto Capture"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:44
+msgctxt "Auto capture status is enabled"
+msgid "YES"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:44
+msgctxt "Auto capture status is disabled"
+msgid "NO"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:47
+msgid "3-D Secure"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:48
+msgctxt "3-D Secure status is enabled"
+msgid "ENABLED"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:48
+msgctxt "3-D Secure status is disabled"
+msgid "DISABLED"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:54
+msgid "Total Balance"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:55
+msgid "Transferable Balance"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:59
+msgid "Setup a transfer"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-page.php:62
+msgid "Transactions History"
+msgstr ""
+
+#: includes/templates/omise-wp-admin-transfer-page.php:8
+msgid "Transfers History"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:14
+msgid "Full transfer"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:16
+#, php-format
+msgid "Transfer the whole available balance (%s) to your account"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:22
+msgid "Partial transfer"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:24
+#, php-format
+msgid "Transfer only part of the available balance (%s) to your account"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:27
+msgctxt "Transfer amount"
+msgid "Amount"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:33
+msgid "Transfer"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:34
+msgid "Cancel"
+msgstr ""
+
+#: includes/templates/partials/transfer-box-template.php:39
+msgid ""
+"Transfers are processed daily in chronological order. If balance is "
+"insufficient, transfers are retried on the next day."
+msgstr ""
+
+#: omise-wc-gateway.php:47
+msgid "Enable/Disable"
+msgstr ""
+
+#: omise-wc-gateway.php:49
+msgid "Enable Omise Payment Module."
+msgstr ""
+
+#: omise-wc-gateway.php:53
+msgid "Sandbox"
+msgstr ""
+
+#: omise-wc-gateway.php:55
+msgid "Enabling sandbox means that all your transactions will be in TEST mode."
+msgstr ""
+
+#: omise-wc-gateway.php:59
+msgid "Public key for test"
+msgstr ""
+
+#: omise-wc-gateway.php:61
+msgid "The \"Test\" mode public key can be found in Omise Dashboard."
+msgstr ""
+
+#: omise-wc-gateway.php:64
+msgid "Secret key for test"
+msgstr ""
+
+#: omise-wc-gateway.php:66
+msgid "The \"Test\" mode secret key can be found in Omise Dashboard."
+msgstr ""
+
+#: omise-wc-gateway.php:69
+msgid "Public key for live"
+msgstr ""
+
+#: omise-wc-gateway.php:71
+msgid "The \"Live\" mode public key can be found in Omise Dashboard."
+msgstr ""
+
+#: omise-wc-gateway.php:74
+msgid "Secret key for live"
+msgstr ""
+
+#: omise-wc-gateway.php:76
+msgid "The \"Live\" mode secret key can be found in Omise Dashboard."
+msgstr ""
+
+#: omise-wc-gateway.php:79
+msgid "Advance Settings"
+msgstr ""
+
+#: omise-wc-gateway.php:84
+msgctxt "Setting title"
+msgid "Title"
+msgstr ""
+
+#: omise-wc-gateway.php:86
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: omise-wc-gateway.php:87
+msgctxt "Default title"
+msgid "Omise Payment Gateway"
+msgstr ""
+
+#: omise-wc-gateway.php:90
+msgid "Payment action"
+msgstr ""
+
+#: omise-wc-gateway.php:92
+msgid "Manual Capture or Capture Automatically"
+msgstr ""
+
+#: omise-wc-gateway.php:99
+msgid "3-D Secure support"
+msgstr ""
+
+#: omise-wc-gateway.php:101
+msgid ""
+"Enable or disable 3-D Secure for the account. (Japan-based accounts are not "
+"eligible for the service.)"
+msgstr ""
+
+#: omise-wc-gateway.php:105
+msgctxt "Setting description"
+msgid "Description"
+msgstr ""
+
+#: omise-wc-gateway.php:107
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: omise-wc-gateway.php:108
+msgctxt "Default description"
+msgid "Omise payment gateway."
+msgstr ""
+
+#: omise-wc-gateway.php:118
+msgctxt "Header at setting page"
+msgid "Omise Payment Gateway"
+msgstr ""
+
+#: omise-wc-gateway.php:119
+msgid ""
+"Omise payment gateway, the first PCI 3.0 certified payment gateway in "
+"Thailand."
+msgstr ""
+
+#: omise-wc-gateway.php:157
+msgid "Starting to process payment with Omise"
+msgstr ""
+
+#: omise-wc-gateway.php:160 omise-wc-gateway.php:229
+msgid "Please select a card or enter new payment information."
+msgstr ""
+
+#: omise-wc-gateway.php:168
+msgid "Omise card token is required."
+msgstr ""
+
+#: omise-wc-gateway.php:201
+msgid ""
+"Something wrong with Omise gateway. No card available for creating a charge."
+msgstr ""
+
+#: omise-wc-gateway.php:241
+msgid "Charge was failed, please contact our support"
+msgstr ""
+
+#: omise-wc-gateway.php:250
+msgid "Processing payment with Omise 3D-Secure"
+msgstr ""
+
+#: omise-wc-gateway.php:286
+msgid "This charge cannot authorize or capture, please contact our support."
+msgstr ""
+
+#: omise-wc-gateway.php:298
+msgid "Payment with Omise error"
+msgstr ""
+
+#: omise-wc-gateway.php:357
+msgctxt "Setting auto capture"
+msgid "Auto Capture"
+msgstr ""
+
+#: omise-wc-gateway.php:358
+msgctxt "Setting manual capture"
+msgid "Manual Capture"
+msgstr ""
+
+#: omise-wp-admin.php:53
+msgctxt "Menu"
+msgid "Dashboard"
+msgstr ""
+
+#: omise-wp-admin.php:54
+msgctxt "Menu"
+msgid "Transfers"
+msgstr ""
+
+#: omise-wp-admin.php:55
+msgctxt "Menu"
+msgid "Setting"
+msgstr ""
+
+#: omise-wp-admin.php:99
+msgid "Transfer amount must be a numeric"
+msgstr ""
+
+#: omise-wp-admin.php:111
+msgid "A fund transfer request has been sent."
+msgstr ""
+
+#: omise-wp-admin.php:186
+#, php-format
+msgid ""
+"Unable to get the balance information. Please verify that your secret key is "
+"valid. [%s]"
+msgstr ""

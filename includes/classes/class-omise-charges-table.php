@@ -8,7 +8,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 if ( ! class_exists( 'Omise_Charges_Table' ) ) {
     class Omise_Charges_Table extends WP_List_Table {
 
-        function __construct( $omise_list_object ) {            
+        function __construct( $omise_list_object ) {
             parent::__construct( array(
                 'singular' => 'omise_charge',
                 'plural'   => 'omise_charges',
@@ -35,7 +35,7 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
             $perpage    = $this->items['limit'];
             $paged      = isset( $_GET['paged'] ) ? $_GET['paged'] : 1;
             $totalpages = ceil( $totalitems / $perpage );
-            
+
             $this->set_pagination_args( array(
                 'total_items' => $totalitems,
                 'total_pages' => $totalpages,
@@ -56,13 +56,12 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
 
         function get_columns() {
             return $columns = array(
-                'chrg_amount'     => __( 'Amount' ),
-                'chrg_id'         => __( 'Charge Id' ),
-                'chrg_authorized' => __( 'Authorized' ),
-                'chrg_paid'       => __( 'Paid' ),
-                'chrg_failure'    => __( 'Failure Message' ),
-                'chrg_datetime'   => __( 'Created' ),
-                'chrg_action'     => '',
+                'chrg_amount'     => Omise_Util::translate( 'Amount' ),
+                'chrg_id'         => Omise_Util::translate( 'Charge Id' ),
+                'chrg_authorized' => Omise_Util::translate( 'Authorized' ),
+                'chrg_paid'       => Omise_Util::translate( 'Paid' ),
+                'chrg_failure'    => Omise_Util::translate( 'Failure Message' ),
+                'chrg_datetime'   => Omise_Util::translate( 'Created' )
             );
         }
 
@@ -105,10 +104,6 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
 
         function column_chrg_datetime( $record ) {
             echo Omise_Util::date_format( $record['created'] );
-        }
-
-        function column_chrg_action( $record ) {
-            echo "<a href='" . OmisePluginHelperTransaction::url( $record ) . "'>view detail</a>";
         }
     }
 }
