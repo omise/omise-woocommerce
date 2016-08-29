@@ -42,7 +42,7 @@ return array(
 		'description' => '',
 	),
 	'accept_visa' => array(
-		'title'       => __( 'Supported card icons', $text_domain ),
+		'title'       => Omise_Util::translate( 'Supported card icons' ),
 		'type'        => 'checkbox',
 		'label'       => Omise_Card_Image::get_visa_image(),
 		'css'         => Omise_Card_Image::get_css(),
@@ -71,7 +71,7 @@ return array(
 		'label'       => Omise_Card_Image::get_amex_image(),
 		'css'         => Omise_Card_Image::get_css(),
 		'default'     => Omise_Card_Image::get_amex_default_display(),
-		'description' => __( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.', $text_domain )
+		'description' => Omise_Util::translate( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.' )
 	),
 	'title' => array(
 		'title'       => Omise_Util::translate( 'Title', 'Setting title' ),

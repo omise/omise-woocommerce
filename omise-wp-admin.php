@@ -51,7 +51,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		public function add_dashboard_omise_menu() {
 			add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array( $this, 'render_dashboard_page' ) );
 			add_submenu_page( 'omise-plugin-admin-page', 'Omise Dashboard', Omise_Util::translate( 'Dashboard', 'Menu' ), 'manage_options', 'omise-plugin-admin-page' );
-			add_submenu_page( 'omise-plugin-admin-page', 'Omise Transfers', 'Transfers', 'manage_options', 'omise-plugin-admin-transfer-page', array( $this, 'render_transfers_page' ) );
+			add_submenu_page( 'omise-plugin-admin-page', 'Omise Transfers', Omise_Util::translate( 'Transfers', 'Menu' ), 'manage_options', 'omise-plugin-admin-transfer-page', array( $this, 'render_transfers_page' ) );
 			add_submenu_page( 'omise-plugin-admin-page', 'Omise Setting', Omise_Util::translate( 'Setting', 'Menu' ), 'manage_options', 'wc-settings&tab=checkout&section=wc_gateway_omise' , function(){} );
 		}
 
