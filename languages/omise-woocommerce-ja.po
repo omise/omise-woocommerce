@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-08-20 13:10+0700\n"
-"PO-Revision-Date: 2016-08-20 13:10+0700\n"
+"POT-Creation-Date: 2016-08-24 13:18+0700\n"
+"PO-Revision-Date: 2016-08-26 16:27+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -46,22 +46,22 @@ msgstr "作成済"
 #: includes/classes/class-omise-charges-table.php:94
 msgctxt "Charge was authorized"
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: includes/classes/class-omise-charges-table.php:95
 msgctxt "Charge was not authorized"
 msgid "No"
-msgstr ""
+msgstr "いいえ"
 
 #: includes/classes/class-omise-charges-table.php:101
 msgctxt "Charge was captured"
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: includes/classes/class-omise-charges-table.php:102
 msgctxt "Charge was not captured"
 msgid "No"
-msgstr ""
+msgstr "いいえ"
 
 #: includes/classes/class-omise-hooks.php:63
 #: includes/classes/class-omise-hooks.php:103
@@ -113,27 +113,27 @@ msgstr "振込ID"
 #: includes/classes/class-omise-transfers-table.php:61
 msgctxt "Transfer table column header"
 msgid "Sent"
-msgstr ""
+msgstr "完了"
 
 #: includes/classes/class-omise-transfers-table.php:103
 msgctxt "Transfer was sent"
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: includes/classes/class-omise-transfers-table.php:104
 msgctxt "Transfer was not sent"
 msgid "No"
-msgstr ""
+msgstr "いいえ"
 
 #: includes/classes/class-omise-transfers-table.php:110
 msgctxt "Transfer was paid"
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: includes/classes/class-omise-transfers-table.php:111
 msgctxt "Transfer was not paid"
 msgid "No"
-msgstr ""
+msgstr "いいえ"
 
 #: includes/omise-wc-setting.php:8
 msgid "Enable/Disable"
@@ -190,13 +190,13 @@ msgstr "詳細設定"
 
 #: includes/omise-wc-setting.php:45
 msgid "Supported card icons"
-msgstr ""
+msgstr "対応するカードのアイコン"
 
 #: includes/omise-wc-setting.php:74
 msgid ""
 "This only controls the icons displayed on the checkout page.<br />It is not "
 "related to card processing on Omise payment gateway."
-msgstr ""
+msgstr "チェックアウトページのアイコンを設定のみ。"
 
 #: includes/omise-wc-setting.php:77
 msgctxt "Label for setting of checkout form title"
@@ -312,7 +312,7 @@ msgstr "カード情報を保存する"
 
 #: includes/templates/omise-wp-admin-page.php:8
 msgid "Charges History"
-msgstr ""
+msgstr "課金履歴"
 
 #: includes/templates/omise-wp-admin-transfer-page.php:8
 msgid "Transfers History"
