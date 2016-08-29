@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-08-18 18:43+0700\n"
-"PO-Revision-Date: 2016-08-18 18:43+0700\n"
+"POT-Creation-Date: 2016-08-18 19:55+0700\n"
+"PO-Revision-Date: 2016-08-18 19:55+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -325,8 +325,8 @@ msgid "Save card for next time"
 msgstr "カード情報を保存する"
 
 #: includes/templates/omise-wp-admin-page.php:8
-msgid "Transactions History"
-msgstr "決済履歴"
+msgid "Charges History"
+msgstr ""
 
 #: includes/templates/omise-wp-admin-transfer-page.php:8
 msgid "Transfers History"
