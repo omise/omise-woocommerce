@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin
 Requires at least: 4.3.1
 Tested up to: 4.5.3
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -30,6 +30,13 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+= 1.2.3 =
+(Added) Add a new feature, localization
+(Changed) Change a page header from transactions history to charges history
+(Removed) Remove a link, view detail, from each row of transactions and transfers history table
+(Removed) Remove sub-tabs, charges and transfers
+(Removed) Remove an unused setting, description
+
 = 1.2.2 =
 (Improved) Specify the display size of card brand image and allow customer to define their own style
 (Removed) Remove an unused unit test of the library, omise-php
@@ -58,6 +65,13 @@ Added Omise-Version into the cURL request header.
 Adds support for 3-D Secure feature
 
 == Upgrade Notice ==
+= 1.2.3 =
+(Added) Add a new feature, localization
+(Changed) Change a page header from transactions history to charges history
+(Removed) Remove a link, view detail, from each row of transactions and transfers history table
+(Removed) Remove sub-tabs, charges and transfers
+(Removed) Remove an unused setting, description
+
 = 1.2.2 =
 (Improved) Specify the display size of card brand image and allow customer to define their own style
 (Removed) Remove an unused unit test of the library, omise-php
