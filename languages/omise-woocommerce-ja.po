@@ -1,0 +1,505 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-09-07 21:06+0700\n"
+"PO-Revision-Date: 2016-09-07 21:06+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: translate;translate:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/classes/class-omise-charges-table.php:59
+#: includes/classes/class-omise-transfers-table.php:59
+msgid "Amount"
+msgstr "金額"
+
+#: includes/classes/class-omise-charges-table.php:60
+msgid "Charge Id"
+msgstr "課金ID"
+
+#: includes/classes/class-omise-charges-table.php:61
+msgid "Authorized"
+msgstr "認証済"
+
+#: includes/classes/class-omise-charges-table.php:62
+msgid "Captured"
+msgstr "実売上化済"
+
+#: includes/classes/class-omise-charges-table.php:63
+#: includes/classes/class-omise-transfers-table.php:63
+msgid "Failure Message"
+msgstr "エラーメッセージ"
+
+#: includes/classes/class-omise-charges-table.php:64
+#: includes/classes/class-omise-transfers-table.php:64
+msgid "Created"
+msgstr "作成日"
+
+#: includes/classes/class-omise-charges-table.php:94
+msgctxt "Charge was authorized"
+msgid "Yes"
+msgstr "はい"
+
+#: includes/classes/class-omise-charges-table.php:95
+msgctxt "Charge was not authorized"
+msgid "No"
+msgstr "いいえ"
+
+#: includes/classes/class-omise-charges-table.php:101
+msgctxt "Charge was captured"
+msgid "Yes"
+msgstr "はい"
+
+#: includes/classes/class-omise-charges-table.php:102
+msgctxt "Charge was not captured"
+msgid "No"
+msgstr "いいえ"
+
+#: includes/classes/class-omise-hooks.php:63
+#: includes/classes/class-omise-hooks.php:103
+msgid "Order id was not found"
+msgstr "お探しの受注IDは見つかりませんでした"
+
+#: includes/classes/class-omise-hooks.php:67
+#: includes/classes/class-omise-hooks.php:108
+msgid "Charge id was not found"
+msgstr "お探しの課金IDは見つかりませんでした"
+
+#: includes/classes/class-omise-hooks.php:76
+msgid "Payment with Omise successful (manual captured)"
+msgstr "Omise: 課金情報（手動売上）が実売上化されました"
+
+#: includes/classes/class-omise-hooks.php:91
+#: includes/classes/class-omise-hooks.php:98
+msgid ""
+"Order was not found. Please check carefully, your card might be charged "
+"already, contact our support if possible."
+msgstr ""
+"システムエラーが発生しました（受注IDがみつかりません）。大変お手数ですが、受"
+"注および支払完了の確認をサポートにお問い合わせください。"
+
+#: includes/classes/class-omise-hooks.php:113
+msgid "Confirm url was not found"
+msgstr "システムエラーが発生しました（確認URLがみつかりません）。"
+
+#: includes/classes/class-omise-hooks.php:120 omise-wc-gateway.php:198
+msgid "Authorize with Omise successful"
+msgstr "Omise: 課金情報（手動売上）が認証されました"
+
+#: includes/classes/class-omise-hooks.php:129 omise-wc-gateway.php:207
+msgid "Payment with Omise successful"
+msgstr "Omise: 課金情報（自動売上）が実売上化されました"
+
+#: includes/classes/class-omise-hooks.php:154
+msgid "Charge was not completed"
+msgstr "課金処理を完了できませんでした"
+
+#: includes/classes/class-omise-hooks.php:156 omise-wc-gateway.php:235
+msgid "Payment error"
+msgstr "決済エラー"
+
+#: includes/classes/class-omise-transfers-table.php:60
+msgid "Transfer Id"
+msgstr "振込ID"
+
+#: includes/classes/class-omise-transfers-table.php:61
+msgctxt "Transfer table column header"
+msgid "Sent"
+msgstr "振込要求済"
+
+#: includes/classes/class-omise-transfers-table.php:62
+msgid "Paid"
+msgstr "振込済"
+
+#: includes/classes/class-omise-transfers-table.php:103
+msgctxt "Transfer was sent"
+msgid "Yes"
+msgstr "はい"
+
+#: includes/classes/class-omise-transfers-table.php:104
+msgctxt "Transfer was not sent"
+msgid "No"
+msgstr "いいえ"
+
+#: includes/classes/class-omise-transfers-table.php:110
+msgctxt "Transfer was paid"
+msgid "Yes"
+msgstr "はい"
+
+#: includes/classes/class-omise-transfers-table.php:111
+msgctxt "Transfer was not paid"
+msgid "No"
+msgstr "いいえ"
+
+#: includes/omise-wc-setting.php:8
+msgid "Enable/Disable"
+msgstr "有効/無効"
+
+#: includes/omise-wc-setting.php:10
+msgid "Enable Omise Payment Module."
+msgstr "Omise Payment モジュールを有効にする"
+
+#: includes/omise-wc-setting.php:14
+msgid "Sandbox"
+msgstr "テスト環境"
+
+#: includes/omise-wc-setting.php:16
+msgid "Enabling sandbox means that all your transactions will be in TEST mode."
+msgstr "テスト環境を有効にすると全てテストモードで課金が処理されます"
+
+#: includes/omise-wc-setting.php:20
+msgid "Public key for test"
+msgstr "テスト用のパブリックキー"
+
+#: includes/omise-wc-setting.php:22
+msgid "The \"Test\" mode public key can be found in Omise Dashboard."
+msgstr "テスト用のパブリックキーはOmiseのテストダッシュボード上で確認できます"
+
+#: includes/omise-wc-setting.php:25
+msgid "Secret key for test"
+msgstr "テスト用のシークレットキー"
+
+#: includes/omise-wc-setting.php:27
+msgid "The \"Test\" mode secret key can be found in Omise Dashboard."
+msgstr ""
+"テスト用のシークレットキーはOmiseのテストダッシュボード上で確認できます"
+
+#: includes/omise-wc-setting.php:30
+msgid "Public key for live"
+msgstr "ライブ用のパブリックキー"
+
+#: includes/omise-wc-setting.php:32
+msgid "The \"Live\" mode public key can be found in Omise Dashboard."
+msgstr "ライブ用のパブリックキーはOmiseのライブダッシュボード上で確認できます"
+
+#: includes/omise-wc-setting.php:35
+msgid "Secret key for live"
+msgstr "ライブ用のシークレットキー"
+
+#: includes/omise-wc-setting.php:37
+msgid "The \"Live\" mode secret key can be found in Omise Dashboard."
+msgstr "ライブ用のシークレットキーはOmiseのライブダッシュボードで確認できます"
+
+#: includes/omise-wc-setting.php:40
+msgid "Advance Settings"
+msgstr "詳細設定"
+
+#: includes/omise-wc-setting.php:45
+msgid "Supported card icons"
+msgstr "対応するカードのアイコン"
+
+#: includes/omise-wc-setting.php:74
+msgid ""
+"This only controls the icons displayed on the checkout page.<br />It is not "
+"related to card processing on Omise payment gateway."
+msgstr ""
+"この設定はチェックアウトページのアイコンのみに反映されます。<br />各カードブ"
+"ランドの決済対応に関する条件はOmiseと各加盟店との利用規約に基づきます。"
+
+#: includes/omise-wc-setting.php:77
+msgctxt "Label for setting of checkout form title"
+msgid "Title"
+msgstr "タイトル"
+
+#: includes/omise-wc-setting.php:79
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+"ユーザーがチェックアウト時にみる、支払いオプションのタイトルを設定します"
+
+#: includes/omise-wc-setting.php:80
+msgctxt "Default title at checkout form"
+msgid "Omise Payment Gateway"
+msgstr "クレジットカード"
+
+#: includes/omise-wc-setting.php:83
+msgid "Payment action"
+msgstr "売上方法を選択"
+
+#: includes/omise-wc-setting.php:85
+msgid "Manual Capture or Capture Automatically"
+msgstr ""
+"手動売上もしくは自動売上。手動売上モードでは、課金発生時に仮売上としてのみ処"
+"理されるため、決済を確定したい時点で実売上化を実施する必要があります。自動売"
+"上モードでは課金発生時に売上処理が自動で実施されます。"
+
+#: includes/omise-wc-setting.php:89
+msgctxt "Setting auto capture"
+msgid "Auto Capture"
+msgstr "自動売上処理"
+
+#: includes/omise-wc-setting.php:90
+msgctxt "Setting manual capture"
+msgid "Manual Capture"
+msgstr "手動売上処理"
+
+#: includes/omise-wc-setting.php:95
+msgid "3-D Secure support"
+msgstr "3Dセキュアのサポート"
+
+#: includes/omise-wc-setting.php:97
+msgid ""
+"Enable or disable 3-D Secure for the account. (Japan-based accounts are not "
+"eligible for the service.)"
+msgstr "3Dセキュアを有効にする（日本では現在ご利用出来ません）"
+
+#: includes/templates/omise-cc-form.php:2
+msgctxt "Card holder name at payment form"
+msgid "Name"
+msgstr "氏名"
+
+#: includes/templates/omise-cc-form.php:4
+msgctxt "Placeholder for card holder name"
+msgid "Name"
+msgstr "氏名"
+
+#: includes/templates/omise-cc-form.php:8
+msgctxt "Card number at payment form"
+msgid "Card Number"
+msgstr "カード番号"
+
+#: includes/templates/omise-cc-form.php:10
+msgctxt "Placeholder for card number"
+msgid "Card Number"
+msgstr "カード番号"
+
+#: includes/templates/omise-cc-form.php:14
+msgctxt "Expiration month at payment form"
+msgid "Expiration Month"
+msgstr "有効期限（月）"
+
+#: includes/templates/omise-cc-form.php:16
+msgctxt "Placeholder for expiration month"
+msgid "MM"
+msgstr "MM"
+
+#: includes/templates/omise-cc-form.php:19
+msgctxt "Expiration year at payment form"
+msgid "Expiration Year"
+msgstr "有効期限（年）"
+
+#: includes/templates/omise-cc-form.php:21
+msgctxt "Placeholder for expiration year"
+msgid "YYYY"
+msgstr "YYYY"
+
+#: includes/templates/omise-cc-form.php:25
+msgctxt "Security Code at payment form"
+msgid "Security Code"
+msgstr "セキュリティコード"
+
+#: includes/templates/omise-cc-form.php:28
+msgctxt "Placeholder for security Code"
+msgid "Security Code"
+msgstr "CVC"
+
+#: includes/templates/omise-payment-form.php:6
+msgid "Select card"
+msgstr "カードを選択"
+
+#: includes/templates/omise-payment-form.php:9
+msgid "Card ends with"
+msgstr "カードの下４桁"
+
+#: includes/templates/omise-payment-form.php:12
+msgid "New payment information"
+msgstr "新しいお支払い方法"
+
+#: includes/templates/omise-payment-form.php:22
+msgid "Save card for next time"
+msgstr "カード情報を保存する"
+
+#: includes/templates/omise-wp-admin-page.php:8
+msgid "Charges History"
+msgstr "課金履歴"
+
+#: includes/templates/omise-wp-admin-transfer-page.php:8
+msgid "Transfers History"
+msgstr "振込履歴"
+
+#: includes/templates/partials/header-template.php:3
+msgid "Omise Dashboard"
+msgstr "Omise ダッシュボード"
+
+#: includes/templates/partials/header-template.php:28
+msgid "Account"
+msgstr "アカウント"
+
+#: includes/templates/partials/header-template.php:32
+msgid "Mode"
+msgstr "モード"
+
+#: includes/templates/partials/header-template.php:33
+msgid "LIVE"
+msgstr "ライブ"
+
+#: includes/templates/partials/header-template.php:33
+msgid "TEST"
+msgstr "テスト"
+
+#: includes/templates/partials/header-template.php:36
+msgid "Currency"
+msgstr "通貨"
+
+#: includes/templates/partials/header-template.php:40
+msgctxt "Account information"
+msgid "Auto Capture"
+msgstr "自動売上処理"
+
+#: includes/templates/partials/header-template.php:41
+msgctxt "Auto capture status is enabled"
+msgid "YES"
+msgstr "有効"
+
+#: includes/templates/partials/header-template.php:41
+msgctxt "Auto capture status is disabled"
+msgid "NO"
+msgstr "無効"
+
+#: includes/templates/partials/header-template.php:44
+msgid "3-D Secure"
+msgstr "3Dセキュア"
+
+#: includes/templates/partials/header-template.php:45
+msgctxt "3-D Secure status is enabled"
+msgid "ENABLED"
+msgstr "有効"
+
+#: includes/templates/partials/header-template.php:45
+msgctxt "3-D Secure status is disabled"
+msgid "DISABLED"
+msgstr "無効"
+
+#: includes/templates/partials/header-template.php:51
+msgid "Total Balance"
+msgstr "総残高"
+
+#: includes/templates/partials/header-template.php:52
+msgid "Transferable Balance"
+msgstr "振込可能残高"
+
+#: includes/templates/partials/header-template.php:56
+msgid "Setup a transfer"
+msgstr "振込を行う"
+
+#: includes/templates/partials/transfer-box-template.php:14
+msgid "Full transfer"
+msgstr "全額振込"
+
+#: includes/templates/partials/transfer-box-template.php:16
+#, php-format
+msgid "Transfer the whole available balance (%s) to your account"
+msgstr "(%s)の全額を口座へ振込む"
+
+#: includes/templates/partials/transfer-box-template.php:22
+msgid "Partial transfer"
+msgstr "一部振込"
+
+#: includes/templates/partials/transfer-box-template.php:24
+#, php-format
+msgid "Transfer only part of the available balance (%s) to your account"
+msgstr "振込可能な(%s)の一部を口座へ振込む"
+
+#: includes/templates/partials/transfer-box-template.php:27
+msgctxt "Transfer amount"
+msgid "Amount"
+msgstr "金額"
+
+#: includes/templates/partials/transfer-box-template.php:33
+msgid "Transfer"
+msgstr "振込"
+
+#: includes/templates/partials/transfer-box-template.php:34
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: includes/templates/partials/transfer-box-template.php:39
+msgid ""
+"Transfers are processed daily in chronological order. If balance is "
+"insufficient, transfers are retried on the next day."
+msgstr ""
+"振込依頼は毎日リクエスト順に処理されます。残高不足の場合は翌日に再処理が行な"
+"われます"
+
+#: omise-wc-gateway.php:57
+msgctxt "Header at setting page"
+msgid "Omise Payment Gateway"
+msgstr "Omise Payment Gateway"
+
+#: omise-wc-gateway.php:95
+msgid "Starting to process payment with Omise"
+msgstr "Omise: 課金処理を開始します"
+
+#: omise-wc-gateway.php:98 omise-wc-gateway.php:167
+msgid "Please select a card or enter new payment information."
+msgstr ""
+"システムエラーが発生しました（カード情報もしくは新規の支払情報がみつかりませ"
+"ん）。"
+
+#: omise-wc-gateway.php:106
+msgid "Omise card token is required."
+msgstr "システムエラーが発生しました（カードトークン情報がみつかりません）。"
+
+#: omise-wc-gateway.php:139
+msgid ""
+"Something wrong with Omise gateway. No card available for creating a charge."
+msgstr ""
+"システムエラーが発生しました（課金情報を作成するための有効なカード情報が存在"
+"しません）。"
+
+#: omise-wc-gateway.php:179
+msgid "Charge was failed, please contact our support"
+msgstr ""
+"システムエラーが発生しました（決済を処理できませんでした）。大変お手数です"
+"が、サポートにお問い合わせください。"
+
+#: omise-wc-gateway.php:188
+msgid "Processing payment with Omise 3D-Secure"
+msgstr "Omise: 3Dセキュアを用いて課金処理を開始します"
+
+#: omise-wc-gateway.php:224
+msgid "This charge cannot authorize or capture, please contact our support."
+msgstr ""
+"認証もしくは実売上化できませんでした。カード情報が正しく記入されたことをご確"
+"認ください。他の有効なクレジットカードでも決済できない場合、大変お手数ですが"
+"サポートへお問い合わせください"
+
+#: omise-wc-gateway.php:236
+msgid "Payment with Omise error"
+msgstr "Omise: 決済エラーが生じました"
+
+#: omise-wp-admin.php:53
+msgctxt "Menu"
+msgid "Dashboard"
+msgstr "ダッシュボード"
+
+#: omise-wp-admin.php:54
+msgctxt "Menu"
+msgid "Transfers"
+msgstr "振込"
+
+#: omise-wp-admin.php:55
+msgctxt "Menu"
+msgid "Setting"
+msgstr "設定"
+
+#: omise-wp-admin.php:102
+msgid "Transfer amount must be a numeric"
+msgstr "振込金額は数字のみでご指定ください"
+
+#: omise-wp-admin.php:114
+msgid "A fund transfer request has been sent."
+msgstr "振込要求が送信されました"
+
+#: omise-wp-admin.php:176
+#, php-format
+msgid ""
+"Unable to get the balance information. Please verify that your secret key is "
+"valid. [%s]"
+msgstr "総残高情報が取得出来ません。シークレットキーを確認してください　[%s]"

@@ -5,43 +5,44 @@ $text_domain = 'Omise';
 
 return array(
 	'enabled' => array(
-		'title'       => __( 'Enable/Disable', $text_domain ),
+		'title'       => Omise_Util::translate( 'Enable/Disable' ),
 		'type'        => 'checkbox',
-		'label'       => __( 'Enable Omise Payment Module.', $text_domain ),
+		'label'       => Omise_Util::translate( 'Enable Omise Payment Module.' ),
 		'default'     => 'no'
 	),
 	'sandbox' => array(
-		'title'       => __( 'Sandbox', $text_domain ),
+		'title'       => Omise_Util::translate( 'Sandbox' ),
 		'type'        => 'checkbox',
-		'label'       => __( 'Sandbox mode means everything is in TEST mode', $text_domain ),
+		'label'       => Omise_Util::translate( 'Enabling sandbox means that all your transactions will be in TEST mode.' ),
 		'default'     => 'yes'
 	),
 	'test_public_key' => array(
-		'title'       => __( 'Public key for test', $text_domain ),
+		'title'       => Omise_Util::translate( 'Public key for test' ),
 		'type'        => 'text',
-		'description' => __( 'The "Test" mode public key which can be found in Omise Dashboard', $text_domain )
+		'description' => Omise_Util::translate( 'The "Test" mode public key can be found in Omise Dashboard.' )
 	),
 	'test_private_key' => array(
-		'title'       => __( 'Secret key for test', $text_domain ),
+		'title'       => Omise_Util::translate( 'Secret key for test' ),
 		'type'        => 'password',
-		'description' => __( 'The "Test" mode secret key which can be found in Omise Dashboard', $text_domain )
+		'description' => Omise_Util::translate( 'The "Test" mode secret key can be found in Omise Dashboard.' )
 	),
 	'live_public_key' => array(
-		'title'       => __( 'Public key for live', $text_domain ),
+		'title'       => Omise_Util::translate( 'Public key for live' ),
 		'type'        => 'text',
-		'description' => __( 'The "Live" mode public key which can be found in Omise Dashboard', $text_domain )
+		'description' => Omise_Util::translate( 'The "Live" mode public key can be found in Omise Dashboard.' )
 	),
 	'live_private_key' => array(
-		'title'       => __( 'Secret key for live', $text_domain ),
+		'title'       => Omise_Util::translate( 'Secret key for live' ),
 		'type'        => 'password',
-		'description' => __( 'The "Live" mode secret key which can be found in Omise Dashboard', $text_domain )
+		'description' => Omise_Util::translate( 'The "Live" mode secret key can be found in Omise Dashboard.' )
 	),
 	'advanced' => array(
-		'title'       => __( 'Advanced options', $text_domain ),
-		'type'        => 'title'
+		'title'       => Omise_Util::translate( 'Advance Settings' ),
+		'type'        => 'title',
+		'description' => '',
 	),
 	'accept_visa' => array(
-		'title'       => __( 'Supported card icons', $text_domain ),
+		'title'       => Omise_Util::translate( 'Supported card icons' ),
 		'type'        => 'checkbox',
 		'label'       => Omise_Card_Image::get_visa_image(),
 		'css'         => Omise_Card_Image::get_css(),
@@ -70,36 +71,30 @@ return array(
 		'label'       => Omise_Card_Image::get_amex_image(),
 		'css'         => Omise_Card_Image::get_css(),
 		'default'     => Omise_Card_Image::get_amex_default_display(),
-		'description' => __( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.', $text_domain )
+		'description' => Omise_Util::translate( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.' )
 	),
 	'title' => array(
-		'title'       => __( 'Title', $text_domain ),
+		'title'       => Omise_Util::translate( 'Title', 'Label for setting of checkout form title' ),
 		'type'        => 'text',
-		'description' => __( 'This controls the title which the user sees during checkout.', $text_domain ),
-		'default'     => __( 'Omise Payment Gateway', $text_domain )
+		'description' => Omise_Util::translate( 'This controls the title which the user sees during checkout.' ),
+		'default'     => Omise_Util::translate( 'Omise Payment Gateway', 'Default title at checkout form' )
 	),
 	'payment_action' => array(
-		'title'       => __( 'Payment Action', $text_domain ),
+		'title'       => Omise_Util::translate( 'Payment action' ),
 		'type'        => 'select',
-		'description' => __( 'Manual Capture or Capture Automatically', $text_domain ),
+		'description' => Omise_Util::translate( 'Manual Capture or Capture Automatically' ),
 		'default'     => 'auto_capture',
 		'class'       => 'wc-enhanced-select',
 		'options'     => array(
-			'auto_capture'   => __( 'Auto Capture', $text_domain ),
-			'manual_capture' => __( 'Manual Capture', $text_domain )
+			'auto_capture'   => Omise_Util::translate( 'Auto Capture', 'Setting auto capture' ),
+			'manual_capture' => Omise_Util::translate( 'Manual Capture', 'Setting manual capture' )
 		),
 		'desc_tip'    => true
 	),
 	'omise_3ds' => array(
-		'title'       => __( '3DSecure Support', $text_domain ),
+		'title'       => Omise_Util::translate( '3-D Secure support' ),
 		'type'        => 'checkbox',
-		'label'       => __( 'Enables 3DSecure on this account (does not support for Japan account)', $text_domain ),
+		'label'       => Omise_Util::translate( 'Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.)' ),
 		'default'     => 'no'
-	),
-	'description' => array(
-		'title'       => __( 'Description', $text_domain ),
-		'type'        => 'textarea',
-		'description' => __( 'This controls the description which the user sees during checkout.', $text_domain ),
-		'default'     => __( 'Omise payment gateway.', $text_domain )
 	)
 );

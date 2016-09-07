@@ -27,9 +27,9 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 		}
 
 		function prepare_items() {
-			$columns    = $this->get_columns();
-			$hidden     = array();
-			$sortable   = array();
+			$columns  = $this->get_columns();
+			$hidden   = array();
+			$sortable = array();
 
 			$totalitems = $this->items['total'];
 			$perpage    = $this->items['limit'];
@@ -56,13 +56,12 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 
 		function get_columns() {
 			return $columns = array(
-				'trsf_amount'   => __( 'Amount' ),
-				'trsf_id'       => __( 'Transfer Id' ),
-				'trsf_sent'     => __( 'Sent' ),
-				'trsf_paid'     => __( 'Paid' ),
-				'trsf_failure'  => __( 'Failure Message' ),
-				'trsf_datetime' => __( 'Created' ),
-				'trsf_action'   => ''
+				'trsf_amount'   => Omise_Util::translate( 'Amount' ),
+				'trsf_id'       => Omise_Util::translate( 'Transfer Id' ),
+				'trsf_sent'     => Omise_Util::translate( 'Sent', 'Transfer table column header' ),
+				'trsf_paid'     => Omise_Util::translate( 'Paid' ),
+				'trsf_failure'  => Omise_Util::translate( 'Failure Message' ),
+				'trsf_datetime' => Omise_Util::translate( 'Created' )
 			);
 		}
 
@@ -92,7 +91,7 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 					$class = 'TextWarning';
 				}
 			}
-			
+
 			echo "<strong class='Omise-$class'>" . OmisePluginHelperCurrency::format( $record['currency'], $record['amount'] ) . "</strong>";
 		}
 
@@ -101,11 +100,17 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 		}
 
 		function column_trsf_sent( $record ) {
-			echo $record['sent'] ? '<strong class="Omise-TextSuccess">Yes</strong>' : 'No';
+			$sent     = Omise_Util::translate( 'Yes', 'Transfer was sent' );
+			$not_sent = Omise_Util::translate( 'No', 'Transfer was not sent' );
+
+			echo $record['sent'] ? '<strong class="Omise-TextSuccess">' . $sent . '</strong>' : $not_sent;
 		}
 
 		function column_trsf_paid( $record ) {
-			echo $record['paid'] ? '<strong class="Omise-TextSuccess">Yes</strong>' : 'No';
+			$paid   = Omise_Util::translate( 'Yes', 'Transfer was paid' );
+			$unpaid = Omise_Util::translate( 'No', 'Transfer was not paid' );
+
+			echo $record['paid'] ? '<strong class="Omise-TextSuccess">' . $paid . '</strong>' : $unpaid;
 		}
 
 		function column_trsf_failure( $record ) {
@@ -114,10 +119,6 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 
 		function column_trsf_datetime( $record ) {
 			echo Omise_Util::date_format( $record['created'] );
-		}
-
-		function column_trsf_action( $record ) {
-			echo "<a href='" . OmisePluginHelperTransaction::url( $record ) . "'>view detail</a>";
 		}
 	}
 }

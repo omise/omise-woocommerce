@@ -3,7 +3,7 @@
  * Plugin Name: Omise Payment Gateway
  * Plugin URI: https://www.omise.co/woocommerce
  * Description: Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
- * Version: 1.2.2
+ * Version: 1.2.3
  * Author: Omise
  * Author URI: https://www.omise.co
  *
@@ -11,12 +11,13 @@
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
  */
-defined( 'ABSPATH' ) or die( "No direct script access allowed." );
-defined( 'OMISE_PROTOCOL_PREFIX' ) || define( "OMISE_PROTOCOL_PREFIX", "https://" );
-defined( 'OMISE_VAULT_HOST' ) || define( "OMISE_VAULT_HOST", "vault.omise.co" );
-defined( 'OMISE_API_HOST' ) || define( "OMISE_API_HOST", "api.omise.co" );
-defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( "OMISE_WOOCOMMERCE_PLUGIN_VERSION", "1.2.2" );
+defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
+defined( 'OMISE_PROTOCOL_PREFIX' ) || define( 'OMISE_PROTOCOL_PREFIX', 'https://' );
+defined( 'OMISE_VAULT_HOST' ) || define( 'OMISE_VAULT_HOST', 'vault.omise.co' );
+defined( 'OMISE_API_HOST' ) || define( 'OMISE_API_HOST', 'api.omise.co' );
+defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', '1.2.3' );
 defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2014-07-27' );
+defined( 'OMISE_WOOCOMMERCE_TEXT_DOMAIN' ) || define( 'OMISE_WOOCOMMERCE_TEXT_DOMAIN', 'omise-woocommerce' );
 
 require_once dirname( __FILE__ ) . '/includes/libraries/omise-php/lib/Omise.php';
 require_once dirname( __FILE__ ) . '/includes/libraries/omise-plugin/Omise.php';

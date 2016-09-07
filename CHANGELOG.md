@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.2.3] 2016-08-30
+- *`Added`* Add a new feature, localization
+- *`Added`* Add a translation file for Japanese
+- *`Changed`* Change a page header from transactions history to charges history
+- *`Removed`* Remove a link, view detail, from each row of transactions and transfers history table
+- *`Removed`* Remove sub-tabs, charges and transfers
+- *`Removed`* Remove an unused setting, description
+
 ## [1.2.2] 2016-08-26
 - *`Improved`* Specify the display size of card brand image and allow customer to define their own style
 - *`Removed`* Remove an unused unit test of the library, omise-php
