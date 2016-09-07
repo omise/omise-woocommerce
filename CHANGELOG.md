@@ -2,6 +2,7 @@
 
 ## [1.2.3] 2016-08-30
 - *`Added`* Add a new feature, localization
+- *`Added`* Add a translation file for Japanese
 - *`Changed`* Change a page header from transactions history to charges history
 - *`Removed`* Remove a link, view detail, from each row of transactions and transfers history table
 - *`Removed`* Remove sub-tabs, charges and transfers

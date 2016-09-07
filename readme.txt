@@ -32,6 +32,7 @@ From there:
 == Changelog ==
 = 1.2.3 =
 (Added) Add a new feature, localization
+(Added) Add a translation file for Japanese
 (Changed) Change a page header from transactions history to charges history
 (Removed) Remove a link, view detail, from each row of transactions and transfers history table
 (Removed) Remove sub-tabs, charges and transfers
@@ -67,6 +68,7 @@ Adds support for 3-D Secure feature
 == Upgrade Notice ==
 = 1.2.3 =
 (Added) Add a new feature, localization
+(Added) Add a translation file for Japanese
 (Changed) Change a page header from transactions history to charges history
 (Removed) Remove a link, view detail, from each row of transactions and transfers history table
 (Removed) Remove sub-tabs, charges and transfers
