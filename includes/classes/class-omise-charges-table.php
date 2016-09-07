@@ -59,7 +59,7 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
 				'chrg_amount'     => Omise_Util::translate( 'Amount' ),
 				'chrg_id'         => Omise_Util::translate( 'Charge Id' ),
 				'chrg_authorized' => Omise_Util::translate( 'Authorized' ),
-				'chrg_paid'       => Omise_Util::translate( 'Paid' ),
+				'chrg_paid'       => Omise_Util::translate( 'Captured' ),
 				'chrg_failure'    => Omise_Util::translate( 'Failure Message' ),
 				'chrg_datetime'   => Omise_Util::translate( 'Created' )
 			);
