@@ -56,12 +56,12 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
 
 		function get_columns() {
 			return $columns = array(
-				'chrg_amount'     => Omise_Util::translate( 'Amount' ),
-				'chrg_id'         => Omise_Util::translate( 'Charge Id' ),
-				'chrg_authorized' => Omise_Util::translate( 'Authorized' ),
-				'chrg_paid'       => Omise_Util::translate( 'Captured' ),
-				'chrg_failure'    => Omise_Util::translate( 'Failure Message' ),
-				'chrg_datetime'   => Omise_Util::translate( 'Created' )
+				'chrg_amount'     => __( 'Amount', 'omise' ),
+				'chrg_id'         => __( 'Charge Id', 'omise' ),
+				'chrg_authorized' => __( 'Authorized', 'omise' ),
+				'chrg_paid'       => __( 'Captured', 'omise' ),
+				'chrg_failure'    => __( 'Failure Message', 'omise' ),
+				'chrg_datetime'   => __( 'Created', 'omise' )
 			);
 		}
 
@@ -91,15 +91,15 @@ if ( ! class_exists( 'Omise_Charges_Table' ) ) {
 		}
 
 		function column_chrg_authorized( $record ) {
-			$authorized   = Omise_Util::translate( 'Yes', 'Charge was authorized' );
-			$unauthorized = Omise_Util::translate( 'No', 'Charge was not authorized' );
+			$authorized   = _x( 'Yes', 'Charge was authorized', 'omise' );
+			$unauthorized = _x( 'No', 'Charge was not authorized', 'omise' );
 
 			echo $record['authorized'] ? '<strong class="Omise-TextSuccess">' . $authorized . '</strong>' : $unauthorized;
 		}
 
 		function column_chrg_paid( $record ) {
-			$captured     = Omise_Util::translate( 'Yes', 'Charge was captured' );
-			$not_captured = Omise_Util::translate( 'No', 'Charge was not captured' );
+			$captured     = _x( 'Yes', 'Charge was captured', 'omise' );
+			$not_captured = _x( 'No', 'Charge was not captured', 'omise' );
 
 			echo $record['captured'] ? '<strong class="Omise-TextSuccess">' . $captured . '</strong>' : $not_captured;
 		}
