@@ -60,11 +60,11 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 			try {
 				$post = Omise_Charge::get_post_charge( $order->id );
 				if ( ! $post )
-					throw new Exception( Omise_Util::translate( 'Order id was not found' ) );
+					throw new Exception( __( 'Order id was not found', 'omise' ) );
 
 				$id = Omise_Charge::get_charge_id_from_post( $post );
 				if ( is_null( $id ) || $id === '' )
-					throw new Exception( Omise_Util::translate( 'Charge id was not found' ) );
+					throw new Exception( __( 'Charge id was not found', 'omise' ) );
 
 				$charge = OmiseCharge::retrieve( $id, '', $this->secret_key );
 				$charge->capture();
@@ -73,7 +73,7 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 					throw new Exception( $charge['failure_message'] );
 
 				$order->payment_complete();
-				$order->add_order_note( Omise_Util::translate( 'Payment with Omise successful (manual captured)' ) );
+				$order->add_order_note( __( 'Payment with Omise successful (manual captured)', 'omise' ) );
 			} catch ( Exception $e ) {
 				$order->add_order_note( $e->getMessage() );
 			}
@@ -88,36 +88,36 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 
 			try {
 				if ( ! isset( $_GET['order_id'] ) )
-					throw new Exception( Omise_Util::translate( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.' ) );
+					throw new Exception( __( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.', 'omise' ) );
 
 				$order_id = $_GET['order_id'];
 
 				// Looking for WC_Order object
 				$order = wc_get_order( $order_id );
 				if ( ! $order )
-					throw new Exception( Omise_Util::translate( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.' ) );
+					throw new Exception( __( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.', 'omise' ) );
 
 				// Looking for WP_Post object
 				$post = Omise_Charge::get_post_charge( $order_id );
 				if ( ! $post )
-					throw new Exception( Omise_Util::translate( 'Order id was not found' ) );
+					throw new Exception( __( 'Order id was not found', 'omise' ) );
 
 				// Looking for Omise's charge id
 				$charge_id = Omise_Charge::get_charge_id_from_post( $post );
 				if ( $charge_id === '' )
-					throw new Exception( Omise_Util::translate( 'Charge id was not found' ) );
+					throw new Exception( __( 'Charge id was not found', 'omise' ) );
 
 				// Looking for WC's confirm url
 				$confirmed_url = Omise_Charge::get_confirmed_url_from_post( $post );
 				if ( $confirmed_url === '' )
-					throw new Exception( Omise_Util::translate( 'Confirm url was not found' ) );
+					throw new Exception( __( 'Confirm url was not found', 'omise' ) );
 
 				$charge = OmiseCharge::retrieve( $charge_id, '', $this->secret_key );
 				switch ( strtoupper( $this->payment_action ) ) {
 					case 'MANUAL_CAPTURE':
 						$success = Omise_Charge::is_authorized( $charge );
 						if ( $success ) {
-							$order->add_order_note( Omise_Util::translate( 'Authorize with Omise successful' ) );
+							$order->add_order_note( __( 'Authorize with Omise successful', 'omise' ) );
 						}
 
 						break;
@@ -126,7 +126,7 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 						$success = Omise_Charge::is_paid( $charge );
 						if ( $success ) {
 							$order->payment_complete();
-							$order->add_order_note( Omise_Util::translate( 'Payment with Omise successful' ) );
+							$order->add_order_note( __( 'Payment with Omise successful', 'omise' ) );
 						}
 
 						break;
@@ -151,9 +151,9 @@ if ( ! class_exists( 'Omise_Hooks' ) ) {
 				die();
 			} catch ( Exception $e ) {
 				if ( isset( $order ) )
-					$order->add_order_note( Omise_Util::translate( 'Charge was not completed' ) . ', ' . $e->getMessage() );
+					$order->add_order_note( __( 'Charge was not completed', 'omise' ) . ', ' . $e->getMessage() );
 
-				wc_add_notice( Omise_Util::translate( 'Payment error' ) . ': ' . $e->getMessage() , 'error' );
+				wc_add_notice( __( 'Payment error', 'omise' ) . ': ' . $e->getMessage() , 'error' );
 				header( "Location: " . WC()->cart->get_checkout_url() );
 				die();
 			}

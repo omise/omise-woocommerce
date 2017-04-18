@@ -5,7 +5,7 @@
 
 		<?php Omise_Util::render_partial( 'header', $viewData ); ?>
 
-		<h1><?php echo Omise_Util::translate( 'Charges History' ); ?></h1>
+		<h1><?php echo __( 'Charges History', 'omise' ); ?></h1>
 
 		<div id="Omise-ChargeList">
 			<form method="get">

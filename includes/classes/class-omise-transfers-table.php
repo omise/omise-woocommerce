@@ -56,12 +56,12 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 
 		function get_columns() {
 			return $columns = array(
-				'trsf_amount'   => Omise_Util::translate( 'Amount' ),
-				'trsf_id'       => Omise_Util::translate( 'Transfer Id' ),
-				'trsf_sent'     => Omise_Util::translate( 'Sent', 'Transfer table column header' ),
-				'trsf_paid'     => Omise_Util::translate( 'Paid' ),
-				'trsf_failure'  => Omise_Util::translate( 'Failure Message' ),
-				'trsf_datetime' => Omise_Util::translate( 'Created' )
+				'trsf_amount'   => __( 'Amount', 'omise' ),
+				'trsf_id'       => __( 'Transfer Id', 'omise' ),
+				'trsf_sent'     => _x( 'Sent', 'Transfer table column header', 'omise' ),
+				'trsf_paid'     => __( 'Paid', 'omise' ),
+				'trsf_failure'  => __( 'Failure Message', 'omise' ),
+				'trsf_datetime' => __( 'Created', 'omise' )
 			);
 		}
 
@@ -100,15 +100,15 @@ if ( ! class_exists( 'Omise_Transfers_Table' ) ) {
 		}
 
 		function column_trsf_sent( $record ) {
-			$sent     = Omise_Util::translate( 'Yes', 'Transfer was sent' );
-			$not_sent = Omise_Util::translate( 'No', 'Transfer was not sent' );
+			$sent     = _x( 'Yes', 'Transfer was sent', 'omise' );
+			$not_sent = _x( 'No', 'Transfer was not sent', 'omise' );
 
 			echo $record['sent'] ? '<strong class="Omise-TextSuccess">' . $sent . '</strong>' : $not_sent;
 		}
 
 		function column_trsf_paid( $record ) {
-			$paid   = Omise_Util::translate( 'Yes', 'Transfer was paid' );
-			$unpaid = Omise_Util::translate( 'No', 'Transfer was not paid' );
+			$paid   = _x( 'Yes', 'Transfer was paid', 'omise' );
+			$unpaid = _x( 'No', 'Transfer was not paid', 'omise' );
 
 			echo $record['paid'] ? '<strong class="Omise-TextSuccess">' . $paid . '</strong>' : $unpaid;
 		}

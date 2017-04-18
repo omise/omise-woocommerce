@@ -1,6 +1,6 @@
 <?php $viewData = $partial_data; ?>
 
-<h1><?php echo Omise_Util::translate( 'Omise Dashboard' ); ?></h1>
+<h1><?php echo __( 'Omise Dashboard', 'omise' ); ?></h1>
 
 <?php Omise_Util::render_partial( 'message-box', array( 'message' => $viewData['message'], 'message_type' => $viewData['message_type'] ) ); ?>
 
@@ -25,35 +25,35 @@ if ( isset( $viewData['balance'] ) ) :
 	<div class="Omise-Box Omise-Account">
 		<dl>
 			<!-- Account email -->
-			<dt><?php echo Omise_Util::translate( 'Account' ); ?>: </dt>
+			<dt><?php echo __( 'Account', 'omise' ); ?>: </dt>
 			<dd><?php echo $omise['account']['email']; ?></dd>
 
 			<!-- Account status -->
-			<dt><?php echo Omise_Util::translate( 'Mode' ); ?>: </dt>
-			<dd><strong><?php echo $omise['balance']['livemode'] ? '<span class="Omise-LIVEMODE">' . Omise_Util::translate( 'LIVE' ) . '</span>' : '<span class="Omise-TESTMODE">' . Omise_Util::translate( 'TEST' ) . '</span>'; ?></strong></dd>
+			<dt><?php echo __( 'Mode', 'omise' ); ?>: </dt>
+			<dd><strong><?php echo $omise['balance']['livemode'] ? '<span class="Omise-LIVEMODE">' . __( 'LIVE', 'omise' ) . '</span>' : '<span class="Omise-TESTMODE">' . __( 'TEST', 'omise' ) . '</span>'; ?></strong></dd>
 
 			<!-- Current Currency -->
-			<dt><?php echo Omise_Util::translate( 'Currency' ); ?>: </dt>
+			<dt><?php echo __( 'Currency', 'omise' ); ?>: </dt>
 			<dd><?php echo strtoupper( $omise['balance']['currency'] ); ?></dd>
 
 			<!-- Payment Action -->
-			<dt><?php echo Omise_Util::translate( 'Auto Capture', 'Account information' ); ?>: </dt>
-			<dd><?php echo $viewData['auto_capture'] == 'YES' ? Omise_Util::translate( 'YES', 'Auto capture status is enabled' ) : Omise_Util::translate( 'NO', 'Auto capture status is disabled' ); ?></dd>
+			<dt><?php echo _x( 'Auto Capture', 'Account information', 'omise' ); ?>: </dt>
+			<dd><?php echo $viewData['auto_capture'] == 'YES' ? _x( 'YES', 'Auto capture status is enabled', 'omise' ) : _x( 'NO', 'Auto capture status is disabled', 'omise' ); ?></dd>
 
 			<!-- 3D Secure enabled? -->
-			<dt><?php echo Omise_Util::translate( '3-D Secure' ); ?>: </dt>
-			<dd><?php echo $viewData['support_3dsecure'] == 'ENABLED' ? Omise_Util::translate( 'ENABLED', '3-D Secure status is enabled' ) : Omise_Util::translate( 'DISABLED', '3-D Secure status is disabled' ); ?></dd>
+			<dt><?php echo __( '3-D Secure', 'omise' ); ?>: </dt>
+			<dd><?php echo $viewData['support_3dsecure'] == 'ENABLED' ? _x( 'ENABLED', '3-D Secure status is enabled', 'omise' ) : _x( 'DISABLED', '3-D Secure status is disabled', 'omise' ); ?></dd>
 		</dl>
 	</div>
 
 	<!-- Balance -->
 	<div class="Omise-Balance Omise-Clearfix">
-		<div class="left"><span class="Omise-BalanceAmount"><?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['total'] ); ?></span><br/><?php echo Omise_Util::translate( 'Total Balance' ); ?></div>
-		<div class="right"><span class="Omise-BalanceAmount"><?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['available'] ); ?></span><br/><?php echo Omise_Util::translate( 'Transferable Balance' ); ?></div>
+		<div class="left"><span class="Omise-BalanceAmount"><?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['total'] ); ?></span><br/><?php echo __( 'Total Balance', 'omise' ); ?></div>
+		<div class="right"><span class="Omise-BalanceAmount"><?php echo OmisePluginHelperCurrency::format( $omise['balance']['currency'], $omise['balance']['available'] ); ?></span><br/><?php echo __( 'Transferable Balance', 'omise' ); ?></div>
 	</div>
 
 	<div>
-		<span id="Omise-BalanceTransferTab" class="Omise-BalanceTransferTab"><?php echo Omise_Util::translate( 'Setup a transfer' ); ?></span>
+		<span id="Omise-BalanceTransferTab" class="Omise-BalanceTransferTab"><?php echo __( 'Setup a transfer', 'omise' ); ?></span>
 	</div>
 
 	<?php Omise_Util::render_partial( 'transfer-box', $omise ); ?>
