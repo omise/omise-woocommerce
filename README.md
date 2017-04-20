@@ -50,7 +50,16 @@ Add your API Keys
 
 ![Checkout](https://cdn.omise.co/assets/woocommerce/checkout.png)
 
+## Development
 
+### Run Test
+
+In order to setup and run test, you need to have these `svn`, `wget`, `composer`, `mysqladmin` commands installed in your machine.
+
+1. Setup your database. (don't need to create a new database in this step).
+2. Run `composer install` to install the PHPUnit and its dependencies packages.
+3. Run `bin/install-wp-tests.sh [db-name] [db-user] [db-password] [db-host]
+4. Once all sets, execute `./vendor/bin/phpunit` to run the tests.
 
 ## Other Libraries
 
