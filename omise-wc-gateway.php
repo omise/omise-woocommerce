@@ -221,7 +221,7 @@ function register_omise_wc_gateway_plugin() {
 						}
 
 						if ( ! $success )
-							throw new Exception( __( 'This charge cannot authorize or capture, please contact our support.', 'omise' ) );
+							throw new Exception( __( 'This charge cannot be authorized or captured, please contact our support team.', 'omise' ) );
 
 						// Remove cart
 						WC()->cart->empty_cart();
