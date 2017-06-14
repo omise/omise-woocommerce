@@ -28,9 +28,12 @@ function register_omise_creditcard() {
 			$this->omise_3ds      = $this->get_option( 'omise_3ds', false ) == 'yes';
 			$this->payment_action = $this->get_option( 'payment_action' );
 
-			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( Omise_Hooks::get_instance(), 'charge_3ds_callback' ) );
+			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
+
+			/** @deprecated 2.0 */
+			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'callback' ) );
 		}
 
 		/**
@@ -244,7 +247,7 @@ function register_omise_creditcard() {
 					"amount"      => $amount,
 					"currency"    => $order_currency,
 					"description" => "WooCommerce Order id " . $order_id,
-					"return_uri"  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=wc_gateway_omise" )
+					"return_uri"  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_callback" )
 				);
 
 				if ( ! empty( $card_id ) && ! empty( $omise_customer_id ) ) {
@@ -329,6 +332,85 @@ function register_omise_creditcard() {
 					'redirect' => ''
 				);
 			}
+		}
+
+		public function callback() {
+			$this->define_user_agent();
+
+			try {
+				if ( ! isset( $_GET['order_id'] ) )
+					throw new Exception( __( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.', 'omise' ) );
+
+				$order_id = $_GET['order_id'];
+
+				// Looking for WC_Order object
+				$order = wc_get_order( $order_id );
+				if ( ! $order )
+					throw new Exception( __( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.', 'omise' ) );
+
+				// Looking for WP_Post object
+				$post = Omise_Charge::get_post_charge( $order_id );
+				if ( ! $post )
+					throw new Exception( __( 'Order id was not found', 'omise' ) );
+
+				// Looking for Omise's charge id
+				$charge_id = Omise_Charge::get_charge_id_from_post( $post );
+				if ( $charge_id === '' )
+					throw new Exception( __( 'Charge id was not found', 'omise' ) );
+
+				// Looking for WC's confirm url
+				$confirmed_url = Omise_Charge::get_confirmed_url_from_post( $post );
+				if ( $confirmed_url === '' )
+					throw new Exception( __( 'Confirm url was not found', 'omise' ) );
+
+				$charge = OmiseCharge::retrieve( $charge_id, '', $this->secret_key() );
+				switch ( strtoupper( $this->payment_action ) ) {
+					case 'MANUAL_CAPTURE':
+						$success = Omise_Charge::is_authorized( $charge );
+						if ( $success ) {
+							$order->add_order_note( __( 'Authorize with Omise successful', 'omise' ) );
+						}
+
+						break;
+
+					case 'AUTO_CAPTURE':
+						$success = Omise_Charge::is_paid( $charge );
+						if ( $success ) {
+							$order->payment_complete();
+							$order->add_order_note( __( 'Payment with Omise successful', 'omise' ) );
+						}
+
+						break;
+
+					default:
+						// Default behaviour is, check if it paid first.
+						$success = Omise_Charge::is_paid( $charge );
+
+						// Then, check is authorized after if the first condition is false.
+						if ( ! $success )
+							$success = Omise_Charge::is_authorized( $charge );
+
+						break;
+				}
+
+				if ( ! $success )
+					throw new Exception( Omise_Charge::get_error_message( $charge ) );
+
+				// Remove cart
+				WC()->cart->empty_cart();
+				header( "Location: " . $confirmed_url );
+				die();
+			} catch ( Exception $e ) {
+				if ( isset( $order ) )
+					$order->add_order_note( __( 'Charge was not completed', 'omise' ) . ', ' . $e->getMessage() );
+
+				wc_add_notice( __( 'Payment error', 'omise' ) . ': ' . $e->getMessage() , 'error' );
+				header( "Location: " . WC()->cart->get_checkout_url() );
+				die();
+			}
+
+			wp_die( "Access denied", "Access Denied", array( 'response' => 401 ) );
+			die();
 		}
 
 		/**
