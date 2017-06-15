@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die ( "No direct script access allowed." );
+defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
 	return;
@@ -10,6 +10,9 @@ if ( class_exists( 'Omise_Payment' ) ) {
 }
 
 abstract class Omise_Payment extends WC_Payment_Gateway {
+	/** Omise charge id post meta key. */
+	const CHARGE_ID = 'omise_charge_id';
+
 	/**
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 *
@@ -27,8 +30,33 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		'IDR' => 100
 	);
 
+	/**
+	 * @var Omise_Order|null
+	 */
+	protected $order;
+
 	public function __construct() {
 		$this->define_user_agent();
+	}
+
+	/**
+	 * @param  string $id
+	 *
+	 * @return Omise_Order|null
+	 */
+	public function load_order( $id ) {
+		if ( $this->order = wc_get_order( $id ) ) {
+			return $this->order;
+		}
+
+		return null;
+	}
+
+	/**
+	 * @return Omise_Order|null
+	 */
+	public function order() {
+		return $this->order;
 	}
 
 	/**
@@ -93,6 +121,22 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		}
 
 		return $amount;
+	}
+
+	/**
+	 * Attach a charge id into an order.
+	 */
+	public function attach_charge_id_to_order( $charge_id ) {
+		add_post_meta( $this->order()->get_id(), self::CHARGE_ID, $charge_id );
+	}
+
+	/**
+	 * Retrieve an attached charge id.
+	 *
+	 * @return string
+	 */
+	public function get_charge_id_from_order() {
+		return get_post_meta( $this->order()->get_id(), self::CHARGE_ID, true );
 	}
 
 	protected function define_user_agent() {

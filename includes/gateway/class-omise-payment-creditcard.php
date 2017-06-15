@@ -179,13 +179,16 @@ function register_omise_creditcard() {
 		 * @return array
 		 */
 		public function process_payment( $order_id ) {
-			Omise_Hooks::set_omise_user_agent();
+			if ( ! $order = $this->load_order( $order_id ) ) {
+				wc_add_notice( __( 'Order not found: ', 'omise' ) . sprintf( 'cannot find order id %s.', $order_id ), 'error' );
+				return;
+			}
 
-			$order   = wc_get_order( $order_id );
-			$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
-			$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
+			$order->add_order_note( __( 'Omise: processing a payment..', 'omise' ) );
+
 			try {
-				$order->add_order_note( __( 'Starting to process payment with Omise', 'omise' ) );
+				$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
+				$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
 
 				if ( empty( $token ) && empty( $card_id ) ) {
 					throw new Exception( __( 'Please select a card or enter new payment information.', 'omise' ) );
@@ -335,21 +338,18 @@ function register_omise_creditcard() {
 		}
 
 		public function callback() {
-			$this->define_user_agent();
+			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
+				wc_add_notice( __( 'Order not found: ', 'omise' ) . __( 'Your card might be charged already, please contact our support team if you have any questions.', 'omise' ), 'error' );
+
+				header( "Location: " . WC()->cart->get_checkout_url() );
+				die();
+			}
+
+			$order->add_order_note( __( 'Omise: validating a payment result..', 'omise' ) );
 
 			try {
-				if ( ! isset( $_GET['order_id'] ) )
-					throw new Exception( __( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.', 'omise' ) );
-
-				$order_id = $_GET['order_id'];
-
-				// Looking for WC_Order object
-				$order = wc_get_order( $order_id );
-				if ( ! $order )
-					throw new Exception( __( 'Order was not found. Please check carefully, your card might be charged already, contact our support if possible.', 'omise' ) );
-
 				// Looking for WP_Post object
-				$post = Omise_Charge::get_post_charge( $order_id );
+				$post = Omise_Charge::get_post_charge( $_GET['order_id'] );
 				if ( ! $post )
 					throw new Exception( __( 'Order id was not found', 'omise' ) );
 
