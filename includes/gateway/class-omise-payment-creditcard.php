@@ -327,13 +327,11 @@ function register_omise_creditcard() {
 					);
 				}
 			} catch( Exception $e ) {
-				$error_message = $e->getMessage();
-				wc_add_notice( __( 'Payment error', 'omise' ) . ': ' . $error_message, 'error' );
-				$order->add_order_note( __( 'Payment with Omise error', 'omise' ) . ': ' . $error_message );
-				return array(
-					'result'   => 'fail',
-					'redirect' => ''
-				);
+				wc_add_notice( __( 'Payment failed: ', 'omise' ) . $e->getMessage(), 'error' );
+
+				$order->add_order_note( __( 'Omise: payment failed, ', 'omise' ) . $e->getMessage() );
+
+				return;
 			}
 		}
 
@@ -341,7 +339,7 @@ function register_omise_creditcard() {
 			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
 				wc_add_notice( __( 'Order not found: ', 'omise' ) . __( 'Your card might be charged already, please contact our support team if you have any questions.', 'omise' ), 'error' );
 
-				header( "Location: " . WC()->cart->get_checkout_url() );
+				header( 'Location: ' . WC()->cart->get_checkout_url() );
 				die();
 			}
 
@@ -401,15 +399,15 @@ function register_omise_creditcard() {
 				header( "Location: " . $confirmed_url );
 				die();
 			} catch ( Exception $e ) {
-				if ( isset( $order ) )
-					$order->add_order_note( __( 'Charge was not completed', 'omise' ) . ', ' . $e->getMessage() );
+				wc_add_notice( __( 'Payment failed: ', 'omise' ) . $e->getMessage(), 'error' );
 
-				wc_add_notice( __( 'Payment error', 'omise' ) . ': ' . $e->getMessage() , 'error' );
-				header( "Location: " . WC()->cart->get_checkout_url() );
+				$order->add_order_note( __( 'Omise: payment failed, ', 'omise' ) . $e->getMessage() );
+
+				header( 'Location: ' . WC()->cart->get_checkout_url() );
 				die();
 			}
 
-			wp_die( "Access denied", "Access Denied", array( 'response' => 401 ) );
+			wp_die( 'Access denied', 'Access Denied', array( 'response' => 401 ) );
 			die();
 		}
 
