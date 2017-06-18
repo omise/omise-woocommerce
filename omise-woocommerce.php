@@ -24,7 +24,6 @@ require_once dirname( __FILE__ ) . '/includes/libraries/omise-php/lib/Omise.php'
 require_once dirname( __FILE__ ) . '/includes/libraries/omise-plugin/Omise.php';
 require_once dirname( __FILE__ ) . '/includes/gateway/class-omise-payment-creditcard.php';
 require_once dirname( __FILE__ ) . '/includes/classes/class-omise-charge.php';
-require_once dirname( __FILE__ ) . '/includes/classes/class-omise-hooks.php';
 require_once dirname( __FILE__ ) . '/includes/classes/class-omise-transfer.php';
 require_once dirname( __FILE__ ) . '/includes/classes/class-omise-card-image.php';
 
