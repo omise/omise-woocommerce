@@ -31,6 +31,7 @@ function register_omise_creditcard() {
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
+			add_action( 'woocommerce_order_action_omise_charge_capture', array( $this, 'capture' ) );
 
 			/** @deprecated 2.0 */
 			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'callback' ) );

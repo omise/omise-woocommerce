@@ -40,16 +40,22 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * @param  string $id
+	 * @param  string|WC_Order $order
 	 *
 	 * @return Omise_Order|null
 	 */
-	public function load_order( $id ) {
-		if ( $this->order = wc_get_order( $id ) ) {
-			return $this->order;
+	public function load_order( $order ) {
+		if ( $order instanceof WC_Order ) {
+			$this->order = $order;
+		} else {
+			$this->order = wc_get_order( $order );
 		}
 
-		return null;
+		if ( ! $this->order ) {
+			$this->order = null;
+		}
+
+		return $this->order;
 	}
 
 	/**
@@ -137,6 +143,34 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	public function get_charge_id_from_order() {
 		return get_post_meta( $this->order()->get_id(), self::CHARGE_ID, true );
+	}
+
+	/**
+	 * Capture an authorized charge.
+	 *
+	 * @param  WC_Order $order WooCommerce's order object
+	 *
+	 * @return void
+	 *
+	 * @see    WC_Meta_Box_Order_Actions::save( $post_id, $post )
+	 * @see    woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-actions.php
+	 */
+	public function capture( $order ) {
+		$this->load_order( $order );
+
+		try {
+			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+			$charge->capture();
+
+			if ( ! OmisePluginHelperCharge::isPaid( $charge ) ) {
+				throw new Exception( $charge['failure_message'] );
+			}
+
+			$order->add_order_note( sprintf( __( 'Omise: captured the charge id %s ', 'omise' ), $this->get_charge_id_from_order() ) );
+			$order->payment_complete();
+		} catch ( Exception $e ) {
+			$order->add_order_note( __( 'Omise: capture failed, ', 'omise' ) . $e->getMessage() );
+		}
 	}
 
 	protected function define_user_agent() {

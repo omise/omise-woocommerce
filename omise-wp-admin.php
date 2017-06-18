@@ -38,7 +38,6 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 				return;
 			}
 
-			add_action( 'woocommerce_order_action_omise_charge_capture', array( Omise_Hooks::get_instance(), 'charge_capture' ) );
 			add_action( 'admin_post_omise_create_transfer', array( $this, 'create_transfer' ) );
 			add_action( 'admin_post_nopriv_omise_create_transfer', array( $this, 'no_op' ) );
 			add_action( 'admin_menu', array( $this, 'add_dashboard_omise_menu' ) );
