@@ -50,7 +50,8 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 		 * @return void
 		 */
 		public static function render_partial( $partial_name, $partial_data = null ) {
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/partials/' . $partial_name . '-template.php' );
+			// TODO: Make it to not relate with `admin` directory.
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/admin/views/partials/' . $partial_name . '-template.php' );
 		}
 
 		/**
