@@ -27,7 +27,7 @@
 	<form name="omise_cc_form" id="omise_cc_form">
 		<?php wp_nonce_field('omise_add_card','omise_add_card_nonce'); ?>
 		<fieldset>
-			<?php require_once( '../payment/form-creditcard.php' ); ?>
+			<?php require_once( __DIR__ . '/../payment/form-creditcard.php' ); ?>
 			<div class="clear"></div>
 		</fieldset>
 	</form>
