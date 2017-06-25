@@ -62,7 +62,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 					$cards = Omise::get_customer_cards ( $this->private_key, $this->omise_customer_id );
 					$viewData ["existingCards"] = $cards;
 						
-					Omise_Util::render_view ( 'includes/templates/omise-myaccount-panel.php', $viewData );
+					Omise_Util::render_view ( 'templates/myaccount/my-card.php', $viewData );
 					$this->register_omise_my_account_scripts ();
 				}
 		}

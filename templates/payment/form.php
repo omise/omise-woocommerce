@@ -14,7 +14,7 @@
 
 	<fieldset id="new_card_form" class="<?php echo $showExistingCards ? 'omise-hidden' : ''; ?>">
 
-		<?php require_once('omise-cc-form.php'); ?>
+		<?php require_once('form-creditcard.php'); ?>
 
 		<?php if ( $viewData['user_logged_in'] ) : ?>
 			<p class="form-row form-row-wide">

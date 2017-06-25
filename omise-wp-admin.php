@@ -189,7 +189,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 			try {
 				$viewData['charges'] = Omise_Charge::list_charges( $this->private_key );
-				$this->render_view( 'includes/templates/omise-wp-admin-page.php', $viewData );
+				$this->render_view( 'includes/admin/views/page-dashboard.php', $viewData );
 			} catch( Exception $e ) {
 				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage () ) . "</div></div>";
 			}
@@ -204,7 +204,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 			try {
 				$viewData['transfers'] = Omise_Transfer::list_transfers( $this->private_key );
-				$this->render_view( 'includes/templates/omise-wp-admin-transfer-page.php', $viewData );
+				$this->render_view( 'includes/admin/views/page-transfer.php', $viewData );
 			} catch ( Exception $e ) {
 				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage() ) . "</div></div>";
 			}
