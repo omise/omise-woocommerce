@@ -26,6 +26,7 @@ function register_omise_internetbanking() {
 
 			$this->title = $this->get_option( 'title' );
 
+			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		}
 
@@ -153,6 +154,62 @@ function register_omise_internetbanking() {
 
 				return;
 			}
+		}
+
+		/**
+		 * @return void
+		 */
+		public function callback() {
+			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
+				wc_add_notice( __( 'Order not found: ', 'omise' ) . __( 'Your payment might already has been completed, please contact our support team if you have any questions.', 'omise' ), 'error' );
+
+				header( 'Location: ' . WC()->cart->get_checkout_url() );
+				die();
+			}
+
+			$order->add_order_note( __( 'Omise: validating a payment result..', 'omise' ) );
+
+			try {
+				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+
+				if ( 'failed' === $charge['status'] ) {
+					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
+				}
+
+				if ( 'pending' === $charge['status'] && ! $charge['captured'] ) {
+					$order->add_order_note( __( 'Omise: the charge has been pending due to the Bank process. Please check the payment status at Omise dashboard again later', 'omise' ) );
+					$order->update_status( 'processing' );
+
+					WC()->cart->empty_cart();
+
+					header( 'Location: ' . $order->get_checkout_order_received_url() );
+					die();
+				}
+
+				if ( 'successful' === $charge['status'] && $charge['captured'] ) {
+					$order->add_order_note( sprintf( __( 'Omise: captured an amount %s', 'omise' ), $order->get_total() ) );
+					$order->payment_complete();
+
+					WC()->cart->empty_cart();
+
+					header( 'Location: ' . $order->get_checkout_order_received_url() );
+					die();
+				}
+
+				throw new Exception( __( 'Seems that we cannot process your payment properly. Anyway, your payment might already has been completed, please contact our support team if you have any questions.', 'omise' ) );
+			} catch ( Exception $e ) {
+				wc_add_notice( __( 'Payment failed: ', 'omise' ) . $e->getMessage(), 'error' );
+
+				$order->add_order_note( __( 'Omise: payment failed, ', 'omise' ) . $e->getMessage() );
+
+				$order->update_status( 'failed' );
+
+				header( 'Location: ' . WC()->cart->get_checkout_url() );
+				die();
+			}
+
+			wp_die( 'Access denied', 'Access Denied', array( 'response' => 401 ) );
+			die();
 		}
 	}
 
