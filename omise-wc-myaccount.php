@@ -81,8 +81,7 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 			wp_localize_script ( 'omise-myaccount-card-handler', 'omise_params', array (
 					'key' => $this->public_key,
 					'ajax_url' => admin_url ( 'admin-ajax.php' ) ,
-					'ajax_loader_url' => plugins_url ( '/assets/images/ajax-loader@2x.gif', __FILE__ ),
-					'vault_url' => OMISE_VAULT_HOST
+					'ajax_loader_url' => plugins_url ( '/assets/images/ajax-loader@2x.gif', __FILE__ )
 			) );
 		}
 		
