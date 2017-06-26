@@ -28,7 +28,6 @@ require_once dirname( __FILE__ ) . '/includes/classes/class-omise-transfer.php';
 require_once dirname( __FILE__ ) . '/includes/classes/class-omise-card-image.php';
 
 require_once 'omise-util.php';
-require_once 'omise-api-wrapper.php';
 require_once 'omise-wc-myaccount.php';
 require_once 'omise-wp-admin.php';
 
