@@ -171,4 +171,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$order->add_order_note( __( 'Omise: capture failed, ', 'omise' ) . $e->getMessage() );
 		}
 	}
+
+	/**
+	 * @param  array $params
+	 *
+	 * @return OmiseCharge
+	 */
+	public function sale( $params ) {
+		return OmiseCharge::create( $params, '', $this->secret_key() );
+	}
 }
