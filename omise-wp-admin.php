@@ -101,12 +101,15 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 					throw new Exception ( __( 'Transfer amount must be a numeric', 'omise' ) );
 				}
 
-				$balance = Omise::get_balance( $this->private_key );
-				if ( strtoupper( $balance->currency ) === "THB" ) {
+				$balance = OmiseBalance::retrieve( '', $this->private_key );
+				if ( strtoupper( $balance['currency'] ) === "THB" ) {
 					$transfer_amount = $transfer_amount * 100;
 				}
 
-				$transfer = Omise::create_transfer( $this->private_key, empty( $transfer_amount ) ? null : $transfer_amount );
+				$data = array(
+					'amount' => empty( $transfer_amount ) ? null : $transfer_amount
+				);
+				$transfer = OmiseTransfer::create( $data, '', $this->private_key );
 
 				if ( $this->is_transfer_success( $transfer ) ) {
 					$result_message_type = 'updated';
@@ -133,22 +136,22 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		}
 
 		private function is_transfer_success( $transfer ) {
-			return isset( $transfer->id ) && isset( $transfer->object ) && $transfer->object == 'transfer' && $transfer->failure_code == null && $transfer->failure_message == null;
+			return isset( $transfer['id'] ) && isset( $transfer['object'] ) && $transfer['object'] == 'transfer' && $transfer['failure_code'] == null && $transfer['failure_message'] == null;
 		}
 
 		private function get_transfer_error_message( $transfer ) {
 			$message = "";
 
-			if( isset( $transfer->message ) && ! empty( $transfer->message ) ) {
-				$message .= $transfer->message . " ";
+			if( isset( $transfer['message'] ) && ! empty( $transfer['message'] ) ) {
+				$message .= $transfer['message'] . " ";
 			}
 
-			if ( isset( $transfer->failure_code ) && ! empty( $transfer->failure_code ) ) {
-				$message .= "[" . $transfer->failure_code . "] ";
+			if ( isset( $transfer['failure_code'] ) && ! empty( $transfer['failure_code'] ) ) {
+				$message .= "[" . $transfer['failure_code'] . "] ";
 			}
 
-			if ( isset( $transfer->failure_message ) && ! empty( $transfer->failure_message ) ) {
-				$message .= $transfer->failure_message;
+			if ( isset( $transfer['failure_message'] ) && ! empty( $transfer['failure_message'] ) ) {
+				$message .= $transfer['failure_message'];
 			}
 
 			return trim($message);
@@ -160,9 +163,9 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 */
 		function init() {
 			try {
-				$balance = Omise::get_balance( $this->private_key );
+				$balance = OmiseBalance::retrieve( '', $this->private_key );
 
-				if ( $balance->object == 'balance' ) {
+				if ( $balance['object'] == 'balance' ) {
 					$omise_account = OmiseAccount::retrieve( '', $this->private_key );
 
 					$viewData['auto_capture']     = $this->payment_action === 'auto_capture' ? 'YES' : 'NO';
@@ -172,7 +175,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 					return $viewData;
 				} else {
-					$message = sprintf( __( 'Unable to get the balance information. Please verify that your secret key is valid. [%s]', 'omise' ), esc_html( $balance->message ) );
+					$message = sprintf( __( 'Unable to get the balance information. Please verify that your secret key is valid. [%s]', 'omise' ), esc_html( $balance['message'] ) );
 					echo "<div class='wrap'><div class='error'>$message</div></div>";
 				}
 			} catch ( Exception $e ) {

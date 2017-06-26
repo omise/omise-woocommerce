@@ -57,13 +57,12 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 		 * Append Omise Settings panel to My Account page
 		 */
 		public function init_panel(){
-			
 				if (! empty ( $this->omise_customer_id )) {
-					$cards = Omise::get_customer_cards ( $this->private_key, $this->omise_customer_id );
-					$viewData ["existingCards"] = $cards;
-						
-					Omise_Util::render_view ( 'templates/myaccount/my-card.php', $viewData );
-					$this->register_omise_my_account_scripts ();
+					$customer                  = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
+					$viewData['existingCards'] = $customer->cards();
+
+					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
+					$this->register_omise_my_account_scripts();
 				}
 		}
 
@@ -103,11 +102,16 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 				die();
 			}
 			
-			$result = Omise::delete_card ( $this->private_key, $this->omise_customer_id, $card_id );
-			echo json_encode($result);
+			$customer = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
+			$card     = $customer->cards()->retrieve( $card_id );
+			$card     = $card->destroy();
+
+			echo json_encode( array(
+				'deleted' => $card->isDestroyed()
+			) );
 			die();
 		}
-		
+
 		/**
 		 * Public omise_create_card ajax hook
 		 */
@@ -123,8 +127,25 @@ if (! class_exists ( 'Omise_MyAccount' )) {
 				die();
 			}
 			
-			$card = Omise::create_card (  $this->private_key, $this->omise_customer_id, $token );
-			echo json_encode($card);
+			try {
+				$customer = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
+				$customer->update( array(
+					'card' => $token
+				) );
+
+				$cards = $customer->cards( array(
+					'limit' => 1,
+					'order' => 'reverse_chronological'
+				) );
+
+				echo json_encode( $cards['data'][0] );
+			} catch (Exception $e) {
+				echo json_encode( array(
+					'object'  => 'error',
+					'message' => $e->getMessage()
+				) );
+			}
+
 			die();
 		}
 		

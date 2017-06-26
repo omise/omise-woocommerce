@@ -1,12 +1,12 @@
 <div id="omise_cc_form">
-	<?php $showExistingCards = $viewData['user_logged_in'] && isset( $viewData['existingCards']->data ) && sizeof( $viewData['existingCards']->data ) > 0; ?>
+	<?php $showExistingCards = $viewData['user_logged_in'] && isset( $viewData['existingCards']['data'] ) && sizeof( $viewData['existingCards']['data'] ) > 0; ?>
 
 	<?php if ( $showExistingCards ) : ?>
 		<p class="form-row form-row-wide">
 			<?php echo __( 'Select card', 'omise' ); ?> : <br/>
 
-				<?php foreach ( $viewData['existingCards']->data as $card ) : ?>
-						<?php echo "<input type='radio' name='card_id' value='{$card->id}' />" . __( 'Card ends with', 'omise' ) . " {$card->last_digits}<br/>"; ?>
+				<?php foreach ( $viewData['existingCards']['data'] as $card ) : ?>
+						<?php echo "<input type='radio' name='card_id' value='{$card['id']}' />" . __( 'Card ends with', 'omise' ) . " {$card['last_digits']}<br/>"; ?>
 				<?php endforeach; ?>
 		</p>
 		&nbsp;<input type="radio" id="new_card_info" name="card_id" value="" /><?php echo __( 'New payment information', 'omise' ); ?>

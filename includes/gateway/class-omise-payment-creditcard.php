@@ -162,7 +162,9 @@ function register_omise_creditcard() {
 				$current_user      = wp_get_current_user();
 				$omise_customer_id = $this->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 				if ( ! empty( $omise_customer_id ) ) {
-					$viewData['existingCards'] = Omise::get_customer_cards( $this->secret_key(), $omise_customer_id );;
+
+					$customer                  = OmiseCustomer::retrieve( $omise_customer_id, '', $this->secret_key() );
+					$viewData['existingCards'] = $customer->cards();
 				}
 			} else {
 				$viewData['user_logged_in'] = false;
@@ -204,14 +206,22 @@ function register_omise_creditcard() {
 					}
 
 					if ( ! empty( $omise_customer_id ) ) {
-						// attach a new card to customer
-						$omise_customer = Omise::create_card( $this->secret_key(), $omise_customer_id, $token );
+						try {
+							// attach a new card to customer
+							$customer = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->secret_key() );
+							$customer->update( array(
+								'card' => $token
+							) );
 
-						if ( $omise_customer->object == "error" ) {
-							throw new Exception( $omise_customer->message );
+							$cards = $customer->cards( array(
+								'limit' => 1,
+								'order' => 'reverse_chronological'
+							) );
+
+							$card_id = $cards['data'][0]['id'];
+						} catch (Exception $e) {
+							throw new Exception( $e->getMessage() );
 						}
-
-						$card_id = $omise_customer->cards->data[$omise_customer->cards->total - 1]->id;
 					} else {
 						$description   = "WooCommerce customer " . $user->id;
 						$customer_data = array(
@@ -219,24 +229,26 @@ function register_omise_creditcard() {
 							"card"        => $token
 						);
 
+						$omise_customer = OmiseCustomer::create( $customer_data, '', $this->secret_key() );
 						$omise_customer = Omise::create_customer( $this->secret_key(), $customer_data );
 
-						if ( $omise_customer->object == "error" ) {
-							throw new Exception( $omise_customer->message );
+						if ( $omise_customer['object'] == "error" ) {
+							throw new Exception( $omise_customer['message'] );
 						}
 
-						$omise_customer_id = $omise_customer->id;
+						$omise_customer_id = $omise_customer['id'];
 						if ( $this->is_test() ) {
 							update_user_meta( $user->ID, 'test_omise_customer_id', $omise_customer_id );
 						} else {
 							update_user_meta( $user->ID, 'live_omise_customer_id', $omise_customer_id );
 						}
 
-						if ( 0 == sizeof( $omise_customer->cards->data ) ) {
+						if ( 0 == sizeof( $omise_customer['cards']['data'] ) ) {
 							throw new Exception( __( 'Something wrong with Omise gateway. No card available for creating a charge.', 'omise' ) );
 						}
-						$card    = $omise_customer->cards->data [0]; //use the latest card
-						$card_id = $card->id;
+
+						$cards   = $omise_customer->cards( array( 'order' => 'reverse_chronological' ) );
+						$card_id = $cards['data'][0]['id']; //use the latest card
 					}
 				}
 
