@@ -1,0 +1,67 @@
+.wc_payment_method #omise-form-internetbanking input[type="radio"] + label::before {
+	position: absolute;
+	top: 14px;
+	left: 14px;
+}
+
+#omise-form-internetbanking { }
+#omise-form-internetbanking li.item {
+	border-bottom: 1px solid #eee;
+	padding: 12px 0 12px;
+}
+
+#omise-form-internetbanking li > input {
+	position: absolute;
+	top: 26px;
+	left: 14px;
+}
+
+#omise-form-internetbanking li > label {
+	padding-left: 36px;
+	cursor: pointer;
+	position: relative;
+}
+
+#omise-form-internetbanking .omise-form-internetbanking-label-box {
+	display: inline-block;
+}
+
+#omise-form-internetbanking .omise-form-internetbanking-logo-box {
+	display: inline-block;
+	padding: 5px;
+	margin: 0 10px;
+	border-radius: 2px;
+	vertical-align: top;
+	margin-top: 4px;
+}
+
+#omise-form-internetbanking .omise-form-internetbanking-logo-box img {
+	width: 30px;
+	height: 30px;
+	display: block;
+}
+
+#omise-form-internetbanking .secondary-text {
+	color: #aaa;
+	font-size: 80%;
+}
+
+/** SCB **/
+#omise-form-internetbanking .scb {
+	background: #4e2e7f;
+}
+
+/** KTB **/
+#omise-form-internetbanking .ktb {
+	background: #1ba5e1;
+}
+
+/** BAY **/
+#omise-form-internetbanking .bay {
+	background: #fec43b;
+}
+
+/** BBL **/
+#omise-form-internetbanking .bbl {
+	background: #1e4598;
+}

@@ -1,13 +1,13 @@
-<div id="omise-form-internetbanking">
+<fieldset id="omise-form-internetbanking">
 	<ul>
 		<!-- SCB -->
 		<li class="item">
 			<input id="internet_banking_scb" type="radio" name="omise-offsite" value="internet_banking_scb" />
 			<label for="internet_banking_scb">
-				<div class="omise-logo-wrapper scb">
-					<img class="scb" />
+				<div class="omise-form-internetbanking-logo-box scb">
+					<img src="<?php echo plugins_url( '../../assets/images/scb.svg', __FILE__ ); ?>" />
 				</div>
-				<div class="omise-banking-text-wrapper">
+				<div class="omise-form-internetbanking-label-box">
 					<span class="title">Siam Commercial Bank</span><br/>
 					<span class="rate secondary-text">Fee: 15 THB (same zone), 30 THB (out zone)</span>
 				</div>
@@ -18,10 +18,10 @@
 		<li class="item">
 			<input id="internet_banking_ktb" type="radio" name="omise-offsite" value="internet_banking_ktb" />
 			<label for="internet_banking_ktb">
-				<div class="omise-logo-wrapper ktb">
-					<img class="ktb" />
+				<div class="omise-form-internetbanking-logo-box ktb">
+					<img src="<?php echo plugins_url( '../../assets/images/ktb.svg', __FILE__ ); ?>" />
 				</div>
-				<div class="omise-banking-text-wrapper">
+				<div class="omise-form-internetbanking-label-box">
 					<span class="title">Krungthai Bank</span><br/>
 					<span class="rate secondary-text">Fee: 15 THB (same zone), 15 THB (out zone)</span>
 				</div>
@@ -32,10 +32,10 @@
 		<li class="item">
 			<input id="internet_banking_bay" type="radio" name="omise-offsite" value="internet_banking_bay" />
 			<label for="internet_banking_bay">
-				<div class="omise-logo-wrapper bay">
-					<img class="bay" />
+				<div class="omise-form-internetbanking-logo-box bay">
+					<img src="<?php echo plugins_url( '../../assets/images/bay.svg', __FILE__ ); ?>" />
 				</div>
-				<div class="omise-banking-text-wrapper">
+				<div class="omise-form-internetbanking-label-box">
 					<span class="title">Krungsri Bank</span><br/>
 					<span class="rate secondary-text">Fee: 15 THB (same zone), 15 THB (out zone)</span>
 				</div>
@@ -46,14 +46,14 @@
 		<li class="item">
 			<input id="internet_banking_bbl" type="radio" name="omise-offsite" value="internet_banking_bbl" />
 			<label for="internet_banking_bbl">
-				<div class="omise-logo-wrapper bbl">
-					<img class="bbl" />
+				<div class="omise-form-internetbanking-logo-box bbl">
+					<img src="<?php echo plugins_url( '../../assets/images/bbl.svg', __FILE__ ); ?>" />
 				</div>
-				<div class="omise-banking-text-wrapper">
+				<div class="omise-form-internetbanking-label-box">
 					<span class="title">Bangkok Bank</span><br/>
 					<span class="rate secondary-text">Fee: 10 THB (same zone), 20 THB (out zone)</span>
 				</div>
 			</label>
 		</li>
 	</ul>
-</div>
+</fieldset>
