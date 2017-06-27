@@ -13,10 +13,10 @@ if ( isset( $viewData['balance'] ) ) :
 			'email' => $viewData['email']
 		),
 		'balance' => array(
-			'livemode'  => $balance->livemode,
-			'currency'  => $balance->currency,
-			'total'     => $balance->total,
-			'available' => $balance->available
+			'livemode'  => $balance['livemode'],
+			'currency'  => $balance['currency'],
+			'total'     => $balance['total'],
+			'available' => $balance['available']
 		)
 	);
 ?>

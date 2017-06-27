@@ -38,7 +38,6 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 				return;
 			}
 
-			add_action( 'woocommerce_order_action_omise_charge_capture', array( Omise_Hooks::get_instance(), 'charge_capture' ) );
 			add_action( 'admin_post_omise_create_transfer', array( $this, 'create_transfer' ) );
 			add_action( 'admin_post_nopriv_omise_create_transfer', array( $this, 'no_op' ) );
 			add_action( 'admin_menu', array( $this, 'add_dashboard_omise_menu' ) );
@@ -52,7 +51,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise-plugin-admin-page', array( $this, 'render_dashboard_page' ) );
 			add_submenu_page( 'omise-plugin-admin-page', 'Omise Dashboard', _x( 'Dashboard', 'Menu', 'omise' ), 'manage_options', 'omise-plugin-admin-page' );
 			add_submenu_page( 'omise-plugin-admin-page', 'Omise Transfers', _x( 'Transfers', 'Menu', 'omise' ), 'manage_options', 'omise-plugin-admin-transfer-page', array( $this, 'render_transfers_page' ) );
-			add_submenu_page( 'omise-plugin-admin-page', 'Omise Setting', _x( 'Setting', 'Menu', 'omise' ), 'manage_options', 'wc-settings&tab=checkout&section=wc_gateway_omise' , function(){} );
+			add_submenu_page( 'omise-plugin-admin-page', 'Omise Setting', _x( 'Setting', 'Menu', 'omise' ), 'manage_options', 'wc-settings&tab=checkout&section=omise' , function(){} );
 		}
 
 		private function __construct() {
@@ -102,12 +101,15 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 					throw new Exception ( __( 'Transfer amount must be a numeric', 'omise' ) );
 				}
 
-				$balance = Omise::get_balance( $this->private_key );
-				if ( strtoupper( $balance->currency ) === "THB" ) {
+				$balance = OmiseBalance::retrieve( '', $this->private_key );
+				if ( strtoupper( $balance['currency'] ) === "THB" ) {
 					$transfer_amount = $transfer_amount * 100;
 				}
 
-				$transfer = Omise::create_transfer( $this->private_key, empty( $transfer_amount ) ? null : $transfer_amount );
+				$data = array(
+					'amount' => empty( $transfer_amount ) ? null : $transfer_amount
+				);
+				$transfer = OmiseTransfer::create( $data, '', $this->private_key );
 
 				if ( $this->is_transfer_success( $transfer ) ) {
 					$result_message_type = 'updated';
@@ -134,22 +136,22 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		}
 
 		private function is_transfer_success( $transfer ) {
-			return isset( $transfer->id ) && isset( $transfer->object ) && $transfer->object == 'transfer' && $transfer->failure_code == null && $transfer->failure_message == null;
+			return isset( $transfer['id'] ) && isset( $transfer['object'] ) && $transfer['object'] == 'transfer' && $transfer['failure_code'] == null && $transfer['failure_message'] == null;
 		}
 
 		private function get_transfer_error_message( $transfer ) {
 			$message = "";
 
-			if( isset( $transfer->message ) && ! empty( $transfer->message ) ) {
-				$message .= $transfer->message . " ";
+			if( isset( $transfer['message'] ) && ! empty( $transfer['message'] ) ) {
+				$message .= $transfer['message'] . " ";
 			}
 
-			if ( isset( $transfer->failure_code ) && ! empty( $transfer->failure_code ) ) {
-				$message .= "[" . $transfer->failure_code . "] ";
+			if ( isset( $transfer['failure_code'] ) && ! empty( $transfer['failure_code'] ) ) {
+				$message .= "[" . $transfer['failure_code'] . "] ";
 			}
 
-			if ( isset( $transfer->failure_message ) && ! empty( $transfer->failure_message ) ) {
-				$message .= $transfer->failure_message;
+			if ( isset( $transfer['failure_message'] ) && ! empty( $transfer['failure_message'] ) ) {
+				$message .= $transfer['failure_message'];
 			}
 
 			return trim($message);
@@ -161,9 +163,9 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 */
 		function init() {
 			try {
-				$balance = Omise::get_balance( $this->private_key );
+				$balance = OmiseBalance::retrieve( '', $this->private_key );
 
-				if ( $balance->object == 'balance' ) {
+				if ( $balance['object'] == 'balance' ) {
 					$omise_account = OmiseAccount::retrieve( '', $this->private_key );
 
 					$viewData['auto_capture']     = $this->payment_action === 'auto_capture' ? 'YES' : 'NO';
@@ -173,7 +175,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 					return $viewData;
 				} else {
-					$message = sprintf( __( 'Unable to get the balance information. Please verify that your secret key is valid. [%s]', 'omise' ), esc_html( $balance->message ) );
+					$message = sprintf( __( 'Unable to get the balance information. Please verify that your secret key is valid. [%s]', 'omise' ), esc_html( $balance['message'] ) );
 					echo "<div class='wrap'><div class='error'>$message</div></div>";
 				}
 			} catch ( Exception $e ) {
@@ -190,7 +192,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 			try {
 				$viewData['charges'] = Omise_Charge::list_charges( $this->private_key );
-				$this->render_view( 'includes/templates/omise-wp-admin-page.php', $viewData );
+				$this->render_view( 'includes/admin/views/page-dashboard.php', $viewData );
 			} catch( Exception $e ) {
 				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage () ) . "</div></div>";
 			}
@@ -205,7 +207,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 			try {
 				$viewData['transfers'] = Omise_Transfer::list_transfers( $this->private_key );
-				$this->render_view( 'includes/templates/omise-wp-admin-transfer-page.php', $viewData );
+				$this->render_view( 'includes/admin/views/page-transfer.php', $viewData );
 			} catch ( Exception $e ) {
 				echo "<div class='wrap'><div class='error'>" . esc_html( $e->getMessage() ) . "</div></div>";
 			}
