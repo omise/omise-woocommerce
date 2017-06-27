@@ -36,7 +36,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	protected $order;
 
 	public function __construct() {
-		$this->define_user_agent();
 	}
 
 	/**
@@ -171,12 +170,5 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		} catch ( Exception $e ) {
 			$order->add_order_note( __( 'Omise: capture failed, ', 'omise' ) . $e->getMessage() );
 		}
-	}
-
-	protected function define_user_agent() {
-		global $wp_version;
-
-		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC_VERSION );
-		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', $user_agent );
 	}
 }
