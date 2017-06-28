@@ -130,8 +130,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
 	/**
 	 * Attach a charge id into an order.
+	 *
+	 * @param string $charge_id
 	 */
 	public function attach_charge_id_to_order( $charge_id ) {
+		if ( $this->get_charge_id_from_order() ) {
+			delete_post_meta( $this->order()->get_id(), self::CHARGE_ID );
+		}
+
 		add_post_meta( $this->order()->get_id(), self::CHARGE_ID, $charge_id );
 	}
 
@@ -170,5 +176,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		} catch ( Exception $e ) {
 			$order->add_order_note( __( 'Omise: capture failed, ', 'omise' ) . $e->getMessage() );
 		}
+	}
+
+	/**
+	 * @param  array $params
+	 *
+	 * @return OmiseCharge
+	 */
+	public function sale( $params ) {
+		return OmiseCharge::create( $params, '', $this->secret_key() );
 	}
 }

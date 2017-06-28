@@ -52,6 +52,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-transfer.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
@@ -61,6 +62,7 @@ class Omise {
 
 		add_action( 'init', 'register_omise_wc_gateway_post_type' );
 		add_action( 'plugins_loaded', 'register_omise_creditcard', 0 );
+		add_action( 'plugins_loaded', 'register_omise_internetbanking', 0 );
 		add_action( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
 		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 0 );
 
