@@ -130,8 +130,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
 	/**
 	 * Attach a charge id into an order.
+	 *
+	 * @param string $charge_id
 	 */
 	public function attach_charge_id_to_order( $charge_id ) {
+		if ( $this->get_charge_id_from_order() ) {
+			delete_post_meta( $this->order()->get_id(), self::CHARGE_ID );
+		}
+
 		add_post_meta( $this->order()->get_id(), self::CHARGE_ID, $charge_id );
 	}
 
