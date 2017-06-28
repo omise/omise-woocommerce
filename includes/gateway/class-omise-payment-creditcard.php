@@ -20,6 +20,7 @@ function register_omise_creditcard() {
 			$this->has_fields         = true;
 			$this->method_title       = 'Omise Credit Card';
 			$this->method_description = 'Accept payment through Credit Card via Omise payment gateway.';
+			$this->supports           = array( 'products', 'refunds' );
 
 			$this->init_form_fields();
 			$this->init_settings();
@@ -341,6 +342,46 @@ function register_omise_creditcard() {
 
 				return;
 			}
+		}
+
+		/**
+		 * Process refund.
+		 *
+		 * @param  int $order_id
+		 * @param  float $amount
+		 * @param  string $reason
+		 *
+		 * @return boolean True or false based on success, or a WP_Error object.
+		 *
+		 * @see    WC_Payment_Gateway::process_refund( $order_id, $amount = null, $reason = '' )
+		 */
+		public function process_refund( $order_id, $amount = null, $reason = '' ) {
+			if ( ! isset( $order_id ) || ! $order = $this->load_order( $order_id ) ) {
+				return new WP_Error( 'error', __( 'Order not found: ', 'omise' ) . sprintf( 'cannot find order id %s.', $order_id ) );
+			}
+
+			$order->add_order_note( __( sprintf( 'Omise: Refunding a payment with amount %s', $amount ), 'omise' ) );
+
+			try {
+				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+				$refund = $charge->refunds()->create( array(
+					'amount' => $this->format_amount_subunit( $amount, $order->get_order_currency() )
+				) );
+
+				if ( $refund['voided'] ) {
+					$order->add_order_note( __( sprintf( 'Omise: Voided an amount %s. Refund id: %s', $amount, $refund['id'] ), 'omise' ) );
+				} else {
+					$order->add_order_note( __( sprintf( 'Omise: Refunded an amount %s. Refund id: %s', $amount, $refund['id'] ), 'omise' ) );
+				}
+
+				return true;
+			} catch (Exception $e) {
+				$order->add_order_note( __( 'Omise: Refund failed, ', 'omise' ) . $e->getMessage() );
+
+				return new WP_Error( 'error', __( sprintf( 'Refund failed: %s', $e->getMessage() ), 'omise' ) );
+			}
+
+			return false;
 		}
 
 		public function callback() {
