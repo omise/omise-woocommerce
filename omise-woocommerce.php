@@ -72,7 +72,7 @@ class Omise {
 	 */
 	protected function init_admin() {
 		if ( is_admin() ) {
-			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-wp-admin.php';
+			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-admin.php';
 
 		    add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_page_and_actions' ) );
 		}

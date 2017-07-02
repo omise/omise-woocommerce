@@ -3,15 +3,19 @@ defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( ! class_exists( 'Omise_Admin' ) ) {
 	class Omise_Admin {
-
-		private static $instance;
+		/**
+		 * The Omise Instance.
+		 *
+		 * @var   \Omise_Admin
+		 */
+		protected static $the_instance;
 
 		public static function get_instance() {
-			if ( ! self::$instance ) {
-				self::$instance = new self();
+			if ( ! self::$the_instance ) {
+				self::$the_instance = new self();
 			}
 
-			return self::$instance;
+			return self::$the_instance;
 		}
 
 		/**
