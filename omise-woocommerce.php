@@ -49,7 +49,6 @@ class Omise {
 		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2014-07-27' );
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-transfer.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
@@ -58,7 +57,6 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-wp-admin.php';
 
 		add_action( 'init', 'register_omise_wc_gateway_post_type' );
 		add_action( 'plugins_loaded', 'register_omise_creditcard', 0 );
@@ -74,8 +72,7 @@ class Omise {
 	 */
 	protected function init_admin() {
 		if ( is_admin() ) {
-		    require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charges-table.php';
-		    require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-transfers-table.php';
+			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-admin.php';
 
 		    add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_page_and_actions' ) );
 		}
