@@ -1,12 +1,24 @@
-fieldset.omise-hidden {
-	display:none;
+.omise-remember-card input,
+.omise-remember-card label {
+	display: inline-block;
 }
 
-input[name='card_id']:checked ~ #new_card_form {
-    display: none;
+.omise-customer-card-list {
+	padding-bottom: .75em;
+	border-bottom: 1px solid #ddd;
+	box-shadow: 0 1px 1px #fff;
 }
 
-#new_card_info:checked ~ #new_card_form {
+#label-new_card_info h3 {
+	margin-top: .75em;
+	display: inline-block;
+}
+
+fieldset.card-exists {
+	display: none;
+}
+
+#new_card_info:checked ~ fieldset.card-exists {
     display: block;
 }
 
