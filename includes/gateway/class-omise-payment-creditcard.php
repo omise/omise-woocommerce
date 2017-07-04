@@ -224,14 +224,13 @@ function register_omise_creditcard() {
 							throw new Exception( $e->getMessage() );
 						}
 					} else {
-						$description   = "WooCommerce customer " . $user->id;
+						$description   = "WooCommerce customer " . $user->ID;
 						$customer_data = array(
 							"description" => $description,
 							"card"        => $token
 						);
 
 						$omise_customer = OmiseCustomer::create( $customer_data, '', $this->secret_key() );
-						$omise_customer = Omise::create_customer( $this->secret_key(), $customer_data );
 
 						if ( $omise_customer['object'] == "error" ) {
 							throw new Exception( $omise_customer['message'] );
