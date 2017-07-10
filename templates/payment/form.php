@@ -1,28 +1,44 @@
+<?php $showExistingCards = $viewData['user_logged_in'] && isset( $viewData['existingCards']['data'] ) && sizeof( $viewData['existingCards']['data'] ) > 0; ?>
+
 <div id="omise_cc_form">
-	<?php $showExistingCards = $viewData['user_logged_in'] && isset( $viewData['existingCards']['data'] ) && sizeof( $viewData['existingCards']['data'] ) > 0; ?>
-
 	<?php if ( $showExistingCards ) : ?>
-		<p class="form-row form-row-wide">
-			<?php echo __( 'Select card', 'omise' ); ?> : <br/>
-
-				<?php foreach ( $viewData['existingCards']['data'] as $card ) : ?>
-						<?php echo "<input type='radio' name='card_id' value='{$card['id']}' />" . __( 'Card ends with', 'omise' ) . " {$card['last_digits']}<br/>"; ?>
-				<?php endforeach; ?>
-		</p>
-		&nbsp;<input type="radio" id="new_card_info" name="card_id" value="" /><?php echo __( 'New payment information', 'omise' ); ?>
+		<h3><?php echo __( 'Use an existing card', 'omise' ); ?></h3>
+		<ul class="omise-customer-card-list">
+			<?php foreach ( $viewData['existingCards']['data'] as $row => $card ) : ?>
+				<li class="item">
+					<input <?php echo $row === 0 ? 'checked=checked' : ''; ?> id="card-<?php echo $card['id']; ?>" type="radio" name="card_id" value="<?php echo $card['id']; ?>" />
+					<label for="card-<?php echo $card['id']; ?>">
+						<?php echo '<strong>' . $card['brand'] . '</strong> xxxx' . $card['last_digits']; ?>
+					</label>
+				</li>
+			<?php endforeach; ?>
+		</ul>
 	<?php endif; ?>
 
-	<fieldset id="new_card_form" class="<?php echo $showExistingCards ? 'omise-hidden' : ''; ?>">
-
-		<?php require_once('form-creditcard.php'); ?>
-
-		<?php if ( $viewData['user_logged_in'] ) : ?>
-			<p class="form-row form-row-wide">
-				<input type="checkbox" name="omise_save_customer_card" id="omise_save_customer_card" />
-				<label for="omise_save_customer_card" class="inline"><?php echo __( 'Save card for next time', 'omise' ); ?></label>
-			</p>
+	<div>
+		<?php if ( $showExistingCards ) : ?>
+			<input id="new_card_info" type="radio" name="card_id" value="" />
+			<label id="label-new_card_info" for="new_card_info">
+				<h3><?php echo __( 'Create a charge using new card', 'omise' ); ?></h3>
+			</label>
 		<?php endif; ?>
 
-		<div class="clear"></div>
-	</fieldset>
+		<fieldset id="new_card_form" class="<?php echo $showExistingCards ? 'card-exists' : ''; ?>">
+
+			<?php require_once( 'form-creditcard.php' ); ?>
+
+			<div class="clear"></div>
+
+			<?php if ( $viewData['user_logged_in'] ) : ?>
+				<p class="omise-remember-card">
+					<input type="checkbox" name="omise_save_customer_card" id="omise_save_customer_card" />
+					<label for="omise_save_customer_card" class="inline">
+						<?php echo __( 'Remember this card', 'omise' ); ?>
+					</label>
+				</p>
+			<?php endif; ?>
+
+			<div class="clear"></div>
+		</fieldset>
+	</div>
 </div>
