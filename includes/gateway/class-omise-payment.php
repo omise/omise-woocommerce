@@ -39,6 +39,52 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Returns the array of default payment settings
+	 *
+	 * @return array of default payment settings
+	 */
+	protected function get_default_payment_setting_fields() {
+		return array(
+			'payment_setting' => array(
+				'title'       => __( 'Payment Settings', 'omise' ),
+				'type'        => 'title',
+				'description' => '',
+			),
+
+			'sandbox' => array(
+				'title'       => __( 'Sandbox', 'omise' ),
+				'type'        => 'checkbox',
+				'label'       => __( 'Enabling sandbox means that all your transactions will be in TEST mode.', 'omise' ),
+				'default'     => 'yes'
+			),
+
+			'test_public_key' => array(
+				'title'       => __( 'Public key for test', 'omise' ),
+				'type'        => 'text',
+				'description' => __( 'The "Test" mode public key can be found in Omise Dashboard.', 'omise' )
+			),
+
+			'test_private_key' => array(
+				'title'       => __( 'Secret key for test', 'omise' ),
+				'type'        => 'password',
+				'description' => __( 'The "Test" mode secret key can be found in Omise Dashboard.', 'omise' )
+			),
+
+			'live_public_key' => array(
+				'title'       => __( 'Public key for live', 'omise' ),
+				'type'        => 'text',
+				'description' => __( 'The "Live" mode public key can be found in Omise Dashboard.', 'omise' )
+			),
+
+			'live_private_key' => array(
+				'title'       => __( 'Secret key for live', 'omise' ),
+				'type'        => 'password',
+				'description' => __( 'The "Live" mode secret key can be found in Omise Dashboard.', 'omise' )
+			)
+		);
+	}
+
+	/**
 	 * @param  string|WC_Order $order
 	 *
 	 * @return Omise_Order|null

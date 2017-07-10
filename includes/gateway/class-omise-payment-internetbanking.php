@@ -36,58 +36,24 @@ function register_omise_internetbanking() {
 		 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 		 */
 		public function init_form_fields() {
-			$this->form_fields = array(
-				'enabled' => array(
-					'title'   => __( 'Enable/Disable', 'omise' ),
-					'type'    => 'checkbox',
-					'label'   => __( 'Enable Omise Internet Banking Payment', 'omise' ),
-					'default' => 'no'
-				),
+			$this->form_fields = array_merge(
+				array(
+					'enabled' => array(
+						'title'   => __( 'Enable/Disable', 'omise' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Enable Omise Internet Banking Payment', 'omise' ),
+						'default' => 'no'
+					),
 
-				'title' => array(
-					'title'       => __( 'Title', 'omise' ),
-					'type'        => 'text',
-					'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
-					'default'     => __( 'Internet Banking', 'omise' ),
-					'desc_tip'    => true,
+					'title' => array(
+						'title'       => __( 'Title', 'omise' ),
+						'type'        => 'text',
+						'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
+						'default'     => __( 'Internet Banking', 'omise' ),
+						'desc_tip'    => true,
+					),
 				),
-
-				'payment_setting' => array(
-					'title'       => __( 'Payment Settings', 'omise' ),
-					'type'        => 'title',
-					'description' => '',
-				),
-
-				'sandbox' => array(
-					'title'       => __( 'Sandbox', 'omise' ),
-					'type'        => 'checkbox',
-					'label'       => __( 'Enabling sandbox means that all your transactions will be in TEST mode.', 'omise' ),
-					'default'     => 'yes'
-				),
-
-				'test_public_key' => array(
-					'title'       => __( 'Public key for test', 'omise' ),
-					'type'        => 'text',
-					'description' => __( 'The "Test" mode public key can be found in Omise Dashboard.', 'omise' )
-				),
-
-				'test_private_key' => array(
-					'title'       => __( 'Secret key for test', 'omise' ),
-					'type'        => 'password',
-					'description' => __( 'The "Test" mode secret key can be found in Omise Dashboard.', 'omise' )
-				),
-
-				'live_public_key' => array(
-					'title'       => __( 'Public key for live', 'omise' ),
-					'type'        => 'text',
-					'description' => __( 'The "Live" mode public key can be found in Omise Dashboard.', 'omise' )
-				),
-
-				'live_private_key' => array(
-					'title'       => __( 'Secret key for live', 'omise' ),
-					'type'        => 'password',
-					'description' => __( 'The "Live" mode secret key can be found in Omise Dashboard.', 'omise' )
-				)
+				$this->get_default_payment_setting_fields()
 			);
 		}
 
