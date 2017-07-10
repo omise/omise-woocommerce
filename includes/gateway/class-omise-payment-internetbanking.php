@@ -36,24 +36,21 @@ function register_omise_internetbanking() {
 		 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 		 */
 		public function init_form_fields() {
-			$this->form_fields = array_merge(
-				array(
-					'enabled' => array(
-						'title'   => __( 'Enable/Disable', 'omise' ),
-						'type'    => 'checkbox',
-						'label'   => __( 'Enable Omise Internet Banking Payment', 'omise' ),
-						'default' => 'no'
-					),
-
-					'title' => array(
-						'title'       => __( 'Title', 'omise' ),
-						'type'        => 'text',
-						'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
-						'default'     => __( 'Internet Banking', 'omise' ),
-						'desc_tip'    => true,
-					),
+			$this->form_fields = array(
+				'enabled' => array(
+					'title'   => __( 'Enable/Disable', 'omise' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Enable Omise Internet Banking Payment', 'omise' ),
+					'default' => 'no'
 				),
-				$this->get_default_payment_setting_fields()
+
+				'title' => array(
+					'title'       => __( 'Title', 'omise' ),
+					'type'        => 'text',
+					'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
+					'default'     => __( 'Internet Banking', 'omise' ),
+					'desc_tip'    => true,
+				)
 			);
 		}
 
