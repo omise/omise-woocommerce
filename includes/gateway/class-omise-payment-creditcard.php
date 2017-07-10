@@ -164,7 +164,7 @@ function register_omise_creditcard() {
 				$omise_customer_id = $this->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 				if ( ! empty( $omise_customer_id ) ) {
 
-					$customer                  = OmiseCustomer::retrieve( $omise_customer_id , '', $this->secret_key() );
+					$customer                  = OmiseCustomer::retrieve( $omise_customer_id, '', $this->secret_key() );
 					$viewData['existingCards'] = $customer->cards( array( 'order' => 'reverse_chronological' ) );
 				}
 			} else {

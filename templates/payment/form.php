@@ -25,7 +25,7 @@
 
 		<fieldset id="new_card_form" class="<?php echo $showExistingCards ? 'card-exists' : ''; ?>">
 
-			<?php require_once('form-creditcard.php'); ?>
+			<?php require_once( 'form-creditcard.php' ); ?>
 
 			<div class="clear"></div>
 
