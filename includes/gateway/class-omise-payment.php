@@ -21,6 +21,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public $id = 'omise';
 
 	/**
+	 * Payment setting values.
+	 *
+	 * @var array
+	 */
+	public $payment_settings = array();
+
+	/**
 	 * @var array
 	 */
 	private $currency_subunits = array(
@@ -36,6 +43,77 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	protected $order;
 
 	public function __construct() {
+		$this->payment_settings = $this->get_payment_settings( 'omise' );
+	}
+
+	/**
+	 * Returns the array of default payment settings
+	 *
+	 * @return array of default payment settings
+	 */
+	protected function get_default_payment_setting_fields() {
+		return array(
+			'payment_setting' => array(
+				'title'       => __( 'Payment Settings', 'omise' ),
+				'type'        => 'title',
+				'description' => '',
+			),
+
+			'sandbox' => array(
+				'title'       => __( 'Sandbox', 'omise' ),
+				'type'        => 'checkbox',
+				'label'       => __( 'Enabling sandbox means that all your transactions will be in TEST mode.', 'omise' ),
+				'default'     => 'yes'
+			),
+
+			'test_public_key' => array(
+				'title'       => __( 'Public key for test', 'omise' ),
+				'type'        => 'text',
+				'description' => __( 'The "Test" mode public key can be found in Omise Dashboard.', 'omise' )
+			),
+
+			'test_private_key' => array(
+				'title'       => __( 'Secret key for test', 'omise' ),
+				'type'        => 'password',
+				'description' => __( 'The "Test" mode secret key can be found in Omise Dashboard.', 'omise' )
+			),
+
+			'live_public_key' => array(
+				'title'       => __( 'Public key for live', 'omise' ),
+				'type'        => 'text',
+				'description' => __( 'The "Live" mode public key can be found in Omise Dashboard.', 'omise' )
+			),
+
+			'live_private_key' => array(
+				'title'       => __( 'Secret key for live', 'omise' ),
+				'type'        => 'password',
+				'description' => __( 'The "Live" mode secret key can be found in Omise Dashboard.', 'omise' )
+			)
+		);
+	}
+
+	/**
+	 * Returns the payment gateway settings option name
+	 *
+	 * @param  string $payment_method_id
+	 *
+	 * @return string The payment gateway settings option name.
+	 *
+	 * @since  2.0
+	 */
+	protected function get_payment_method_settings_name( $payment_method_id = 'omise' ) {
+		return 'woocommerce_' . $payment_method_id . '_settings';
+	}
+
+	/**
+	 * @param  string $id
+	 *
+	 * @return array
+	 *
+	 * @since  2.0
+	 */
+	public function get_payment_settings( $id ) {
+		return get_option( $this->get_payment_method_settings_name( $id ) );
 	}
 
 	/**
@@ -70,7 +148,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_test() {
-		$sandbox = $this->get_option( 'sandbox' );
+		$sandbox = $this->payment_settings['sandbox'];
 
 		return isset( $sandbox ) && $sandbox == 'yes';
 	}
@@ -82,10 +160,10 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	protected function public_key() {
 		if ( $this->is_test() ) {
-			return $this->get_option( 'test_public_key' );
+			return $this->payment_settings['test_public_key'];
 		}
 
-		return $this->get_option( 'live_public_key' );
+		return $this->payment_settings['live_public_key'];
 	}
 
 	/**
@@ -95,10 +173,10 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	protected function secret_key() {
 		if ( $this->is_test() ) {
-			return $this->get_option( 'test_private_key' );
+			return $this->payment_settings['test_private_key'];
 		}
 
-		return $this->get_option( 'live_private_key' );
+		return $this->payment_settings['live_private_key'];
 	}
 
 	/**
