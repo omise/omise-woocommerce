@@ -264,4 +264,48 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public function sale( $params ) {
 		return OmiseCharge::create( $params, '', $this->secret_key() );
 	}
+
+	/**
+	 * Retrieve a charge by a given charge id (that attach to an order).
+	 * Find some diff, then merge it back to WooCommerce system.
+	 *
+	 * @param  WC_Order $order WooCommerce's order object
+	 *
+	 * @return void
+	 *
+	 * @see    WC_Meta_Box_Order_Actions::save( $post_id, $post )
+	 * @see    woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-actions.php
+	 */
+	public function sync_payment( $order ) {
+		$this->load_order( $order );
+
+		try {
+			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+
+			if ( 'successful' === $charge['status'] ) {
+				$order->add_order_note( sprintf( __( 'Omise: payment successful, an amount %s has been paid', 'omise' ), $order->get_total() ) );
+
+				if ( ! $order->is_paid() ) {
+					$order->payment_complete();
+				}
+
+				return;
+			}
+
+			if ( 'failed' === $charge['status'] ) {
+				$order->add_order_note( sprintf( __( 'Omise: payment failed, %s (code: %s)', 'omise' ), $charge['failure_message'], $charge['failure_code'] ) );
+				$order->update_status( 'failed' );
+				return;
+			}
+
+			if ( 'pending' === $charge['status'] ) {
+				$order->add_order_note( __( 'Omise: payment is in progress, you might wait for a moment and click sync the status again or contact Omise support team at support@omise.co if you have any questions.' ) );
+				return;
+			}
+
+			throw new Exception( __( 'cannot read the payment status. Please try sync again or or contact Omise support team at support@omise.co if you have any questions.' ) );
+		} catch ( Exception $e ) {
+			$order->add_order_note( sprintf( __( 'Omise: sync failed, %s', 'omise' ), $e->getMessage() ) );
+		}
+	}
 }

@@ -29,6 +29,7 @@ function register_omise_internetbanking() {
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
+			add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 		}
 
 		/**
@@ -142,7 +143,7 @@ function register_omise_internetbanking() {
 
 				if ( 'pending' === $charge['status'] && ! $charge['captured'] ) {
 					$order->add_order_note( __( 'Omise: the charge has been pending due to the Bank process. Please check the payment status at Omise dashboard again later', 'omise' ) );
-					$order->update_status( 'processing' );
+					$order->update_status( 'on-hold' );
 
 					WC()->cart->empty_cart();
 
