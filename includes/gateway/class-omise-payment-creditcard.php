@@ -507,7 +507,12 @@ function register_omise_creditcard() {
 		 * @return array
 		 */
 		function add_omise_creditcard_manual_capture_action( $order_actions ) {
-			$order_actions['omise_charge_capture'] = __( "Capture charge (via Omise)" );
+			global $theorder;
+
+			if ( 'omise' === $theorder->get_payment_method() ) {
+				$order_actions['omise_charge_capture'] = __( 'Omise: Capture this order' );
+			}
+
 			return $order_actions;
 		}
 
