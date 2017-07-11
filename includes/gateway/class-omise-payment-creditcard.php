@@ -32,7 +32,8 @@ function register_omise_creditcard() {
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
-			add_action( 'woocommerce_order_action_omise_charge_capture', array( $this, 'capture' ) );
+			add_action( 'woocommerce_order_action_' . $this->id . '_charge_capture', array( $this, 'capture' ) );
+			add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 
 			/** @deprecated 2.0 */
 			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'callback' ) );
@@ -498,20 +499,6 @@ function register_omise_creditcard() {
 		}
 
 		add_filter( 'woocommerce_payment_gateways', 'add_omise_creditcard' );
-	}
-
-	if ( ! function_exists( 'add_omise_creditcard_manual_capture_action' ) ) {
-		/**
-		 * @param  array $order_actions
-		 *
-		 * @return array
-		 */
-		function add_omise_creditcard_manual_capture_action( $order_actions ) {
-			$order_actions['omise_charge_capture'] = __( "Capture charge (via Omise)" );
-			return $order_actions;
-		}
-
-		add_filter( 'woocommerce_order_actions', 'add_omise_creditcard_manual_capture_action' );
 	}
 }
 
