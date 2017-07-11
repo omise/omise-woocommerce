@@ -50,6 +50,7 @@ class Omise {
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-alipay.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
@@ -59,6 +60,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 
 		add_action( 'init', 'register_omise_wc_gateway_post_type' );
+		add_action( 'plugins_loaded', 'register_omise_alipay', 0 );
 		add_action( 'plugins_loaded', 'register_omise_creditcard', 0 );
 		add_action( 'plugins_loaded', 'register_omise_internetbanking', 0 );
 		add_action( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
