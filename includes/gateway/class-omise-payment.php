@@ -56,38 +56,44 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			'payment_setting' => array(
 				'title'       => __( 'Payment Settings', 'omise' ),
 				'type'        => 'title',
-				'description' => '',
+				'description' => sprintf(
+					wp_kses(
+						__( 'All of your keys can be found at your Omise dashboard, check the following links.<br/><a href="%s">Test keys</a> or <a href="%s">Live keys</a> (login required)', 'omise' ),
+						array(
+							'br' => array(),
+							'a'  => array( 'href' => array() )
+						)
+					),
+					esc_url( 'https://dashboard.omise.co/test/keys' ),
+					esc_url( 'https://dashboard.omise.co/live/keys' )
+				),
 			),
 
 			'sandbox' => array(
-				'title'       => __( 'Sandbox', 'omise' ),
+				'title'       => __( 'Test mode', 'omise' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Enabling sandbox means that all your transactions will be in TEST mode.', 'omise' ),
+				'label'       => __( 'Enabling test mode means that all your transactions will be performed under the Omise test account.', 'omise' ),
 				'default'     => 'yes'
 			),
 
 			'test_public_key' => array(
 				'title'       => __( 'Public key for test', 'omise' ),
-				'type'        => 'text',
-				'description' => __( 'The "Test" mode public key can be found in Omise Dashboard.', 'omise' )
+				'type'        => 'text'
 			),
 
 			'test_private_key' => array(
 				'title'       => __( 'Secret key for test', 'omise' ),
-				'type'        => 'password',
-				'description' => __( 'The "Test" mode secret key can be found in Omise Dashboard.', 'omise' )
+				'type'        => 'text'
 			),
 
 			'live_public_key' => array(
 				'title'       => __( 'Public key for live', 'omise' ),
-				'type'        => 'text',
-				'description' => __( 'The "Live" mode public key can be found in Omise Dashboard.', 'omise' )
+				'type'        => 'text'
 			),
 
 			'live_private_key' => array(
 				'title'       => __( 'Secret key for live', 'omise' ),
-				'type'        => 'password',
-				'description' => __( 'The "Live" mode secret key can be found in Omise Dashboard.', 'omise' )
+				'type'        => 'password'
 			)
 		);
 	}
@@ -249,10 +255,27 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				throw new Exception( $charge['failure_message'] );
 			}
 
-			$order->add_order_note( sprintf( __( 'Omise: captured the charge id %s ', 'omise' ), $this->get_charge_id_from_order() ) );
-			$order->payment_complete();
+			$this->order()->add_order_note(
+				sprintf(
+					wp_kses(
+						__( 'Omise: Payment successful (manual capture).<br/>An amount %1$s %2$s has been paid', 'omise' ),
+						array( 'br' => array() )
+					),
+					$this->order()->get_total(),
+					$this->order()->get_order_currency()
+				)
+			);
+			$this->order()->payment_complete();
 		} catch ( Exception $e ) {
-			$order->add_order_note( __( 'Omise: capture failed, ', 'omise' ) . $e->getMessage() );
+			$this->order()->add_order_note(
+				sprintf(
+					wp_kses(
+						__( 'Omise: Payment failed (manual capture).<br/>%s', 'omise' ),
+						array( 'br' => array() )
+					),
+					$e->getMessage()
+				)
+			);
 		}
 	}
 
@@ -282,30 +305,63 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		try {
 			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
 
-			if ( 'successful' === $charge['status'] ) {
-				$order->add_order_note( sprintf( __( 'Omise: payment successful, an amount %s has been paid', 'omise' ), $order->get_total() ) );
+			if ( 'failed' === $charge['status'] ) {
+				$this->order()->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
+							array( 'br' => array() )
+						),
+						$charge['failure_message'],
+						$charge['failure_code']
+					)
+				);
+				$this->order()->update_status( 'failed' );
+				return;
+			}
 
-				if ( ! $order->is_paid() ) {
-					$order->payment_complete();
+			if ( 'pending' === $charge['status'] ) {
+				$this->order()->add_order_note(
+					wp_kses(
+						__( 'Omise: Payment is still in progress.<br/>You might wait for a moment before click sync the status again or contact Omise support team at support@omise.co if you have any questions (manual sync).', 'omise' ),
+						array( 'br' => array() )
+					)
+				);
+				return;
+			}
+
+			if ( 'successful' === $charge['status'] ) {
+				$this->order()->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
+							array( 'br' => array() )
+						),
+						$this->order()->get_total(),
+						$this->order()->get_order_currency()
+					)
+				);
+
+				if ( ! $this->order()->is_paid() ) {
+					$this->order()->payment_complete();
 				}
 
 				return;
 			}
 
-			if ( 'failed' === $charge['status'] ) {
-				$order->add_order_note( sprintf( __( 'Omise: payment failed, %s (code: %s)', 'omise' ), $charge['failure_message'], $charge['failure_code'] ) );
-				$order->update_status( 'failed' );
-				return;
-			}
-
-			if ( 'pending' === $charge['status'] ) {
-				$order->add_order_note( __( 'Omise: payment is in progress, you might wait for a moment and click sync the status again or contact Omise support team at support@omise.co if you have any questions.' ) );
-				return;
-			}
-
-			throw new Exception( __( 'cannot read the payment status. Please try sync again or or contact Omise support team at support@omise.co if you have any questions.' ) );
+			throw new Exception(
+				__( 'Cannot read the payment status. Please try sync again or contact Omise support team at support@omise.co if you have any questions.', 'omise' )
+			);
 		} catch ( Exception $e ) {
-			$order->add_order_note( sprintf( __( 'Omise: sync failed, %s', 'omise' ), $e->getMessage() ) );
+			$order->add_order_note(
+				sprintf(
+					wp_kses(
+						__( 'Omise: Sync failed (manual sync).<br/>%s (manual sync).', 'omise' ),
+						array( 'br' => array() )
+					),
+					$e->getMessage()
+				)
+			);
 		}
 	}
 }

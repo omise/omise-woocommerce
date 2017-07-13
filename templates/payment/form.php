@@ -2,7 +2,7 @@
 
 <div id="omise_cc_form">
 	<?php if ( $showExistingCards ) : ?>
-		<h3><?php echo __( 'Use an existing card', 'omise' ); ?></h3>
+		<h3><?php _e( 'Use an existing card', 'omise' ); ?></h3>
 		<ul class="omise-customer-card-list">
 			<?php foreach ( $viewData['existingCards']['data'] as $row => $card ) : ?>
 				<li class="item">
@@ -19,7 +19,7 @@
 		<?php if ( $showExistingCards ) : ?>
 			<input id="new_card_info" type="radio" name="card_id" value="" />
 			<label id="label-new_card_info" for="new_card_info">
-				<h3><?php echo __( 'Create a charge using new card', 'omise' ); ?></h3>
+				<h3><?php _e( 'Create a charge using new card', 'omise' ); ?></h3>
 			</label>
 		<?php endif; ?>
 
@@ -33,7 +33,7 @@
 				<p class="omise-remember-card">
 					<input type="checkbox" name="omise_save_customer_card" id="omise_save_customer_card" />
 					<label for="omise_save_customer_card" class="inline">
-						<?php echo __( 'Remember this card', 'omise' ); ?>
+						<?php _e( 'Remember this card', 'omise' ); ?>
 					</label>
 				</p>
 			<?php endif; ?>

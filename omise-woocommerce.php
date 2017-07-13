@@ -100,10 +100,10 @@ class Omise {
 		global $theorder;
 
 		if ( 'omise' === $theorder->get_payment_method() ) {
-			$order_actions[ $theorder->get_payment_method() . '_charge_capture'] = __( 'Omise: Capture this order' );
+			$order_actions[ $theorder->get_payment_method() . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
 		}
 
-		$order_actions[ $theorder->get_payment_method() . '_sync_payment']   = __( 'Omise: Sync payment status' );
+		$order_actions[ $theorder->get_payment_method() . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
 
 		return $order_actions;
 	}
