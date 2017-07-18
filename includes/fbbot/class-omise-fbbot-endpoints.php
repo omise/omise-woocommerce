@@ -11,22 +11,15 @@ if( ! class_exists( 'Omise_Messenger_Bot_Endpoints' ) ) {
 		 */
 		private $facebook_page_verify_token;
 
-		/**
-		 * @var string
-		 */
-		private $facebook_page_access_token;
-
-
 		private function __construct() {
 			$settings = Omise_Util::get_settings();
       if ( ! isset( $settings ) )
         return;
 
-			if ( ! isset( $settings['facebook_page_verify_token'] ) || ! isset( $settings['facebook_page_access_token'] ) )
+			if ( ! isset( $settings['facebook_page_verify_token'] ) )
 				return;
 
 			$this->facebook_page_verify_token = $settings['facebook_page_verify_token'];
-			$this->facebook_page_access_token = $settings['facebook_page_access_token'];
 		}
 
 		public static function get_instance() {
