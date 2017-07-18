@@ -57,6 +57,24 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
+		// Messenger Bot
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-endpoints.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-user-service.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-payment-handler.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-conversation-handler.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-conversation-generator.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-woocommerce.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-fbpage-setup.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-configurator.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-messenger-bot-message-store.php';
+
+		// Messenger Bot Template
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/button-item.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/button-template.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/element-item.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/generic-template.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/message-item.php';
+
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 
 		add_action( 'init', 'register_omise_wc_gateway_post_type' );

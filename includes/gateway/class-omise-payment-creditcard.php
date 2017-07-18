@@ -118,7 +118,8 @@ function register_omise_creditcard() {
 						'default'     => Omise_Card_Image::get_amex_default_display(),
 						'description' => __( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.', 'omise' )
 					)
-				)
+				),
+				$this->fbbot_settings()
 			);
 		}
 
@@ -484,6 +485,45 @@ function register_omise_creditcard() {
 			wp_localize_script( 'omise-payment-form-handler', 'omise_params', array(
 				'key'       => $this->public_key()
 			) );
+		}
+
+		/** --- FB BOT --- */
+		public function fbbot_settings() {
+			return array(
+				'facebook_messenger_bot' => array(
+					'title'       => __( 'Facebook Messenger Bot Settings', 'omise' ),
+					'type'        => 'title',
+					'description' => 'Note : staging.omise.co version',
+				),
+				'facebook_callback_url' => array(
+					'title'       => __( 'Callback url for bot setup', 'omise' ),
+					'type'        => 'text',
+					'default'     => site_url() . '/wp-json/omisemsgbot/v1/webhook',
+					'readonly'    => true,
+					'description' => __( 'Copy and paste in the Webhook section on your facebook app setting page', 'omise' )
+				),
+				'omise_callback_url' => array(
+					'title'       => __( 'Callback url for Omise webhook', 'omise' ),
+					'type'        => 'text',
+					'default'     => site_url() . '/wp-json/omisemsgbot/v1/omise_triggred',
+					'readonly'    => true,
+					'description' => __( 'Copy and paste in the Webhooks section on your omise dashboard setting page', 'omise' )
+				),
+				'facebook_page_verify_token' => array(
+					'title'       => __( 'Facebook page verify token', 'omise' ),
+					'type'        => 'text',
+					'description' => __( 'Token that Facebook will echo back to you as part of callback URL verification', 'omise' )
+				),
+				'facebook_page_access_token' => array(
+					'title'       => __( 'Facebook page access token', 'omise' ),
+					'type'        => 'password',
+					'description' => __( 'Page token is required to start using the Facebook APIs.', 'omise' )
+				),
+			);
+		}
+
+		public function fbbot_process_payment() {
+			
 		}
 	}
 
