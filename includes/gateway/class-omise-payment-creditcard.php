@@ -294,6 +294,9 @@ function register_omise_creditcard() {
 					throw new Exception( Omise_Charge::get_error_message( $charge ) );
 				}
 
+				$order->set_transaction_id( $charge['id'] );
+				$order->save();
+
 				if ( $this->omise_3ds ) {
 					$order->add_order_note(
 						sprintf(
@@ -522,7 +525,6 @@ function register_omise_creditcard() {
 					case 'AUTO_CAPTURE':
 						$success = Omise_Charge::is_paid( $charge );
 						if ( $success ) {
-							$order->payment_complete();
 							$order->add_order_note(
 								sprintf(
 									wp_kses(
@@ -533,6 +535,7 @@ function register_omise_creditcard() {
 									$order->get_order_currency()
 								)
 							);
+							$order->payment_complete();
 						}
 
 						break;

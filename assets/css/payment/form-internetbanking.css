@@ -8,6 +8,7 @@
 #omise-form-internetbanking li.item {
 	border-bottom: 1px solid #eee;
 	padding: 12px 0 12px;
+	position: relative;
 }
 
 #omise-form-internetbanking li > input {
