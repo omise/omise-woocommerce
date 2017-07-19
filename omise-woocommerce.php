@@ -57,7 +57,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
-		// Messenger Bot
+		// Facebook Bot
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-fbbot-endpoints.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-fbbot-user-service.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-fbbot-payment-handler.php';
@@ -83,6 +83,9 @@ class Omise {
 		add_action( 'plugins_loaded', 'register_omise_internetbanking', 0 );
 		add_action( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
 		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 0 );
+
+		// Facebook Bot Action & Filter
+		add_action( 'rest_api_init', array( Omise_FBBot_Endpoints::get_instance(), 'register_bot_api_routes' ) );
 
 		$this->init_admin();
 	}
