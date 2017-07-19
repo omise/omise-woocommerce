@@ -102,19 +102,15 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
                 break;
             }
 
-            $sender_id = $messaging_event['sender']['id'];
-
             if ( isset( $messaging_event['message']['quick_reply'] ) ) {
-                // Handle quick reply message
-                $quick_reply = $messaging_event['message']['quick_reply'];
-                // Omise_Messenger_Bot_Conversation_Handler::handle_quick_reply_from( $sender_id, $quick_reply );
                 break;
             }
 
+            $sender_id = $messaging_event['sender']['id'];
+
             // Handle text message
-            error_log('handle_message_from');
             $text = $messaging_event['message']['text'];
-            // Omise_Messenger_Bot_Conversation_Handler::handle_message_from( $sender_id, $text );
+            Omise_FBBot_Request_Handler::handle_message_from( $sender_id, $text );
             break;
 
         } else if ( isset( $messaging_event['postback'] ) ) {
@@ -122,7 +118,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
             $sender_id = $messaging_event['sender']['id'];
             $payload = $messaging_event['postback']['payload'];
 
-            // Omise_Messenger_Bot_Conversation_Handler::handle_payload_from( $sender_id, $payload );
+            Omise_FBBot_Request_Handler::handle_payload_from( $sender_id, $payload );
         } else {
           // Unused case
           break;
