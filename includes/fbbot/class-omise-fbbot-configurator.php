@@ -11,7 +11,7 @@ class Omise_FBBot_Configurator {
 	private static $facebook_profile_endpoint = "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=";
 
 	public static function get_namespace() {
-		return Omise_FBBot_Configurator::$namespace . '/v' . Omise_FBBot_Configurator::$version;
+		return self::$namespace . '/v' . self::$version;
 	}
 
 	public static function get_fb_settings( $id ) {
@@ -20,6 +20,6 @@ class Omise_FBBot_Configurator {
 	}
 
 	public static function get_fb_profile_endpoint( $page_access_token ) {
-		return Omise_FBBot_Configurator::$facebook_profile_endpoint . $page_access_token;
+		return self::$facebook_profile_endpoint . $page_access_token;
 	}
 }
