@@ -27,7 +27,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 	}
 
 	public function register_bot_api_routes() {
-		$namespace = Omise_Messenger_Bot_Configurator::get_namespace();
+		$namespace = Omise_FBBot_Configurator::get_namespace();
 
 		register_rest_route( $namespace, '/webhook', array(
             array(

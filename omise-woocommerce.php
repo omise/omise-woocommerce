@@ -87,6 +87,7 @@ class Omise {
 
 		// Facebook Bot Action & Filter
 		add_action( 'rest_api_init', array( Omise_FBBot_Endpoints::get_instance(), 'register_bot_api_routes' ) );
+		add_action( 'woocommerce_settings_saved', array( Omise_FBot_Page_Setup::get_instance(), 'facebook_page_setup' ) );
 
 		$this->init_admin();
 	}
