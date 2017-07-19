@@ -18,4 +18,13 @@ class Omise_FBBot_HTTPService {
 
 		return $response;
 	}
+
+	public static function send_delete_request( $url, $body ) {
+		$defaults = array('method' => 'DELETE');
+
+		$args = wp_parse_args( $body, $defaults );
+    $response = wp_remote_request($url, $args);
+
+    return $response;
+	}
 }
