@@ -24,7 +24,7 @@ class Omise_FBot_Page_Setup {
 
   public function set_page_get_stated_button() {
     $data = array(
-        'get_started' => array( 'payload' => 'GET_START_CLICKED' )
+        'get_started' => array( 'payload' => Omise_FBBot_Payload::GET_START_CLICKED )
         );
 
     $url = Omise_FBBot_Configurator::get_fb_profile_endpoint( $this->facebook_page_access_token );
@@ -92,7 +92,7 @@ class Omise_FBot_Page_Setup {
             array(
                 'type' => 'postback',
                 'title' => 'Check order status',
-                'payload' => 'PAYLOAD_CHECK_ORDER'
+                'payload' => Omise_FBBot_Payload::CHECK_ORDER
                 ),
 
             array(
@@ -104,7 +104,7 @@ class Omise_FBot_Page_Setup {
             array(
                 'type' => 'postback',
                 'title' => 'Help',
-                'payload' => 'PAYLOAD_HELP'
+                'payload' => Omise_FBBot_Payload::HELP
                 )
             
             )
