@@ -11,7 +11,7 @@ class Omise_FBBot_Message_Store {
 	}
 
 	public static function get_greeting_message( $sender_id  ) {
-		$user = Omise_Messenger_Bot_User_Service::get_user( $sender_id );
+		$user = Omise_FBBot_User_Service::get_user( $sender_id );
 		$shop_name = get_bloginfo( 'name' );
 
 		$greeting_message_1 = __( ':D Hello ' ) . $user->display_name . ' ';
