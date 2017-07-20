@@ -24,8 +24,13 @@ class Omise_FBBot_Conversation_Generator {
 		return FB_Button_Template::create( $helping_message, $buttons )->get_data();
 	}
 
+  public static function rechecking_order_number_message() {
+    $rechecking_order_massage = Omise_FBBot_Message_Store::get_rechecking_order_number_message();
+    return FB_Message_Item::create( $rechecking_order_massage )->get_data();
+  }
+
 	public static function feature_products_message( $sender_id ) {
-		$feature_products = Omise_Messenger_Bot_WooCommerce::get_feature_products();
+		$feature_products = Omise_FBBot_WooCommerce::get_feature_products();
 
 		if ( ! $feature_products ) {
 			$product_is_empty = Omise_FBBot_Message_Store::get_feature_products_is_empty_message();
@@ -55,7 +60,7 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public static function product_category_message() {
-		$categories = Omise_Messenger_Bot_WooCommerce::get_product_categories();
+		$categories = Omise_FBBot_WooCommerce::get_product_categories();
 
     $func = function( $category ) {
       $viewProductsButton = FB_Postback_Button_Item::create( __('View ') . $category->name, 'VIEW_CATEGORY_PRODUCTS__' . $category->slug )->get_data();
@@ -74,7 +79,7 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public static function product_list_in_category_message( $messenger_id, $category_slug ) {
-		$products = Omise_Messenger_Bot_WooCommerce::get_products_by_category( $category_slug );
+		$products = Omise_FBBot_WooCommerce::get_products_by_category( $category_slug );
 
     if ( ! $products ) {
       $message = FB_Message_Item::create( __("🤖  We don't have product on this category. We will do it soon <3") )->get_data();
@@ -106,7 +111,7 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public static function product_gallery_message( $messenger_id, $product_id ) {
-    $product = Omise_Messenger_Bot_WCProduct::create( $product_id );
+    $product = Omise_FBBot_WCProduct::create( $product_id );
 
     if ( ! $product->attachment_images ) {
       $message = FB_Message_Item::create( __("🤖  Don't have image gallery on this product. We will do it soon <3") )->get_data();

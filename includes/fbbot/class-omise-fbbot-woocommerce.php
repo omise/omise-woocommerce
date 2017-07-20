@@ -1,10 +1,10 @@
 <?php
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
-if ( ! class_exists( 'Omise_Messenger_Bot_WCCategory' ) ) {
-	class Omise_Messenger_Bot_WCCategory {
+if ( ! class_exists( 'Omise_FBBot_WCCategory' ) ) {
+	class Omise_FBBot_WCCategory {
 		static public function create( $wc_category ) {
-			return new Omise_Messenger_Bot_WCCategory( $wc_category );
+			return new Omise_FBBot_WCCategory( $wc_category );
 		}
 
 		public function __construct( $wc_category ) {
@@ -21,10 +21,10 @@ if ( ! class_exists( 'Omise_Messenger_Bot_WCCategory' ) ) {
 }
 
 
-if ( ! class_exists( 'Omise_Messenger_Bot_WCProduct' ) ) {
-	class Omise_Messenger_Bot_WCProduct {
+if ( ! class_exists( 'Omise_FBBot_WCProduct' ) ) {
+	class Omise_FBBot_WCProduct {
 		static public function create( $product_id ) {
-			return new Omise_Messenger_Bot_WCProduct( $product_id );
+			return new Omise_FBBot_WCProduct( $product_id );
 		} 
 
 		public function __construct( $product_id ) {
@@ -70,8 +70,8 @@ if ( ! class_exists( 'Omise_Messenger_Bot_WCProduct' ) ) {
 	}
 }
 
-if ( ! class_exists( 'Omise_Messenger_Bot_WooCommerce' ) ) {
-	class Omise_Messenger_Bot_WooCommerce {
+if ( ! class_exists( 'Omise_FBBot_WooCommerce' ) ) {
+	class Omise_FBBot_WooCommerce {
 
 		public static function get_feature_products() {
 			$featured_product_ids = wc_get_featured_product_ids();
@@ -81,7 +81,7 @@ if ( ! class_exists( 'Omise_Messenger_Bot_WooCommerce' ) ) {
 			}
 
 			$func = function( $p_id ) {
-				return Omise_Messenger_Bot_WCProduct::create( $p_id );
+				return Omise_FBBot_WCProduct::create( $p_id );
 			};
 
 			$products = array_map( $func, $featured_product_ids );
@@ -111,7 +111,7 @@ if ( ! class_exists( 'Omise_Messenger_Bot_WooCommerce' ) ) {
 	    }
 
 	    $func = function ($post) {
-	    	return Omise_Messenger_Bot_WCProduct::create( $post->ID );
+	    	return Omise_FBBot_WCProduct::create( $post->ID );
 	    };
 
 	    $products = array_map( $func, $loop->posts );
@@ -120,7 +120,7 @@ if ( ! class_exists( 'Omise_Messenger_Bot_WooCommerce' ) ) {
 		}
 
 		public static function get_product( $p_id ) {
-			return Omise_Messenger_Bot_WCProduct::create( $p_id );
+			return Omise_FBBot_WCProduct::create( $p_id );
 		}
 
 		public static function get_product_categories() {
@@ -136,7 +136,7 @@ if ( ! class_exists( 'Omise_Messenger_Bot_WooCommerce' ) ) {
 			$product_categories = get_terms( $args );
 			
 			$func = function( $wc_category ) {
-				return Omise_Messenger_Bot_WCCategory::create( $wc_category );
+				return Omise_FBBot_WCCategory::create( $wc_category );
 			};
 
 			return array_map( $func, $product_categories );
@@ -184,7 +184,7 @@ if ( ! class_exists( 'Omise_Messenger_Bot_WooCommerce' ) ) {
       
       $note = 'Purchase via Messenger app user : ' . $messenger_id;
 
-      $user = Omise_Messenger_Bot_User_Service::get_user( $messenger_id );
+      $user = Omise_FBBot_User_Service::get_user( $messenger_id );
       
       if ( ! $user ) 
       	return;

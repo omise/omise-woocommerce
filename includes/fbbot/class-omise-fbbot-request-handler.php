@@ -21,7 +21,7 @@ class Omise_FBBot_Request_Handler {
     		$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $message );
 
       } else if ( $message_store::check_helping_words( $message ) ) {
-      	$helping_message = Omise_FBBot_Conversation_Generator::helping_message( $sender_id );
+      	$helping_message = Omise_FBBot_Conversation_Generator::helping_message();
     		$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $helping_message );
 
       } else if ( $message_store::check_order_checking( $message ) ) {
@@ -29,10 +29,14 @@ class Omise_FBBot_Request_Handler {
         $checking_text = explode('#', $message);
 
         if ( ! $checking_text[1] ) {
+        	$rechecking_order_message = Omise_FBBot_Conversation_Generator::rechecking_order_number_message();
+        	$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $rechecking_order_message );
           return;
         }
 
         $order_id = $checking_text[1];
+        $order_status_message = Omise_FBBot_WooCommerce::check_order_status( $order_id );
+        $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $order_status_message );
 
       } else {
       	// Handle unrecognize message

@@ -73,6 +73,10 @@ class Omise_FBBot_Message_Store {
 		return __( ":) Sure!. You can put your order number follow ex. #12345" );
 	}
 
+	public static function get_rechecking_order_number_message() {
+		return __( "🙇  If you want to check your order status, you can put your order number follow ex. #12345 👍" );
+	}
+
 	public static function get_default_menu_buttons() {
 		$payload = Omise_FBBot_Payload;
 
