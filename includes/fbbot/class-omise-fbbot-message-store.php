@@ -100,7 +100,7 @@ class Omise_FBBot_Message_Store {
 	}
 
 	private static function ramdomArrayOfMessage( $messages) {
-		return $messages[ mt_rand( 0, count( $messages ) - ( count( $messages )-1 ) ) ];
+		return $messages[ mt_rand( 0, count( $messages ) - 1 ) ];
 	}
 
 }
