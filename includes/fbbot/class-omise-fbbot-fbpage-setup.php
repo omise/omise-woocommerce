@@ -27,7 +27,7 @@ class Omise_FBot_Page_Setup {
         'get_started' => array( 'payload' => Omise_FBBot_Payload::GET_START_CLICKED )
         );
 
-    $url = Omise_FBBot_Configurator::get_fb_profile_endpoint( $this->facebook_page_access_token );
+    $url = Omise_FBBot_Configurator::get_fb_profile_endpoint();
 
     $response = Omise_FBBot_HTTPService::send_request( $url, $data );
 
@@ -50,7 +50,7 @@ class Omise_FBot_Page_Setup {
         )
       );
 
-    $url = Omise_FBBot_Configurator::get_fb_profile_endpoint( $this->facebook_page_access_token );
+    $url = Omise_FBBot_Configurator::get_fb_profile_endpoint();
 
     $response = Omise_FBBot_HTTPService::send_request( $url, $data );
 
@@ -71,7 +71,7 @@ class Omise_FBot_Page_Setup {
           )
       );
 
-    $url = Omise_FBBot_Configurator::get_fb_profile_endpoint( $this->facebook_page_access_token );
+    $url = Omise_FBBot_Configurator::get_fb_profile_endpoint();
 
     $deleteResponse = Omise_FBBot_HTTPService::send_delete_request( $url, $delete_persistent_menu_data );
     $body = json_decode( $deleteResponse['body'] );

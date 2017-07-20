@@ -27,4 +27,27 @@ class Omise_FBBot_HTTPService {
 
     return $response;
 	}
+
+	public static function send_get_request( $url, $body = array() ) {
+		$data = array(
+			'timeout' => 60,
+			'body' => $body
+		);
+
+		$response = wp_safe_remote_get( $url, $data );
+
+		return $response;
+	}
+
+	public static function send_message_to( $receiver_id, $message ) {
+		$url = Omise_FBBot_Configurator::get_fb_message_endpoint();
+		$body = array(
+    	'recipient' => array('id' => $receiver_id),
+      'message' => $message
+    );
+
+    $response = self::send_request( $url, $body );
+
+		return $response;
+	}
 }
