@@ -78,6 +78,7 @@ class Omise_FBBot_Payment_Handler {
     
     $payment_page_url = "pay-on-messenger";
     $payment_purchase_complete = "complete-payment";
+    $payment_error_url = "pay-on-messenger-error";
 
     if ( strtolower( $wp->request ) == $payment_purchase_complete ) {
       
@@ -119,9 +120,13 @@ class Omise_FBBot_Payment_Handler {
       unset( $wp_query->query["error"] );
       $wp_query->query_vars["error"] = "";
       $wp_query->is_404 = false;
+
+      return $posts;
     }
-      
-    return $posts;
+    
+    if ( strtolower( $wp->request ) == $payment_error_url ) {
+      return $posts;
+    } 
 	}
 
 	private function payment_page_render () {
@@ -214,6 +219,7 @@ class Omise_FBBot_Payment_Handler {
 
     } catch (Exception $e) {
       error_log("catch error : " . $e->getMessage());
+      // [WIP] - Redirect to error page
     }
   }
 
