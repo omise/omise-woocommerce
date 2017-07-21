@@ -190,30 +190,31 @@ class Omise_FBBot_Payment_Handler {
     }
 
     // Create Charge
-    $charge = OmiseCharge::create( $data );
-    error_log("charge create : ....");
+    try {
+      $charge = OmiseCharge::create( $data );
+      // Just sent message to user for let them know we received these order
+      $prepare_confirm_message = Omise_FBBot_Conversation_Generator::prepare_confirm_order_message();
+      $response = Omise_FBBot_HTTPService::send_message_to( $messenger_id, $prepare_confirm_message );
 
-
-    // Just sent message to user for let them know we received these order
-    $prepare_confirm_message = Omise_FBBot_Conversation_Generator::prepare_confirm_order_message();
-    $response = Omise_FBBot_HTTPService::send_message_to( $messenger_id, $prepare_confirm_message );
-
-    // If merchant enable 3ds mode
-    if ( isset ( $charge['authorize_uri'] ) ) {
-      if ( wp_redirect( $charge['authorize_uri'] ) ) {
-        error_log( 'redirect to -> '. $charge['authorize_uri'] );
-        exit;
+      // If merchant enable 3ds mode
+      if ( isset ( $charge['authorize_uri'] ) ) {
+        if ( wp_redirect( $charge['authorize_uri'] ) ) {
+          error_log( 'redirect to -> '. $charge['authorize_uri'] );
+          exit;
+        }
+        
+        return;
       }
-      
-      return;
-    }
 
-    // If merchant disable 3ds mode : normal mode
-    $redirect_uri =  site_url() . '/complete-payment';
-    if ( wp_redirect( $redirect_uri ) ) {
-        exit;
-    }
+      // If merchant disable 3ds mode : normal mode
+      $redirect_uri =  site_url() . '/complete-payment';
+      if ( wp_redirect( $redirect_uri ) ) {
+          exit;
+      }
 
+    } catch (Exception $e) {
+      error_log("catch error : " . $e->getMessage());
+    }
   }
 
 }

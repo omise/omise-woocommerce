@@ -493,7 +493,7 @@ function register_omise_creditcard() {
 				'facebook_messenger_bot' => array(
 					'title'       => __( 'Facebook Messenger Bot Settings', 'omise' ),
 					'type'        => 'title',
-					'description' => 'Note : staging.omise.co version',
+					'description' => '',
 				),
 				'facebook_callback_url' => array(
 					'title'       => __( 'Callback url for bot setup', 'omise' ),
