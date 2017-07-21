@@ -36,7 +36,6 @@ class Omise_FBot_Page_Setup {
       error_log( print_r( $body->error, true ) );
     } else {
       error_log("update : set_page_get_stated_button success");
-      error_log( print_r($body, true));
     }
   }
 
@@ -59,7 +58,6 @@ class Omise_FBot_Page_Setup {
       error_log( print_r( $body->error, true ) );
     } else {
       error_log("update : set_page_greeting_message success");
-      error_log( print_r($body, true));
     }
   }
 
@@ -79,7 +77,6 @@ class Omise_FBot_Page_Setup {
       error_log( print_r( $body->error, true ) );
     } else {
       error_log("clear : old persistent_menu success");
-      error_log( print_r($body, true));
     }
 
     // update new persistent menu
@@ -119,7 +116,6 @@ class Omise_FBot_Page_Setup {
       error_log( print_r( $body->error, true ) );
     } else {
       error_log("update : setup persistent_menu success");
-      error_log( print_r($body, true));
     }
 
   }
