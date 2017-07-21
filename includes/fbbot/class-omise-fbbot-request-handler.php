@@ -82,5 +82,21 @@ class Omise_FBBot_Request_Handler {
 
     private static function handle_custom_payload( $sender_id, $payload ) {
       error_log( 'handle_custom_payload : ' . $payload );
+      $explode = explode('__', $payload);
+
+      if ($explode[0] == 'VIEW_PRODUCT') {
+        $product_id = $explode[1];
+        $product_gallery_message = Omise_FBBot_Conversation_Generator::product_gallery_message( $sender_id, $product_id );
+
+        $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $product_gallery_message );
+
+      } else if ($explode[0] == 'VIEW_CATEGORY_PRODUCTS') {
+        $category_slug = $explode[1];
+        $products_list_message = Omise_FBBot_Conversation_Generator::product_list_in_category_message( $sender_id, $category_slug );
+
+        $result = Omise_FBBot_HTTPService::send_message_to( $sender_id, $products_list_message );
+      } else {
+      	// unexpected payload
+      }
     }
 }

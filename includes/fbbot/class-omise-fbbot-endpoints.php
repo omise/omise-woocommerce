@@ -160,9 +160,9 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
         if( ! isset( $sender_id ) )
           return;
 
-        $thanks_message = Omise_Messenger_Bot_Conversation_Generator::thanks_for_purchase_message( $order_id );
+        $thanks_message = Omise_FBBot_Conversation_Generator::thanks_for_purchase_message( $order_id );
         
-        $response = Omise_Messenger_Bot_Conversation_Handler::send_message_to( $sender_id, $thanks_message );
+        $response = Omise_FBBot_Conversation_Handler::send_message_to( $sender_id, $thanks_message );
         break;
 
       case 'charge.complete':
@@ -175,16 +175,16 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 
         // Update order status here!
         $order_id = $metadata->order_id;
-        Omise_Messenger_Bot_WooCommerce::update_order_status( $order_id, $charge );
+        Omise_FBBot_WooCommerce::update_order_status( $order_id, $charge );
 
         // 
         $sender_id = $charge->metadata->messenger_id;
         if( ! isset( $sender_id ) )
           return;
 
-        $thanks_message = Omise_Messenger_Bot_Conversation_Generator::thanks_for_purchase_message( $order_id );
+        $thanks_message = Omise_FBBot_Conversation_Generator::thanks_for_purchase_message( $order_id );
         
-        $response = Omise_Messenger_Bot_Conversation_Handler::send_message_to( $sender_id, $thanks_message );
+        $response = Omise_FBBot_Conversation_Handler::send_message_to( $sender_id, $thanks_message );
         break;
       
       default:
