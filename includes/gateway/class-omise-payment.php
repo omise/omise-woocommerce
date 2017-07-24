@@ -231,7 +231,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_charge_id_from_order() {
-		return get_post_meta( $this->order()->get_id(), self::CHARGE_ID, true );
+		$charge_id = get_post_meta( $this->order()->get_id(), self::CHARGE_ID, true );
+
+		// Backward compatible for Omise v1.2.3
+		if ( empty( $charge_id ) ) {
+			$charge_id = $this->deprecated_get_charge_id_from_post();
+		}
+
+		return $charge_id;
 	}
 
 	/**
@@ -362,6 +369,39 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					$e->getMessage()
 				)
 			);
+		}
+	}
+
+	/**
+	 * Retrieve a charge id from a post.
+	 *
+	 * @deprecated 2.0  No longer assign a new charge id with new post.
+	 *
+	 * @return     string
+	 */
+	protected function deprecated_get_charge_id_from_post() {
+		$posts = get_posts(
+			array(
+				'post_type'  => 'omise_charge_items',
+				'meta_query' => array(
+					array(
+						'key'     => '_wc_order_id',
+						'value'   => $this->order()->get_id(),
+						'compare' => '='
+					)
+				)
+			)
+		);
+
+		if ( empty( $posts ) ) {
+			return '';
+		}
+
+		$post  = $posts[0];
+		$value = get_post_custom_values( '_omise_charge_id', $post->ID );
+
+		if ( ! is_null( $value ) && ! empty( $value ) ) {
+			return $value[0];
 		}
 	}
 }
