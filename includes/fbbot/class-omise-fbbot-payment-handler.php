@@ -82,8 +82,9 @@ class Omise_FBBot_Payment_Handler {
     $payment_error_url = "pay-on-messenger-error";
 
     if ( strtolower( $wp->request ) == $payment_purchase_complete ) {
-      $image_url = site_url() . '/wp-content/plugins/omise-woocommerce/assets/images/omise_logo.png'
-      if ( wp_redirect( 'https://www.messenger.com/closeWindow/?image_url=' . $image_url . '&display_text=THANKS%20FOR%20PURCHASE' ) ) {
+      $image_url = site_url() . '/wp-content/plugins/omise-woocommerce/assets/images/omise_logo.png';
+      $url = 'https://www.messenger.com/closeWindow/?image_url=' . $image_url . '&display_text=THANKS%20FOR%20PURCHASE';
+      if ( wp_redirect( $url ) ) {
         exit;
       }
 

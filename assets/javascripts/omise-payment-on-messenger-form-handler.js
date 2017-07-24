@@ -1,8 +1,10 @@
 (function ($, undefined) {
-  console.log('omise_cc_messenger_form : ready for payment')
-
   var checkout_form = document.getElementById('omise_cc_messenger_form')
-  checkout_form.addEventListener('submit', submitHandler, false)
+
+  if (checkout_form) {
+    checkout_form.addEventListener('submit', submitHandler, false)
+    console.log('omise_cc_messenger_form : ready for payment')
+  }
 
   var notification_content = $('#notification_content')
 
