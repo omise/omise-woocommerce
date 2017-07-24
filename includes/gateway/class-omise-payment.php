@@ -312,6 +312,11 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		try {
 			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
 
+			if ( empty( $this->order()->get_transaction_id() ) ) {
+				$this->order()->set_transaction_id( $charge['id'] );
+				$this->order()->save();
+			}
+
 			if ( 'failed' === $charge['status'] ) {
 				$this->order()->add_order_note(
 					sprintf(
