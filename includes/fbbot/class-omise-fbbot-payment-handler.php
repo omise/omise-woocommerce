@@ -67,6 +67,7 @@ class Omise_FBBot_Payment_Handler {
 	public function parameter_queryvars( $qvars ) {
 		$qvars[] = 'product_id';
 		$qvars[] = 'messenger_id';
+    $qvars[] = 'error_message';
 
 		return $qvars;
 	}
@@ -89,44 +90,44 @@ class Omise_FBBot_Payment_Handler {
       return $posts;
     }
 
+    // Create custom page
+    $post = new stdClass;
+
     if ( strtolower( $wp->request ) == $payment_page_url ) {
-        // stop interferring with other $posts arrays on this page (only works if the sidebar is rendered *after* the main page)
-      $payment_page_detect = true;
-      
-      // create a custom payment page
-      $post = new stdClass;
-      $post->post_author = 1;
-      $post->post_name = strtolower( $wp->request );
-      $post->guid = get_bloginfo( 'wpurl' ) . '/' . strtolower( $wp->request );
       $post->post_title = __( 'Your order' );
       $post->post_content = $this->payment_page_render();
-      $post->ID = -1;
-      $post->post_type = 'page';
-      $post->post_status = 'static';
-      $post->comment_status = 'closed';
-      $post->ping_status = 'open';
-      $post->comment_count = 0;
-      $post->post_date = current_time( 'mysql' );
-      $post->post_date_gmt = current_time( 'mysql', 1 );
-      $posts = NULL;
-      $posts[] = $post;
-      
-      // make wpQuery believe this is a real page too
-      $wp_query->is_page = true;
-      $wp_query->is_singular = true;
-      $wp_query->is_home = false;
-      $wp_query->is_archive = false;
-      $wp_query->is_category = false;
-      unset( $wp_query->query["error"] );
-      $wp_query->query_vars["error"] = "";
-      $wp_query->is_404 = false;
-
-      return $posts;
     }
-    
+
     if ( strtolower( $wp->request ) == $payment_error_url ) {
-      return $posts;
-    } 
+      $post->post_title = __( 'System error' );
+      $post->post_content = $this->payment_error_page_render();
+    }
+
+    $post->post_author = 1;
+    $post->post_name = strtolower( $wp->request );
+    $post->guid = get_bloginfo( 'wpurl' ) . '/' . strtolower( $wp->request );
+    $post->ID = -1;
+    $post->post_type = 'page';
+    $post->post_status = 'static';
+    $post->comment_status = 'closed';
+    $post->ping_status = 'open';
+    $post->comment_count = 0;
+    $post->post_date = current_time( 'mysql' );
+    $post->post_date_gmt = current_time( 'mysql', 1 );
+    $posts = NULL;
+    $posts[] = $post;
+    
+    // make wpQuery believe this is a real page too
+    $wp_query->is_page = true;
+    $wp_query->is_singular = true;
+    $wp_query->is_home = false;
+    $wp_query->is_archive = false;
+    $wp_query->is_category = false;
+    unset( $wp_query->query["error"] );
+    $wp_query->query_vars["error"] = "";
+    $wp_query->is_404 = false;
+
+    return $posts;
 	}
 
 	private function payment_page_render () {
@@ -144,6 +145,18 @@ class Omise_FBBot_Payment_Handler {
     include( $url );
     return ob_get_clean();
 	}
+
+  private function payment_error_page_render () {
+    global $wp_query;
+
+    if ( ! isset( $wp_query->query_vars['error_message'] ) ) {
+      return '<strong>Woocommerce system has error. Please try again.</strong>';
+    }
+
+    $error_message = $wp_query->query_vars['error_message'];
+
+    return '<strong>' . $error_message . '</strong>';
+  }
 
   public function process_payment_by_bot( $params ) {
     /* rearrange step
@@ -219,7 +232,14 @@ class Omise_FBBot_Payment_Handler {
 
     } catch (Exception $e) {
       error_log("catch error : " . $e->getMessage());
+
+      $error_message = str_replace(" ", "%20", $e->getMessage());
+
       // [WIP] - Redirect to error page
+      $redirect_uri =  site_url() . '/pay-on-messenger-error/?error_message=' . $error_message;
+      if ( wp_redirect( $redirect_uri ) ) {
+          exit;
+      }
     }
   }
 
