@@ -28,27 +28,27 @@ class Omise_FBBot_Payment_Handler {
     // Set omise key
     $this->set_oms_key();
 
-		function load_scripts() {
+    function load_scripts() {
       $settings = get_option( 'woocommerce_omise_settings', null );
       $test_mode = isset( $settings['sandbox'] ) && $settings['sandbox'] == 'yes';
-			$public_key = $test_mode ? $settings[ "test_public_key" ] : $settings[ "live_public_key" ];
+      $public_key = $test_mode ? $settings[ "test_public_key" ] : $settings[ "live_public_key" ];
 
       // Note : Set for testing on staging
-			// wp_enqueue_script( 'omise-js', 'https://omise-cdn.s3.amazonaws.com/assets/frontend-libs/staging-omise.js', array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
+      // wp_enqueue_script( 'omise-js', 'https://omise-cdn.s3.amazonaws.com/assets/frontend-libs/staging-omise.js', array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
 
       wp_enqueue_script( 'omise-js', 'https://cdn.omise.co/omise.js', array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
-			
-			wp_enqueue_script( 'omise-util', plugins_url( 'omise-woocommerce/assets/javascripts/omise-util.js' ), array( 'omise-js' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
+    
+      wp_enqueue_script( 'omise-util', plugins_url( 'omise-woocommerce/assets/javascripts/omise-util.js' ), array( 'omise-js' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
 
-			wp_enqueue_script( 'omise-payment-on-messenger-form-handler', plugins_url( 'omise-woocommerce/assets/javascripts/omise-payment-on-messenger-form-handler.js'), array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true);
+      wp_enqueue_script( 'omise-payment-on-messenger-form-handler', plugins_url( 'omise-woocommerce/assets/javascripts/omise-payment-on-messenger-form-handler.js'), array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true);
 
-			wp_localize_script( 'omise-payment-on-messenger-form-handler', 'omise_params', array(
-				'key'       => $public_key,
-				'vault_url' => OMISE_VAULT_HOST
-			) );
-		}
+      wp_localize_script( 'omise-payment-on-messenger-form-handler', 'omise_params', array(
+        'key'       => $public_key,
+        'vault_url' => OMISE_VAULT_HOST
+      ) );
+    }
 
-		add_action( 'wp_enqueue_scripts', 'load_scripts' );
+    add_action( 'wp_enqueue_scripts', 'load_scripts' );
 	}
 
   function set_oms_key() {
@@ -82,8 +82,8 @@ class Omise_FBBot_Payment_Handler {
     $payment_error_url = "pay-on-messenger-error";
 
     if ( strtolower( $wp->request ) == $payment_purchase_complete ) {
-      
-      if ( wp_redirect( 'https://www.messenger.com/closeWindow/?image_url=https://res.cloudinary.com/crunchbase-production/image/upload/v1496176559/uaapxq8gogk327z2efws.png&display_text=THANKS%20FOR%20PURCHASE' ) ) {
+      $image_url = site_url() . '/wp-content/plugins/omise-woocommerce/assets/images/omise_logo.png'
+      if ( wp_redirect( 'https://www.messenger.com/closeWindow/?image_url=' . $image_url . '&display_text=THANKS%20FOR%20PURCHASE' ) ) {
         exit;
       }
 
@@ -103,29 +103,32 @@ class Omise_FBBot_Payment_Handler {
       $post->post_content = $this->payment_error_page_render();
     }
 
-    $post->post_author = 1;
-    $post->post_name = strtolower( $wp->request );
-    $post->guid = get_bloginfo( 'wpurl' ) . '/' . strtolower( $wp->request );
-    $post->ID = -1;
-    $post->post_type = 'page';
-    $post->post_status = 'static';
-    $post->comment_status = 'closed';
-    $post->ping_status = 'open';
-    $post->comment_count = 0;
-    $post->post_date = current_time( 'mysql' );
-    $post->post_date_gmt = current_time( 'mysql', 1 );
-    $posts = NULL;
-    $posts[] = $post;
-    
-    // make wpQuery believe this is a real page too
-    $wp_query->is_page = true;
-    $wp_query->is_singular = true;
-    $wp_query->is_home = false;
-    $wp_query->is_archive = false;
-    $wp_query->is_category = false;
-    unset( $wp_query->query["error"] );
-    $wp_query->query_vars["error"] = "";
-    $wp_query->is_404 = false;
+    if ( strtolower( $wp->request ) == $payment_page_url || strtolower( $wp->request ) == $payment_error_url ) {
+      // Create cumtom page content
+      $post->post_author = 1;
+      $post->post_name = strtolower( $wp->request );
+      $post->guid = get_bloginfo( 'wpurl' ) . '/' . strtolower( $wp->request );
+      $post->ID = -1;
+      $post->post_type = 'page';
+      $post->post_status = 'static';
+      $post->comment_status = 'closed';
+      $post->ping_status = 'open';
+      $post->comment_count = 0;
+      $post->post_date = current_time( 'mysql' );
+      $post->post_date_gmt = current_time( 'mysql', 1 );
+      $posts = NULL;
+      $posts[] = $post;
+      
+      // make wp_query
+      $wp_query->is_page = true;
+      $wp_query->is_singular = true;
+      $wp_query->is_home = false;
+      $wp_query->is_archive = false;
+      $wp_query->is_category = false;
+      unset( $wp_query->query["error"] );
+      $wp_query->query_vars["error"] = "";
+      $wp_query->is_404 = false;
+    }
 
     return $posts;
 	}
