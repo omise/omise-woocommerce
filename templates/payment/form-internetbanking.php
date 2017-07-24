@@ -8,8 +8,8 @@
 					<img src="<?php echo plugins_url( '../../assets/images/scb.svg', __FILE__ ); ?>" />
 				</div>
 				<div class="omise-form-internetbanking-label-box">
-					<span class="title">Siam Commercial Bank</span><br/>
-					<span class="rate secondary-text">Fee: 15 THB (same zone), 30 THB (out zone)</span>
+					<span class="title"><?php _e( 'Siam Commercial Bank', 'omise' ); ?></span><br/>
+					<span class="rate secondary-text"><?php _e( 'Fee: 15 THB (same zone), 30 THB (out zone)', 'omise' ); ?></span>
 				</div>
 			</label>
 		</li>
@@ -22,8 +22,8 @@
 					<img src="<?php echo plugins_url( '../../assets/images/ktb.svg', __FILE__ ); ?>" />
 				</div>
 				<div class="omise-form-internetbanking-label-box">
-					<span class="title">Krungthai Bank</span><br/>
-					<span class="rate secondary-text">Fee: 15 THB (same zone), 15 THB (out zone)</span>
+					<span class="title"><?php _e( 'Krungthai Bank', 'omise' ); ?></span><br/>
+					<span class="rate secondary-text"><?php _e( 'Fee: 15 THB (same zone), 15 THB (out zone)', 'omise' ); ?></span>
 				</div>
 			</label>
 		</li>
@@ -36,8 +36,8 @@
 					<img src="<?php echo plugins_url( '../../assets/images/bay.svg', __FILE__ ); ?>" />
 				</div>
 				<div class="omise-form-internetbanking-label-box">
-					<span class="title">Krungsri Bank</span><br/>
-					<span class="rate secondary-text">Fee: 15 THB (same zone), 15 THB (out zone)</span>
+					<span class="title"><?php _e( 'Krungsri Bank', 'omise' ); ?></span><br/>
+					<span class="rate secondary-text"><?php _e( 'Fee: 15 THB (same zone), 15 THB (out zone)', 'omise' ); ?></span>
 				</div>
 			</label>
 		</li>
@@ -50,8 +50,8 @@
 					<img src="<?php echo plugins_url( '../../assets/images/bbl.svg', __FILE__ ); ?>" />
 				</div>
 				<div class="omise-form-internetbanking-label-box">
-					<span class="title">Bangkok Bank</span><br/>
-					<span class="rate secondary-text">Fee: 10 THB (same zone), 20 THB (out zone)</span>
+					<span class="title"><?php _e( 'Bangkok Bank', 'omise' ); ?></span><br/>
+					<span class="rate secondary-text"><?php _e( 'Fee: 10 THB (same zone), 20 THB (out zone)', 'omise' ); ?></span>
 				</div>
 			</label>
 		</li>

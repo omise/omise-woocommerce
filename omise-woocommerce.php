@@ -64,7 +64,8 @@ class Omise {
 		add_action( 'plugins_loaded', 'register_omise_creditcard', 0 );
 		add_action( 'plugins_loaded', 'register_omise_internetbanking', 0 );
 		add_action( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
-		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 0 );
+		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ), 0 );
+		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 10 );
 
 		$this->init_admin();
 	}
@@ -79,6 +80,13 @@ class Omise {
 			add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_page_and_actions' ) );
 			add_filter( 'woocommerce_order_actions', array( $this, 'register_order_actions' ) );
 		}
+	}
+
+	/**
+	 * @since  2.0
+	 */
+	public function load_plugin_textdomain() {
+		load_plugin_textdomain( 'omise', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -100,10 +108,10 @@ class Omise {
 		global $theorder;
 
 		if ( 'omise' === $theorder->get_payment_method() ) {
-			$order_actions[ $theorder->get_payment_method() . '_charge_capture'] = __( 'Omise: Capture this order' );
+			$order_actions[ $theorder->get_payment_method() . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
 		}
 
-		$order_actions[ $theorder->get_payment_method() . '_sync_payment']   = __( 'Omise: Sync payment status' );
+		$order_actions[ $theorder->get_payment_method() . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
 
 		return $order_actions;
 	}
