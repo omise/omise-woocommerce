@@ -120,6 +120,23 @@ class Omise_FBot_Page_Setup {
 
   }
 
+  public function set_page_whitelist_domain() {
+    $data = array(
+        'whitelisted_domains' => array( site_url() )
+        );
+
+    $url = Omise_FBBot_Configurator::get_fb_profile_endpoint();
+
+    $response = Omise_FBBot_HTTPService::send_request( $url, $data );
+
+    $body = json_decode( $response['body'] );
+    if ( isset( $body->error ) ) {
+      error_log( print_r( $body->error, true ) );
+    } else {
+      error_log("update : whitelist_domain success");
+    }
+  }
+
   public function facebook_page_setup() {
     if ( ! $this->facebook_page_access_token ) {
       error_log( 'Facebook page access token is empty, bot will setup page later' );
@@ -129,5 +146,6 @@ class Omise_FBot_Page_Setup {
     self::$instance->set_page_get_stated_button();
     self::$instance->set_page_greeting_message();
     self::$instance->set_page_persistent_menu();
+    self::$instance->set_page_whitelist_domain();
   }
 }
