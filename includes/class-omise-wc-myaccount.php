@@ -59,11 +59,15 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		 */
 		public function init_panel() {
 			if ( ! empty( $this->omise_customer_id ) ) {
-				$customer                  = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
-				$viewData['existingCards'] = $customer->cards();
+				try {
+					$customer                  = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
+					$viewData['existingCards'] = $customer->cards();
 
-				Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
-				$this->register_omise_my_account_scripts();
+					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
+					$this->register_omise_my_account_scripts();
+				} catch (Exception $e) {
+					// nothing.
+				}
 			}
 		}
 
