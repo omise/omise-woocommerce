@@ -3,6 +3,9 @@
         <?php
             $product = Omise_FBBot_WCProduct::create( $product_id );
         ?>
+        <div id="notification_content">
+            <ul></ul>
+        </div>
         <label for="product_name">Product : <?php echo $product->name; ?></label>
         <label for="product_price">Price : <?php echo $product->price.' '.$product->currency; ?></label>
 
