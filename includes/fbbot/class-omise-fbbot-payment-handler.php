@@ -198,7 +198,7 @@ class Omise_FBBot_Payment_Handler {
     $data = array(
       'amount' => $amount,
       'currency' => $product->currency,
-      'description' => 'OrderID is '.$order->get_id().' : This order created from Omise FBBot and CustomerID is'.$messenger_id,
+      'description' => 'OrderID is '.$order->get_id().' : This order created from Omise FBBot and CustomerID is '.$messenger_id,
       'metadata' => $metadata,
       'card' => $omise_token
     );
