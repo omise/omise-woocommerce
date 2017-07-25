@@ -96,11 +96,31 @@ class Omise_FBBot_WooCommerce {
 
 	public static function update_order_status( $order_id, $charge ) {
 		$order = new WC_Order( $order_id );
+
+		switch ( $charge->status ) {
+			case 'failed':
+				$order->update_status( 'failed' );
+				break;
+			
+			case 'pending':
+				$order->update_status( 'on-hold' );
+				break;
+
+			case 'reversed':
+				$order->update_status( 'refunded' );
+				break;
+
+			case 'successful':
+				$order->update_status( 'processing' );
+				break;
+
+			default:
+				$order->update_status( 'on-hold' );
+				break;
+		}
 		
 		if ( $charge->paid ) {
 			$order->update_status( 'completed' );
-		} else {
-			$order->update_status( 'pending' );
 		}
 	}
 
