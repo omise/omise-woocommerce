@@ -14,13 +14,11 @@ class Omise_FBBot_Message_Store {
 		$user = Omise_FBBot_User_Service::get_user( $sender_id );
 		$shop_name = get_bloginfo( 'name' );
 
-		$greeting_message_1 = __( ':D Hello ' ) . $user->display_name . ' ';
-		$greeting_message_2 = __( 'Welcome to ') . $shop_name;
-		$greeting_message_3 = __( ', what are you looking for today ?' );
-
-		$greeting_message = $greeting_message_1 . $greeting_message_2 . $greeting_message_3;
-
-		return $greeting_message;
+		return sprintf(
+			__( ':D Hello %1$s Welcome to %2$s, what are you looking for today ?', 'omise' ),
+			$user->display_name,
+			$shop_name
+		);
 	}
 
 	public static function get_helping_message() {
