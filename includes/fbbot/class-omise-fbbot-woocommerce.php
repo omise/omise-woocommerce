@@ -83,13 +83,13 @@ class Omise_FBBot_WooCommerce {
     $order = wc_get_order( $order_id );
 
     if ( ! $order ) {
-    	$message = FB_Message_Item::create( "Sorry, your order number not found. Can you try to check it again ? :'(" )->get_data();
+    	$message = FB_Message_Item::create( "Sorry, your order number not found. Can you try to check it again ? :'(" );
 			return $message;
     }
 
     $status = $order->get_status();
 
-    $message = FB_Message_Item::create( "BAMM! Your order status is '" . $order->get_status() . "' :]" )->get_data();
+    $message = FB_Message_Item::create( "BAMM! Your order status is '" . $order->get_status() . "' :]" );
 
     return $message;
 	}

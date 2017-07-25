@@ -78,9 +78,9 @@ class Omise_FBBot_Message_Store {
 	public static function get_default_menu_buttons() {
 		$payload = Omise_FBBot_Payload;
 
-		$feature_products_button = FB_Postback_Button_Item::create( __('Feature products'), $payload::FEATURE_PRODUCTS )->get_data();
-		$category_button = FB_Postback_Button_Item::create( __('Product category'), $payload::PRODUCT_CATEGORY )->get_data();
-		$check_order_button = FB_Postback_Button_Item::create( __('Check order status'), $payload::CHECK_ORDER )->get_data();
+		$feature_products_button = FB_Postback_Button_Item::create( __('Feature products'), $payload::FEATURE_PRODUCTS );
+		$category_button = FB_Postback_Button_Item::create( __('Product category'), $payload::PRODUCT_CATEGORY );
+		$check_order_button = FB_Postback_Button_Item::create( __('Check order status'), $payload::CHECK_ORDER );
 
 		$buttons = array( $feature_products_button, $category_button , $check_order_button);
 
