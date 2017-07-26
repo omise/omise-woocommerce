@@ -1,59 +1,85 @@
-# Omise-WooCommerce
+<p align="center"><a href='https://www.omise.co'><img src='https://cloud.githubusercontent.com/assets/2154669/26388730/437207e4-4080-11e7-9955-2cd36bb3120f.png' height='160'></a></p>
 
-Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce. 
+**Omise WooCommerce** is the official payment extension which provides support for Omise payment gateway for store builders working on the WooCommerce platform.
 
-## Requirement
+## Supported Versions
 
-The plugin was built and tested with Wordpress 4.5.3 and WooCommerce 2.6.4.
-The plugin dependencies are jQuery and [Omise.js](https://cdn.omise.co/omise.js) library.
+Our aim is to support as many versions of WooCommerce as we can.  
 
-## How it works
+**Here's the list of versions we tested on:**
+- WooCommerce v3.1.1 _(on WordPress v4.8)_
 
-The plugin allows WooCommerce user to checkout with Omise Payment Gateway (Now available in Thailand and Japan). The supported currencies are Thai Bath (THB) and Japanese Yen (JPY). User can checkout by input credit card information or if they are logged in to wordpress they can save the card for further charge without having to fill out the card information everytime.
+To report problems for the version you're using, feel free to submit the issue through [GitHub's issue channel](https://github.com/omise/omise-woocommerce/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
 
-## Installation
+**Can't find the version you're looking for?**  
+Submit your requirement as an issue to [https://github.com/omise/omise-woocommerce/issues](https://github.com/omise/omise-woocommerce/issues)
 
-Please refer to our full documentation [page](https://www.omise.co/woocommerce-plugin)
+## Getting Started
 
-## Documentation
+### Installation Instructions
 
-Developer Documentation [here](https://www.omise.co/docs/)
+#### Manually
 
+You can manually download the plugin from this repository, then extract and copy the plugin files into your WordPress / WooCommerce application.  
 
-## Installation Guide
+The steps below shows how to install the plugin manually.
 
-1. Download the latest release packed as zip format from Releases page: https://github.com/omise/omise-woocommerce/releases
-( latest: https://github.com/omise/omise-woocommerce/archive/v1.2.3.zip )
+1. Download and extract the zip file from [Omise-WooCommerce](https://github.com/omise/omise-woocommerce/archive/v3.0.zip) to your local machine.
 
-2. Install plugin in wordpress using Plugin Upload method, i.e. https://yourwebsite.com/wp-admin/plugin-install.php?tab=upload 
-and upload omise-woocommerce-1.2.3.zip
+    ![screen shot 2560-07-26 at 12 31 34 pm](https://user-images.githubusercontent.com/2154669/28605935-6c0cd2ce-71fe-11e7-8b9a-f912f11d5006.png)
 
-3. Activate Omise plugin
+2. Copy all files from the step 1 into WordPress plugin folder (`your-wordpress-dir/wp-content/plugins/omise-woocommerce-3.0`)
 
-![Activate Plugin](https://cdn.omise.co/assets/woocommerce/activate-plugin.png)
+3. Rename `omise-woocommerce-3.0` folder to `omise`
+    ![screen shot 2560-07-26 at 12 36 43 pm](https://user-images.githubusercontent.com/2154669/28606035-2b9387dc-71ff-11e7-887d-dc90ce774a39.png)
 
-4. Enable Omise as Checkout option: Go to Woocommerce -> Settings -> Checkout -> Payment Gateways
+4. Once done, you will see `Omise Payment Gateway` plugin sits right away in the **Installed Plugins** page. Click `activate` to activate the plugin.
+    ![Omise WooCommerce plugin](https://user-images.githubusercontent.com/2154669/28614862-642dc20c-7221-11e7-964b-3c4afc120292.png)
 
-Enable "Omise payment gateway" and save
+Now you've done installing Omise-WooCommerce plugin. Next, check [First Time Setup](#first-time-setup) to continue setting up your Omise account to WooCommerce store.
 
-![Activate Plugin](https://cdn.omise.co/assets/woocommerce/omise-settings-00.png)
+### First Time Setup
 
-5. Configure Omise Gateway settings with Keys
+#### Enabling Omise plugin and setup Omise keys
 
-![Configure Plugin](https://cdn.omise.co/assets/woocommerce/omise-settings-01.png)
+![Omise WooCommerce plugin - setting page](https://user-images.githubusercontent.com/2154669/28621776-38755cc2-723c-11e7-932d-43811cde5ad8.png)
 
-Add your API Keys
+In order to enable **Omise Payment Gateway** in the checkout page to allow buyer make a charge with Omise, you have to enable the plugin and link the store to your Omise account by using your [credentials](https://www.omise.co/api-authentication) (public and secret keys):
 
-![Add API Keys](https://cdn.omise.co/assets/woocommerce/omise-settings-02.png)
+1. Log in into WordPress admin page.
 
-6. Your customers can now checkout with Omise Payment Gateway
+2. From the sidebar, go to `WooCommerce > Settings > Checkout > Omise Credit / Debit Card`. (or you can also click at `Omise` menu on the sidebar).
 
-![Checkout](https://cdn.omise.co/assets/woocommerce/checkout.png)
+3. Check at `Enable/Disable` option.
 
+4. Set your Omise keys at `Public key` and `Secret key` fields.  
+    Make sure that you check at the `Test mode` option and set your Omise keys at `Public key for test` and `Secret key for test` fields if you want to test Omise service integration.
 
+5. Then, click **'Save changes'** to save the setting.
 
-## Other Libraries
+Once done, you will see **Credit / Debit Card** appears at the checkout page.
 
-* [Omise Ruby Library](https://github.com/omise/omise-ruby)
-* [Omise Card.js](https://github.com/omise/card.js)
-* [Omise Dotnet](https://github.com/omise/omise-dotnet)
+![screen shot 2560-07-26 at 8 13 55 pm](https://user-images.githubusercontent.com/2154669/28622536-030403e2-723f-11e7-8a93-a06e65e350d3.png)
+
+## Contributing
+
+Thanks for your interest in contributing to Omise WooCommerce. We're looking forward to hearing your thoughts and willing to review your changes.
+
+The following subjects are instructions for contributors who consider to submit changes and/or issues.
+
+### Submit the changes
+
+You're all welcome to submit a pull request.
+Please consider the [pull request template](https://github.com/omise/omise-woocommerce/blob/master/.github/PULL_REQUEST_TEMPLATE.md) and fill the form when you submit a new pull request.
+
+Learn more about submitting pull request here: [https://help.github.com/articles/about-pull-requests](https://help.github.com/articles/about-pull-requests)
+
+### Submit the issue
+
+Submit the issue through [GitHub's issue channel](https://github.com/omise/omise-woocommerce/issues).
+
+Learn more about submitting an issue here: [https://guides.github.com/features/issues](https://guides.github.com/features/issues)
+
+## License
+
+Omise-WooCommerce is open-sourced software released under the [MIT License](https://opensource.org/licenses/MIT).
