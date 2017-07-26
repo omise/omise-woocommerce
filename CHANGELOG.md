@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### [v3.0 _(Jul 26, 2017)_](https://github.com/omise/omise-magento/releases/tag/v3.0)
+### [v3.0 _(Jul 26, 2017)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.0)
 
 #### ✨ Highlights
 

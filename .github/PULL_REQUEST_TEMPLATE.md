@@ -23,8 +23,8 @@ Specify where and how you tested this and what further testing it might need.
 Specify the details of your test environments, including, for each, the platform version (on which the plugin was run), the Omise plugin version, and the versions of your system software such as PHP or Ruby.
 
 i.e.
-- **Platform version**: Magento CE 2.1.5.
-- **Omise plugin version**: Omise-Magento 2.1.
+- **Platform version**: WooCommerce 3.1.1.
+- **Omise plugin version**: Omise-WooCommerce 3.0.
 - **PHP version**: 7.0.16.
 
 **✏️ Details:**
