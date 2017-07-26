@@ -1,4 +1,60 @@
-# Change Log
+# CHANGELOG
+
+### [v2.8.0 _(June 24, 2017)_](https://github.com/omise/omise-php/releases/tag/v2.8.0)
+
+#### ✨ Highlights
+
+- Support Omise [Forex API](https://www.omise.co/forex-api). (PR [#64](https://github.com/omise/omise-php/pull/64))
+- Support Omise [Schedule APIs](https://www.omise.co/schedules-api). (PR [#63](https://github.com/omise/omise-php/pull/63))
+- Support Omise [Search APIs](https://www.omise.co/search-api). (PR [#58](https://github.com/omise/omise-php/pull/58))
+
+#### 🚀 Enhancements
+
+- Provide exception classes for `invalid_link`, `failed_refund` and `bad_request` error code.  (PR [#61](https://github.com/omise/omise-php/pull/61))
+
+For more information, please visit https://github.com/omise/omise-php/releases/tag/v2.8.0
+
+---
+
+### [v2.7.1 _(March 22, 2017)_](https://github.com/omise/omise-php/releases/tag/v2.7.1)
+
+#### 👾 Bug Fixes
+
+- Update library's version number.
+
+For more information, please visit https://github.com/omise/omise-php/releases/tag/v2.7.1
+
+---
+
+### [v2.7.0 _(March 21, 2017)_](https://github.com/omise/omise-php/releases/tag/v2.7.0)
+
+#### 🚀 Enhancements
+
+- Correct the Docblock at OmiseApiResource::isDestroy() method. (PR [#57](https://github.com/omise/omise-php/pull/57))
+- Include PHP Version to the `USER-AGENT` header when make a request to Omise API. (PR [#56](https://github.com/omise/omise-php/pull/56))
+
+#### 👾 Bug Fixes
+
+- Remove questionmark from fixture filename. (PR [#55](https://github.com/omise/omise-php/pull/55))
+- Remove unreasonable conditional block from OmiseCustomer lib. (PR [#51](https://github.com/omise/omise-php/pull/51))
+
+For more information, please visit https://github.com/omise/omise-php/releases/tag/v2.7.0
+
+---
+
+## [2.6.0] 2016-12-15
+- [added] OmiseLink api is now available. (@turboza)
+- [added] OmiseRecipient object be able to reload resource itself (@guzzilar)
+- [added] OmiseEvent api is now available. (@guzzilar)
+- [updated]  phpunit configuration file. (@oaattia)
+- [updated] Revised code style to match with PSR-2 (http://www.php-fig.org/psr/psr-2) spec. (@guzzilar)
+- [fixed] Autoload OmiseDispute class in lib/Omise.php file (@guzzilar)
+
+For more information, please visit https://github.com/omise/omise-php/releases/tag/v2.6.0
+
+## [2.5.0] 2016-07-01
+- [Added] Add charge reverse method (@zentetsukenz)
+- [Fixed] Change condition when matching phpunit from using fixed string to regex (@zentetsukenz)
 
 ## [2.4.1] 2015-12-03
 - [Added] Add fetching options to customer cards (bde7986)

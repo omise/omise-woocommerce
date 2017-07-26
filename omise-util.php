@@ -4,30 +4,6 @@ defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 if ( ! class_exists( 'Omise_Util' ) ) {
 	class Omise_Util {
 		/**
-		 * Get Ip Address of client
-		 * @return string
-		 */
-		public static function get_client_ip() {
-			$ipaddress = '';
-
-			if ( $_SERVER['HTTP_CLIENT_IP'] )
-				$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-			else if ( $_SERVER['HTTP_X_FORWARDED_FOR'] )
-				$ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			else if ( $_SERVER['HTTP_X_FORWARDED'] )
-				$ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-			else if ( $_SERVER['HTTP_FORWARDED_FOR'] )
-				$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-			else if ( $_SERVER['HTTP_FORWARDED'] )
-				$ipaddress = $_SERVER['HTTP_FORWARDED'];
-			else if ( $_SERVER['REMOTE_ADDR'] )
-				$ipaddress = $_SERVER['REMOTE_ADDR'];
-			else
-				$ipaddress = 'UNKNOWN';
-			return $ipaddress;
-		}
-
-		/**
 		 * Renders php template
 		 * @param string $viewPath
 		 * @param Array $viewData
@@ -50,7 +26,8 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 		 * @return void
 		 */
 		public static function render_partial( $partial_name, $partial_data = null ) {
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/templates/partials/' . $partial_name . '-template.php' );
+			// TODO: Make it to not relate with `admin` directory.
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/admin/views/partials/' . $partial_name . '-template.php' );
 		}
 
 		/**
@@ -69,24 +46,6 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 			}
 
 			return $datetime->format( 'F d, Y H:i' );
-		}
-
-		/**
-		 * Translate the given text for text domain, omise-woocommerce
-		 *
-		 * To translate the text for WordPress, it need to define the text domain for each plugins.
-		 * This function wraps the text domain to prevent the spreading text domain throughout the source code.
-		 *
-		 * @param string $text The text to translate
-		 * @param string $context The text that used to distinguish the same words but those words will be displayed in the different context
-		 * @return string
-		 */
-		public static function translate( $text, $context = '' ) {
-			if ( empty( $context ) ) {
-				return __( $text, OMISE_WOOCOMMERCE_TEXT_DOMAIN );
-			}
-
-			return _x( $text, $context, OMISE_WOOCOMMERCE_TEXT_DOMAIN );
 		}
 	}
 }
