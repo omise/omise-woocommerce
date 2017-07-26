@@ -152,8 +152,8 @@ class Omise_FBBot_Conversation_Generator {
     return $message;
 	}
 
-	public static function prepare_confirm_order_message() {
-		$message = FB_Message_Item::create( __('🤖  Received your order. We will process your order right away and send you a confirmation and order number once it is complete ❤') );
+	public static function prepare_confirm_order_message( $order_id ) {
+		$message = FB_Message_Item::create( __('🤖 We received your order. Your OrderID is 👉#'. $order_id .'👈. We will process your order right away and send you a confirmation once it is complete ❤') );
 		return $message;
 	}
 
