@@ -6,36 +6,6 @@ if (  class_exists( 'Omise_FBBot_WooCommerce') ) {
 }
 
 class Omise_FBBot_WooCommerce {
-	public static function get_products_by_category( $category_slug ) {
-		$args = array(
-            'posts_per_page' => -1,
-            'tax_query' => array(
-                'relation' => 'AND',
-                array(
-                    'taxonomy' => 'product_cat',
-                    'field' => 'slug',
-                    'terms' => $category_slug
-                )
-            ),
-            'post_type' => 'product',
-            'orderby' => 'title,'
-        );
-
-    $loop = new WP_Query( $args );
-
-    if ( ! $loop->have_posts() ) {
-    	return NULL;
-    }
-
-    $func = function ($post) {
-    	return Omise_FBBot_WCProduct::create( $post->ID );
-    };
-
-    $products = array_map( $func, $loop->posts );
-    wp_reset_postdata();
-    return $products;
-	}
-
 	public static function get_product( $p_id ) {
 		return Omise_FBBot_WCProduct::create( $p_id );
 	}

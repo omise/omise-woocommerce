@@ -79,7 +79,7 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public static function product_list_in_category_message( $messenger_id, $category_slug ) {
-		$products = Omise_FBBot_WooCommerce::get_products_by_category( $category_slug );
+		$products = Omise_FBBot_WCCategory::products( $category_slug );
 
     if ( ! $products ) {
       $message = FB_Message_Item::create( __("🤖  We don't have product on this category. We will do it soon <3") );
