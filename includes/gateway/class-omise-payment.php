@@ -105,7 +105,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 *
 	 * @return string The payment gateway settings option name.
 	 *
-	 * @since  2.0
+	 * @since  3.0
 	 */
 	protected function get_payment_method_settings_name( $payment_method_id = 'omise' ) {
 		return 'woocommerce_' . $payment_method_id . '_settings';
@@ -116,7 +116,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 *
 	 * @return array
 	 *
-	 * @since  2.0
+	 * @since  3.0
 	 */
 	public function get_payment_settings( $id ) {
 		return get_option( $this->get_payment_method_settings_name( $id ) );
@@ -380,7 +380,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * Retrieve a charge id from a post.
 	 *
-	 * @deprecated 2.0  No longer assign a new charge id with new post.
+	 * @deprecated 3.0  No longer assign a new charge id with new post.
 	 *
 	 * @return     string
 	 */

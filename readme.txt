@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin
 Requires at least: 4.3.1
 Tested up to: 4.8
-Stable tag: 3.0.0
+Stable tag: 3.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,7 +33,7 @@ From there:
 
 == Changelog ==
 
-= 3.0.0 =
+= 3.0 =
 
 #### ✨ Highlights
 
@@ -93,6 +93,10 @@ Added Omise-Version into the cURL request header.
 Adds support for 3-D Secure feature
 
 == Upgrade Notice ==
+
+= 3.0 =
+For anyone who did customize on the core plugin code, please carefully check on our README log at https://github.com/omise/omise-woocommerce/releases/tag/v3.0 and backup your website before update to this version (note, this release doesn't touch any database, just code structure changed).
+
 = 1.2.3 =
 (Added) Add a new feature, localization
 (Added) Add a translation file for Japanese

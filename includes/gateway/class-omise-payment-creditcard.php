@@ -41,7 +41,7 @@ function register_omise_creditcard() {
 			add_action( 'woocommerce_order_action_' . $this->id . '_charge_capture', array( $this, 'capture' ) );
 			add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 
-			/** @deprecated 2.0 */
+			/** @deprecated 3.0 */
 			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'callback' ) );
 		}
 
