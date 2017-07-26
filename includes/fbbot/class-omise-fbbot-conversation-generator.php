@@ -60,7 +60,7 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public static function product_category_message() {
-		$categories = Omise_FBBot_WooCommerce::get_product_categories();
+		$categories = Omise_FBBot_WCCategory::collection();
 
     $func = function( $category ) {
       $viewProductsButton = FB_Postback_Button_Item::create( __('View ') . $category->name, 'VIEW_CATEGORY_PRODUCTS__' . $category->slug );

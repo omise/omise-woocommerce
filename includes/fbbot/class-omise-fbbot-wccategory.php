@@ -50,4 +50,23 @@ class Omise_FBBot_WCCategory {
     wp_reset_postdata();
     return $products;
 	}
+
+	public static function collection() {
+		$args = array(
+			'taxonomy' => 'product_cat',
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'pad_counts' => true,
+			'child_of'   => '',
+			'hide_empty' => false
+		);
+
+		$product_categories = get_terms( $args );
+		
+		$func = function( $wc_category ) {
+			return self::create( $wc_category );
+		};
+
+		return array_map( $func, $product_categories );
+	}
 }

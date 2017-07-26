@@ -6,25 +6,6 @@ if (  class_exists( 'Omise_FBBot_WooCommerce') ) {
 }
 
 class Omise_FBBot_WooCommerce {
-	public static function get_product_categories() {
-		$args = array(
-			'taxonomy' => 'product_cat',
-			'orderby'    => 'name',
-			'order'      => 'ASC',
-			'pad_counts' => true,
-			'child_of'   => '',
-			'hide_empty' => false
-		);
-
-		$product_categories = get_terms( $args );
-		
-		$func = function( $wc_category ) {
-			return Omise_FBBot_WCCategory::create( $wc_category );
-		};
-
-		return array_map( $func, $product_categories );
-	}
-
 	public static function check_order_status( $order_id ) {
 		// ORDER STATUS
     // pending, processing, on-hold, completed, cancelled, refunded, failed
