@@ -6,23 +6,6 @@ if (  class_exists( 'Omise_FBBot_WooCommerce') ) {
 }
 
 class Omise_FBBot_WooCommerce {
-
-	public static function get_feature_products() {
-		$featured_product_ids = wc_get_featured_product_ids();
-
-		if ( ! $featured_product_ids ) {
-			return NULL;
-		}
-
-		$func = function( $p_id ) {
-			return Omise_FBBot_WCProduct::create( $p_id );
-		};
-
-		$products = array_map( $func, $featured_product_ids );
-
-		return $products;
-	}
-
 	public static function get_products_by_category( $category_slug ) {
 		$args = array(
             'posts_per_page' => -1,

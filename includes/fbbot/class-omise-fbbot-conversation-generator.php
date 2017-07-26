@@ -30,7 +30,7 @@ class Omise_FBBot_Conversation_Generator {
   }
 
 	public static function feature_products_message( $sender_id ) {
-		$feature_products = Omise_FBBot_WooCommerce::get_feature_products();
+		$feature_products = Omise_FBBot_WCProduct::featured();
 
 		if ( ! $feature_products ) {
 			$product_is_empty = Omise_FBBot_Message_Store::get_feature_products_is_empty_message();

@@ -50,4 +50,20 @@ class Omise_FBBot_WCProduct {
 		$attachment_images = array_map( $func, $attachment_ids );
 		return $attachment_images;
 	}
+
+	public static function featured() {
+		$featured_product_ids = wc_get_featured_product_ids();
+
+		if ( ! $featured_product_ids ) {
+			return NULL;
+		}
+
+		$func = function( $p_id ) {
+			return self::create( $p_id );
+		};
+
+		$products = array_map( $func, $featured_product_ids );
+
+		return $products;
+	}
 }
