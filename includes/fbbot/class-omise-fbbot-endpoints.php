@@ -129,71 +129,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 	}
 
   public function triggered_from_omise( $request ) {
-  	$body = json_decode( $request->get_body() );
-
-    if ( ( ! isset( $body ) ) || ( ! isset( $body->data ) ) ) 
-      return;
-
-  	$charge = $body->data;
-    $metadata = $charge->metadata;
-  
-    if ( ! isset( $metadata ) || ! isset( $metadata->source ) ||  $metadata->source != 'woo_omise_bot' ) {
-      // NOTE: Ignore from other source, allow only woocommerece bot
-      return;
-    }
-
-    $event_name = $body->key;
-    
-    switch ( $event_name ) {
-      case 'charge.create':
-        // Charge has been created
-        if ( $charge->return_uri ) {
-          // Ignore case of 3ds enable for normal charge
-          return;
-        } 
-
-        // Update order status here!
-        $order_id = $metadata->order_id;
-        Omise_FBBot_WooCommerce::update_order_status( $order_id, $charge );
-
-        $sender_id = $charge->metadata->messenger_id;
-        if( ! isset( $sender_id ) )
-          return;
-
-        $thanks_message = Omise_FBBot_Conversation_Generator::thanks_for_purchase_message( $order_id );
-        
-        $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $thanks_message );
-        break;
-
-      case 'charge.complete':
-        // Complete charge (only for 3D-Secure charge and Internet Banking)
-        // Should query charge from omise api and check again : 'charge->paid' = 1 is success for make sure
-        // $charge = OmiseCharge::retrieve( $id, '', $this->secret_key );
-        // if ( ! OmisePluginHelperCharge::isPaid( $charge ) )
-        // handle $charge['failure_message']
-        // if success go to thanks page, if fail go to error page( or send success||fail message)
-
-        // Update order status here!
-        $order_id = $metadata->order_id;
-        Omise_FBBot_WooCommerce::update_order_status( $order_id, $charge );
-
-        // 
-        $sender_id = $charge->metadata->messenger_id;
-        if( ! isset( $sender_id ) )
-          return;
-
-        $thanks_message = Omise_FBBot_Conversation_Generator::thanks_for_purchase_message( $order_id );
-        
-        $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $thanks_message );
-        break;
-      
-      default:
-        error_log( $event_name .' is not create or complete charge event we ignore this case.' );
-        return false;
-        break;
-    }
-
-    
+    Omise_FBBot_Request_Handler::handle_triggered_from_omise( $request );
   }
 
   public function messenger_checkout( $request ) {
