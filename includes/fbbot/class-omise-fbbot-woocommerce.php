@@ -6,10 +6,6 @@ if (  class_exists( 'Omise_FBBot_WooCommerce') ) {
 }
 
 class Omise_FBBot_WooCommerce {
-	public static function get_product( $p_id ) {
-		return Omise_FBBot_WCProduct::create( $p_id );
-	}
-
 	public static function get_product_categories() {
 		$args = array(
 			'taxonomy' => 'product_cat',
