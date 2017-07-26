@@ -29,6 +29,19 @@ class Omise_FBBot_Conversation_Generator {
     return FB_Message_Item::create( $rechecking_order_massage );
   }
 
+  public static function get_ordet_status_message( $order_id ) {
+    $order_status = Omise_FBBot_WooCommerce::check_order_status( $order_id );
+
+    if ( ! $order_status ) {
+      $message = FB_Message_Item::create( "Sorry, your order number not found. Can you try to check it again ? :'(" );
+      return $message;
+    }
+
+    $message = FB_Message_Item::create( "BAMM! Your order status is '" . $order_status . "' :]" );
+
+    return $message;
+  }
+
 	public static function feature_products_message( $sender_id ) {
 		$feature_products = Omise_FBBot_WCProduct::featured();
 

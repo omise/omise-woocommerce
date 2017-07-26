@@ -7,21 +7,18 @@ if (  class_exists( 'Omise_FBBot_WooCommerce') ) {
 
 class Omise_FBBot_WooCommerce {
 	public static function check_order_status( $order_id ) {
-		// ORDER STATUS
+		// Order status in woocommerce
     // pending, processing, on-hold, completed, cancelled, refunded, failed
 
     $order = wc_get_order( $order_id );
 
-    if ( ! $order ) {
-    	$message = FB_Message_Item::create( "Sorry, your order number not found. Can you try to check it again ? :'(" );
-			return $message;
+    if (! $order ) {
+    	return NULL;
     }
 
     $status = $order->get_status();
 
-    $message = FB_Message_Item::create( "BAMM! Your order status is '" . $order->get_status() . "' :]" );
-
-    return $message;
+    return $status;
 	}
 
 	public static function update_order_status( $order_id, $charge ) {

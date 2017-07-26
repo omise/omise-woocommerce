@@ -35,7 +35,7 @@ class Omise_FBBot_Request_Handler {
         }
 
         $order_id = $checking_text[1];
-        $order_status_message = Omise_FBBot_WooCommerce::check_order_status( $order_id );
+        $order_status_message = Omise_FBBot_Conversation_Generator::get_ordet_status_message( $order_id );
         $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $order_status_message );
 
       } else {
