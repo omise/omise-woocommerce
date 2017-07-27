@@ -63,10 +63,6 @@ class Omise_FBBot_Message_Store {
 		return __( "🤖  Received your order. We will process your order right away and send you a confirmation and order number once it is complete ❤️ " );
 	}
 
-	public static function get_thanks_for_purchase_message( $order_id ) {
-		return __( "<3 Thank you for your purchase :). Your order number is #" ) . $order_id;
-	}
-
 	public static function get_checking_order_helper_message() {
 		return __( ":) Sure!. You can put your order number follow ex. #12345" );
 	}

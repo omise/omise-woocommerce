@@ -37,7 +37,7 @@ class Omise_FBBot_Conversation_Generator {
       return $message;
     }
 
-    $message = FB_Message_Item::create( "BAMM! Your order status is '" . $order_status . "' :]" );
+    $message = FB_Message_Item::create( sprintf( __( "BAMM! Your order status is '%s' :]", 'omise' ), $order_status ) );
 
     return $message;
   }
@@ -153,12 +153,13 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public static function prepare_confirm_order_message( $order_id ) {
-		$message = FB_Message_Item::create( __('🤖 We received your order. Your OrderID is 👉#'. $order_id .'👈. We will process your order right away and send you a confirmation once it is complete ❤') );
+    $message = FB_Message_Item::create( sprintf( __( '🤖 We received your order. Your OrderID is 👉 #%s 👈. We will process your order right away and send you a confirmation once it is complete ❤', 'omise' ), $order_id ) );
+
 		return $message;
 	}
 
 	public static function thanks_for_purchase_message( $order_id ) {
-		$message = FB_Message_Item::create( __( '<3 Thank you for your purchase :). Your order number is #' ) . $order_id );
+		$message = FB_Message_Item::create( sprintf( __( '<3 Thank you for your purchase :). Your order number is #%s', 'omise' ), $order_id ) );
 		return $message;
 	}
 
