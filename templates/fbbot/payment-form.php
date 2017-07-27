@@ -30,6 +30,6 @@
         <input type="submit" value="Pay : <?php echo $product->price.' '.$product->currency; ?>">
         <input type="hidden" name="messenger_id" value=<?php echo $messenger_id; ?>></input>
         <input type="hidden" name="product_id" value=<?php echo $product_id; ?>></input>
-        <input type="hidden" name="omise_token" />
+        <input type="hidden" name="omise_token"></input>
     </form>
 </div>

@@ -158,10 +158,42 @@ class Omise_FBBot_Conversation_Generator {
 		return $message;
 	}
 
-	public static function thanks_for_purchase_message( $order_id ) {
-		$message = FB_Message_Item::create( sprintf( __( '<3 Thank you for your purchase :). Your order number is #%s', 'omise' ), $order_id ) );
-		return $message;
-	}
+  public static function reply_for_purchase_message( $charge ) {
+    $metadata = $charge->metadata;
+    $order_id = $metadata->order_id;
+
+    $message = '';
+
+    switch ( $charge->status ) {
+        case 'failed':
+        $fail_message = $charge->failure_message;
+          $message = sprintf( __( 'Oops seems we cannot process your payment properly.. The reason is %s', 'omise' ), $fail_message );
+          break;
+
+        case 'pending':
+          if ( $charge->return_uri ) {
+            $message = __( 'However, due to a 3rd-party payment processor, this process might takes a little while.' );
+          } else {
+            $message = __( "Now, the payment has been processing. I'll let you know once it done, thanks for your order." );
+          }
+
+          break;
+
+        case 'reversed':
+          $message = __( 'I just reverse your payment as your request, this process might take few days to return your balance due to the bank issuer you are using.' );
+          break;
+
+        case 'successful':
+          $message = __( 'Any process to do more? No worry my friend, all done now. Next we will verify your order and payment then ship it!' );
+          break;
+
+        default:
+          $message = __( 'BOOOOOOOOOOOOOOOOOOOO' );
+          break;
+      }
+
+      return FB_Message_Item::create( $message );
+  }
 
 	public static function before_checking_order_message() {
 		$message = FB_Message_Item::create( __( ':) Sure!. You can put your order number follow ex. #12345' ) );

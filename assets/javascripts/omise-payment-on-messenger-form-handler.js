@@ -27,16 +27,11 @@
 
     var errors = OmiseUtil.validate_card(card)
     if (errors.length > 0) {
-      console.log('Card validation has error')
       showError(__('Card validation has error'))
       console.log(errors)
     } else {
-      console.log('validate card : success')
       hideError()
       if (Omise) {
-        // Note : Set for testing on staging
-        // window.setRemoteUrl = 'https://vault-staging.omise.co'
-
         Omise.setPublicKey(omise_params.key)
         Omise.createToken('card', card, function (statusCode, response) {
           if (statusCode == 200) {

@@ -14,7 +14,6 @@ class Omise_FBBot_Request_Handler {
 		public static function handle_message_from( $sender_id, $user_message ) {
 			$message_store = Omise_FBBot_Message_Store;
 			$message = strtolower( $user_message );
-      error_log( 'handle message : ' . $message );
 
       if ( $message_store::check_greeting_words( $message ) ) {
       	$message = Omise_FBBot_Conversation_Generator::greeting_message( $sender_id );
@@ -46,7 +45,7 @@ class Omise_FBBot_Request_Handler {
     }
 
     public static function handle_payload_from( $sender_id, $payload ) {
-      error_log( 'handle payload : ' . $payload );
+
       switch ( $payload ) {
       	case Omise_FBBot_Payload::GET_START_CLICKED:
       		$message = Omise_FBBot_Conversation_Generator::greeting_message( $sender_id );
@@ -81,7 +80,7 @@ class Omise_FBBot_Request_Handler {
     }
 
     private static function handle_custom_payload( $sender_id, $payload ) {
-      error_log( 'handle_custom_payload : ' . $payload );
+
       $explode = explode('__', $payload);
 
       if ($explode[0] == 'VIEW_PRODUCT') {
@@ -101,7 +100,6 @@ class Omise_FBBot_Request_Handler {
     }
 
     public static function handle_triggered_from_omise( $request ) {
-      error_log("handle_triggered_from_omise");
       $body = json_decode( $request->get_body() );
 
       if ( ( ! isset( $body ) ) || ( ! isset( $body->data ) ) ) 
@@ -119,47 +117,21 @@ class Omise_FBBot_Request_Handler {
       
       switch ( $event_name ) {
         case 'charge.create':
-          error_log('charge.create');
           // Charge has been created
           if ( $charge->return_uri ) {
             // Ignore case of 3ds enable for normal charge
             return;
           } 
 
-          // Update order status here!
-          $order_id = $metadata->order_id;
-          Omise_FBBot_WooCommerce::update_order_status( $order_id, $charge );
-
-          $sender_id = $charge->metadata->messenger_id;
-          if( ! isset( $sender_id ) )
-            return;
-
-          $thanks_message = Omise_FBBot_Conversation_Generator::thanks_for_purchase_message( $order_id );
-          
-          $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $thanks_message );
+          // Update state!
+          self::handle_state_from_charge( $charge );
           break;
 
         case 'charge.complete':
-          error_log('charge.complete');
           // Complete charge (only for 3D-Secure charge and Internet Banking)
-          // Should query charge from omise api and check again : 'charge->paid' = 1 is success for make sure
-          // $charge = OmiseCharge::retrieve( $id, '', $this->secret_key );
-          // if ( ! OmisePluginHelperCharge::isPaid( $charge ) )
-          // handle $charge['failure_message']
-          // if success go to thanks page, if fail go to error page( or send success||fail message)
 
-          // Update order status here!
-          $order_id = $metadata->order_id;
-          Omise_FBBot_WooCommerce::update_order_status( $order_id, $charge );
-
-          // 
-          $sender_id = $charge->metadata->messenger_id;
-          if( ! isset( $sender_id ) )
-            return;
-
-          $thanks_message = Omise_FBBot_Conversation_Generator::thanks_for_purchase_message( $order_id );
-          
-          $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $thanks_message );
+          // Update state!
+          self::handle_state_from_charge( $charge );
           break;
         
         default:
@@ -167,5 +139,20 @@ class Omise_FBBot_Request_Handler {
           return false;
           break;
       }
+    }
+
+    private static function handle_state_from_charge( $charge ) {
+      $metadata = $charge->metadata;
+      $order_id = $metadata->order_id;
+
+      Omise_FBBot_WooCommerce::update_order_status( $order_id, $charge );
+
+      $sender_id = $charge->metadata->messenger_id;
+      if( ! isset( $sender_id ) )
+        return;
+
+      $message = Omise_FBBot_Conversation_Generator::reply_for_purchase_message( $charge );
+      
+      $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $message );
     }
 }
