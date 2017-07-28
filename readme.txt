@@ -11,13 +11,13 @@ Omise plugin is is the official payment extension which provides support for Omi
 
 == Description ==
 
-Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
+Omise WooCommerce Gateway Plugin is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
 
 == Installation ==
 
-After getting the source code, either downloading as a zip or git clone, put it in Wordpress plugins folder (i.e. mv omise /wp-content/plugins/ or upload a zip via Wordpress admin Plugins section, just like the other Wordpress plugins).
+After getting the source code, either downloading as a zip or git clone, put it in WordPress plugins folder (i.e. mv omise /wp-content/plugins/ or upload a zip via WordPress admin Plugins section, just like the other WordPress plugins).
 
-Then, Omise Gateway Wordpress plugin should be appeared in Wordpress admin page, under the Plugins menu.
+Then, Omise Gateway WordPress plugin should be appeared in WordPress admin page, under the Plugins menu.
 From there:
 1. Activate the plugin
 2. Go to WooCommerce -> Settings
