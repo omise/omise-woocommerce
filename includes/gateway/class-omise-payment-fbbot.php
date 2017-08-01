@@ -158,7 +158,7 @@ function register_omise_fbbot() {
 		    $product_id = $params['product_id'];
 		    $messenger_id = $params['messenger_id'];
 
-		    $order = Omise_FBBot_WooCommerce::create_order( $product_id, $messenger_id );
+		    $order = Omise_FBBot_WooCommerce::create_order( $params );
 
 		    $metadata = array(
 				'source' => 'woo_omise_bot',
