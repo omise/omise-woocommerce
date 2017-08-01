@@ -30,112 +30,105 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		$namespace = Omise_FBBot_Configurator::get_namespace();
 
 		register_rest_route( $namespace, '/webhook', array(
-            array(
-                'methods'  => WP_REST_Server::READABLE,
-                'callback' => array( $this, 'verify_fb_token_callback' ),
-                'permission_callback' => array( $this, 'verify_fb_token_request' )
-            ),
+				array(
+					'methods'  => WP_REST_Server::READABLE,
+					'callback' => array( $this, 'verify_fb_token_callback' ),
+					'permission_callback' => array( $this, 'verify_fb_token_request' )
+				),
 
-            array(
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => array($this, 'callback_fb_webhook')
-            )
-        ) 
-    );
+				array(
+					'methods' => WP_REST_Server::CREATABLE,
+					'callback' => array($this, 'callback_fb_webhook')
+				)
+			) 
+		);
 
-    register_rest_route( $namespace, '/callback_omise_webhook', array(
-            array(
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => array( $this, 'callback_omise_webhook' )
-            )
-        ) 
-    );
+		register_rest_route( $namespace, '/callback_omise_webhook', array(
+				array(
+					'methods' => WP_REST_Server::CREATABLE,
+					'callback' => array( $this, 'callback_omise_webhook' )
+				)
+			) 
+		);
 
-    register_rest_route( $namespace, '/callback_fbbot_checkout', array(
-            array(
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => array( $this, 'callback_fbbot_checkout' )
-            )
-        ) 
-    );
-
-    register_rest_route( $namespace, '/checking_payment', array(
-            array(
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => array( $this, 'checking_payment' )
-            )
-        ) 
-    );
+		register_rest_route( $namespace, '/callback_fbbot_checkout', array(
+				array(
+					'methods' => WP_REST_Server::CREATABLE,
+					'callback' => array( $this, 'callback_fbbot_checkout' )
+				)
+			) 
+		);
+	
 	}
 
 	public function verify_fb_token_callback( $request ) {
-    $params = $request->get_query_params();
-    echo $params['hub_challenge'];
-    die();
+		$params = $request->get_query_params();
+		echo $params['hub_challenge'];
+		die();
   }
 
   public function verify_fb_token_request( $request = NULL ) {
-    $params = $request->get_query_params();
+		$params = $request->get_query_params();
 
-    if ( $params && isset( $params['hub_challenge'] ) && $params['hub_verify_token'] == $this->facebook_page_verify_token ) {
-        return true;
-    }
+		if ( $params && isset( $params['hub_challenge'] ) && $params['hub_verify_token'] == $this->facebook_page_verify_token ) {
+			return true;
+		}
 
-    return false;
-  }
+		return false;
+	}
 
   public function callback_fb_webhook ( $request ) {
 		$params = $request->get_params();
 
-    if ( ! ( $params && $params['entry'] ) ) {
-      return;
-    }
+		if ( ! ( $params && $params['entry'] ) ) {
+		  return;
+		}
 
-    foreach ( (array) $params['entry'] as $entry ) {
-      if ( ! ( $entry && $entry['messaging'] ) ) {
-        break;
-      }
+		foreach ( (array) $params['entry'] as $entry ) {
+		  if ( ! ( $entry && $entry['messaging'] ) ) {
+				break;
+		  }
 
-      foreach ( (array) $entry['messaging'] as $messaging_event ) {
-        if ( isset( $messaging_event['message'] ) ) {
-            if ( isset( $messaging_event['message']['is_echo'] ) ) {
-                break;
-            }
+		  foreach ( (array) $entry['messaging'] as $messaging_event ) {
+				if ( isset( $messaging_event['message'] ) ) {
+					if ( isset( $messaging_event['message']['is_echo'] ) ) {
+						break;
+					}
 
-            if ( isset( $messaging_event['message']['quick_reply'] ) ) {
-                break;
-            }
+					if ( isset( $messaging_event['message']['quick_reply'] ) ) {
+						break;
+					}
 
-            $sender_id = $messaging_event['sender']['id'];
+					$sender_id = $messaging_event['sender']['id'];
 
-            // Handle text message
-            $text = $messaging_event['message']['text'];
-            Omise_FBBot_Request_Handler::handle_message_from( $sender_id, $text );
-            break;
+					// Handle text message
+					$text = $messaging_event['message']['text'];
+					Omise_FBBot_Request_Handler::handle_message_from( $sender_id, $text );
+					break;
 
-        } else if ( isset( $messaging_event['postback'] ) ) {
-            // Handle payload
-            $sender_id = $messaging_event['sender']['id'];
-            $payload = $messaging_event['postback']['payload'];
+				} else if ( isset( $messaging_event['postback'] ) ) {
+					// Handle payload
+					$sender_id = $messaging_event['sender']['id'];
+					$payload = $messaging_event['postback']['payload'];
 
-            Omise_FBBot_Request_Handler::handle_payload_from( $sender_id, $payload );
-        } else {
-          // Unused case
-          break;
-        }
-      } // foreach ['messaging']
+					Omise_FBBot_Request_Handler::handle_payload_from( $sender_id, $payload );
+				} else {
+				  // Unused case
+				  break;
+				}
+		  } // foreach ['messaging']
 
-    } // foreach ['entry']
+		} // foreach ['entry']
 	}
 
   public function callback_omise_webhook( $request ) {
-    Omise_FBBot_Request_Handler::handle_callback_omise_webhook( $request );
+		Omise_FBBot_Request_Handler::handle_callback_omise_webhook( $request );
   }
 
   public function callback_fbbot_checkout( $request ) {
-    $params = $request->get_params();
-    $payment_handler = Omise_FBBot_Payment_Handler::get_instance();
-    $payment_handler->process_payment_by_bot( $params );
+		$params = $request->get_params();
+		$payment_handler = Omise_FBBot_Payment_Handler::get_instance();
+		$payment_handler->process_payment_by_bot( $params );
   }
 
 }
