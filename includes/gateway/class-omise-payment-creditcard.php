@@ -521,10 +521,6 @@ function register_omise_creditcard() {
 				),
 			);
 		}
-
-		public function fbbot_process_payment() {
-			
-		}
 	}
 
 	if ( ! function_exists( 'add_omise_creditcard' ) ) {

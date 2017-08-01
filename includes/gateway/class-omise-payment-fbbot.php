@@ -62,10 +62,7 @@ function register_omise_fbbot() {
 		public function payment_page_detect( $posts ) {
 			global $wp;
 	    	global $wp_query;
-			global $payment_page_detect;
 
-			$this->is_omise_payment_page();
-	    
 		    if ( $this->is_omise_purchase_complete_page() ) {
 		      	$image_url = site_url() . '/wp-content/plugins/omise-woocommerce/assets/images/omise_logo.png';
 		      	$url = 'https://www.messenger.com/closeWindow/?image_url=' . $image_url . '&display_text=THANKS%20FOR%20PURCHASE';
@@ -128,7 +125,7 @@ function register_omise_fbbot() {
 			$product_id = $wp_query->query_vars['product_id'];
 			$messenger_id = $wp_query->query_vars['messenger_id'];
 
-			$url = plugin_dir_path( dirname( __DIR__ ) ) . 'templates/fbbot/payment-form.php';
+			$url = OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/payment-form.php';
 			ob_start();
 			include( $url );
 			return ob_get_clean();
@@ -211,7 +208,7 @@ function register_omise_fbbot() {
 
 		      	$error_message = str_replace(" ", "%20", $e->getMessage());
 
-		      	// [WIP] - Redirect to error page
+		      	// Redirect to error page
 		      	$redirect_uri =  site_url() . '/pay-on-messenger-error/?error_message=' . $error_message;
 		      	if ( wp_redirect( $redirect_uri ) ) {
 		          	exit;
@@ -222,45 +219,28 @@ function register_omise_fbbot() {
   		private function is_omise_payment_page() {
 			global $wp;
 
-			if ( strtolower( $wp->request ) == $this->payment_page_url ) {
-				return true;
-			}
-
-			return false;
+			return ( strtolower( $wp->request ) == $this->payment_page_url );
 		}
 
 		private function is_omise_payment_error_page() {
 			global $wp;
 			
-			if ( strtolower( $wp->request ) == $this->payment_error_url ) {
-				return true;
-			}
-
-			return false;
+			return ( strtolower( $wp->request ) == $this->payment_error_url );
 		}
 
 		private function is_omise_purchase_complete_page() {
 			global $wp;
 			
-			if ( strtolower( $wp->request ) == $this->payment_purchase_complete_url ) {
-				return true;
-			}
-
-			return false;
+			return ( strtolower( $wp->request ) == $this->payment_purchase_complete_url );
 		}
 
 		private function is_accessible() {
 			global $wp;
 
-			if ( strtolower( $wp->request ) == $this->payment_page_url || strtolower( $wp->request ) == $this->payment_error_url ) {
-				return true;
-			}
-
-			return false;
+			return ( strtolower( $wp->request ) == $this->payment_page_url || strtolower( $wp->request ) == $this->payment_error_url );
 		}
 	}
 
-	if ( ! function_exists( 'add_omise_fbbot' ) ) {
-		Omise_Payment_FBBot::get_instance();
-	}
+	// Initial
+	Omise_Payment_FBBot::get_instance();
 }
