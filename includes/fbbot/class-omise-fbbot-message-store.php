@@ -22,9 +22,9 @@ class Omise_FBBot_Message_Store {
 	}
 
 	public static function get_helping_message() {
-		$helping_message_1 = __( "😚 Don't worry, in spite of the fact i'm just a bot but i can help you. You can choose 1 choice from below." );
+		$helping_message_1 = __( "😚 Don't worry, in spite of the fact i'm just a bot but i can help you. You can choose 1 choice from below.", 'omise' );
 
-		$helping_message_2 = __( "Sure let me help you to shopping. You can choose 1 menu from below 😉" );
+		$helping_message_2 = __( "Sure let me help you to shopping. You can choose 1 menu from below 😉", 'omise' );
 
 		$helping_messages = array( $helping_message_1, $helping_message_2 );
 
@@ -34,11 +34,11 @@ class Omise_FBBot_Message_Store {
 	}
 
 	public static function get_unrecognized_message() {
-		$default_message_1 = __( ":'(  I wish I could understand you, maybe one day! I’m here to help you shopping on Messenger app, Do you want to buy something ?" );
+		$default_message_1 = __( ":'(  I wish I could understand you, maybe one day! I’m here to help you shopping on Messenger app, Do you want to buy something ?", 'omise' );
 
-		$default_message_2 = __( '🤖  Oh, I’m just a bot! but i have a cool stuff for cool people like you. Which do you like best ?' );
+		$default_message_2 = __( '🤖  Oh, I’m just a bot! but i have a cool stuff for cool people like you. Which do you like best ?', 'omise' );
 
-		$default_message_3 = __( '🤖  I’m so sorry, I don’t understand what you tell me, but i will let my shop owner know and told him to help you.' );
+		$default_message_3 = __( '🤖  I’m so sorry, I don’t understand what you tell me, but i will let my shop owner know and told him to help you.', 'omise' );
 
 		$default_messages = array( $default_message_1, $default_message_2, $default_message_3 );
 
@@ -48,35 +48,35 @@ class Omise_FBBot_Message_Store {
 	}
 
 	public static function get_feature_products_is_empty_message() {
-		return __( "🤖  We don't have feature product for now. We will do it soon <3" );
+		return __( "🤖  We don't have feature product for now. We will do it soon <3", 'omise' );
 	}
 
 	public static function get_products_is_empty_message() {
-		return __( "🤖  We don't have product on this category. We will do it soon <3" );
+		return __( "🤖  We don't have product on this category. We will do it soon <3", 'omise' );
 	}
 
 	public static function get_product_image_is_empty_message() {
-		return __( "🤖  This product don't have image gallery. We will do it soon <3" );
+		return __( "🤖  This product don't have image gallery. We will do it soon <3", 'omise' );
 	}
 
 	public static function get_prepare_confirm_order_message() {
-		return __( "🤖  Received your order. We will process your order right away and send you a confirmation and order number once it is complete ❤️ " );
+		return __( "🤖  Received your order. We will process your order right away and send you a confirmation and order number once it is complete ❤️ ", 'omise' );
 	}
 
 	public static function get_checking_order_helper_message() {
-		return __( ":) Sure!. You can put your order number follow ex. #12345" );
+		return __( ":) Sure!. You can put your order number follow ex. #12345", 'omise' );
 	}
 
 	public static function get_rechecking_order_number_message() {
-		return __( "🙇  If you want to check your order status, you can put your order number follow ex. #12345 👍" );
+		return __( "🙇  If you want to check your order status, you can put your order number follow ex. #12345 👍", 'omise' );
 	}
 
 	public static function get_default_menu_buttons() {
 		$payload = Omise_FBBot_Payload;
 
-		$feature_products_button = FB_Postback_Button_Item::create( __('Feature products'), $payload::FEATURE_PRODUCTS );
-		$category_button = FB_Postback_Button_Item::create( __('Product category'), $payload::PRODUCT_CATEGORY );
-		$check_order_button = FB_Postback_Button_Item::create( __('Check order status'), $payload::CHECK_ORDER );
+		$feature_products_button = FB_Postback_Button_Item::create( __( 'Feature products', 'omise' ), $payload::FEATURE_PRODUCTS );
+		$category_button = FB_Postback_Button_Item::create( __( 'Product category', 'omise' ), $payload::PRODUCT_CATEGORY );
+		$check_order_button = FB_Postback_Button_Item::create( __( 'Check order status', 'omise' ), $payload::CHECK_ORDER );
 
 		$buttons = array( $feature_products_button, $category_button , $check_order_button);
 

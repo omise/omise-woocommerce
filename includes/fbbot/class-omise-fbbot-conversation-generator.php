@@ -33,7 +33,7 @@ class Omise_FBBot_Conversation_Generator {
     $order_status = Omise_FBBot_WooCommerce::check_order_status( $order_id );
 
     if ( ! $order_status ) {
-      $message = FB_Message_Item::create( "Sorry, your order number not found. Can you try to check it again ? :'(" );
+      $message = FB_Message_Item::create( __( "Sorry, your order number not found. Can you try to check it again ? :'(", 'omise' ) );
       return $message;
     }
 
@@ -55,12 +55,12 @@ class Omise_FBBot_Conversation_Generator {
   	$elements = array();
 
     foreach ( $feature_products as $product ) {
-    	$view_gallery_button = FB_Postback_Button_Item::create( __('Gallery ') . $product->name, 'VIEW_PRODUCT__'.$product->id );
+    	$view_gallery_button = FB_Postback_Button_Item::create( __( 'Gallery ', 'omise' ) . $product->name, 'VIEW_PRODUCT__'.$product->id );
 
-      $view_detail_button = FB_URL_Button_Item::create( __('View on website'), $product->permalink );
+      $view_detail_button = FB_URL_Button_Item::create( __( 'View on website', 'omise' ), $product->permalink );
 
       $buying_url = site_url() . '/pay-on-messenger/?messenger_id=' . $sender_id .'&product_id=' . $product->id;
-      $buy_now_button = FB_URL_Button_Item::create( 'Buy Now : '.$product->price.' '.$product->currency, $buying_url );
+      $buy_now_button = FB_URL_Button_Item::create( __( 'Buy Now : ', 'omise' ) . $product->price .' '. $product->currency, $buying_url );
 
       $buttons = array( $view_gallery_button, $view_detail_button, $buy_now_button );
       $element = FB_Element_Item::create( $product->name, $product->short_description, $product->thumbnail_img, null, $buttons );
@@ -95,7 +95,7 @@ class Omise_FBBot_Conversation_Generator {
 		$products = Omise_FBBot_WCCategory::products( $category_slug );
 
     if ( ! $products ) {
-      $message = FB_Message_Item::create( __("🤖  We don't have product on this category. We will do it soon <3") );
+      $message = FB_Message_Item::create( __( "🤖  We don't have product on this category. We will do it soon <3", 'omise' ) );
 
       return $message;
     }
@@ -108,10 +108,10 @@ class Omise_FBBot_Conversation_Generator {
     foreach ($products as $product) {
     	$view_gallery_button = FB_Postback_Button_Item::create( __('Gallery ') . $product->name, 'VIEW_PRODUCT__'.$product->id );
 
-      $view_detail_button = FB_URL_Button_Item::create( __('View on website'), $product->permalink );
+      $view_detail_button = FB_URL_Button_Item::create( __( 'View on website', 'omise' ), $product->permalink );
 
       $buying_url = site_url() . '/pay-on-messenger/?messenger_id=' . $messenger_id .'&product_id=' . $product->id;
-      $buy_now_button = FB_URL_Button_Item::create( __('Buy Now : ') . $product->price.' '.$product->currency, $buying_url );
+      $buy_now_button = FB_URL_Button_Item::create( __( 'Buy Now : ', 'omise' ) . $product->price.' '.$product->currency, $buying_url );
 
       $buttons = array( $view_gallery_button, $view_detail_button, $buy_now_button );
       $element = FB_Element_Item::create( $product->name, $product->short_description, $product->thumbnail_img, null, $buttons );
@@ -127,7 +127,7 @@ class Omise_FBBot_Conversation_Generator {
     $product = Omise_FBBot_WCProduct::create( $product_id );
 
     if ( ! $product->attachment_images ) {
-      $message = FB_Message_Item::create( __("🤖  Don't have image gallery on this product. We will do it soon <3") );
+      $message = FB_Message_Item::create( __( "🤖  Don't have image gallery on this product. We will do it soon <3", 'omise' ) );
 
       return $message;
     }
@@ -139,7 +139,7 @@ class Omise_FBBot_Conversation_Generator {
       // $image_url = str_replace('http://localhost:8888', 'your tunnel url', $image_url);
 
     	$buying_url = site_url() . '/pay-on-messenger/?messenger_id=' . $messenger_id .'&product_id=' . $product->id;
-      $buy_now_button = FB_URL_Button_Item::create( __('Buy Now : ') . $product->price.' '.$product->currency, $buying_url );
+      $buy_now_button = FB_URL_Button_Item::create( __( 'Buy Now : ', 'omise' ) . $product->price.' '.$product->currency, $buying_url );
 
       $buttons = array( $buy_now_button );
 
@@ -172,23 +172,23 @@ class Omise_FBBot_Conversation_Generator {
 
         case 'pending':
           if ( $charge->return_uri ) {
-            $message = __( 'However, due to a 3rd-party payment processor, this process might takes a little while.' );
+            $message = __( 'However, due to a 3rd-party payment processor, this process might takes a little while.', 'omise' );
           } else {
-            $message = __( "Now, the payment has been processing. I'll let you know once it done, thanks for your order." );
+            $message = __( "Now, the payment has been processing. I'll let you know once it done, thanks for your order.", 'omise' );
           }
 
           break;
 
         case 'reversed':
-          $message = __( 'I just reverse your payment as your request, this process might take few days to return your balance due to the bank issuer you are using.' );
+          $message = __( 'I just reverse your payment as your request, this process might take few days to return your balance due to the bank issuer you are using.', 'omise' );
           break;
 
         case 'successful':
-          $message = __( 'Any process to do more? No worry my friend, all done now. Next we will verify your order and payment then ship it!' );
+          $message = __( 'Any process to do more? No worry my friend, all done now. Next we will verify your order and payment then ship it!', 'omise' );
           break;
 
         default:
-          $message = __( 'BOOOOOOOOOOOOOOOOOOOO' );
+          $message = __( 'BOOOOOOOOOOOOOOOOOOOO', 'omise' );
           break;
       }
 
@@ -196,7 +196,7 @@ class Omise_FBBot_Conversation_Generator {
   }
 
 	public static function before_checking_order_message() {
-		$message = FB_Message_Item::create( __( ':) Sure!. You can put your order number follow ex. #12345' ) );
+		$message = FB_Message_Item::create( __( ':) Sure!. You can put your order number follow ex. #12345', 'omise' ) );
 		return $message;
 	}
 
