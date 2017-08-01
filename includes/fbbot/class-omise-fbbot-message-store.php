@@ -16,7 +16,7 @@ class Omise_FBBot_Message_Store {
 
 		return sprintf(
 			__( ':D Hello %1$s Welcome to %2$s, what are you looking for today ?', 'omise' ),
-			$user->display_name,
+			$user['first_name'],
 			$shop_name
 		);
 	}

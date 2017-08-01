@@ -71,7 +71,7 @@ class Omise_FBBot_WooCommerce {
     	return;
 
     $address = array(
-    	'first_name' => $user->display_name
+    	'first_name' => $user['first_name'] . ' ' . $user['last_name']
     	);
 
     $order_id = wp_insert_post( apply_filters( 'woocommerce_new_order_data', $order_data ), true );
