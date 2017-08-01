@@ -505,7 +505,7 @@ function register_omise_creditcard() {
 				'omise_callback_url' => array(
 					'title'       => __( 'Callback url for Omise webhook', 'omise' ),
 					'type'        => 'text',
-					'default'     => site_url() . '/wp-json/omisemsgbot/v1/omise_triggered',
+					'default'     => site_url() . '/wp-json/omisemsgbot/v1/callback_omise_webhook',
 					'readonly'    => true,
 					'description' => __( 'Copy and paste in the Webhooks section on your omise dashboard setting page', 'omise' )
 				),
