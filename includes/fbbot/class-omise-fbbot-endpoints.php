@@ -127,7 +127,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 
   public function callback_fbbot_checkout( $request ) {
 		$params = $request->get_params();
-		$payment_handler = Omise_FBBot_Payment_Handler::get_instance();
+		$payment_handler = Omise_Payment_FBBot::get_instance();
 		$payment_handler->process_payment_by_bot( $params );
   }
 
