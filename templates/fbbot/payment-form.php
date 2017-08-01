@@ -1,5 +1,5 @@
 <div>
-    <form id="omise_cc_messenger_form" action="<?php echo get_site_url(); ?>/wp-json/omisemsgbot/v1/messenger_checkout" method="POST">
+    <form id="omise_cc_messenger_form" action="<?php echo get_site_url(); ?>/wp-json/omisemsgbot/v1/callback_fbbot_checkout" method="POST">
         <?php
             $product = Omise_FBBot_WCProduct::create( $product_id );
         ?>

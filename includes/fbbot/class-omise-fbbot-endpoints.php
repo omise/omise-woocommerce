@@ -38,23 +38,23 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 
             array(
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => array($this, 'handle_request')
+                'callback' => array($this, 'callback_fb_webhook')
             )
         ) 
     );
 
-    register_rest_route( $namespace, '/omise_triggered', array(
+    register_rest_route( $namespace, '/callback_omise_webhook', array(
             array(
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => array( $this, 'triggered_from_omise' )
+                'callback' => array( $this, 'callback_omise_webhook' )
             )
         ) 
     );
 
-    register_rest_route( $namespace, '/messenger_checkout', array(
+    register_rest_route( $namespace, '/callback_fbbot_checkout', array(
             array(
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => array( $this, 'messenger_checkout' )
+                'callback' => array( $this, 'callback_fbbot_checkout' )
             )
         ) 
     );
@@ -84,7 +84,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
     return false;
   }
 
-  public function handle_request ( $request ) {
+  public function callback_fb_webhook ( $request ) {
 		$params = $request->get_params();
 
     if ( ! ( $params && $params['entry'] ) ) {
@@ -128,11 +128,11 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
     } // foreach ['entry']
 	}
 
-  public function triggered_from_omise( $request ) {
-    Omise_FBBot_Request_Handler::handle_triggered_from_omise( $request );
+  public function callback_omise_webhook( $request ) {
+    Omise_FBBot_Request_Handler::handle_callback_omise_webhook( $request );
   }
 
-  public function messenger_checkout( $request ) {
+  public function callback_fbbot_checkout( $request ) {
     $params = $request->get_params();
     $payment_handler = Omise_FBBot_Payment_Handler::get_instance();
     $payment_handler->process_payment_by_bot( $params );

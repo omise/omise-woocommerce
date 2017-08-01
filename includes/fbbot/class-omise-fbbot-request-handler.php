@@ -99,7 +99,7 @@ class Omise_FBBot_Request_Handler {
       }
     }
 
-    public static function handle_triggered_from_omise( $request ) {
+    public static function handle_callback_omise_webhook( $request ) {
       $body = json_decode( $request->get_body() );
 
       if ( ( ! isset( $body ) ) || ( ! isset( $body->data ) ) ) 
