@@ -22,7 +22,7 @@ class Omise_FBot_Page_Setup {
     return self::$instance;
   }
 
-  public function set_page_get_stated_button() {
+  public function set_page_get_started_button() {
     $data = array(
         'get_started' => array( 'payload' => Omise_FBBot_Payload::GET_START_CLICKED )
         );
@@ -35,7 +35,7 @@ class Omise_FBot_Page_Setup {
     if ( isset( $body->error ) ) {
       error_log( print_r( $body->error, true ) );
     } else {
-      error_log("update : set_page_get_stated_button success");
+      error_log("update : set_page_get_started_button success");
     }
   }
 
@@ -143,7 +143,7 @@ class Omise_FBot_Page_Setup {
       return;
     }
 
-    self::$instance->set_page_get_stated_button();
+    self::$instance->set_page_get_started_button();
     self::$instance->set_page_greeting_message();
     self::$instance->set_page_persistent_menu();
     self::$instance->set_page_whitelist_domain();

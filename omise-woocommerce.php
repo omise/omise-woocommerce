@@ -73,11 +73,14 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/fbbot/class-omise-fbbot-wcproduct.php';
 
 		// Messenger Bot Template
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/button-item.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/url-button-item.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/postback-button-item.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/button-template.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/element-item.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/generic-template.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/message-item.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/file-message-item.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/templates/fbbot/image-message-item.php';
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 
