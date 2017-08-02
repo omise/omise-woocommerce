@@ -180,7 +180,7 @@ class Omise_FBBot_Conversation_Generator {
     }
 
 	public static function before_checking_order_message() { 
-        return FB_Message_Item::create( __( ':) Sure!. You can put your order number follow ex. #12345', 'omise' ) );
+        return FB_Message_Item::create( Omise_FBBot_Message_Store::get_checking_order_helper_message() );
 	}
 
 	public static function unrecognized_message() {
