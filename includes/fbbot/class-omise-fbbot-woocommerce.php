@@ -52,26 +52,11 @@ class Omise_FBBot_WooCommerce {
 	}
 
 	public static function create_order( $params ) {
-		$product_id = $params['product_id'];
-		$messenger_id = $params['messenger_id'];
-		$customer_email = $params['customer_email'];
-
-    	$user = Omise_FBBot_User_Service::get_user( $messenger_id );
-    
-    	if ( ! $user )
-    		return;
-
-    	$address = array(
-    		'first_name' => $user['first_name'],
-    		'last_name' => $user['last_name'],
-    		'email'	=> $customer_email
-    	);
-
-    	$note = 'Purchase via Messenger app by user : ' . $messenger_id;
+    	$note = 'Purchase via Messenger app by user : ' . $params['messenger_id'];
 
     	$order = wc_create_order();
-    	$order->add_product( get_product( $product_id ), 1 );
-    	$order->set_address( $address, 'billing' );
+    	$order->add_product( get_product( $params['product_id'] ), 1 );
+    	$order->set_address( $params['address'], 'billing' );
     	$order->add_order_note( $note );
     	$order->calculate_totals();
 
