@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( class_exists( 'Omise_FBBot_HTTPService' ) ) {
- 	return;
+	return;
 }
 
 class Omise_FBBot_HTTPService {
@@ -20,9 +20,9 @@ class Omise_FBBot_HTTPService {
 		$defaults = array('method' => 'DELETE');
 
 		$args = wp_parse_args( $body, $defaults );
-    	$response = wp_remote_request($url, $args);
+		$response = wp_remote_request($url, $args);
 
-    	return $response;
+		return $response;
 	}
 
 	public static function send_get_request( $url, $body = array() ) {
@@ -37,9 +37,9 @@ class Omise_FBBot_HTTPService {
 		$url = Omise_FBBot_Configurator::get_fb_message_endpoint();
 
 		return self::send_request( $url, array(
-    			'recipient' => array('id' => $receiver_id),
-      			'message' => $message
-    		)
-    	);
+				'recipient' => array('id' => $receiver_id),
+				'message' => $message
+			)
+		);
 	}
 }

@@ -65,9 +65,9 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		$params = $request->get_query_params();
 		echo $params['hub_challenge'];
 		die();
-  	}
+	}
 
-  	public function verify_fb_token_request( $request = NULL ) {
+	public function verify_fb_token_request( $request = NULL ) {
 		$params = $request->get_query_params();
 
 		if ( $params && isset( $params['hub_challenge'] ) && $params['hub_verify_token'] == $this->facebook_page_verify_token ) {
@@ -77,16 +77,16 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		return false;
 	}
 
-  	public function callback_fb_webhook ( $request ) {
-  		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
-  		if ( ! isset( $available_gateways[ 'omise' ] ) ) { 
-  			return;
-  		}
+	public function callback_fb_webhook ( $request ) {
+		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		if ( ! isset( $available_gateways[ 'omise' ] ) ) { 
+			return;
+		}
 
 		$params = $request->get_params();
 
 		if ( ! ( $params && $params['entry'] ) ) {
-		  	return;
+			return;
 		}
 
 		foreach ( (array) $params['entry'] as $entry ) {
@@ -118,8 +118,8 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 
 					Omise_FBBot_Request_Handler::handle_payload_from( $sender_id, $payload );
 				} else {
-				  	// Unused case
-				  	break;
+					// Unused case
+					break;
 				}
 			} // foreach ['messaging']
 
@@ -130,57 +130,54 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		Omise_FBBot_Request_Handler::handle_callback_omise_webhook( $request );
 	}
 
-  	public function callback_fbbot_checkout( $request ) {
+	public function callback_fbbot_checkout( $request ) {
 		$params = $request->get_params();
 
-	    try {
-	        if ( ! $user = Omise_FBBot_User_Service::get_user( $params['messenger_id'] ) ) {
-	            throw new Exception( __( "Oop! We got some problem can't get your profile. Please try again later.", 'omise' ) );
-	        }
+		try {
+			if ( ! $user = Omise_FBBot_User_Service::get_user( $params['messenger_id'] ) ) {
+				throw new Exception( __( "Oop! We got some problem can't get your profile. Please try again later.", 'omise' ) );
+			}
 
-	        $params['address'] = array(
-	            'first_name' => $user['first_name'],
-	            'last_name'  => $user['last_name'],
-            	'email'      => $params['customer_email']
-	        );
+			$params['address'] = array(
+				'first_name' => $user['first_name'],
+				'last_name'  => $user['last_name'],
+				'email'      => $params['customer_email']
+			);
 
-	        if ( ! $order = Omise_FBBot_WooCommerce::create_order( $params ) ) {
-	            throw new Exception( __( "Oop! We can't create your order.", 'omise' ) );
-	        }
+			if ( ! $order = Omise_FBBot_WooCommerce::create_order( $params ) ) {
+				throw new Exception( __( "Oop! We can't create your order.", 'omise' ) );
+			}
 
-	        
-	        $items = $order->get_items();
-	        $product = NULL;
-	        foreach ( $items as $item ) {
-	        	$product = $item;
-	        	//Note : In our facebook bot case, we only sell 1 product/ 1 order
-	        	break;
-	        }
+			
+			$items = $order->get_items();
 
-	        if ( ! $product ) {
-	        	throw new Exception( __( "Oop! Doesn't have any product in this order.", 'omise' ) );
-	        }
+			if ( empty( $items ) ) {
+				throw new Exception( __( "Oop! Doesn't have any product in this order.", 'omise' ) );
+			}
 
-	        $params['metadata'] = array(
+			$product = $items[0];
+			//Note : In our facebook bot case, we only sell 1 product/1 order
+
+			$params['metadata'] = array(
 				'source' => 'woo_omise_bot',
 				'product_id' => $product['product_id'],
 				'messenger_id' => $params['messenger_id'],
 				'customer_name' => $order->get_formatted_billing_full_name(),
 				'customer_email' => $order->get_billing_email(),
 				'order_id' => $order->get_order_number()
-		    );
+			);
 
-	        $payment_handler = Omise_Payment_FBBot::get_instance();
-	        $payment_handler->process_payment_by_bot( $params, $order );
+			$payment_handler = Omise_Payment_FBBot::get_instance();
+			$payment_handler->process_payment_by_bot( $params, $order );
 
-	    } catch (Exception $e) {
-	    	$error_message = str_replace(" ", "%20", $e->getMessage());
-	        
-	        $redirect_uri =  site_url() . '/pay-on-messenger-error/?error_message=' . $error_message;
-	        if ( wp_redirect( $redirect_uri ) ) {
-	            exit;
-	        }
-	    }
-  	}
+		} catch (Exception $e) {
+			$error_message = str_replace(" ", "%20", $e->getMessage());
+			
+			$redirect_uri =  site_url() . '/pay-on-messenger-error/?error_message=' . $error_message;
+			if ( wp_redirect( $redirect_uri ) ) {
+				exit;
+			}
+		}
+	}
 
 }

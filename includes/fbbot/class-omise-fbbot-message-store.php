@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( class_exists( 'Omise_FBBot_Message_Store' ) ) {
- 	return;
+	return;
 }
 
 class Omise_FBBot_Message_Store {
