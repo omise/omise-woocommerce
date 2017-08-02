@@ -143,49 +143,29 @@ function register_omise_fbbot() {
 			return '<strong>' . $error_message . '</strong>';
 		}
 
-		public function process_payment_by_bot( $params ) {
-		    /* rearrange step
-		      1. receive post data from payment page
-		      2. Create wc order
-		      3. Create charge 
-		      4. update order status
-		    */
-
-		    $omise_token = $params['omise_token'];
-		    $product_id = $params['product_id'];
-		    $messenger_id = $params['messenger_id'];
-
-		    $order = Omise_FBBot_WooCommerce::create_order( $params );
-
-		    $metadata = array(
-				'source' => 'woo_omise_bot',
-				'product_id' => $product_id,
-				'messenger_id' => $messenger_id,
-				'order_id' => $order->get_order_number()
-		    );
-
-		    $data = array(
+		public function process_payment_by_bot( $params, $order ) {
+			$charge_params = array(
 				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_currency() ),
 				'currency'    => $order->get_currency(),
-				'description' => 'OrderID is '.$order->get_id().' : This order created from Omise FBBot and CustomerID is '.$messenger_id,
-				'metadata' => $metadata,
-				'card' => $omise_token
+				'description' => 'OrderID is '.$order->get_order_number().' : This order created from Omise FBBot and CustomerID is ' . $params['messenger_id'],
+				'metadata' => $params['metadata'],
+				'card' => $params['omise_token']
 		    );
 
 		    if ( $this->omise_3ds ) {
 		    	$return_uri =  site_url() . '/complete-payment';
 
-		      	$data['return_uri'] = $return_uri;
+		      	$charge_params['return_uri'] = $return_uri;
 		    }
 
 		    // Create Charge
 		    try {
-		      	$charge = OmiseCharge::create( $data, '', $this->secret_key() );
+		      	$charge = OmiseCharge::create( $charge_params, '', $this->secret_key() );
 		      	// We move checking charge status to request handler in handle triggered from omise method
 
 		      	// Just sent message to user for let them know we received these order
 		      	$prepare_confirm_message = Omise_FBBot_Conversation_Generator::prepare_confirm_order_message( $order->get_order_number() );
-		      	$response = Omise_FBBot_HTTPService::send_message_to( $messenger_id, $prepare_confirm_message );
+		      	$response = Omise_FBBot_HTTPService::send_message_to( $params['messenger_id'], $prepare_confirm_message );
 
 		      	// If merchant enable 3ds mode
 		      	if ( isset ( $charge['authorize_uri'] ) ) {
@@ -204,8 +184,6 @@ function register_omise_fbbot() {
 		      	}
 
 		    } catch (Exception $e) {
-		      	error_log("catch error : " . $e->getMessage());
-
 		      	$error_message = str_replace(" ", "%20", $e->getMessage());
 
 		      	// Redirect to error page
@@ -214,7 +192,7 @@ function register_omise_fbbot() {
 		          	exit;
 		      	}
 		    }
-  		}
+		}
 
   		private function is_omise_payment_page() {
 			global $wp;

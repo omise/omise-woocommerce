@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( class_exists( 'Omise_FBBot_Endpoints' ) ) {
-  return;
+	return;
 }
 
 class Omise_FBBot_Endpoints extends WP_REST_Controller {
@@ -81,15 +81,15 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		$params = $request->get_params();
 
 		if ( ! ( $params && $params['entry'] ) ) {
-		  return;
+		  	return;
 		}
 
 		foreach ( (array) $params['entry'] as $entry ) {
-		  if ( ! ( $entry && $entry['messaging'] ) ) {
+			if ( ! ( $entry && $entry['messaging'] ) ) {
 				break;
-		  }
+			}
 
-		  foreach ( (array) $entry['messaging'] as $messaging_event ) {
+			foreach ( (array) $entry['messaging'] as $messaging_event ) {
 				if ( isset( $messaging_event['message'] ) ) {
 					if ( isset( $messaging_event['message']['is_echo'] ) ) {
 						break;
@@ -116,19 +116,53 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 				  // Unused case
 				  break;
 				}
-		  } // foreach ['messaging']
+			} // foreach ['messaging']
 
 		} // foreach ['entry']
 	}
 
-  public function callback_omise_webhook( $request ) {
+	public function callback_omise_webhook( $request ) {
 		Omise_FBBot_Request_Handler::handle_callback_omise_webhook( $request );
-  }
+	}
 
-  public function callback_fbbot_checkout( $request ) {
+  	public function callback_fbbot_checkout( $request ) {
 		$params = $request->get_params();
-		$payment_handler = Omise_Payment_FBBot::get_instance();
-		$payment_handler->process_payment_by_bot( $params );
+
+	    try {
+	        if ( ! $user = Omise_FBBot_User_Service::get_user( $params['messenger_id'] ) ) {
+	            throw new Exception( __( "Oop! We got some problem can't get your profile. Please try again later.", 'omise' ) );
+	        }
+
+	        $params['address'] = array(
+	            'first_name' => $user['first_name'],
+	            'last_name'  => $user['last_name'],
+            	'email'      => $params['customer_email']
+	        );
+
+	        if ( ! $order = Omise_FBBot_WooCommerce::create_order( $params ) ) {
+	            throw new Exception( __( "Oop! We can't create your order.", 'omise' ) );
+	        }
+
+	        $params['metadata'] = array(
+				'source' => 'woo_omise_bot',
+				'product_id' => $params['product_id'],
+				'messenger_id' => $params['messenger_id'],
+				'customer_name' => $user['first_name'] . ' ' . $user['last_name'],
+				'customer_email' => $params['customer_email'],
+				'order_id' => $order->get_order_number()
+		    );
+
+	        $payment_handler = Omise_Payment_FBBot::get_instance();
+	        $payment_handler->process_payment_by_bot( $params, $order );
+
+	    } catch (Exception $e) {
+	    	$error_message = str_replace(" ", "%20", $e->getMessage());
+	        
+	        $redirect_uri =  site_url() . '/pay-on-messenger-error/?error_message=' . $error_message;
+	        if ( wp_redirect( $redirect_uri ) ) {
+	            exit;
+	        }
+	    }
   }
 
 }
