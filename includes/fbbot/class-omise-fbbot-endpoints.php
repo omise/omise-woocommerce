@@ -143,12 +143,25 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 	            throw new Exception( __( "Oop! We can't create your order.", 'omise' ) );
 	        }
 
+	        
+	        $items = $order->get_items();
+	        $product = NULL;
+	        foreach ( $items as $item ) {
+	        	$product = $item;
+	        	//Note : In our facebook bot case, we only sell 1 product/ 1 order
+	        	break;
+	        }
+
+	        if ( ! $product ) {
+	        	throw new Exception( __( "Oop! Doesn't have any product in this order.", 'omise' ) );
+	        }
+
 	        $params['metadata'] = array(
 				'source' => 'woo_omise_bot',
-				'product_id' => $params['product_id'],
+				'product_id' => $product['product_id'],
 				'messenger_id' => $params['messenger_id'],
-				'customer_name' => $user['first_name'] . ' ' . $user['last_name'],
-				'customer_email' => $params['customer_email'],
+				'customer_name' => $order->get_formatted_billing_full_name(),
+				'customer_email' => $order->get_billing_email(),
 				'order_id' => $order->get_order_number()
 		    );
 
