@@ -78,6 +78,11 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 	}
 
   	public function callback_fb_webhook ( $request ) {
+  		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+  		if ( ! isset( $available_gateways[ 'omise' ] ) ) { 
+  			return;
+  		}
+
 		$params = $request->get_params();
 
 		if ( ! ( $params && $params['entry'] ) ) {
