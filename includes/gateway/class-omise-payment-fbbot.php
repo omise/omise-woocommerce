@@ -215,7 +215,7 @@ function register_omise_fbbot() {
 		private function is_accessible() {
 			global $wp;
 
-			return ( strtolower( $wp->request ) == $this->payment_page_url || strtolower( $wp->request ) == $this->payment_error_url );
+			return ( $this->is_omise_payment_page() || $this->is_omise_payment_error_page() );
 		}
 	}
 
