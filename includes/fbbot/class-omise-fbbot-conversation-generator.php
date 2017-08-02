@@ -33,10 +33,10 @@ class Omise_FBBot_Conversation_Generator {
         $order_status = Omise_FBBot_WooCommerce::check_order_status( $order_id );
 
         if ( ! $order_status ) {
-            return FB_Message_Item::create( __( "Sorry, your order number not found. Can you try to check it again ? :'(", 'omise' ) );
+            return FB_Message_Item::create( Omise_FBBot_Message_Store::get_order_not_found_message() );
         }
 
-        return FB_Message_Item::create( sprintf( __( "BAMM! Your order status is '%s' :]", 'omise' ), $order_status ) );
+        return FB_Message_Item::create( Omise_FBBot_Message_Store::get_order_has_found_message( $order_status ) );
     }
 
 	public static function feature_products_message( $sender_id ) {
@@ -87,7 +87,7 @@ class Omise_FBBot_Conversation_Generator {
         $products = Omise_FBBot_WCCategory::products( $category_slug );
 
         if ( ! $products ) {
-            return FB_Message_Item::create( __( "🤖  We don't have product on this category. We will do it soon <3", 'omise' ) );
+            return FB_Message_Item::create( Omise_FBBot_Message_Store::get_products_is_empty_message() );
         }
 
         // Facebook list template is limit at 10
@@ -116,7 +116,7 @@ class Omise_FBBot_Conversation_Generator {
         $product = Omise_FBBot_WCProduct::create( $product_id );
 
         if ( ! $product->attachment_images ) {
-            return FB_Message_Item::create( __( "🤖  Don't have image gallery on this product. We will do it soon <3", 'omise' ) );
+            return FB_Message_Item::create( Omise_FBBot_Message_Store::get_product_image_is_empty_message() );
         }
 
         $elements = array();
@@ -139,7 +139,7 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public static function prepare_confirm_order_message( $order_id ) {
-        return FB_Message_Item::create( sprintf( __( '🤖 We received your order. Your OrderID is 👉 #%s 👈. We will process your order right away and send you a confirmation once it is complete ❤', 'omise' ), $order_id ) );
+        return FB_Message_Item::create( Omise_FBBot_Message_Store::get_prepare_confirm_order_message( $order_id ) );
 	}
 
     public static function reply_for_purchase_message( $charge ) {
@@ -151,28 +151,28 @@ class Omise_FBBot_Conversation_Generator {
         switch ( $charge->status ) {
             case 'failed':
                 $fail_message = $charge->failure_message;
-                $message = sprintf( __( 'Oops seems we cannot process your payment properly.. The reason is %s', 'omise' ), $fail_message );
+                $message = Omise_FBBot_Message_Store::get_purchase_fail_message( $fail_message );
             break;
 
             case 'pending':
                 if ( $charge->return_uri ) {
-                $message = __( 'However, due to a 3rd-party payment processor, this process might takes a little while.', 'omise' );
+                    $message = Omise_FBBot_Message_Store::get_purchase_pending_with3ds_message();
                 } else {
-                    $message = __( "Now, the payment has been processing. I'll let you know once it done, thanks for your order.", 'omise' );
+                    $message = Omise_FBBot_Message_Store::get_purchase_pending_message();
                 }
 
             break;
 
             case 'reversed':
-                $message = __( 'I just reverse your payment as your request, this process might take few days to return your balance due to the bank issuer you are using.', 'omise' );
+                $message = Omise_FBBot_Message_Store::get_purchase_reversed_message();
             break;
 
             case 'successful':
-                $message = __( 'Any process to do more? No worry my friend, all done now. Next we will verify your order and payment then ship it!', 'omise' );
+                $message = Omise_FBBot_Message_Store::get_purchase_completed_message();
             break;
 
             default:
-                $message = __( 'BOOOOOOOOOOOOOOOOOOOO', 'omise' );
+                $message = Omise_FBBot_Message_Store::get_unknow_purchase_status_message();
             break;
         }
 

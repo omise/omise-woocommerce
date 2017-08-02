@@ -57,16 +57,48 @@ class Omise_FBBot_Message_Store {
 		return __( "🤖  This product don't have image gallery. We will do it soon <3", 'omise' );
 	}
 
-	public static function get_prepare_confirm_order_message() {
-		return __( "🤖  Received your order. We will process your order right away and send you a confirmation and order number once it is complete ❤️ ", 'omise' );
-	}
-
 	public static function get_checking_order_helper_message() {
 		return __( ":) Sure!. You can put your order number follow ex. #12345", 'omise' );
 	}
 
 	public static function get_rechecking_order_number_message() {
 		return __( "🙇  If you want to check your order status, you can put your order number follow ex. #12345 👍", 'omise' );
+	}
+
+	public static function get_order_not_found_message() {
+		return __( "Sorry, your order number not found. Can you try to check it again ? :'(", 'omise' );
+	}
+
+	public static function get_order_has_found_message( $order_status ) {
+		return sprintf( __( "BAMM! Your order status is '%s' :]", 'omise' ), $order_status );
+	}
+
+	public static function get_prepare_confirm_order_message( $order_id ) {
+		return sprintf( __( '🤖  We received your order. Your OrderID is 👉 #%s 👈. We will process your order right away and send you a confirmation once it is complete ❤', 'omise' ), $order_id );
+	}
+
+	public static function get_purchase_fail_message( $fail_message ) {
+		return sprintf( __( 'Oops seems we cannot process your payment properly.. The reason is %s', 'omise' ), $fail_message );
+	}
+
+	public static function get_purchase_pending_with3ds_message() {
+		return __( 'However, due to a 3rd-party payment processor, this process might takes a little while.', 'omise' );
+	}
+
+	public static function get_purchase_pending_message() {
+		return __( "Now, the payment has been processing. I'll let you know once it done, thanks for your order.", 'omise' );
+	}
+
+	public static function get_purchase_reversed_message() {
+		return __( 'I just reverse your payment as your request, this process might take few days to return your balance due to the bank issuer you are using.', 'omise' );
+	}
+
+	public static function get_purchase_completed_message() {
+		return __( 'Any process to do more? No worry my friend, all done now. Next we will verify your order and payment then ship it!', 'omise' );
+	}
+
+	public static function get_unknow_purchase_status_message() {
+		return __( 'BOOOOOOOOOOOOOOOOOOOO', 'omise' );
 	}
 
 	public static function get_default_menu_buttons() {
