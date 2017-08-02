@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if (  class_exists( 'Omise_FBBot_WCCategory') ) {
-  return;
+ 	return;
 }
 
 class Omise_FBBot_WCCategory {
@@ -36,19 +36,20 @@ class Omise_FBBot_WCCategory {
             'orderby' => 'title,'
         );
 
-    $loop = new WP_Query( $args );
+	    $loop = new WP_Query( $args );
 
-    if ( ! $loop->have_posts() ) {
-    	return NULL;
-    }
+	    if ( ! $loop->have_posts() ) {
+	    	return NULL;
+	    }
 
-    $func = function ($post) {
-    	return Omise_FBBot_WCProduct::create( $post->ID );
-    };
+	    $func = function ($post) {
+	    	return Omise_FBBot_WCProduct::create( $post->ID );
+	    };
 
-    $products = array_map( $func, $loop->posts );
-    wp_reset_postdata();
-    return $products;
+	    $products = array_map( $func, $loop->posts );
+	    wp_reset_postdata();
+
+	    return $products;
 	}
 
 	public static function collection() {

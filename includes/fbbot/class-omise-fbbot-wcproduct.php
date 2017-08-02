@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if (  class_exists( 'Omise_FBBot_WCProduct') ) {
-  return;
+ 	return;
 }
 
 class Omise_FBBot_WCProduct {
@@ -47,8 +47,7 @@ class Omise_FBBot_WCProduct {
 			return $image_link;
 		};
 
-		$attachment_images = array_map( $func, $attachment_ids );
-		return $attachment_images;
+		return array_map( $func, $attachment_ids );
 	}
 
 	public static function featured() {
@@ -62,8 +61,6 @@ class Omise_FBBot_WCProduct {
 			return self::create( $p_id );
 		};
 
-		$products = array_map( $func, $featured_product_ids );
-
-		return $products;
+		return array_map( $func, $featured_product_ids );
 	}
 }

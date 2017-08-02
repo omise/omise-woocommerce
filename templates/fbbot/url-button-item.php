@@ -2,7 +2,7 @@
 defined('ABSPATH') or die("No direct script access allowed.");
 
 if ( class_exists( 'FB_URL_Button_Item' ) ) {
-  return;
+	return;
 }
 
 class FB_URL_Button_Item {

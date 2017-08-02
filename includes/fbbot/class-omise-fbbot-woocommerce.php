@@ -7,7 +7,7 @@ if (  class_exists( 'Omise_FBBot_WooCommerce') ) {
 
 class Omise_FBBot_WooCommerce {
 	public static function check_order_status( $order_id ) {
-		// Order status in woocommerce
+	// Order status in woocommerce
     // pending, processing, on-hold, completed, cancelled, refunded, failed
 
     $order = wc_get_order( $order_id );

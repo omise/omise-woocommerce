@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( class_exists( 'FB_File_Message_Item' ) ) {
-  return;
+	return;
 }
 
 class FB_File_Message_Item {

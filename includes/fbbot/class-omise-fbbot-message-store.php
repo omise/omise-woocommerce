@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( class_exists( 'Omise_FBBot_Message_Store' ) ) {
-  return;
+ 	return;
 }
 
 class Omise_FBBot_Message_Store {
@@ -28,9 +28,7 @@ class Omise_FBBot_Message_Store {
 
 		$helping_messages = array( $helping_message_1, $helping_message_2 );
 
-		$helping_message = self::ramdomArrayOfMessage( $helping_messages );
-
-		return $helping_message;
+		return self::ramdomArrayOfMessage( $helping_messages );
 	}
 
 	public static function get_unrecognized_message() {
@@ -78,9 +76,7 @@ class Omise_FBBot_Message_Store {
 		$category_button = FB_Postback_Button_Item::create( __( 'Product category', 'omise' ), $payload::PRODUCT_CATEGORY );
 		$check_order_button = FB_Postback_Button_Item::create( __( 'Check order status', 'omise' ), $payload::CHECK_ORDER );
 
-		$buttons = array( $feature_products_button, $category_button , $check_order_button);
-
-		return $buttons;
+		return array( $feature_products_button, $category_button , $check_order_button);
 	}
 
 	public static function check_greeting_words( $message ) {

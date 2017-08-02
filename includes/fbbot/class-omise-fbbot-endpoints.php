@@ -65,9 +65,9 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		$params = $request->get_query_params();
 		echo $params['hub_challenge'];
 		die();
-  }
+  	}
 
-  public function verify_fb_token_request( $request = NULL ) {
+  	public function verify_fb_token_request( $request = NULL ) {
 		$params = $request->get_query_params();
 
 		if ( $params && isset( $params['hub_challenge'] ) && $params['hub_verify_token'] == $this->facebook_page_verify_token ) {
@@ -77,7 +77,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		return false;
 	}
 
-  public function callback_fb_webhook ( $request ) {
+  	public function callback_fb_webhook ( $request ) {
 		$params = $request->get_params();
 
 		if ( ! ( $params && $params['entry'] ) ) {
@@ -113,8 +113,8 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 
 					Omise_FBBot_Request_Handler::handle_payload_from( $sender_id, $payload );
 				} else {
-				  // Unused case
-				  break;
+				  	// Unused case
+				  	break;
 				}
 			} // foreach ['messaging']
 
@@ -163,6 +163,6 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 	            exit;
 	        }
 	    }
-  }
+  	}
 
 }
