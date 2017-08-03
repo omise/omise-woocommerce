@@ -27,7 +27,7 @@
 
     var errors = OmiseUtil.validate_card(card)
     if (errors.length > 0) {
-      showError(__('Card validation has error'))
+      showError('Card validation has error')
       console.log(errors)
     } else {
       hideError()
@@ -42,6 +42,7 @@
             $('#omise_card_expiration_year').val('')
             $('#omise_card_security_code').val('')
             checkout_form.submit()
+            $('#customer_email').val('')
           } else {
             var error_message = ''
             if (response.message) {
