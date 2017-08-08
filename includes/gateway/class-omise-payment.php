@@ -218,11 +218,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @param string $charge_id
 	 */
 	public function attach_charge_id_to_order( $charge_id ) {
+		/** backward compatible with WooCommerce v2.x series **/
+		$order_id = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+
 		if ( $this->get_charge_id_from_order() ) {
-			delete_post_meta( $this->order()->get_id(), self::CHARGE_ID );
+			delete_post_meta( $order_id, self::CHARGE_ID );
 		}
 
-		add_post_meta( $this->order()->get_id(), self::CHARGE_ID, $charge_id );
+		add_post_meta( $order_id, self::CHARGE_ID, $charge_id );
 	}
 
 	/**
@@ -231,7 +234,10 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_charge_id_from_order() {
-		$charge_id = get_post_meta( $this->order()->get_id(), self::CHARGE_ID, true );
+		/** backward compatible with WooCommerce v2.x series **/
+		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+
+		$charge_id = get_post_meta( $order_id, self::CHARGE_ID, true );
 
 		// Backward compatible for Omise v1.2.3
 		if ( empty( $charge_id ) ) {
@@ -313,8 +319,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
 
 			if ( ! $this->order()->get_transaction_id() ) {
-				$this->order()->set_transaction_id( $charge['id'] );
-				$this->order()->save();
+				/** backward compatible with WooCommerce v2.x series **/
+				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+					$this->order()->set_transaction_id( $charge['id'] );
+					$this->order()->save();
+				} else {
+					update_post_meta( $this->order()->id, '_transaction_id', $charge['id'] );
+				}
 			}
 
 			if ( 'failed' === $charge['status'] ) {
@@ -385,13 +396,16 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return     string
 	 */
 	protected function deprecated_get_charge_id_from_post() {
+		/** backward compatible with WooCommerce v2.x series **/
+		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+
 		$posts = get_posts(
 			array(
 				'post_type'  => 'omise_charge_items',
 				'meta_query' => array(
 					array(
 						'key'     => '_wc_order_id',
-						'value'   => $this->order()->get_id(),
+						'value'   => $order_id,
 						'compare' => '='
 					)
 				)

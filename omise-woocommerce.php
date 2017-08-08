@@ -107,11 +107,14 @@ class Omise {
 	public function register_order_actions( $order_actions ) {
 		global $theorder;
 
-		if ( 'omise' === $theorder->get_payment_method() ) {
-			$order_actions[ $theorder->get_payment_method() . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
+		/** backward compatible with WooCommerce v2.x series **/
+		$payment_method = version_compare( WC()->version, '3.0.0', '>=' ) ? $theorder->get_payment_method() : $theorder->payment_method;
+
+		if ( 'omise' === $payment_method ) {
+			$order_actions[ $payment_method . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
 		}
 
-		$order_actions[ $theorder->get_payment_method() . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
+		$order_actions[ $payment_method . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
 
 		return $order_actions;
 	}

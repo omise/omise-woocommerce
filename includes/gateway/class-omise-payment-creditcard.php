@@ -267,8 +267,8 @@ function register_omise_creditcard() {
 
 				$success = false;
 				$data    = array(
-					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_currency() ),
-					'currency'    => $order->get_currency(),
+					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+					'currency'    => $order->get_order_currency(),
 					'description' => 'WooCommerce Order id ' . $order_id,
 					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . '?wc-api=omise_callback' )
 				);
@@ -297,8 +297,13 @@ function register_omise_creditcard() {
 					throw new Exception( Omise_Charge::get_error_message( $charge ) );
 				}
 
-				$order->set_transaction_id( $charge['id'] );
-				$order->save();
+				/** backward compatible with WooCommerce v2.x series **/
+				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+					$order->set_transaction_id( $charge['id'] );
+					$order->save();
+				} else {
+					update_post_meta( $order->id, '_transaction_id', $charge['id'] );
+				}
 
 				if ( $this->omise_3ds ) {
 					$order->add_order_note(
