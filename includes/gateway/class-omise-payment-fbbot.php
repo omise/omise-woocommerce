@@ -61,9 +61,6 @@ function register_omise_fbbot() {
 		}
 
 		public function payment_page_detect( $posts ) {
-			global $wp;
-			global $wp_query;
-
 			if ( $this->is_omise_purchase_complete_page() ) {
 				$image_url = urlencode( site_url() . '/wp-content/plugins/omise-woocommerce/assets/images/omise_logo.png' );
 				$display_text = urlencode( 'THANKS FOR PURCHASE' );
@@ -75,49 +72,59 @@ function register_omise_fbbot() {
 				return $posts;
 			}
 
-			// Create custom page
-			$post = new stdClass;
-
 			if ( $this->is_omise_payment_page() ) {
-				$post->post_title = __( 'Your order', 'omise' );
-				$post->post_content = $this->payment_page_render();
-
+				$posts = array( $this->build_payment_page() );
 			} else if ( $this->is_omise_payment_error_page() ) {
-				$post->post_title = __( 'System error', 'omise' );
-				$post->post_content = $this->payment_error_page_render();
-			}
-
-			if ( $this->is_accessible() ) {
-				// Create custom page content
-				$post->post_author = 1;
-				$post->post_name = strtolower( $wp->request );
-				$post->guid = get_bloginfo( 'wpurl' ) . '/' . strtolower( $wp->request );
-				$post->ID = -1;
-				$post->post_type = 'page';
-				$post->post_status = 'static';
-				$post->comment_status = 'closed';
-				$post->ping_status = 'open';
-				$post->comment_count = 0;
-				$post->post_date = current_time( 'mysql' );
-				$post->post_date_gmt = current_time( 'mysql', 1 );
-				$posts = array();
-				$posts[] = $post;
-
-				// make wp_query
-				$wp_query->is_page = true;
-				$wp_query->is_singular = true;
-				$wp_query->is_home = false;
-				$wp_query->is_archive = false;
-				$wp_query->is_category = false;
-				unset( $wp_query->query["error"] );
-				$wp_query->query_vars["error"] = "";
-				$wp_query->is_404 = false;
+				$posts = array( $this->build_payment_error_page() );
 			}
 
 			return $posts;
 		}
 
-		public function payment_page_render () {
+		private function init_page() {
+			global $wp;
+			global $wp_query;
+
+			$post = new stdClass;
+
+			$post->post_author 				= 1;
+			$post->post_name 				= strtolower( $wp->request );
+			$post->guid 					= get_bloginfo( 'wpurl' ) . '/' . strtolower( $wp->request );
+			$post->ID 						= -1;
+			$post->post_type 				= 'page';
+			$post->post_status 				= 'static';
+			$post->comment_status 			= 'closed';
+			$post->ping_status 				= 'open';
+			$post->comment_count 			= 0;
+			$post->post_date 				= current_time( 'mysql' );
+			$post->post_date_gmt 			= current_time( 'mysql', 1 );
+
+			$wp_query->is_page 				= true;
+			$wp_query->is_singular 			= true;
+			$wp_query->is_home 				= false;
+			$wp_query->is_archive 			= false;
+			$wp_query->is_category 			= false;
+			$wp_query->query_vars["error"] 	= '';
+			$wp_query->is_404 				= false;
+
+			return $post;
+		}
+
+		private function build_payment_page() {
+			$post = $this->init_page();
+
+			$post->post_title = __( 'Your order', 'omise' );
+			$post->post_content = $this->payment_page_render();
+
+			return $post;
+		}
+
+		private function build_payment_error_page() {
+			$post->post_title = __( 'System error', 'omise' );
+			$post->post_content = $this->payment_error_page_render();
+		}
+
+		private function payment_page_render() {
 			global $wp_query;
 
 			if ( ! isset( $wp_query->query_vars['product_id'] ) || ! isset( $wp_query->query_vars['messenger_id'] ) ) {
@@ -133,7 +140,7 @@ function register_omise_fbbot() {
 			return ob_get_clean();
 		}
 
-		public function payment_error_page_render () {
+		private function payment_error_page_render() {
 			global $wp_query;
 
 			if ( ! isset( $wp_query->query_vars['error_message'] ) ) {
