@@ -6,8 +6,73 @@ if ( class_exists( 'Omise_FBBot_Conversation_Generator' ) ) {
 }
 
 class Omise_FBBot_Conversation_Generator {
-	private function __construct() {
-		// Hide the constructor
+	private $sender_id, $message, $payload;
+
+	public function listen( $sender_id, $message ) {
+		$this->sender_id = $sender_id;
+		$this->message = strtolower( $message );
+	}
+
+	public function listen_payload( $sender_id, $payload ) {
+		$this->sender_id = $sender_id;
+		$this->payload = $payload;
+	}
+
+	public function reply_for_message() {
+		if ( Omise_FBBot_Message_Store::check_greeting_words( $this->message ) ) {
+			return self::greeting_message( $this->sender_id );
+
+		} else if ( Omise_FBBot_Message_Store::check_helping_words( $this->message ) ) {
+			return self::helping_message();
+
+		} else if ( Omise_FBBot_Message_Store::check_order_checking( $this->message ) ) {
+			// Checking order status from order number
+			$checking_text = explode('#', $this->message);
+
+			if ( ! $checking_text[1] ) {
+			   return self::rechecking_order_number_message();
+			}
+
+			$order_id = $checking_text[1];
+			return self::get_ordet_status_message( $order_id );
+
+		} else {
+			// Handle unrecognize message
+			return self::unrecognized_message();
+		}
+	}
+
+	public function reply_for_payload() {
+		switch ( $this->payload ) {
+			case Omise_FBBot_Payload::GET_START_CLICKED:
+				return self::greeting_message( $this->sender_id );
+
+			case Omise_FBBot_Payload::FEATURE_PRODUCTS:
+				return self::feature_products_message( $this->sender_id );
+
+			case Omise_FBBot_Payload::PRODUCT_CATEGORY:
+				return self::product_category_message();
+
+			case Omise_FBBot_Payload::CHECK_ORDER:
+				return self::before_checking_order_message();
+
+			case Omise_FBBot_Payload::HELP:
+				return self::helping_message();
+
+			default:
+				# Custom payload :
+				$explode = explode('__', $this->payload);
+
+				if ($explode[0] == 'VIEW_PRODUCT') {
+					$product_id = $explode[1];
+					return self::product_gallery_message( $this->sender_id, $product_id );
+				} else if ($explode[0] == 'VIEW_CATEGORY_PRODUCTS') {
+					$category_slug = $explode[1];
+					return self::product_list_in_category_message( $this->sender_id, $category_slug );
+				}
+
+				return self::unrecognized_message();
+		}
 	}
 
 	public static function greeting_message( $sender_id ) {
