@@ -112,7 +112,6 @@ function register_omise_fbbot() {
 
 		private function build_payment_page() {
 			$post = $this->init_page();
-
 			$post->post_title = __( 'Your order', 'omise' );
 			$post->post_content = $this->payment_page_render();
 
@@ -120,8 +119,11 @@ function register_omise_fbbot() {
 		}
 
 		private function build_payment_error_page() {
+			$post = $this->init_page();
 			$post->post_title = __( 'System error', 'omise' );
 			$post->post_content = $this->payment_error_page_render();
+
+			return $post;
 		}
 
 		private function payment_page_render() {
