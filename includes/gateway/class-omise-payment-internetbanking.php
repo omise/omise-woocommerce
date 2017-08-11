@@ -118,9 +118,15 @@ function register_omise_internetbanking() {
 					case 'pending':
 						$this->attach_charge_id_to_order( $charge['id'] );
 
-						$order->set_transaction_id( $charge['id'] );
 						$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer out to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
-						$order->save();
+
+						/** backward compatible with WooCommerce v2.x series **/
+						if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+							$order->set_transaction_id( $charge['id'] );
+							$order->save();
+						} else {
+							update_post_meta( $order->id, '_transaction_id', $charge['id'] );
+						}
 
 						return array (
 							'result'   => 'success',
