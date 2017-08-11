@@ -3,7 +3,7 @@
  * Plugin Name: Omise Payment Gateway
  * Plugin URI: https://www.omise.co/woocommerce
  * Description: Omise WooCommerce Gateway Plugin is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
- * Version: 3.0
+ * Version: 3.1-dev
  * Author: Omise
  * Author URI: https://www.omise.co
  * Text Domain: omise
@@ -20,7 +20,7 @@ class Omise {
 	 *
 	 * @var string
 	 */
-	public $version = '3.0';
+	public $version = '3.1-dev';
 
 	/**
 	 * The Omise Instance.
