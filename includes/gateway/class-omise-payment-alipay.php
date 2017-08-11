@@ -93,7 +93,11 @@ function register_omise_alipay() {
 					'currency'    => $order->get_order_currency(),
 					'description' => 'WooCommerce Order id ' . $order_id,
 					'offsite'     => 'alipay',
-					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_alipay_callback" )
+					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_alipay_callback" ),
+					'metadata'    => array(
+						/** backward compatible with WooCommerce v2.x series **/
+						'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
+					)
 				) );
 
 				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
