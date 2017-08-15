@@ -10,7 +10,8 @@ class Omise_FBBot_Conversation_Generator {
 
 	public function listen( $sender_id, $message ) {
 		$this->sender_id = $sender_id;
-		$this->message = strtolower( $message );
+		$this->message = $message;
+		error_log(print_r($this->message, true));
 	}
 
 	public function listen_payload( $sender_id, $payload ) {

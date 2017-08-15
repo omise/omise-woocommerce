@@ -11,10 +11,10 @@ class Omise_FBBot_Request_Handler {
 		// Hide the constructor
 	}
 
-	public static function handle_message_from( $sender_id, $user_message ) {
+	public static function handle_message_from( $sender_id, $message ) {
 		$bot = new Omise_FBBot_Conversation_Generator();
-		$bot->listen( $sender_id, $user_message );
-		$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $bot->reply_for_message() );
+		$bot->listen( $sender_id, $message );
+		// $response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $bot->reply_for_message() );
 	}
 
 	public static function handle_payload_from( $sender_id, $payload ) {

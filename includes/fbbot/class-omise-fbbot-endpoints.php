@@ -84,7 +84,6 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 		}
 
 		$params = $request->get_params();
-
 		if ( ! ( $params && $params['entry'] ) ) {
 			return;
 		}
@@ -106,9 +105,8 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 
 					$sender_id = $messaging_event['sender']['id'];
 
-					// Handle text message
-					$text = $messaging_event['message']['text'];
-					Omise_FBBot_Request_Handler::handle_message_from( $sender_id, $text );
+					// Handle message object
+					Omise_FBBot_Request_Handler::handle_message_from( $sender_id, $messaging_event['message'] );
 					break;
 
 				} else if ( isset( $messaging_event['postback'] ) ) {
