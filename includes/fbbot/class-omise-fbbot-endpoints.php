@@ -83,6 +83,11 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 			return;
 		}
 
+		$this->omise_facebook_bot = Omise_FBBot_Configurator::get_fb_settings('omise_facebook_bot') == 'yes';
+		if ( ! $this->omise_facebook_bot ) {
+			return;
+		}
+
 		$params = $request->get_params();
 
 		if ( ! ( $params && $params['entry'] ) ) {

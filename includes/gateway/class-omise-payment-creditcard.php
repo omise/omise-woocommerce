@@ -29,6 +29,8 @@ function register_omise_creditcard() {
 			$this->omise_3ds      = $this->get_option( 'omise_3ds', false ) == 'yes';
 			$this->payment_action = $this->get_option( 'payment_action' );
 
+			$this->omise_facebook_bot = $this->get_option( 'omise_facebook_bot', false ) == 'yes';
+
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
@@ -494,6 +496,12 @@ function register_omise_creditcard() {
 					'title'       => __( 'Facebook Messenger Bot Settings', 'omise' ),
 					'type'        => 'title',
 					'description' => '',
+				),
+				'omise_facebook_bot' => array(
+					'title'       => __( 'Facebook messenger bot support', 'omise' ),
+					'type'        => 'checkbox',
+					'label'       => __( 'Enable or disable facebook messenger bot feature', 'omise' ),
+					'default'     => 'no'
 				),
 				'facebook_callback_url' => array(
 					'title'       => __( 'Callback url for bot setup', 'omise' ),
