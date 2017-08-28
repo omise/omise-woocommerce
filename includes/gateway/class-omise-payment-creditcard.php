@@ -504,16 +504,16 @@ function register_omise_creditcard() {
 					'default'     => 'no'
 				),
 				'facebook_bot_available_time_from' => array(
-					'title'       => __( 'Bot available time from', 'omise' ),
+					'title'       => __( 'Enable feature from', 'omise' ),
 					'type'        => 'text',
 					'default'     => '00:00:00',
-					'description' => __( 'Default time format is H:i:s (24hr). Example : 00:00:00', 'omise' )
+					'description' => __( 'The default time format is H:i:s (24hr). Example : 00:00:00', 'omise' )
 				),
 				'facebook_bot_available_time_to' => array(
-					'title'       => __( 'Bot available time to', 'omise' ),
+					'title'       => __( 'Enable feature until', 'omise' ),
 					'type'        => 'text',
 					'default'     => '23:59:59',
-					'description' => __( 'Default time format is H:i:s (24hr). Example : 23:59:59<br />Don\'t forget to set your wordpress timezone before use this feature. <a href="options-general.php">Set your wordpress timezone</a>', 'omise' )
+					'description' => __( 'The default time format is H:i:s (24hr). Example : 23:59:59<br />Remember to set your wordpress timezone before using this feature. <a href="options-general.php">Set your wordpress timezone</a>', 'omise' )
 				),
 				'facebook_callback_url' => array(
 					'title'       => __( 'Callback url for bot setup', 'omise' ),
