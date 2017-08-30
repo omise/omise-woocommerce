@@ -83,6 +83,10 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 			return;
 		}
 
+		if ( ! Omise_FBBot_Configurator::facebook_bot_is_enable() ) {
+			return;
+		}
+
 		$params = $request->get_params();
 		if ( ! ( $params && $params['entry'] ) ) {
 			return;
@@ -133,7 +137,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 
 		try {
 			if ( ! $user = Omise_FBBot_User_Service::get_user( $params['messenger_id'] ) ) {
-				throw new Exception( __( "Oop! We got some problem can't get your profile. Please try again later.", 'omise' ) );
+				throw new Exception( __( "Oh noo! 😩 I can't get your profile. Can you try again ?", 'omise' ) );
 			}
 
 			$params['address'] = array(
@@ -143,7 +147,7 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 			);
 
 			if ( ! $order = Omise_FBBot_WooCommerce::create_order( $params ) ) {
-				throw new Exception( __( "Oop! We can't create your order.", 'omise' ) );
+				throw new Exception( __( "🙀 Something went wrong. We are unable to create your order.", 'omise' ) );
 			}
 
 			

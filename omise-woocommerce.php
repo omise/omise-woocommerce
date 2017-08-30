@@ -23,6 +23,13 @@ class Omise {
 	public $version = '2.0.0-dev';
 
 	/**
+	 * Omise facebook bot version number.
+	 *
+	 * @var string
+	 */
+	public $facebook_bot_version = '1.0';
+
+	/**
 	 * The Omise Instance.
 	 *
 	 * @since 2.0
@@ -47,6 +54,7 @@ class Omise {
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version );
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
 		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2014-07-27' );
+		defined( 'OMISE_FACEBOOK_BOT_VERSION' ) || define( 'OMISE_FACEBOOK_BOT_VERSION', $this->facebook_bot_version );
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
@@ -117,7 +125,7 @@ class Omise {
 	public function register_user_agent() {
 		global $wp_version;
 
-		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version );
+		$user_agent = sprintf( 'OmiseWooCommerce/%s OmiseFacebookBot/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, OMISE_FACEBOOK_BOT_VERSION, $wp_version, WC()->version );
 		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', $user_agent );
 	}
 

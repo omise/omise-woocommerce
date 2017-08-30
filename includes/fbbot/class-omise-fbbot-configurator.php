@@ -29,4 +29,34 @@ class Omise_FBBot_Configurator {
 		$page_access_token = self::get_fb_settings( 'facebook_page_access_token' );
 		return self::$facebook_message_endpoint . $page_access_token;
 	}
+
+	public static function facebook_bot_is_enable() {
+		$is_enable = self::get_fb_settings('omise_facebook_bot') == 'yes';
+		if ( ! $is_enable ) {
+			return false;
+		}
+
+		$time_zone_code = get_option('timezone_string');
+		if ( ! $time_zone_code ) {
+			error_log('Time zone code is null. please set in setting page first');
+			// Note: Bot still working if user not select timezone.
+			return true;
+		}
+
+		$available_time_from = self::get_fb_settings('facebook_bot_available_time_from');
+		$available_time_to = self::get_fb_settings('facebook_bot_available_time_to');
+
+		try {
+			$time_zone 			= new DateTimeZone($time_zone_code);
+			$current_datetime 	= new DateTime('now', $time_zone);
+			$from_datetime 		= new DateTime($available_time_from, $time_zone);
+			$to_datetime 		= new DateTime($available_time_to, $time_zone);
+
+			return ($current_datetime > $from_datetime && $current_datetime < $to_datetime);
+		} catch(Exception $err) {
+			error_log('Failed to parse time string');
+			// Note: Bot still working if user input the wrong time format.
+			return true;
+		}
+	}
 }

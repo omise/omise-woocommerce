@@ -299,11 +299,11 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			}
 
 			if ( 'pending' === $charge['status'] ) {
-				$order->add_order_note( __( 'Omise: payment is in progress, you might wait for a moment and click sync the status again or contact Omise support team at support@omise.co if you have any questions.' ) );
+				$order->add_order_note( __( 'Omise: payment is in progress, you might wait for a moment and click sync the status again or contact Omise support team at support@omise.co if you have any questions.', 'omise' ) );
 				return;
 			}
 
-			throw new Exception( __( 'cannot read the payment status. Please try sync again or or contact Omise support team at support@omise.co if you have any questions.' ) );
+			throw new Exception( __( 'cannot read the payment status. Please try sync again or or contact Omise support team at support@omise.co if you have any questions.', 'omise' ) );
 		} catch ( Exception $e ) {
 			$order->add_order_note( sprintf( __( 'Omise: sync failed, %s', 'omise' ), $e->getMessage() ) );
 		}

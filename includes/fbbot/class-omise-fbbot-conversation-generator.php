@@ -6,12 +6,17 @@ if ( class_exists( 'Omise_FBBot_Conversation_Generator' ) ) {
 }
 
 class Omise_FBBot_Conversation_Generator {
-	private $sender_id, $message, $payload;
+	private $sender_id, $message, $payload, $nlp_enabled;
 
 	public function listen( $sender_id, $message ) {
 		$this->sender_id = $sender_id;
 		$this->message = $message;
-		error_log(print_r($this->message, true));
+
+		if ( $message['nlp'] ) {
+			$this->nlp_enabled = true;
+		} else {
+			$this->nlp_enabled = false;
+		}
 	}
 
 	public function listen_payload( $sender_id, $payload ) {
@@ -20,6 +25,10 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public function reply_for_message() {
+		if ( $this->nlp_enabled ) {
+			return $this->entities_handle($this->message['nlp']['entities']);
+		}
+
 		if ( Omise_FBBot_Message_Store::check_greeting_words( $this->message ) ) {
 			return self::greeting_message( $this->sender_id );
 
@@ -74,6 +83,42 @@ class Omise_FBBot_Conversation_Generator {
 
 				return self::unrecognized_message();
 		}
+	}
+
+	private function entities_handle( $entities ) {
+		$filtered_entities = array_filter( $entities, function ($value) {
+			$confidence_rate = 0.9;
+			return ($value[0]['confidence'] > $confidence_rate);
+		} );
+
+		if ( count( $filtered_entities ) != 0 ) {
+			$max_confidence = 0;
+			$user_intent = NULL;
+
+			foreach ( $filtered_entities as $intent => $value ) {
+				if ( $value[0]['confidence'] > $max_confidence ) {
+					$max_confidence = $value[0]['confidence'];
+					$user_intent = $intent;
+				}
+			}
+			
+			switch ( $user_intent ) {
+				case 'greetings':
+				case 'user_greetings':
+					return self::greeting_message( $this->sender_id );
+				
+				case 'check_order_status':
+					return self::rechecking_order_number_message();
+
+				case 'need_help':
+					return self::helping_message(); 
+				default:
+					return self::unrecognized_message();
+			}
+		}
+
+		// Handle unrecognize intent
+		return self::unrecognized_message();
 	}
 
 	public static function greeting_message( $sender_id ) {

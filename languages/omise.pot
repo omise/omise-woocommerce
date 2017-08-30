@@ -1,0 +1,800 @@
+# This file is distributed under the same license as the Omise package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Omise Payment Gateway v3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/omise/omise-woocommerce/issues\n"
+"POT-Creation-Date: 2017-08-28 06:16:53+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Poedit: \n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Generator: grunt-wp-i18n1.0.0\n"
+
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:119
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:164
+msgid "Gallery "
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:121
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:166
+msgid "View on website"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:124
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:169
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:194
+msgid "Buy Now : "
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-conversation-generator.php:139
+msgid "View "
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-endpoints.php:142
+msgid "Oh noo! 😩 I can't get your profile. Can you try again ?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-endpoints.php:152
+msgid "🙀 Something went wrong. We are unable to create your order."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-endpoints.php:159
+msgid "Oop! Doesn't have any product in this order."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:18
+msgid "Hello, %1$s 👋 Welcome to %2$s. What are you looking for? 🤔"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:24
+msgid "Hello, welcome to %1$s 👋 What can I do for you today? 😃"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:28
+msgid "Hi there! 👋 Feel like shopping today? 🛍 Let me show you around!"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:31
+msgid "Hello %1$s 👋 How can I help?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:36
+msgid "Thank you for visiting %1$s. How can I help you  %2$s?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:47
+msgid "Welcome to %1$s %2$s! How may I assist?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:58
+msgid ""
+"🤖 I can help you with lots of things. Start by selecting from one of the "
+"options below 👇"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:60
+msgid "Let's get started! Choose from one of the options below 🤖"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:62
+msgid "Let me guide you through.. first, choose from an option below 👇"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:64
+msgid "Let me help you. 🛍 Choose from an option below 👇"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:66
+msgid "Here's what I can help you with 👇"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:68
+msgid "You came to the right place for help. Here's what I can do for you 👇"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:76
+msgid ""
+"🤕 I wish I could understand you, maybe one day! For now, here's what I can "
+"help you with "
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:78
+msgid "🤖 Uh oh, not sure what you mean. But here's how I can help."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:80
+msgid "🤖 I'm not sure what you mean, but here's how I can help."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:82
+msgid "🤖 Not sure what you mean. Here's what I can help you with."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:84
+msgid "🤖 What do you mean? Here's the things I can help you with 👇"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:92
+msgid ""
+"🤖 Sorry, there're no featured products available. We hope to stock up "
+"soon. ❤️"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:94
+msgid "🤖 Featured products are not yet available. Can I show you something else?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:96
+msgid ""
+"🤖 I wish there's something I could show you. But right now, there are no "
+"featured products available."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:104
+msgid "🤖 Category is empty. We'll be adding more products soon. ❤️"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:106
+msgid "🤖 We need to re-stock. Can I show you something else?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:108
+msgid ""
+"🤖 The category is empty. We'll load up again soon. Can I show you "
+"something else?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:110
+msgid ""
+"🤖 I'm sorry but featured products are not available. Can I show you "
+"something else?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:118
+msgid "🤖 Image gallery not ready yet, but we're getting there. Stay tuned! ❤️"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:120
+msgid ""
+"🤖 I know you shop easier with pics. We'll try to upload pictures before "
+"your next visit ❤️"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:122
+msgid "🤖 We're uploading pictures real soon. Sorry for the inconvenience ☹️"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:124
+msgid "🤖 No images available yet.. I will definately let the store owner know."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:132
+msgid "😄 What's your order number? Just let me know like this, #12345"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:134
+msgid ""
+"😄 Please give me your order number. It's the one that looks like this "
+"#12345 👍"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:136
+msgid "😄 Type in your order number. It's something like this, #12345. 👍"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:138
+msgid "😄 I can check your order number. Please send it over like this, #12345"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:146
+msgid ""
+"🙇 To check your order status, please enter your order number (ex. #12345) "
+"👍"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:148
+msgid "🙇 Type down your order number (example: #12345) 👍"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:150
+msgid ""
+"🙇 What's your order number? Let me know. I'll check it out. (example "
+"#12345) 👍"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:158
+msgid ""
+"🙇 Are you sure you got the order number right? We can't seem to find it. "
+"Can you try again?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:160
+msgid ""
+"🙇 Can you check that you got the order number right? We can't find your "
+"order :("
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:162
+msgid ""
+"🙇 Hmmm, that's weird.. We can't find your order. Sure you got the order "
+"number right?"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:171
+msgid "Your order status is %s."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:176
+msgid "Here you go! 💥 Your order status is %s."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:186
+msgid ""
+"🤖  We received your order. Your OrderID is 👉 #%s 👈. We will process your "
+"order right away and send you a confirmation once it is complete ❤"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:190
+msgid "😧 Payment cannot be processed due to %s"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:192
+msgid "😧 We are unable to process your payment at this moment due to %s"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:194
+msgid "😧 We're sorry. Your payment cannot be processed at this moment due to %s"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:196
+msgid ""
+"😞 We are unable to process your payments due to %s. We apologize for the "
+"inconvenience."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:204
+msgid ""
+"However, due to a 3rd-party payment processor, this process might takes a "
+"little while."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:208
+msgid ""
+"😇 Hold on a minute. Payment is being processed. I'll let you know once "
+"it's done."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:210
+msgid "😇 Keep calm. Your payment is being processed."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:218
+msgid ""
+"👍 Your payment has been reversed. We're currently working with banks to "
+"return the amount to your account."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:220
+msgid ""
+"👍 Your payment has been reversed. The balance will be returned to you "
+"shortly."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:228
+msgid ""
+"👍 Boom Done. Your order and payment will be verified once again, before we "
+"ship your products."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:230
+msgid ""
+"👍 Thank you for shopping with us. We will verify your order and payment, "
+"and will proceed to shipping your items."
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:232
+msgid ""
+"👍 Thanks for shopping with us. Your order and payment will be verified, "
+"and we'll be shipping shortly. "
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:240
+msgid "BOOOOOOOOOOOOOOOOOOOO"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:246
+msgid "Featured products"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:247
+msgid "Product category"
+msgstr ""
+
+#: includes/fbbot/class-omise-fbbot-message-store.php:248
+msgid "Check order status"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:41
+#: includes/gateway/class-omise-payment-creditcard.php:52
+#: includes/gateway/class-omise-payment-internetbanking.php:42
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:43
+msgid "Enable Omise Alipay Payment"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:48
+#: includes/gateway/class-omise-payment-creditcard.php:59
+#: includes/gateway/class-omise-payment-internetbanking.php:49
+msgid "Title"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:50
+#: includes/gateway/class-omise-payment-creditcard.php:61
+#: includes/gateway/class-omise-payment-internetbanking.php:51
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:51
+msgid "Alipay"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:67
+#: includes/gateway/class-omise-payment-alipay.php:120
+#: includes/gateway/class-omise-payment-creditcard.php:172
+#: includes/gateway/class-omise-payment-creditcard.php:344
+#: includes/gateway/class-omise-payment-creditcard.php:373
+#: includes/gateway/class-omise-payment-internetbanking.php:76
+#: includes/gateway/class-omise-payment-internetbanking.php:129
+msgid "Order not found: "
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:71
+msgid "Omise: Processing a payment with the Alipay.."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:82
+#: includes/gateway/class-omise-payment-internetbanking.php:91
+msgid "Omise: Charge (id: %s) has been created"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:89
+#: includes/gateway/class-omise-payment-internetbanking.php:98
+msgid "Omise: Redirecting buyer out to %s"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:103
+#: includes/gateway/class-omise-payment-internetbanking.php:112
+msgid ""
+"Seems that we cannot process your payment properly. Please try place an "
+"order again or contact our support team if you have any questions."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:107
+#: includes/gateway/class-omise-payment-alipay.php:157
+#: includes/gateway/class-omise-payment-creditcard.php:323
+#: includes/gateway/class-omise-payment-creditcard.php:422
+#: includes/gateway/class-omise-payment-internetbanking.php:116
+#: includes/gateway/class-omise-payment-internetbanking.php:166
+msgid "Payment failed: "
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:109
+#: includes/gateway/class-omise-payment-alipay.php:159
+#: includes/gateway/class-omise-payment-creditcard.php:325
+#: includes/gateway/class-omise-payment-creditcard.php:424
+#: includes/gateway/class-omise-payment-internetbanking.php:118
+#: includes/gateway/class-omise-payment-internetbanking.php:168
+msgid "Omise: payment failed, "
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:120
+#: includes/gateway/class-omise-payment-internetbanking.php:129
+msgid ""
+"Your payment might already has been completed, please contact our support "
+"team if you have any questions."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:126
+#: includes/gateway/class-omise-payment-creditcard.php:379
+#: includes/gateway/class-omise-payment-internetbanking.php:135
+msgid "Omise: validating a payment result.."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:136
+msgid ""
+"Omise: the charge has been pending due to the Alipay process. Please check "
+"the payment status at Omise dashboard again later"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:146
+#: includes/gateway/class-omise-payment-internetbanking.php:155
+msgid "Omise: captured an amount %s"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-alipay.php:155
+#: includes/gateway/class-omise-payment-internetbanking.php:164
+msgid ""
+"Seems that we cannot process your payment properly. Anyway, your payment "
+"might already has been completed, please contact our support team if you "
+"have any questions."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:54
+#: includes/gateway/class-omise-payment-internetbanking.php:44
+msgid "Enable Omise Internet Banking Payment"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:62
+#: includes/gateway/class-omise-payment-internetbanking.php:52
+msgid "Internet Banking"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:69
+msgid "Advance Settings"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:74
+msgid "Payment action"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:76
+msgid "Manual Capture or Capture Automatically"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:86
+msgid "3-D Secure support"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:88
+msgid ""
+"Enable or disable 3-D Secure for the account. (Japan-based accounts are not "
+"eligible for the service.)"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:92
+msgid "Supported card icons"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:121
+msgid ""
+"This only controls the icons displayed on the checkout page.<br />It is not "
+"related to card processing on Omise payment gateway."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:176
+msgid "Omise: processing a payment.."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:183
+msgid "Please select a card or enter new payment information."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:191
+msgid "Omise card token is required."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:232
+msgid "Something wrong with Omise gateway. No card available for creating a charge."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:264
+msgid "Charge was failed, please contact our support"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:267
+msgid "Omise: charge id %s was created"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:276
+msgid "Omise: processing a payment with 3-D Secure, redirecting buyer out to %s"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:287
+#: includes/gateway/class-omise-payment-creditcard.php:388
+msgid "Authorize with Omise successful"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:296
+#: includes/gateway/class-omise-payment-creditcard.php:397
+msgid "Payment with Omise successful"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:313
+msgid "This charge cannot authorize or capture, please contact our support."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:363
+msgid "Omise: Refund failed, "
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:373
+msgid ""
+"Your card might be charged already, please contact our support team if you "
+"have any questions."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:496
+msgid "Facebook Messenger Bot Settings"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:501
+msgid "Facebook messenger bot support"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:503
+msgid "Enable or disable facebook messenger bot feature"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:507
+msgid "Enable feature from"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:510
+msgid "The default time format is H:i:s (24hr). Example : 00:00:00"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:513
+msgid "Enable feature until"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:516
+msgid ""
+"The default time format is H:i:s (24hr). Example : 23:59:59<br />Remember "
+"to set your wordpress timezone before using this feature. <a "
+"href=\"options-general.php\">Set your wordpress timezone</a>"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:519
+msgid "Callback url for bot setup"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:523
+msgid "Copy and paste in the Webhook section on your facebook app setting page"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:526
+msgid "Callback url for Omise webhook"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:530
+msgid "Copy and paste in the Webhooks section on your omise dashboard setting page"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:533
+msgid "Facebook page verify token"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:535
+msgid ""
+"Token that Facebook will echo back to you as part of callback URL "
+"verification"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:538
+msgid "Facebook page access token"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:540
+msgid "Page token is required to start using the Facebook APIs."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-fbbot.php:115
+msgid "Your order"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-fbbot.php:123
+msgid "System error"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-internetbanking.php:80
+msgid "Omise: Processing a payment with the Internet Banking.."
+msgstr ""
+
+#: includes/gateway/class-omise-payment-internetbanking.php:145
+msgid ""
+"Omise: the charge has been pending due to the Bank process. Please check "
+"the payment status at Omise dashboard again later"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:57
+msgid "Payment Settings"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:63
+msgid "Sandbox"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:65
+msgid "Enabling sandbox means that all your transactions will be in TEST mode."
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:70
+msgid "Public key for test"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:72
+msgid "The \"Test\" mode public key can be found in Omise Dashboard."
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:76
+msgid "Secret key for test"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:78
+msgid "The \"Test\" mode secret key can be found in Omise Dashboard."
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:82
+msgid "Public key for live"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:84
+msgid "The \"Live\" mode public key can be found in Omise Dashboard."
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:88
+msgid "Secret key for live"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:90
+msgid "The \"Live\" mode secret key can be found in Omise Dashboard."
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:252
+msgid "Omise: captured the charge id %s "
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:255
+msgid "Omise: capture failed, "
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:286
+msgid "Omise: payment successful, an amount %s has been paid"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:296
+msgid "Omise: payment failed, %s (code: %s)"
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:302
+msgid ""
+"Omise: payment is in progress, you might wait for a moment and click sync "
+"the status again or contact Omise support team at support@omise.co if you "
+"have any questions."
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:306
+msgid ""
+"cannot read the payment status. Please try sync again or or contact Omise "
+"support team at support@omise.co if you have any questions."
+msgstr ""
+
+#: includes/gateway/class-omise-payment.php:308
+msgid "Omise: sync failed, %s"
+msgstr ""
+
+#: omise-woocommerce.php:141
+msgid "Omise: Capture this order"
+msgstr ""
+
+#: omise-woocommerce.php:144
+msgid "Omise: Sync payment status"
+msgstr ""
+
+#: templates/payment/form.php:5
+msgid "Use an existing card"
+msgstr ""
+
+#: templates/payment/form.php:22
+msgid "Create a charge using new card"
+msgstr ""
+
+#: templates/payment/form.php:36
+msgid "Remember this card"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Omise Payment Gateway"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.omise.co/woocommerce"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Omise WooCommerce Gateway Plugin is a wordpress plugin designed "
+"specifically for WooCommerce. The plugin adds support for Omise Payment "
+"Gateway payment method to WooCommerce."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Omise"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.omise.co"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:80
+msgctxt "Setting auto capture"
+msgid "Auto Capture"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:81
+msgctxt "Setting manual capture"
+msgid "Manual Capture"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-creditcard.php:134
+msgctxt "Header at setting page"
+msgid "Omise Payment Gateway"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:16 templates/payment/form-creditcard.php:9
+msgctxt "Card holder name at payment form"
+msgid "Name on card"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:18 templates/payment/form-creditcard.php:11
+msgctxt "Placeholder for card holder name"
+msgid "FULL NAME"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:23
+msgctxt "Contact email at payment form"
+msgid "Email address"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:25
+msgctxt "Contact email at payment form"
+msgid "your@email.com"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:30 templates/payment/form-creditcard.php:2
+msgctxt "Card number at payment form"
+msgid "Card number"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:32 templates/payment/form-creditcard.php:4
+msgctxt "Placeholder for card number"
+msgid "•••• •••• •••• ••••"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:37 templates/payment/form-creditcard.php:15
+msgctxt "Expiration month at payment form"
+msgid "Expiration month"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:39 templates/payment/form-creditcard.php:17
+msgctxt "Placeholder for expiration month"
+msgid "MM"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:43 templates/payment/form-creditcard.php:20
+msgctxt "Expiration year at payment form"
+msgid "Expiration year"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:45 templates/payment/form-creditcard.php:22
+msgctxt "Placeholder for expiration year"
+msgid "YYYY"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:50 templates/payment/form-creditcard.php:26
+msgctxt "Security Code at payment form"
+msgid "Security code"
+msgstr ""
+
+#: templates/fbbot/payment-form.php:53 templates/payment/form-creditcard.php:29
+msgctxt "Placeholder for security Code"
+msgid "•••"
+msgstr ""
