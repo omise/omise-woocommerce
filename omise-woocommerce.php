@@ -50,11 +50,16 @@ class Omise {
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-capture.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-complete.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-create.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-alipay.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-events.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
@@ -69,6 +74,7 @@ class Omise {
 		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 10 );
 
 		$this->init_admin();
+		$this->init_route();
 	}
 
 	/**
@@ -82,6 +88,16 @@ class Omise {
 			add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_menu' ) );
 			add_filter( 'woocommerce_order_actions', array( $this, 'register_order_actions' ) );
 		}
+	}
+
+	/**
+	 * @since  3.1
+	 */
+	protected function init_route() {
+		add_action( 'rest_api_init', function () {
+			$controllers = new Omise_Rest_Webhooks_Controller;
+			$controllers->register_routes();
+		} );
 	}
 
 	/**
