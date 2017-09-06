@@ -25,19 +25,9 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public function reply_for_message() {
-		if ( $this->nlp_enabled ) {
-			return $this->entities_handle($this->message['nlp']['entities']);
-		}
-
-		if ( Omise_FBBot_Message_Store::check_greeting_words( $this->message ) ) {
-			return self::greeting_message( $this->sender_id );
-
-		} else if ( Omise_FBBot_Message_Store::check_helping_words( $this->message ) ) {
-			return self::helping_message();
-
-		} else if ( Omise_FBBot_Message_Store::check_order_checking( $this->message ) ) {
+		if ( Omise_FBBot_Message_Store::check_order_checking( $this->message['text'] ) ) {
 			// Checking order status from order number
-			$checking_text = explode('#', $this->message);
+			$checking_text = explode('#', $this->message['text']);
 
 			if ( ! $checking_text[1] ) {
 			   return self::rechecking_order_number_message();
@@ -45,6 +35,17 @@ class Omise_FBBot_Conversation_Generator {
 
 			$order_id = $checking_text[1];
 			return self::get_ordet_status_message( $order_id );
+		}
+
+		if ( $this->nlp_enabled ) {
+			return $this->entities_handle($this->message['nlp']['entities']);
+		}
+
+		if ( Omise_FBBot_Message_Store::check_greeting_words( $this->message['text'] ) ) {
+			return self::greeting_message( $this->sender_id );
+
+		} else if ( Omise_FBBot_Message_Store::check_helping_words( $this->message['text'] ) ) {
+			return self::helping_message();
 
 		} else {
 			// Handle unrecognize message
