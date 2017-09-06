@@ -6,11 +6,17 @@ if ( class_exists( 'Omise_FBBot_Conversation_Generator' ) ) {
 }
 
 class Omise_FBBot_Conversation_Generator {
-	private $sender_id, $message, $payload;
+	private $sender_id, $message, $payload, $nlp_enabled;
 
 	public function listen( $sender_id, $message ) {
 		$this->sender_id = $sender_id;
-		$this->message = strtolower( $message );
+		$this->message = $message;
+
+		if ( $message['nlp'] ) {
+			$this->nlp_enabled = true;
+		} else {
+			$this->nlp_enabled = false;
+		}
 	}
 
 	public function listen_payload( $sender_id, $payload ) {
@@ -19,15 +25,9 @@ class Omise_FBBot_Conversation_Generator {
 	}
 
 	public function reply_for_message() {
-		if ( Omise_FBBot_Message_Store::check_greeting_words( $this->message ) ) {
-			return self::greeting_message( $this->sender_id );
-
-		} else if ( Omise_FBBot_Message_Store::check_helping_words( $this->message ) ) {
-			return self::helping_message();
-
-		} else if ( Omise_FBBot_Message_Store::check_order_checking( $this->message ) ) {
+		if ( Omise_FBBot_Message_Store::check_order_checking( $this->message['text'] ) ) {
 			// Checking order status from order number
-			$checking_text = explode('#', $this->message);
+			$checking_text = explode('#', $this->message['text']);
 
 			if ( ! $checking_text[1] ) {
 			   return self::rechecking_order_number_message();
@@ -35,6 +35,17 @@ class Omise_FBBot_Conversation_Generator {
 
 			$order_id = $checking_text[1];
 			return self::get_ordet_status_message( $order_id );
+		}
+
+		if ( $this->nlp_enabled ) {
+			return $this->entities_handle($this->message['nlp']['entities']);
+		}
+
+		if ( Omise_FBBot_Message_Store::check_greeting_words( $this->message['text'] ) ) {
+			return self::greeting_message( $this->sender_id );
+
+		} else if ( Omise_FBBot_Message_Store::check_helping_words( $this->message['text'] ) ) {
+			return self::helping_message();
 
 		} else {
 			// Handle unrecognize message
@@ -73,6 +84,42 @@ class Omise_FBBot_Conversation_Generator {
 
 				return self::unrecognized_message();
 		}
+	}
+
+	private function entities_handle( $entities ) {
+		$filtered_entities = array_filter( $entities, function ($value) {
+			$confidence_rate = 0.9;
+			return ($value[0]['confidence'] > $confidence_rate);
+		} );
+
+		if ( count( $filtered_entities ) != 0 ) {
+			$max_confidence = 0;
+			$user_intent = NULL;
+
+			foreach ( $filtered_entities as $intent => $value ) {
+				if ( $value[0]['confidence'] > $max_confidence ) {
+					$max_confidence = $value[0]['confidence'];
+					$user_intent = $intent;
+				}
+			}
+			
+			switch ( $user_intent ) {
+				case 'greetings':
+				case 'user_greetings':
+					return self::greeting_message( $this->sender_id );
+				
+				case 'check_order_status':
+					return self::rechecking_order_number_message();
+
+				case 'need_help':
+					return self::helping_message(); 
+				default:
+					return self::unrecognized_message();
+			}
+		}
+
+		// Handle unrecognize intent
+		return self::unrecognized_message();
 	}
 
 	public static function greeting_message( $sender_id ) {
