@@ -47,58 +47,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Returns the array of default payment settings
-	 *
-	 * @return array of default payment settings
-	 */
-	protected function get_default_payment_setting_fields() {
-		return array(
-			'payment_setting' => array(
-				'title'       => __( 'Payment Settings', 'omise' ),
-				'type'        => 'title',
-				'description' => sprintf(
-					wp_kses(
-						__( 'All of your keys can be found at your Omise dashboard, check the following links.<br/><a href="%s">Test keys</a> or <a href="%s">Live keys</a> (login required)', 'omise' ),
-						array(
-							'br' => array(),
-							'a'  => array( 'href' => array() )
-						)
-					),
-					esc_url( 'https://dashboard.omise.co/test/keys' ),
-					esc_url( 'https://dashboard.omise.co/live/keys' )
-				),
-			),
-
-			'sandbox' => array(
-				'title'       => __( 'Test mode', 'omise' ),
-				'type'        => 'checkbox',
-				'label'       => __( 'Enabling test mode means that all your transactions will be performed under the Omise test account.', 'omise' ),
-				'default'     => 'yes'
-			),
-
-			'test_public_key' => array(
-				'title'       => __( 'Public key for test', 'omise' ),
-				'type'        => 'text'
-			),
-
-			'test_private_key' => array(
-				'title'       => __( 'Secret key for test', 'omise' ),
-				'type'        => 'text'
-			),
-
-			'live_public_key' => array(
-				'title'       => __( 'Public key for live', 'omise' ),
-				'type'        => 'text'
-			),
-
-			'live_private_key' => array(
-				'title'       => __( 'Secret key for live', 'omise' ),
-				'type'        => 'password'
-			)
-		);
-	}
-
-	/**
 	 * Returns the payment gateway settings option name
 	 *
 	 * @param  string $payment_method_id
