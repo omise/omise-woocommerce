@@ -55,6 +55,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
@@ -75,9 +76,10 @@ class Omise {
 	 */
 	protected function init_admin() {
 		if ( is_admin() ) {
+			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-settings.php';
 			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-admin.php';
 
-			add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_page_and_actions' ) );
+			add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_menu' ) );
 			add_filter( 'woocommerce_order_actions', array( $this, 'register_order_actions' ) );
 		}
 	}
