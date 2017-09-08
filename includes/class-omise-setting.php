@@ -91,4 +91,41 @@ class Omise_Setting {
 
 		return $this->get_default_settings();
 	}
+
+	/**
+	 * Whether Sandbox (test) mode is enabled or not.
+	 *
+	 * @return bool
+	 */
+	public function is_test() {
+		$sandbox = $this->settings['sandbox'];
+
+		return isset( $sandbox ) && $sandbox == 'yes';
+	}
+
+	/**
+	 * Return Omise public key.
+	 *
+	 * @return string
+	 */
+	public function public_key() {
+		if ( $this->is_test() ) {
+			return $this->settings['test_public_key'];
+		}
+
+		return $this->settings['live_public_key'];
+	}
+
+	/**
+	 * Return Omise secret key.
+	 *
+	 * @return string
+	 */
+	public function secret_key() {
+		if ( $this->is_test() ) {
+			return $this->settings['test_private_key'];
+		}
+
+		return $this->settings['live_private_key'];
+	}
 }
