@@ -20,45 +20,45 @@
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row"><label for="sandbox"><?php echo __( 'Test mode', 'omise' ); ?></label></th>
+					<th scope="row"><label for="sandbox"><?php _e( 'Test mode', 'omise' ); ?></label></th>
 					<td>
 						<fieldset>
 							<label for="sandbox">
-								<input name="sandbox" type="checkbox" id="sandbox" value="1" <?php echo 'yes' === $settings['payment']['sandbox'] ? 'checked="checked"' : ''; ?>>
-								<?php echo __( 'Enabling test mode means that all your transactions will be performed under the Omise test account.', 'omise' ); ?>
+								<input name="sandbox" type="checkbox" id="sandbox" value="1" <?php echo 'yes' === $settings['sandbox'] ? 'checked="checked"' : ''; ?>>
+								<?php _e( 'Enabling test mode means that all your transactions will be performed under the Omise test account.', 'omise' ); ?>
 							</label>
 						</fieldset>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="test_public_key"><?php echo __( 'Public key for test', 'omise' ); ?></label></th>
+					<th scope="row"><label for="test_public_key"><?php _e( 'Public key for test', 'omise' ); ?></label></th>
 					<td>
 						<fieldset>
-							<input name="test_public_key" type="text" id="test_public_key" value="<?php echo $settings['payment']['test_public_key']; ?>" class="regular-text" />
+							<input name="test_public_key" type="text" id="test_public_key" value="<?php echo $settings['test_public_key']; ?>" class="regular-text" />
 						</fieldset>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="test_private_key"><?php echo __( 'Secret key for test', 'omise' ); ?></label></th>
+					<th scope="row"><label for="test_private_key"><?php _e( 'Secret key for test', 'omise' ); ?></label></th>
 					<td>
 						<fieldset>
-							<input name="test_private_key" type="text" id="test_private_key" value="<?php echo $settings['payment']['test_private_key']; ?>" class="regular-text" />
+							<input name="test_private_key" type="text" id="test_private_key" value="<?php echo $settings['test_private_key']; ?>" class="regular-text" />
 						</fieldset>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="live_public_key"><?php echo __( 'Public key for live', 'omise' ); ?></label></th>
+					<th scope="row"><label for="live_public_key"><?php _e( 'Public key for live', 'omise' ); ?></label></th>
 					<td>
 						<fieldset>
-							<input name="live_public_key" type="text" id="live_public_key" value="<?php echo $settings['payment']['live_public_key']; ?>" class="regular-text" />
+							<input name="live_public_key" type="text" id="live_public_key" value="<?php echo $settings['live_public_key']; ?>" class="regular-text" />
 						</fieldset>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="live_private_key"><?php echo __( 'Secret key for live', 'omise' ); ?></label></th>
+					<th scope="row"><label for="live_private_key"><?php _e( 'Secret key for live', 'omise' ); ?></label></th>
 					<td>
 						<fieldset>
-							<input name="live_private_key" type="password" id="live_private_key" value="<?php echo $settings['payment']['live_private_key']; ?>" class="regular-text" />
+							<input name="live_private_key" type="password" id="live_private_key" value="<?php echo $settings['live_private_key']; ?>" class="regular-text" />
 						</fieldset>
 					</td>
 				</tr>
@@ -70,7 +70,7 @@
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row"><label for="sandbox"><?php echo __( 'Available Payment Methods', 'omise' ); ?></label></th>
+					<th scope="row"><label for="sandbox"><?php _e( 'Available Payment Methods', 'omise' ); ?></label></th>
 					<td>
 						<table class="widefat fixed striped" cellspacing="0">
 							<thead>
@@ -112,7 +112,7 @@
 									foreach ( $columns as $key => $column ) :
 										switch ( $key ) {
 											case 'name' :
-												$method_title = $gateway->get_title() ? $gateway->get_title() : __( '(no title)', 'woocommerce' );
+												$method_title = $gateway->get_title() ? $gateway->get_title() : __( '(no title)', 'omise' );
 												echo '<td class="name">
 													<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( $gateway->id ) ) . '">' . esc_html( $method_title ) . '</a>
 												</td>';
@@ -120,7 +120,7 @@
 
 											case 'status' :
 												echo '<td class="status" style="text-align: center;">';
-												echo ( 'yes' === $gateway->enabled ) ? '<span class="status-enabled tips" data-tip="' . esc_attr__( 'Yes', 'woocommerce' ) . '">' . esc_html__( 'Yes', 'woocommerce' ) . '</span>' : '-';
+												echo ( 'yes' === $gateway->enabled ) ? '<span>' . __( 'Yes', 'omise' ) . '</span>' : '-';
 												echo '</td>';
 												break;
 

@@ -7,11 +7,39 @@ if ( class_exists( 'Omise_Page_Settings' ) ) {
 }
 
 class Omise_Page_Settings {
+	/**
+	 * @var Omise_Setting
+	 */
 	protected $settings;
 
+	/**
+	 * @since 3.1
+	 */
 	public function __construct() {
 		$this->settings = new Omise_Setting;
 	}
+
+	/**
+	 * @return array
+	 *
+	 * @since  3.1
+	 */
+	protected function get_settings() {
+		return $this->settings->get_settings();
+	}
+
+	/**
+	 * @param array $data
+	 *
+	 * @since  3.1
+	 */
+	protected function save( $data ) {
+		$this->settings->update_settings( $data );
+	}
+
+	/**
+	 * @since  3.1
+	 */
 	public static function render() {
 		global $title;
 
@@ -22,17 +50,8 @@ class Omise_Page_Settings {
 			$page->save( $_POST );
 		}
 
-		$settings = array();
-		$settings['payment'] = $page->get_settings();
+		$settings = $page->get_settings();
 
 		include_once __DIR__ . '/views/omise-page-settings.php';
-	}
-
-	protected function get_settings() {
-		return $this->settings->get_settings();
-	}
-
-	protected function save( $data ) {
-		$this->settings->update_settings( $data );		
 	}
 }
