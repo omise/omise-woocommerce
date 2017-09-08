@@ -72,7 +72,6 @@ function register_omise_creditcard() {
 						'description' => __( 'This controls the description which the user sees during checkout.', 'omise' )
 					),
 				),
-				$this->get_default_payment_setting_fields(),
 				array(
 					'advanced' => array(
 						'title'       => __( 'Advance Settings', 'omise' ),
