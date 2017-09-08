@@ -16,10 +16,7 @@ class Omise_Setting {
 	 * @since 3.1
 	 */
 	public function __construct() {
-		$this->settings = array_merge(
-			$this->get_default_settings(),
-			$this->get_payment_settings( 'omise' )
-		);
+		$this->settings = $this->get_payment_settings( 'omise' );
 	}
 
 	/**
@@ -85,6 +82,13 @@ class Omise_Setting {
 	 * @since  3.0
 	 */
 	public function get_payment_settings( $id ) {
-		return get_option( $this->get_payment_method_settings_name( $id ) );
+		if ( $options = get_option( $this->get_payment_method_settings_name( $id ) ) ) {
+			return array_merge(
+				$this->get_default_settings(),
+				$options
+			);
+		}
+
+		return $this->get_default_settings();
 	}
 }
