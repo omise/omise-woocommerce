@@ -75,7 +75,10 @@ class Omise_Event_Charge_Complete {
 				break;
 
 			case 'successful':
-				if ( $data->authorized && $data->captured ) {
+				// Backward compatible with Omise API version 2014-07-27 by checking if 'captured' exist.
+				$paid = isset( $data->captured ) ? $data->captured : $data->paid;
+
+				if ( $data->authorized && $paid ) {
 					$order->add_order_note(
 						sprintf(
 							wp_kses(
