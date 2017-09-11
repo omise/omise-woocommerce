@@ -88,8 +88,7 @@ class Omise_FBBot_Conversation_Generator {
 
 	private function entities_handle( $entities ) {
 		$filtered_entities = array_filter( $entities, function ($value) {
-			$confidence_rate = 0.9;
-			return ($value[0]['confidence'] > $confidence_rate);
+			return ($value[0]['confidence'] > Omise_FBBot_Entity::CONFIDENCE_RATE);
 		} );
 
 		if ( count( $filtered_entities ) != 0 ) {
@@ -104,14 +103,14 @@ class Omise_FBBot_Conversation_Generator {
 			}
 			
 			switch ( $user_intent ) {
-				case 'greetings':
-				case 'user_greetings':
+				case Omise_FBBot_Entity::GREETINGS:
+				case Omise_FBBot_Entity::USER_GREETINGS:
 					return self::greeting_message( $this->sender_id );
 				
-				case 'check_order_status':
+				case Omise_FBBot_Entity::CHECK_ORDER_STATUS:
 					return self::rechecking_order_number_message();
 
-				case 'need_help':
+				case Omise_FBBot_Entity::NEED_HELP:
 					return self::helping_message(); 
 				default:
 					return self::unrecognized_message();
