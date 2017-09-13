@@ -65,6 +65,38 @@
 			</tbody>
 		</table>
 
+		<hr />
+
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row"><label><?php _e( 'Webhook endpoint', 'omise' ); ?></label></th>
+					<td>
+						<fieldset>
+							<code><?php echo get_rest_url( null, 'omise/webhooks' ); ?></code>
+							<p class="description">
+								<?php
+								echo sprintf(
+									wp_kses(
+										__( 'To enable <a href="%s">WebHooks</a> feature, you must setup an endpoint at <a href="%s"><strong>Omise dashboard</strong></a> by using the above url <em>(HTTPS only)</em>.', 'omise' ),
+										array(
+											'a'       => array( 'href' => array() ),
+											'em'      => array(),
+											'strong'  => array()
+										)
+									),
+									esc_url( 'https://www.omise.co/api-webhooks' ),
+									esc_url( 'https://dashboard.omise.co/test/webhooks/edit' )
+								);
+								?>
+						</fieldset>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<hr />
+
 		<h3><?php _e( 'Payment Methods', 'omise' ); ?></h3>
 		<p><?php _e( 'The table below is a list of available payment methods that you can enable in your WooCommerce store.', 'omise' ); ?></p>
 		<table class="form-table">

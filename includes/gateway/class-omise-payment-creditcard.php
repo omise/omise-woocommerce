@@ -286,6 +286,11 @@ function register_omise_creditcard() {
 					$data['capture'] = false;
 				}
 
+				/** backward compatible with WooCommerce v2.x series **/
+				$data['metadata'] = array(
+					'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
+				);
+
 				$charge = OmiseCharge::create( $data, '', $this->secret_key() );
 
 				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
