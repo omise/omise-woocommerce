@@ -95,8 +95,9 @@ class Omise_Event_Charge_Complete {
 				break;
 			
 			case 'pending':
+				// Credit Card 3-D Secure with 'authorize only' payment action case.
 				if ( $data->authorized ) {
-					$order->payment_complete( $data->id );
+					$order->update_status( 'processing' );
 				}
 				break;
 
