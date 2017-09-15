@@ -18,14 +18,20 @@ function register_omise_creditcard() {
 
 			$this->id                 = 'omise';
 			$this->has_fields         = true;
-			$this->method_title       = 'Omise Credit Card';
-			$this->method_description = 'Accept payment through Credit Card via Omise payment gateway.';
+			$this->method_title       = __( 'Omise Credit / Debit Card', 'omise' );
+			$this->method_description = wp_kses(
+				__( 'Accept payment through <strong>Credit / Debit Card</strong> via Omise payment gateway.', 'omise' ),
+				array(
+					'strong' => array()
+				)
+			);
 			$this->supports           = array( 'products', 'refunds' );
 
 			$this->init_form_fields();
 			$this->init_settings();
 
 			$this->title          = $this->get_option( 'title' );
+			$this->description    = $this->get_option( 'description' );
 			$this->omise_3ds      = $this->get_option( 'omise_3ds', false ) == 'yes';
 			$this->payment_action = $this->get_option( 'payment_action' );
 
@@ -37,7 +43,7 @@ function register_omise_creditcard() {
 			add_action( 'woocommerce_order_action_' . $this->id . '_charge_capture', array( $this, 'capture' ) );
 			add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 
-			/** @deprecated 2.0 */
+			/** @deprecated 3.0 */
 			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'callback' ) );
 		}
 
@@ -51,7 +57,7 @@ function register_omise_creditcard() {
 					'enabled' => array(
 						'title'   => __( 'Enable/Disable', 'omise' ),
 						'type'    => 'checkbox',
-						'label'   => __( 'Enable Omise Internet Banking Payment', 'omise' ),
+						'label'   => __( 'Enable Omise Credit / Debit Card Payment', 'omise' ),
 						'default' => 'no'
 					),
 
@@ -59,33 +65,40 @@ function register_omise_creditcard() {
 						'title'       => __( 'Title', 'omise' ),
 						'type'        => 'text',
 						'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
-						'default'     => __( 'Internet Banking', 'omise' ),
-						'desc_tip'    => true,
+						'default'     => __( 'Credit / Debit Card', 'omise' )
+					),
+
+					'description' => array(
+						'title'       => __( 'Description', 'omise' ),
+						'type'        => 'textarea',
+						'description' => __( 'This controls the description which the user sees during checkout.', 'omise' )
 					),
 				),
-				$this->get_default_payment_setting_fields(),
 				array(
 					'advanced' => array(
 						'title'       => __( 'Advance Settings', 'omise' ),
-						'type'        => 'title',
-						'description' => '',
+						'type'        => 'title'
 					),
 					'payment_action' => array(
 						'title'       => __( 'Payment action', 'omise' ),
 						'type'        => 'select',
-						'description' => __( 'Manual Capture or Capture Automatically', 'omise' ),
+						'description' => __( 'Capture automatically during the checkout process or manually after order has been placed', 'omise' ),
 						'default'     => 'auto_capture',
 						'class'       => 'wc-enhanced-select',
 						'options'     => array(
-							'auto_capture'   => _x( 'Auto Capture', 'Setting auto capture', 'omise' ),
-							'manual_capture' => _x( 'Manual Capture', 'Setting manual capture', 'omise' )
+							'auto_capture'   => __( 'Auto Capture', 'omise' ),
+							'manual_capture' => __( 'Manual Capture', 'omise' )
 						),
 						'desc_tip'    => true
 					),
 					'omise_3ds' => array(
-						'title'       => __( '3-D Secure support', 'omise' ),
+						'title'       => __( '3-D Secure payment', 'omise' ),
 						'type'        => 'checkbox',
-						'label'       => __( 'Enable or disable 3-D Secure for the account. (Japan-based accounts are not eligible for the service.)', 'omise' ),
+						'label'       => __( 'Enabling 3-D Secure payment means that buyer will be redirected to the 3-D Secure authorization page during the checkout process.', 'omise' ),
+						'description' => wp_kses(
+							__( 'Please be informed that you must contact Omise support team (support@omise.co) before enable or disable this option.<br/> (Japan-based accounts are not eligible for the service.)', 'omise' ),
+							array( 'br' => array() )
+						),
 						'default'     => 'no'
 					),
 					'accept_visa' => array(
@@ -118,7 +131,10 @@ function register_omise_creditcard() {
 						'label'       => Omise_Card_Image::get_amex_image(),
 						'css'         => Omise_Card_Image::get_css(),
 						'default'     => Omise_Card_Image::get_amex_default_display(),
-						'description' => __( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.', 'omise' )
+						'description' => wp_kses(
+							__( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.', 'omise' ),
+							array( 'br' => array() )
+						)
 					)
 				),
 				$this->fbbot_settings()
@@ -126,31 +142,24 @@ function register_omise_creditcard() {
 		}
 
 		/**
-		 * Settings on Admin page
-		 *
-		 * @see WC_Settings_API::admin_options()
-		 */
-		public function admin_options() {
-			echo '<h3>' . _x( 'Omise Payment Gateway', 'Header at setting page', 'omise' ) . '</h3>';
-			echo '<table class="form-table">';
-				$this->generate_settings_html();
-			echo '</table>';
-		}
-
-		/**
 		 * @see WC_Payment_Gateway::payment_fields()
 		 * @see woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
 		 */
-		function payment_fields() {
+		public function payment_fields() {
+			parent::payment_fields();
+
 			if ( is_user_logged_in() ) {
 				$viewData['user_logged_in'] = true;
 
 				$current_user      = wp_get_current_user();
 				$omise_customer_id = $this->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 				if ( ! empty( $omise_customer_id ) ) {
-
-					$customer                  = OmiseCustomer::retrieve( $omise_customer_id, '', $this->secret_key() );
-					$viewData['existingCards'] = $customer->cards( array( 'order' => 'reverse_chronological' ) );
+					try {
+						$customer                  = OmiseCustomer::retrieve( $omise_customer_id, '', $this->secret_key() );
+						$viewData['existingCards'] = $customer->cards( array( 'order' => 'reverse_chronological' ) );
+					} catch (Exception $e) {
+						// nothing
+					}
 				}
 			} else {
 				$viewData['user_logged_in'] = false;
@@ -169,18 +178,29 @@ function register_omise_creditcard() {
 		 */
 		public function process_payment( $order_id ) {
 			if ( ! $order = $this->load_order( $order_id ) ) {
-				wc_add_notice( __( 'Order not found: ', 'omise' ) . sprintf( 'cannot find order id %s.', $order_id ), 'error' );
+				wc_add_notice(
+					sprintf(
+						wp_kses(
+							__( 'We cannot process your payment.<br/>Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is \'%s\')', 'omise' ),
+							array(
+								'br' => array()
+							)
+						),
+						$order_id
+					),
+					'error'
+				);
 				return;
 			}
 
-			$order->add_order_note( __( 'Omise: processing a payment..', 'omise' ) );
+			$order->add_order_note( __( 'Omise: Processing a payment with Credit Card solution..', 'omise' ) );
 
 			try {
 				$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
 				$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
 
 				if ( empty( $token ) && empty( $card_id ) ) {
-					throw new Exception( __( 'Please select a card or enter new payment information.', 'omise' ) );
+					throw new Exception( __( 'Please select an existing card or enter a new card information.', 'omise' ) );
 				}
 
 				$user              = $order->get_user();
@@ -188,7 +208,7 @@ function register_omise_creditcard() {
 
 				if ( isset( $_POST['omise_save_customer_card'] ) && empty( $card_id ) ) {
 					if ( empty( $token ) ) {
-						throw new Exception( __( 'Omise card token is required.', 'omise' ) );
+						throw new Exception( __( 'Cannot process with a card that you\'re using. Please make sure that the card info is correct or contact our support team if you have any questions.', 'omise' ) );
 					}
 
 					if ( ! empty( $omise_customer_id ) ) {
@@ -229,7 +249,17 @@ function register_omise_creditcard() {
 						}
 
 						if ( 0 == sizeof( $omise_customer['cards']['data'] ) ) {
-							throw new Exception( __( 'Something wrong with Omise gateway. No card available for creating a charge.', 'omise' ) );
+							throw new Exception(
+								sprintf(
+									wp_kses(
+										__( 'Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is \'%s\')', 'omise' ),
+										array(
+											'br' => array()
+										)
+									),
+									$order_id
+								)
+							);
 						}
 
 						$cards   = $omise_customer->cards( array( 'order' => 'reverse_chronological' ) );
@@ -239,8 +269,8 @@ function register_omise_creditcard() {
 
 				$success = false;
 				$data    = array(
-					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_currency() ),
-					'currency'    => $order->get_currency(),
+					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+					'currency'    => $order->get_order_currency(),
 					'description' => 'WooCommerce Order id ' . $order_id,
 					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . '?wc-api=omise_callback' )
 				);
@@ -259,12 +289,14 @@ function register_omise_creditcard() {
 					$data['capture'] = false;
 				}
 
-				$charge = OmiseCharge::create( $data, '', $this->secret_key() );
-				if ( ! Omise_Charge::is_charge_object( $charge ) ) {
-					throw new Exception( __( 'Charge was failed, please contact our support', 'omise' ) );
-				}
+				/** backward compatible with WooCommerce v2.x series **/
+				$data['metadata'] = array(
+					'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
+				);
 
-				$order->add_order_note( sprintf( __( 'Omise: charge id %s was created', 'omise' ), $charge['id'] ) );
+				$charge = OmiseCharge::create( $data, '', $this->secret_key() );
+
+				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 
 				$this->attach_charge_id_to_order( $charge['id'] );
 
@@ -272,8 +304,21 @@ function register_omise_creditcard() {
 					throw new Exception( Omise_Charge::get_error_message( $charge ) );
 				}
 
+				/** backward compatible with WooCommerce v2.x series **/
+				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+					$order->set_transaction_id( $charge['id'] );
+					$order->save();
+				} else {
+					update_post_meta( $order->id, '_transaction_id', $charge['id'] );
+				}
+
 				if ( $this->omise_3ds ) {
-					$order->add_order_note( sprintf( __( 'Omise: processing a payment with 3-D Secure, redirecting buyer out to %s', 'omise' ), $charge['authorize_uri'] ) );
+					$order->add_order_note(
+						sprintf(
+							__( 'Omise: Processing with a 3-D Secure payment, redirecting buyer out to %s', 'omise' ),
+							esc_url( $charge['authorize_uri'] )
+						)
+					);
 
 					return array(
 						'result'   => 'success',
@@ -284,7 +329,16 @@ function register_omise_creditcard() {
 						case 'MANUAL_CAPTURE':
 							$success = Omise_Charge::is_authorized( $charge );
 							if ( $success ) {
-								$order->add_order_note( __( 'Authorize with Omise successful', 'omise' ) );
+								$order->add_order_note(
+									sprintf(
+										wp_kses(
+											__( 'Omise: Payment processing.<br/>An amount %1$s %2$s has been authorized', 'omise' ),
+											array( 'br' => array() )
+										),
+										$order->get_total(),
+										$order->get_order_currency()
+									)
+								);
 							}
 
 							break;
@@ -293,7 +347,16 @@ function register_omise_creditcard() {
 							$success = Omise_Charge::is_paid( $charge );
 							if ( $success ) {
 								$order->payment_complete();
-								$order->add_order_note( __( 'Payment with Omise successful', 'omise' ) );
+								$order->add_order_note(
+									sprintf(
+										wp_kses(
+											__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
+											array( 'br' => array() )
+										),
+										$order->get_total(),
+										$order->get_order_currency()
+									)
+								);
 							}
 
 							break;
@@ -309,8 +372,9 @@ function register_omise_creditcard() {
 							break;
 					}
 
-					if ( ! $success )
-						throw new Exception( __( 'This charge cannot authorize or capture, please contact our support.', 'omise' ) );
+					if ( ! $success ) {
+						throw new Exception( __( 'Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ) );
+					}
 
 					// Remove cart
 					WC()->cart->empty_cart();
@@ -320,9 +384,23 @@ function register_omise_creditcard() {
 					);
 				}
 			} catch( Exception $e ) {
-				wc_add_notice( __( 'Payment failed: ', 'omise' ) . $e->getMessage(), 'error' );
+				wc_add_notice(
+					sprintf(
+						wp_kses(
+							__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					),
+					'error'
+				);
 
-				$order->add_order_note( __( 'Omise: payment failed, ', 'omise' ) . $e->getMessage() );
+				$order->add_order_note(
+					sprintf(
+						__( 'Omise: Payment failed, %s', 'omise' ),
+						$e->getMessage()
+					)
+				);
 
 				return;
 			}
@@ -341,10 +419,27 @@ function register_omise_creditcard() {
 		 */
 		public function process_refund( $order_id, $amount = null, $reason = '' ) {
 			if ( ! isset( $order_id ) || ! $order = $this->load_order( $order_id ) ) {
-				return new WP_Error( 'error', __( 'Order not found: ', 'omise' ) . sprintf( 'cannot find order id %s.', $order_id ) );
+				return new WP_Error(
+					'error',
+					sprintf(
+						wp_kses(
+							__( 'We cannot process your refund.<br/>Note that nothing wrong by you, this might be from the store issue.<br/><br/>Please feel try to create a refund again or report our support team that you have found this problem', 'omise' ),
+							array(
+								'br' => array()
+							)
+						),
+						$order_id
+					)
+				);
 			}
 
-			$order->add_order_note( __( sprintf( 'Omise: Refunding a payment with amount %s', $amount ), 'omise' ) );
+			$order->add_order_note(
+				sprintf(
+					__( 'Omise: Refunding a payment with an amount %1$s %2$s', 'omise' ),
+					$amount,
+					$order->get_order_currency()
+				)
+			);
 
 			try {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
@@ -353,16 +448,53 @@ function register_omise_creditcard() {
 				) );
 
 				if ( $refund['voided'] ) {
-					$order->add_order_note( __( sprintf( 'Omise: Voided an amount %s. Refund id: %s', $amount, $refund['id'] ), 'omise' ) );
+					$order->add_order_note(
+						sprintf(
+							wp_kses(
+								__( 'Omise: Voided an amount %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+								array( 'br' => array() )
+							),
+							$amount,
+							$order->get_order_currency(),
+							$refund['id']
+						)
+					);
 				} else {
-					$order->add_order_note( __( sprintf( 'Omise: Refunded an amount %s. Refund id: %s', $amount, $refund['id'] ), 'omise' ) );
+					$order->add_order_note(
+						sprintf(
+							wp_kses(
+								__( 'Omise: Refunded an amount %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+								array( 'br' => array() )
+							),
+							$amount,
+							$order->get_order_currency(),
+							$refund['id']
+						)
+					);
 				}
 
 				return true;
 			} catch (Exception $e) {
-				$order->add_order_note( __( 'Omise: Refund failed, ', 'omise' ) . $e->getMessage() );
+				$order->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Refund failed.<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					)
+				);
 
-				return new WP_Error( 'error', __( sprintf( 'Refund failed: %s', $e->getMessage() ), 'omise' ) );
+				return new WP_Error(
+					'error',
+					sprintf(
+						wp_kses(
+							__( 'Omise: Refund failed.<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					)
+				);
 			}
 
 			return false;
@@ -370,13 +502,19 @@ function register_omise_creditcard() {
 
 		public function callback() {
 			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
-				wc_add_notice( __( 'Order not found: ', 'omise' ) . __( 'Your card might be charged already, please contact our support team if you have any questions.', 'omise' ), 'error' );
+				wc_add_notice(
+					wp_kses(
+						__( 'We cannot validate your payment result:<br/>Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ),
+						array( 'br' => array() )
+					),
+					'error'
+				);
 
 				header( 'Location: ' . WC()->cart->get_checkout_url() );
 				die();
 			}
 
-			$order->add_order_note( __( 'Omise: validating a payment result..', 'omise' ) );
+			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
 
 			try {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
@@ -385,7 +523,16 @@ function register_omise_creditcard() {
 					case 'MANUAL_CAPTURE':
 						$success = Omise_Charge::is_authorized( $charge );
 						if ( $success ) {
-							$order->add_order_note( __( 'Authorize with Omise successful', 'omise' ) );
+							$order->add_order_note(
+								sprintf(
+									wp_kses(
+										__( 'Omise: Payment processing.<br/>An amount %1$s %2$s has been authorized', 'omise' ),
+										array( 'br' => array() )
+									),
+									$order->get_total(),
+									$order->get_order_currency()
+								)
+							);
 						}
 
 						break;
@@ -393,8 +540,17 @@ function register_omise_creditcard() {
 					case 'AUTO_CAPTURE':
 						$success = Omise_Charge::is_paid( $charge );
 						if ( $success ) {
+							$order->add_order_note(
+								sprintf(
+									wp_kses(
+										__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
+										array( 'br' => array() )
+									),
+									$order->get_total(),
+									$order->get_order_currency()
+								)
+							);
 							$order->payment_complete();
-							$order->add_order_note( __( 'Payment with Omise successful', 'omise' ) );
 						}
 
 						break;
@@ -419,9 +575,26 @@ function register_omise_creditcard() {
 				header( 'Location: ' . $this->get_return_url( $order ) );
 				die();
 			} catch ( Exception $e ) {
-				wc_add_notice( __( 'Payment failed: ', 'omise' ) . $e->getMessage(), 'error' );
+				wc_add_notice(
+					sprintf(
+						wp_kses(
+							__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					),
+					'error'
+				);
 
-				$order->add_order_note( __( 'Omise: payment failed, ', 'omise' ) . $e->getMessage() );
+				$order->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Payment failed.<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					)
+				);
 
 				header( 'Location: ' . WC()->cart->get_checkout_url() );
 				die();

@@ -18,13 +18,14 @@ function register_omise_alipay() {
 
 			$this->id                 = 'omise_alipay';
 			$this->has_fields         = false;
-			$this->method_title       = 'Omise Alipay';
-			$this->method_description = 'Accept payment through Alipay';
+			$this->method_title       = __( 'Omise Alipay', 'omise' );
+			$this->method_description = __( 'Accept payment through Alipay', 'omise' );
 
 			$this->init_form_fields();
 			$this->init_settings();
 
-			$this->title = $this->get_option( 'title' );
+			$this->title       = $this->get_option( 'title' );
+			$this->description = $this->get_option( 'description' );
 
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -49,8 +50,13 @@ function register_omise_alipay() {
 					'type'        => 'text',
 					'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
 					'default'     => __( 'Alipay', 'omise' ),
-					'desc_tip'    => true,
-				)
+				),
+
+				'description' => array(
+					'title'       => __( 'Description', 'omise' ),
+					'type'        => 'textarea',
+					'description' => __( 'This controls the description which the user sees during checkout.', 'omise' )
+				),
 			);
 		}
 
@@ -64,11 +70,22 @@ function register_omise_alipay() {
 		 */
 		public function process_payment( $order_id ) {
 			if ( ! $order = $this->load_order( $order_id ) ) {
-				wc_add_notice( __( 'Order not found: ', 'omise' ) . sprintf( 'cannot find order id %s.', $order_id ), 'error' );
+				wc_add_notice(
+					sprintf(
+						wp_kses(
+							__( 'We cannot process your payment.<br/>Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is \'%s\')', 'omise' ),
+							array(
+								'br' => array()
+							)
+						),
+						$order_id
+					),
+					'error'
+				);
 				return;
 			}
 
-			$order->add_order_note( __( 'Omise: Processing a payment with the Alipay..', 'omise' ) );
+			$order->add_order_note( __( 'Omise: Processing a payment with Alipay solution..', 'omise' ) );
 
 			try {
 				$charge = $this->sale( array(
@@ -76,18 +93,28 @@ function register_omise_alipay() {
 					'currency'    => $order->get_order_currency(),
 					'description' => 'WooCommerce Order id ' . $order_id,
 					'offsite'     => 'alipay',
-					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_alipay_callback" )
+					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_alipay_callback" ),
+					'metadata'    => array(
+						/** backward compatible with WooCommerce v2.x series **/
+						'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
+					)
 				) );
 
-				$order->add_order_note( sprintf( __( 'Omise: Charge (id: %s) has been created', 'omise' ), $charge['id'] ) );
+				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 
 				switch ( $charge['status'] ) {
 					case 'pending':
 						$this->attach_charge_id_to_order( $charge['id'] );
 
-						$order->set_transaction_id( $charge['id'] );
-						$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer out to %s', 'omise' ), $charge['authorize_uri'] ) );
-						$order->save();
+						$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer out to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
+
+						/** backward compatible with WooCommerce v2.x series **/
+						if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+							$order->set_transaction_id( $charge['id'] );
+							$order->save();
+						} else {
+							update_post_meta( $order->id, '_transaction_id', $charge['id'] );
+						}
 
 						return array (
 							'result'   => 'success',
@@ -100,13 +127,32 @@ function register_omise_alipay() {
 						break;
 
 					default:
-						throw new Exception( __( 'Seems that we cannot process your payment properly. Please try place an order again or contact our support team if you have any questions.', 'omise' ) );
+						throw new Exception(
+							sprintf(
+								__( 'Please feel free to try submit your order again or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
+								$order_id
+							)
+						);
 						break;
 				}
 			} catch ( Exception $e ) {
-				wc_add_notice( __( 'Payment failed: ', 'omise' ) . $e->getMessage(), 'error' );
+				wc_add_notice(
+					sprintf(
+						wp_kses(
+							__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					),
+					'error'
+				);
 
-				$order->add_order_note( __( 'Omise: payment failed, ', 'omise' ) . $e->getMessage() );
+				$order->add_order_note(
+					sprintf(
+						__( 'Omise: Payment failed, %s', 'omise' ),
+						$e->getMessage()
+					)
+				);
 
 				return;
 			}
@@ -117,13 +163,19 @@ function register_omise_alipay() {
 		 */
 		public function callback() {
 			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
-				wc_add_notice( __( 'Order not found: ', 'omise' ) . __( 'Your payment might already has been completed, please contact our support team if you have any questions.', 'omise' ), 'error' );
+				wc_add_notice(
+					wp_kses(
+						__( 'We cannot validate your payment result:<br/>Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ),
+						array( 'br' => array() )
+					),
+					'error'
+				);
 
 				header( 'Location: ' . WC()->cart->get_checkout_url() );
 				die();
 			}
 
-			$order->add_order_note( __( 'Omise: validating a payment result..', 'omise' ) );
+			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
 
 			try {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
@@ -132,8 +184,16 @@ function register_omise_alipay() {
 					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 				}
 
-				if ( 'pending' === $charge['status'] && ! $charge['captured'] ) {
-					$order->add_order_note( __( 'Omise: the charge has been pending due to the Alipay process. Please check the payment status at Omise dashboard again later', 'omise' ) );
+				// Backward compatible with Omise API version 2014-07-27 by checking if 'captured' exist.
+				$paid = isset( $charge['captured'] ) ? $charge['captured'] : $charge['paid'];
+
+				if ( 'pending' === $charge['status'] && ! $paid ) {
+					$order->add_order_note(
+						wp_kses(
+							__( 'Omise: The payment has been processing.<br/>Due to the Alipay process, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),
+							array( 'br' => array() )
+						)
+					);
 					$order->update_status( 'on-hold' );
 
 					WC()->cart->empty_cart();
@@ -142,8 +202,21 @@ function register_omise_alipay() {
 					die();
 				}
 
-				if ( 'successful' === $charge['status'] && $charge['captured'] ) {
-					$order->add_order_note( sprintf( __( 'Omise: captured an amount %s', 'omise' ), $order->get_total() ) );
+				// Backward compatible with Omise API version 2014-07-27 by checking if 'captured' exist.
+				$paid = isset( $charge['captured'] ) ? $charge['captured'] : $charge['paid'];
+
+				if ( 'successful' === $charge['status'] && $paid ) {
+					$order->add_order_note(
+						sprintf(
+							wp_kses(
+								__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
+								array( 'br' => array() )
+							),
+							$order->get_total(),
+							$order->get_order_currency()
+						)
+					);
+
 					$order->payment_complete();
 
 					WC()->cart->empty_cart();
@@ -152,11 +225,28 @@ function register_omise_alipay() {
 					die();
 				}
 
-				throw new Exception( __( 'Seems that we cannot process your payment properly. Anyway, your payment might already has been completed, please contact our support team if you have any questions.', 'omise' ) );
+				throw new Exception( __( 'Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ) );
 			} catch ( Exception $e ) {
-				wc_add_notice( __( 'Payment failed: ', 'omise' ) . $e->getMessage(), 'error' );
+				wc_add_notice(
+					sprintf(
+						wp_kses(
+							__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					),
+					'error'
+				);
 
-				$order->add_order_note( __( 'Omise: payment failed, ', 'omise' ) . $e->getMessage() );
+				$order->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Payment failed.<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					)
+				);
 
 				$order->update_status( 'failed' );
 

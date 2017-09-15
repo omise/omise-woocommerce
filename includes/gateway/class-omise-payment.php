@@ -21,6 +21,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public $id = 'omise';
 
 	/**
+	 * @see omise/includes/class-omise-setting.php
+	 *
+	 * @var Omise_Setting
+	 */
+	protected $omise_settings;
+
+	/**
 	 * Payment setting values.
 	 *
 	 * @var array
@@ -43,77 +50,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	protected $order;
 
 	public function __construct() {
-		$this->payment_settings = $this->get_payment_settings( 'omise' );
-	}
-
-	/**
-	 * Returns the array of default payment settings
-	 *
-	 * @return array of default payment settings
-	 */
-	protected function get_default_payment_setting_fields() {
-		return array(
-			'payment_setting' => array(
-				'title'       => __( 'Payment Settings', 'omise' ),
-				'type'        => 'title',
-				'description' => '',
-			),
-
-			'sandbox' => array(
-				'title'       => __( 'Sandbox', 'omise' ),
-				'type'        => 'checkbox',
-				'label'       => __( 'Enabling sandbox means that all your transactions will be in TEST mode.', 'omise' ),
-				'default'     => 'yes'
-			),
-
-			'test_public_key' => array(
-				'title'       => __( 'Public key for test', 'omise' ),
-				'type'        => 'text',
-				'description' => __( 'The "Test" mode public key can be found in Omise Dashboard.', 'omise' )
-			),
-
-			'test_private_key' => array(
-				'title'       => __( 'Secret key for test', 'omise' ),
-				'type'        => 'password',
-				'description' => __( 'The "Test" mode secret key can be found in Omise Dashboard.', 'omise' )
-			),
-
-			'live_public_key' => array(
-				'title'       => __( 'Public key for live', 'omise' ),
-				'type'        => 'text',
-				'description' => __( 'The "Live" mode public key can be found in Omise Dashboard.', 'omise' )
-			),
-
-			'live_private_key' => array(
-				'title'       => __( 'Secret key for live', 'omise' ),
-				'type'        => 'password',
-				'description' => __( 'The "Live" mode secret key can be found in Omise Dashboard.', 'omise' )
-			)
-		);
-	}
-
-	/**
-	 * Returns the payment gateway settings option name
-	 *
-	 * @param  string $payment_method_id
-	 *
-	 * @return string The payment gateway settings option name.
-	 *
-	 * @since  2.0
-	 */
-	protected function get_payment_method_settings_name( $payment_method_id = 'omise' ) {
-		return 'woocommerce_' . $payment_method_id . '_settings';
-	}
-
-	/**
-	 * @param  string $id
-	 *
-	 * @return array
-	 *
-	 * @since  2.0
-	 */
-	public function get_payment_settings( $id ) {
-		return get_option( $this->get_payment_method_settings_name( $id ) );
+		$this->omise_settings   = new Omise_Setting;
+		$this->payment_settings = $this->omise_settings->get_settings();
 	}
 
 	/**
@@ -148,9 +86,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_test() {
-		$sandbox = $this->payment_settings['sandbox'];
-
-		return isset( $sandbox ) && $sandbox == 'yes';
+		return $this->omise_settings->is_test();
 	}
 
 	/**
@@ -159,11 +95,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	protected function public_key() {
-		if ( $this->is_test() ) {
-			return $this->payment_settings['test_public_key'];
-		}
-
-		return $this->payment_settings['live_public_key'];
+		return $this->omise_settings->public_key();
 	}
 
 	/**
@@ -172,11 +104,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	protected function secret_key() {
-		if ( $this->is_test() ) {
-			return $this->payment_settings['test_private_key'];
-		}
-
-		return $this->payment_settings['live_private_key'];
+		return $this->omise_settings->secret_key();
 	}
 
 	/**
@@ -212,11 +140,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @param string $charge_id
 	 */
 	public function attach_charge_id_to_order( $charge_id ) {
+		/** backward compatible with WooCommerce v2.x series **/
+		$order_id = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+
 		if ( $this->get_charge_id_from_order() ) {
-			delete_post_meta( $this->order()->get_id(), self::CHARGE_ID );
+			delete_post_meta( $order_id, self::CHARGE_ID );
 		}
 
-		add_post_meta( $this->order()->get_id(), self::CHARGE_ID, $charge_id );
+		add_post_meta( $order_id, self::CHARGE_ID, $charge_id );
 	}
 
 	/**
@@ -225,7 +156,17 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_charge_id_from_order() {
-		return get_post_meta( $this->order()->get_id(), self::CHARGE_ID, true );
+		/** backward compatible with WooCommerce v2.x series **/
+		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+
+		$charge_id = get_post_meta( $order_id, self::CHARGE_ID, true );
+
+		// Backward compatible for Omise v1.2.3
+		if ( empty( $charge_id ) ) {
+			$charge_id = $this->deprecated_get_charge_id_from_post();
+		}
+
+		return $charge_id;
 	}
 
 	/**
@@ -249,10 +190,27 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				throw new Exception( $charge['failure_message'] );
 			}
 
-			$order->add_order_note( sprintf( __( 'Omise: captured the charge id %s ', 'omise' ), $this->get_charge_id_from_order() ) );
-			$order->payment_complete();
+			$this->order()->add_order_note(
+				sprintf(
+					wp_kses(
+						__( 'Omise: Payment successful (manual capture).<br/>An amount %1$s %2$s has been paid', 'omise' ),
+						array( 'br' => array() )
+					),
+					$this->order()->get_total(),
+					$this->order()->get_order_currency()
+				)
+			);
+			$this->order()->payment_complete();
 		} catch ( Exception $e ) {
-			$order->add_order_note( __( 'Omise: capture failed, ', 'omise' ) . $e->getMessage() );
+			$this->order()->add_order_note(
+				sprintf(
+					wp_kses(
+						__( 'Omise: Payment failed (manual capture).<br/>%s', 'omise' ),
+						array( 'br' => array() )
+					),
+					$e->getMessage()
+				)
+			);
 		}
 	}
 
@@ -282,19 +240,28 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		try {
 			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
 
-			if ( 'successful' === $charge['status'] ) {
-				$order->add_order_note( sprintf( __( 'Omise: payment successful, an amount %s has been paid', 'omise' ), $order->get_total() ) );
-
-				if ( ! $order->is_paid() ) {
-					$order->payment_complete();
+			if ( ! $this->order()->get_transaction_id() ) {
+				/** backward compatible with WooCommerce v2.x series **/
+				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+					$this->order()->set_transaction_id( $charge['id'] );
+					$this->order()->save();
+				} else {
+					update_post_meta( $this->order()->id, '_transaction_id', $charge['id'] );
 				}
-
-				return;
 			}
 
 			if ( 'failed' === $charge['status'] ) {
-				$order->add_order_note( sprintf( __( 'Omise: payment failed, %s (code: %s)', 'omise' ), $charge['failure_message'], $charge['failure_code'] ) );
-				$order->update_status( 'failed' );
+				$this->order()->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
+							array( 'br' => array() )
+						),
+						$charge['failure_message'],
+						$charge['failure_code']
+					)
+				);
+				$this->order()->update_status( 'failed' );
 				return;
 			}
 
@@ -303,9 +270,74 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				return;
 			}
 
-			throw new Exception( __( 'cannot read the payment status. Please try sync again or or contact Omise support team at support@omise.co if you have any questions.', 'omise' ) );
+			if ( 'successful' === $charge['status'] ) {
+				$this->order()->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
+							array( 'br' => array() )
+						),
+						$this->order()->get_total(),
+						$this->order()->get_order_currency()
+					)
+				);
+
+				if ( ! $this->order()->is_paid() ) {
+					$this->order()->payment_complete();
+				}
+
+				return;
+			}
+
+			throw new Exception(
+				__( 'Cannot read the payment status. Please try sync again or contact Omise support team at support@omise.co if you have any questions.', 'omise' )
+			);
 		} catch ( Exception $e ) {
-			$order->add_order_note( sprintf( __( 'Omise: sync failed, %s', 'omise' ), $e->getMessage() ) );
+			$order->add_order_note(
+				sprintf(
+					wp_kses(
+						__( 'Omise: Sync failed (manual sync).<br/>%s (manual sync).', 'omise' ),
+						array( 'br' => array() )
+					),
+					$e->getMessage()
+				)
+			);
+		}
+	}
+
+	/**
+	 * Retrieve a charge id from a post.
+	 *
+	 * @deprecated 3.0  No longer assign a new charge id with new post.
+	 *
+	 * @return     string
+	 */
+	protected function deprecated_get_charge_id_from_post() {
+		/** backward compatible with WooCommerce v2.x series **/
+		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+
+		$posts = get_posts(
+			array(
+				'post_type'  => 'omise_charge_items',
+				'meta_query' => array(
+					array(
+						'key'     => '_wc_order_id',
+						'value'   => $order_id,
+						'compare' => '='
+					)
+				)
+			)
+		);
+
+		if ( empty( $posts ) ) {
+			return '';
+		}
+
+		$post  = $posts[0];
+		$value = get_post_custom_values( '_omise_charge_id', $post->ID );
+
+		if ( ! is_null( $value ) && ! empty( $value ) ) {
+			return $value[0];
 		}
 	}
 }

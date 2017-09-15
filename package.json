@@ -1,0 +1,13 @@
+{
+  "name": "omise",
+  "title": "Omise Payment Gateway",
+  "version": "3.0",
+  "homepage": "https://www.omise.co/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omise/omise-woocommerce.git"
+  },
+  "devDependencies": {
+    "grunt-wp-i18n": "^1.0.0"
+  }
+}

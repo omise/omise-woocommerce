@@ -2,20 +2,22 @@
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin
 Requires at least: 4.3.1
-Tested up to: 4.5.3
-Stable tag: 1.2.3
+Tested up to: 4.8
+Stable tag: 3.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Omise plugin is a plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
+Omise plugin is is the official payment extension which provides support for Omise payment gateway for store builders working on the WooCommerce platform
 
 == Description ==
-Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
+
+Omise WooCommerce Gateway Plugin is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
 
 == Installation ==
-After getting the source code, either downloading as a zip or git clone, put it in Wordpress plugins folder (i.e. mv omise-woocommerce /wp-content/plugins/ or upload a zip via Wordpress admin Plugins section, just like the other Wordpress plugins).
 
-Then, Omise Gateway Wordpress plugin should be appeared in Wordpress admin page, under the Plugins menu.
+After getting the source code, either downloading as a zip or git clone, put it in WordPress plugins folder (i.e. mv omise /wp-content/plugins/ or upload a zip via WordPress admin Plugins section, just like the other WordPress plugins).
+
+Then, Omise Gateway WordPress plugin should be appeared in WordPress admin page, under the Plugins menu.
 From there:
 1. Activate the plugin
 2. Go to WooCommerce -> Settings
@@ -30,6 +32,31 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 3.0 =
+
+#### ✨ Highlights
+
+- Support Alipay payment! (PR [#48](https://github.com/omise/omise-woocommerce/pull/48))
+- Be able to manual sync Omise charge status directly in a WooCommerce store. (PR [#47](https://github.com/omise/omise-woocommerce/pull/47))
+- Now can create a refund inside the order detail page! (for credit card payment method only). (PR [#42](https://github.com/omise/omise-woocommerce/pull/42))
+- Support Internet Banking payment! (PR [#41](https://github.com/omise/omise-woocommerce/pull/41), [#46](https://github.com/omise/omise-woocommerce/pull/46))
+- Switch to fully use 'Omise-PHP' library to connect with Omise API instead of the previous custom one. (PR [#38](https://github.com/omise/omise-woocommerce/pull/38))
+- Huge plugin code refactoring & provides a new plugin code structure (for anyone who did customize on the core code of plugin, please check this carefully!) (PR [#36](https://github.com/omise/omise-woocommerce/pull/36), [#37](https://github.com/omise/omise-woocommerce/pull/37), [#39](https://github.com/omise/omise-woocommerce/pull/39), [#40](https://github.com/omise/omise-woocommerce/pull/40))
+
+#### 🚀 Enhancements
+
+- Backward compatible with Omsie-WooCommerce v1.2.3. (PR [#50](https://github.com/omise/omise-woocommerce/pull/50))
+- Humanize messages that will be displayed on a user's screen (PR [#49](https://github.com/omise/omise-woocommerce/pull/49))
+- Remove Omise Dashboard support. (PR [#44](https://github.com/omise/omise-woocommerce/pull/44))
+- Upgrade Omise-PHP library to v2.8.0 (the latest one). (PR [#43](https://github.com/omise/omise-woocommerce/pull/43))
+- Improve UX of the payment credit card form (after our UX team did researches on user behaviours on a credit card form). (PR [#45](https://github.com/omise/omise-woocommerce/pull/45))
+- Update plugin's 'text-domain' to support GlotPress translation system.  (PR [#32](https://github.com/omise/omise-woocommerce/pull/32) & [#34](https://github.com/omise/omise-woocommerce/pull/34). Big thanks for [@mayukojpn](https://github.com/mayukojpn))
+
+#### 👾 Bug Fixes
+
+- Fix 'save credit card for next time' feature for WooCommerce v3.x. (PR [#45](https://github.com/omise/omise-woocommerce/pull/45))
+
 = 1.2.3 =
 (Added) Add a new feature, localization
 (Added) Add a translation file for Japanese
@@ -66,6 +93,10 @@ Added Omise-Version into the cURL request header.
 Adds support for 3-D Secure feature
 
 == Upgrade Notice ==
+
+= 3.0 =
+For anyone who did customize on the core plugin code, please carefully check on our README log at https://github.com/omise/omise-woocommerce/releases/tag/v3.0 and backup your website before update to this version (note, this release doesn't touch any database, just code structure changed).
+
 = 1.2.3 =
 (Added) Add a new feature, localization
 (Added) Add a translation file for Japanese
