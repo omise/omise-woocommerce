@@ -108,17 +108,19 @@ class Omise_FBBot_Endpoints extends WP_REST_Controller {
 					}
 
 					$sender_id = $messaging_event['sender']['id'];
+					$recipient_id = $messaging_event['recipient']['id'];
 
 					// Handle message object
-					Omise_FBBot_Request_Handler::handle_message_from( $sender_id, $messaging_event['message'] );
+					Omise_FBBot_Request_Handler::handle_message_from( $sender_id, $recipient_id, $messaging_event['message'] );
 					break;
 
 				} else if ( isset( $messaging_event['postback'] ) ) {
 					// Handle payload
 					$sender_id = $messaging_event['sender']['id'];
+					$recipient_id = $messaging_event['recipient']['id'];
 					$payload = $messaging_event['postback']['payload'];
 
-					Omise_FBBot_Request_Handler::handle_payload_from( $sender_id, $payload );
+					Omise_FBBot_Request_Handler::handle_payload_from( $sender_id, $recipient_id, $payload );
 				} else {
 					// Unused case
 					break;

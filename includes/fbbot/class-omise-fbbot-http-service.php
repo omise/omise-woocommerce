@@ -8,7 +8,7 @@ if ( class_exists( 'Omise_FBBot_HTTPService' ) ) {
 class Omise_FBBot_HTTPService {
 	private function __construct() { }
 
-	public static function send_request( $url, $body ) {
+	public static function send_request( $url, $body = array() ) {
 		return wp_safe_remote_post( $url, array(
 				'timeout' => 60,
 				'body' => $body
@@ -16,7 +16,7 @@ class Omise_FBBot_HTTPService {
 		);
 	}
 
-	public static function send_delete_request( $url, $body ) {
+	public static function send_delete_request( $url, $body = array() ) {
 		$defaults = array('method' => 'DELETE');
 
 		$args = wp_parse_args( $body, $defaults );

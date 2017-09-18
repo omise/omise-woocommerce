@@ -11,15 +11,15 @@ class Omise_FBBot_Request_Handler {
 		// Hide the constructor
 	}
 
-	public static function handle_message_from( $sender_id, $message ) {
+	public static function handle_message_from( $sender_id, $recipient_id, $message ) {
 		$bot = new Omise_FBBot_Conversation_Generator();
-		$bot->listen( $sender_id, $message );
+		$bot->listen( $sender_id, $recipient_id, $message );
 		$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $bot->reply_for_message() );
 	}
 
-	public static function handle_payload_from( $sender_id, $payload ) {
+	public static function handle_payload_from( $sender_id, $recipient_id, $payload ) {
 		$bot = new Omise_FBBot_Conversation_Generator();
-		$bot->listen_payload( $sender_id, $payload );
+		$bot->listen_payload( $sender_id, $recipient_id, $payload );
 		$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $bot->reply_for_payload() );
 	}
 

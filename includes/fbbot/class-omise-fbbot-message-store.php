@@ -246,8 +246,9 @@ class Omise_FBBot_Message_Store {
 		$feature_products_button = FB_Postback_Button_Item::create( __( 'Featured products', 'omise' ), $payload::FEATURE_PRODUCTS );
 		$category_button = FB_Postback_Button_Item::create( __( 'Product category', 'omise' ), $payload::PRODUCT_CATEGORY );
 		$check_order_button = FB_Postback_Button_Item::create( __( 'Check order status', 'omise' ), $payload::CHECK_ORDER );
+		$call_shop_owner_button = FB_Postback_Button_Item::create( __( 'Call shop owner', 'omise' ), $payload::CALL_SHOP_OWNER );
 
-		return array( $feature_products_button, $category_button , $check_order_button);
+		return array( $feature_products_button, $category_button , $call_shop_owner_button );
 	}
 
 	public static function check_greeting_words( $message ) {

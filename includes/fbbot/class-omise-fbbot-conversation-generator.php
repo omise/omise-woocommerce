@@ -6,10 +6,11 @@ if ( class_exists( 'Omise_FBBot_Conversation_Generator' ) ) {
 }
 
 class Omise_FBBot_Conversation_Generator {
-	private $sender_id, $message, $payload, $nlp_enabled;
+	private $sender_id, $recipient_id, $message, $payload, $nlp_enabled;
 
-	public function listen( $sender_id, $message ) {
+	public function listen( $sender_id, $recipient_id, $message ) {
 		$this->sender_id = $sender_id;
+		$this->recipient_id = $recipient_id;
 		$this->message = $message;
 
 		if ( $message['nlp'] ) {
@@ -17,10 +18,14 @@ class Omise_FBBot_Conversation_Generator {
 		} else {
 			$this->nlp_enabled = false;
 		}
+
+		error_log($sender_id);
+		error_log($recipient_id);
 	}
 
-	public function listen_payload( $sender_id, $payload ) {
+	public function listen_payload( $sender_id, $recipient_id, $payload ) {
 		$this->sender_id = $sender_id;
+		$this->recipient_id = $recipient_id;
 		$this->payload = $payload;
 	}
 
@@ -69,6 +74,10 @@ class Omise_FBBot_Conversation_Generator {
 
 			case Omise_FBBot_Payload::HELP:
 				return self::helping_message();
+
+			case Omise_FBBot_Payload::CALL_SHOP_OWNER:
+				Omise_FBBot_Handover_Protocol_Handler::pass_thread_to( $this->recipient_id, 263902037430900 );
+				return self::call_shop_owner_message();
 
 			default:
 				# Custom payload :
@@ -299,5 +308,9 @@ class Omise_FBBot_Conversation_Generator {
 		$buttons = Omise_FBBot_Message_Store::get_default_menu_buttons();
 
 		return FB_Button_Template::create( $unrecognized_message, $buttons );
+	}
+
+	public static function call_shop_owner_message() {
+		return FB_Message_Item::create( Omise_FBBot_Message_Store::get_checking_order_helper_message() );
 	}
 }

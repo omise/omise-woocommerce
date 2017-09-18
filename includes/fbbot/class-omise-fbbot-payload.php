@@ -11,4 +11,5 @@ abstract class Omise_FBBot_Payload {
 	const PRODUCT_CATEGORY = "PAYLOAD_PRODUCT_CATEGORY";
 	const CHECK_ORDER = "PAYLOAD_CHECK_ORDER";
 	const HELP = "PAYLOAD_HELP";
+	const CALL_SHOP_OWNER = "CALL_SHOP_OWNER";
 }
