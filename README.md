@@ -24,13 +24,13 @@ You can manually download the plugin from this repository, then extract and copy
 
 The steps below shows how to install the plugin manually.
 
-1. Download and extract the zip file from [Omise-WooCommerce](https://github.com/omise/omise-woocommerce/archive/v3.0.zip) to your local machine.
+1. Download and extract the zip file from [Omise-WooCommerce](https://github.com/omise/omise-woocommerce/archive/v3.1.zip) to your local machine.
 
     ![screen shot 2560-07-26 at 12 31 34 pm](https://user-images.githubusercontent.com/2154669/28605935-6c0cd2ce-71fe-11e7-8b9a-f912f11d5006.png)
 
-2. Copy all files from the step 1 into WordPress plugin folder (`your-wordpress-dir/wp-content/plugins/omise-woocommerce-3.0`)
+2. Copy all files from the step 1 into WordPress plugin folder (`your-wordpress-dir/wp-content/plugins/omise-woocommerce-3.1`)
 
-3. Rename `omise-woocommerce-3.0` folder to `omise`
+3. Rename `omise-woocommerce-3.1` folder to `omise`
     ![screen shot 2560-07-26 at 12 36 43 pm](https://user-images.githubusercontent.com/2154669/28606035-2b9387dc-71ff-11e7-887d-dc90ce774a39.png)
 
 4. Once done, you will see `Omise Payment Gateway` plugin sits right away in the **Installed Plugins** page. Click `activate` to activate the plugin.

@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin
 Requires at least: 4.3.1
 Tested up to: 4.8
-Stable tag: 3.0
+Stable tag: 3.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,18 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 3.1 =
+
+#### ✨ Highlights
+
+- Introduce WebHook feature. (PR [#62](https://github.com/omise/omise-woocommerce/pull/62))
+- Add Omise Setting page and enhance Omise setting process. (PR [#61](https://github.com/omise/omise-woocommerce/pull/61))
+
+#### 🚀 Enhancements
+
+- Spell WordPress correctly! (PR [#56](https://github.com/omise/omise-woocommerce/pull/56)) :by [@mayukojpn](https://github.com/mayukojpn))
+- Support WooCommerce 2.x series & PHP 5.4 (PR [#59](https://github.com/omise/omise-woocommerce/pull/59))
 
 = 3.0 =
 

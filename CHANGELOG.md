@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### [v3.1 _(Sep 19, 2017)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.1)
+
+#### ✨ Highlights
+
+- Introduce WebHook feature. (PR [#62](https://github.com/omise/omise-woocommerce/pull/62))
+- Add Omise Setting page and enhance Omise setting process. (PR [#61](https://github.com/omise/omise-woocommerce/pull/61))
+
+#### 🚀 Enhancements
+
+- Spell WordPress correctly! (PR [#56](https://github.com/omise/omise-woocommerce/pull/56)) :by [@mayukojpn](https://github.com/mayukojpn))
+- Support WooCommerce 2.x series & PHP 5.4 (PR [#59](https://github.com/omise/omise-woocommerce/pull/59))
+
 ### [v3.0 _(Jul 26, 2017)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.0)
 
 #### ✨ Highlights
