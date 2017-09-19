@@ -12,4 +12,5 @@ abstract class Omise_FBBot_Entity {
 	const USER_GREETINGS = "user_greetings";
 	const CHECK_ORDER_STATUS = "check_order_status";
 	const NEED_HELP = "need_help";
+	const CALL_SHOP_OWNER = "call_shop_owner";
 }

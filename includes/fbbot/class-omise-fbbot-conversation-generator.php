@@ -115,7 +115,12 @@ class Omise_FBBot_Conversation_Generator {
 					return self::rechecking_order_number_message();
 
 				case Omise_FBBot_Entity::NEED_HELP:
-					return self::helping_message(); 
+					return self::helping_message();
+
+				case Omise_FBBot_Entity::CALL_SHOP_OWNER:
+					$success = Omise_FBBot_Handover_Protocol_Handler::switch_to_live_agent( $this->sender_id );
+					return self::call_shop_owner_message( $success );
+					 
 				default:
 					return self::unrecognized_message();
 			}
