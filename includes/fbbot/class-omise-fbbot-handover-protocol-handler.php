@@ -6,34 +6,23 @@ if ( class_exists( 'Omise_FBBot_Handover_Protocol_Handler' ) ) {
 }
 
 class Omise_FBBot_Handover_Protocol_Handler {
-	public static function get_second_receiver() {
-		$url = Omise_FBBot_Configurator::get_fb_secondary_receivers_endpoint();
-		$response = Omise_FBBot_HTTPService::send_get_request( $url );
-		$body = json_decode($response['body']);
-		error_log(print_r($body->data[0]->id, true));
+	public static function switch_to_live_agent( $sender_id ) {
+		$page_inbox_app_id = "263902037430900";
 
-		return $body->data[0]->id;
-	}
-
-	public static function pass_thread_to( $psid, $target_app_id ) {
 		$body = array(
-			"recipient" => array( "id" => $psid),
-			"target_app_id" => $target_app_id
+			"recipient" => array( "id" => $sender_id ),
+			"target_app_id" => $page_inbox_app_id
 		);
-
-		error_log(print_r($body, true));
 
 		$url = Omise_FBBot_Configurator::get_fb_pass_thread_endpoint();
 		$response = Omise_FBBot_HTTPService::send_request( $url, $body );
 
-		error_log(print_r($response, true));
-	}
+		$body = json_decode($response['body']);
 
-	public static function switch_to_live_agent( $sender_id, $recipient_id ) {
+		if ( $body->success ) {
+			return true;
+		}
 
-	}
-
-	public static function switch_to_bot( $sender_id, $recipient_id ) {
-
+		return false;
 	}
 }
