@@ -26,7 +26,7 @@
 				<td>
 					<fieldset>
 						<label for="chatbot_enabled">
-							<input name="chatbot_enabled" type="checkbox" id="chatbot_enabled" value="1">
+							<input name="chatbot_enabled" type="checkbox" id="chatbot_enabled" value="1" <?php echo 'yes' === $settings['chatbot_enabled'] ? 'checked="checked"' : ''; ?>>
 							<?php _e( 'Enable Omise Chatbot feature.', 'omise' ); ?>
 						</label>
 					</fieldset>
@@ -36,8 +36,8 @@
 				<th scope="row"><label for="chatbot_available_time_from"><?php _e( 'Chatbot Available Time', 'omise' ); ?></label></th>
 				<td>
 					<fieldset>
-						<input name="chatbot_available_time_from" type="text" id="chatbot_available_time_from" value="00:00:00" placeholder="from: 00:00:00" /> - 
-						<input name="chatbot_available_time_to" type="text" id="chatbot_available_time_to" value="23:59:59" placeholder="to: 23:59:59" />
+						<input name="chatbot_available_time_from" type="text" id="chatbot_available_time_from" value="<?php echo $settings['chatbot_available_time_from']; ?>" placeholder="from: 00:00:00" /> - 
+						<input name="chatbot_available_time_to" type="text" id="chatbot_available_time_to" value="<?php echo $settings['chatbot_available_time_to']; ?>" placeholder="to: 23:59:59" />
 						<p class="description">
 							<?php
 							echo sprintf(
@@ -70,7 +70,7 @@
 				<th scope="row"><label for="chatbot_facebook_page_access_token"><?php _e( 'Facebook Page Access Token', 'omise' ); ?></label></th>
 				<td>
 					<fieldset>
-						<input name="chatbot_facebook_page_access_token" type="password" id="chatbot_facebook_page_access_token" value="" class="regular-text" />
+						<input name="chatbot_facebook_page_access_token" type="password" id="chatbot_facebook_page_access_token" value="<?php echo $settings['chatbot_facebook_page_access_token']; ?>" class="regular-text" />
 						<p class="description">
 							<?php
 							echo sprintf(
@@ -110,7 +110,7 @@
 				<th scope="row"><label for="chatbot_facebook_bot_verify_token"><?php _e( 'Facebook Bot Verify Token', 'omise' ); ?></label></th>
 				<td>
 					<fieldset>
-						<input name="chatbot_facebook_bot_verify_token" type="text" id="chatbot_facebook_bot_verify_token" value="" class="regular-text" />
+						<input name="chatbot_facebook_bot_verify_token" type="text" id="chatbot_facebook_bot_verify_token" value="<?php echo $settings['chatbot_facebook_bot_verify_token']; ?>" class="regular-text" />
 						<p class="description">
 							<?php
 							echo sprintf(

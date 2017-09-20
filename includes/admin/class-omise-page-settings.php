@@ -95,6 +95,8 @@ class Omise_Page_Settings {
 	 * @since 3.2
 	 */
 	protected function render_tab_chatbot() {
+		$settings = $this->get_settings();
+
 		include_once __DIR__ . '/views/omise-page-chatbot-settings.php';
 	}
 
