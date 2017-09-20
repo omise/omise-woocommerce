@@ -240,14 +240,28 @@ class Omise_FBBot_Message_Store {
 		return __( 'BOOOOOOOOOOOOOOOOOOOO', 'omise' );
 	}
 
+	public static function get_call_shop_owner_success_message() {
+		return __( "😇 Wait a second. I'll let the store owner know that you'd like to talk. \nLeave your message. I'll pass it on. 🙇", 'omise' );
+	}
+
+	public static function get_call_shop_owner_fail_message() {
+		return __( "😞 Sorry but the store owner is not available at the moment. \nLet me help you out or leave your message, i'll pass it on. 😇", 'omise' );
+	}
+
 	public static function get_default_menu_buttons() {
-		$payload = Omise_FBBot_Payload;
+		$feature_products_button = FB_Postback_Button_Item::create( __( 'Featured products', 'omise' ), Omise_FBBot_Payload::FEATURE_PRODUCTS );
+		$category_button = FB_Postback_Button_Item::create( __( 'Product category', 'omise' ), Omise_FBBot_Payload::PRODUCT_CATEGORY );
+		$check_order_button = FB_Postback_Button_Item::create( __( 'Check order status', 'omise' ), Omise_FBBot_Payload::CHECK_ORDER );
+		
+		return array( $feature_products_button, $category_button , $check_order_button );
+	}
 
-		$feature_products_button = FB_Postback_Button_Item::create( __( 'Featured products', 'omise' ), $payload::FEATURE_PRODUCTS );
-		$category_button = FB_Postback_Button_Item::create( __( 'Product category', 'omise' ), $payload::PRODUCT_CATEGORY );
-		$check_order_button = FB_Postback_Button_Item::create( __( 'Check order status', 'omise' ), $payload::CHECK_ORDER );
-
-		return array( $feature_products_button, $category_button , $check_order_button);
+	public static function get_unrecognized_menu_buttons() {
+		$feature_products_button = FB_Postback_Button_Item::create( __( 'Featured products', 'omise' ), Omise_FBBot_Payload::FEATURE_PRODUCTS );
+		$category_button = FB_Postback_Button_Item::create( __( 'Product category', 'omise' ), Omise_FBBot_Payload::PRODUCT_CATEGORY );
+		$call_shop_owner_button = FB_Postback_Button_Item::create( __( 'Talk to store owner', 'omise' ), Omise_FBBot_Payload::CALL_SHOP_OWNER );
+		
+		return array( $feature_products_button, $category_button , $call_shop_owner_button );
 	}
 
 	public static function check_greeting_words( $message ) {

@@ -70,6 +70,10 @@ class Omise_FBBot_Conversation_Generator {
 			case Omise_FBBot_Payload::HELP:
 				return self::helping_message();
 
+			case Omise_FBBot_Payload::CALL_SHOP_OWNER:
+				$success = Omise_FBBot_Handover_Protocol_Handler::switch_to_live_agent( $this->sender_id );
+				return self::call_shop_owner_message( $success );
+
 			default:
 				# Custom payload :
 				$explode = explode('__', $this->payload);
@@ -111,7 +115,12 @@ class Omise_FBBot_Conversation_Generator {
 					return self::rechecking_order_number_message();
 
 				case Omise_FBBot_Entity::NEED_HELP:
-					return self::helping_message(); 
+					return self::helping_message();
+
+				case Omise_FBBot_Entity::CALL_SHOP_OWNER:
+					$success = Omise_FBBot_Handover_Protocol_Handler::switch_to_live_agent( $this->sender_id );
+					return self::call_shop_owner_message( $success );
+					 
 				default:
 					return self::unrecognized_message();
 			}
@@ -296,8 +305,16 @@ class Omise_FBBot_Conversation_Generator {
 
 	public static function unrecognized_message() {
 		$unrecognized_message = Omise_FBBot_Message_Store::get_unrecognized_message();
-		$buttons = Omise_FBBot_Message_Store::get_default_menu_buttons();
+		$buttons = Omise_FBBot_Message_Store::get_unrecognized_menu_buttons();
 
 		return FB_Button_Template::create( $unrecognized_message, $buttons );
+	}
+
+	public static function call_shop_owner_message( $success ) {
+		if ( $success ) {
+			return FB_Message_Item::create( Omise_FBBot_Message_Store::get_call_shop_owner_success_message() );
+		}
+
+		return FB_Message_Item::create( Omise_FBBot_Message_Store::get_call_shop_owner_fail_message() ); 
 	}
 }

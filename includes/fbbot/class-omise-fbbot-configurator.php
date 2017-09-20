@@ -10,6 +10,8 @@ class Omise_FBBot_Configurator {
 	private static $namespace = 'omisemsgbot';
 	private static $facebook_profile_endpoint = "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=";
 	private static $facebook_message_endpoint = "https://graph.facebook.com/v2.6/me/messages?access_token=";
+	private static $facebook_secondary_receivers_endpoint = "https://graph.facebook.com/v2.6/me/secondary_receivers?fields=id,name&access_token=";
+	private static $facebook_pass_thread_endpoint = "https://graph.facebook.com/v2.6/me/pass_thread_control?access_token=";
 
 	public static function get_namespace() {
 		return self::$namespace . '/v' . self::$version;
@@ -28,6 +30,16 @@ class Omise_FBBot_Configurator {
 	public static function get_fb_message_endpoint() {
 		$page_access_token = self::get_fb_settings( 'facebook_page_access_token' );
 		return self::$facebook_message_endpoint . $page_access_token;
+	}
+
+	public static function get_fb_secondary_receivers_endpoint() {
+		$page_access_token = self::get_fb_settings( 'facebook_page_access_token' );
+		return self::$facebook_secondary_receivers_endpoint . $page_access_token;
+	}
+
+	public static function get_fb_pass_thread_endpoint() {
+		$page_access_token = self::get_fb_settings( 'facebook_page_access_token' );
+		return self::$facebook_pass_thread_endpoint . $page_access_token;
 	}
 
 	public static function facebook_bot_is_enable() {
