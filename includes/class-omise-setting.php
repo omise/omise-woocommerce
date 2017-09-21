@@ -26,11 +26,16 @@ class Omise_Setting {
 	 */
 	protected function get_default_settings() {
 		return array(
-			'sandbox'          => 'yes',
-			'test_public_key'  => '',
-			'test_private_key' => '',
-			'live_public_key'  => '',
-			'live_private_key' => ''
+			'sandbox'                            => 'yes',
+			'test_public_key'                    => '',
+			'test_private_key'                   => '',
+			'live_public_key'                    => '',
+			'live_private_key'                   => '',
+			'chatbot_enabled'                    => 'no',
+			'chatbot_available_time_from'        => '00:00:00',
+			'chatbot_available_time_to'          => '23:59:59',
+			'chatbot_facebook_page_access_token' => '',
+			'chatbot_facebook_bot_verify_token'  => ''
 		);
 	}
 
@@ -84,7 +89,9 @@ class Omise_Setting {
 	 * @since  3.1
 	 */
 	public function update_settings( $data ) {
-		$data['sandbox'] = isset( $data['sandbox'] ) && ! is_null( $data['sandbox'] ) ? 'yes' : 'no';
+		// TODO: No hardcode..
+		$data['sandbox']         = isset( $data['sandbox'] ) && ! is_null( $data['sandbox'] ) ? 'yes' : 'no';
+		$data['chatbot_enabled'] = isset( $data['chatbot_enabled'] ) && ! is_null( $data['chatbot_enabled'] ) ? 'yes' : 'no';
 
 		$this->settings = array_merge(
 			$this->settings,
