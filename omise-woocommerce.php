@@ -63,6 +63,8 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-endpoint-controller.php';
+
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 
 		add_action( 'init', 'register_omise_wc_gateway_post_type' );
@@ -96,6 +98,9 @@ class Omise {
 	protected function init_route() {
 		add_action( 'rest_api_init', function () {
 			$controllers = new Omise_Rest_Webhooks_Controller;
+			$controllers->register_routes();
+
+			$controllers = new Omise_Chatbot_Endpoint_Controller;
 			$controllers->register_routes();
 		} );
 	}
