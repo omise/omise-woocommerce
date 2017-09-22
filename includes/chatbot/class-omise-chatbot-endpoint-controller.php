@@ -24,6 +24,11 @@ class Omise_Chatbot_Endpoint_Controller {
 	protected $chatbot;
 
 	/**
+	 * @var Omise_Chatbot_Facebook_Webhook_Events
+	 */
+	protected $event;
+
+	/**
 	 * @var Omise_Setting
 	 */
 	protected $settings;
@@ -33,6 +38,7 @@ class Omise_Chatbot_Endpoint_Controller {
 	 */
 	public function __construct() {
 		$this->chatbot  = new Omise_Chatbot;
+		$this->event    = new Omise_Chatbot_Facebook_Webhook_Events;
 		$this->settings = new Omise_Setting;
 	}
 
@@ -112,53 +118,7 @@ class Omise_Chatbot_Endpoint_Controller {
 		foreach ( $request['entry'] as $entry ) {
 			// Note, Facebook document says "even though this is an array, it will only contain one messaging object.".
 			// Ref. https://developers.facebook.com/docs/messenger-platform/webhook
-			$messaging_event = $entry['messaging'][0];
-
-			/**
-			 * Subscribes to Message Received events
-			 *
-			 * @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/message
-			 */
-			if ( isset( $messaging_event['message'] ) ) {
-				// ...
-
-			/**
-			 * Postback Received events
-			 *
-			 * @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_postbacks
-			 */
-			} else if ( isset( $messaging_event['postback'] ) ) {
-				// Event payload.
-				$sender_id = $messaging_event['sender']['id'];
-				$payload   = $messaging_event['postback']['payload'];
-
-				// TODO: This is just to prove concept, need to find other solution.
-				wp_safe_remote_post(
-					$this->chatbot->get_facebook_message_endpoint(),
-					array(
-						'timeout' => 60,
-						'body'    => array(
-							'recipient' => array('id' => $sender_id),
-							'message'   => array(
-								'attachment' => array(
-									'type'    => 'template',
-									'payload' => array(
-										'template_type' => 'button',
-										'text'          => 'Hello, now you can talk to me :)',
-										'buttons'       => array(
-											array(
-												'type'    => 'postback',
-												'title'   => 'Check Items',
-												'payload' => 'CHECKITEM'
-											)
-										)
-									)
-								)
-							)
-						)
-					)
-				);
-			}
+			$this->event->handle( $entry['messaging'][0] );
 		}
 	}
 
