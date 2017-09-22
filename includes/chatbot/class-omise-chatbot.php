@@ -67,6 +67,29 @@ class Omise_Chatbot extends Omise_Setting {
 								'locale' => 'default',
 								'text'   => "Hi {{user_first_name}}, welcome to " . get_bloginfo( 'name' )
 							)
+						),
+						'persistent_menu' => array(
+							array(
+								'locale'                  => 'default',
+								'composer_input_disabled' => false,
+								'call_to_actions'         => array(
+									array(
+										'type'    => 'postback',
+										'title'   => 'Check order status',
+										'payload' => Omise_Chatbot_Payloads::ACTION_CHECK_ORDER_STATUS
+									),
+									array(
+										'type'    => 'web_url',
+										'title'   => 'View Website',
+										'url'     => site_url()
+									),
+									array(
+										'type'    => 'postback',
+										'title'   => 'Help',
+										'payload' => Omise_Chatbot_Payloads::ACTION_HELP
+									)
+								)
+							)
 						)
 					)
 				)
