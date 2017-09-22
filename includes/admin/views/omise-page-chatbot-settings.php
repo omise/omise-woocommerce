@@ -19,6 +19,8 @@
 </p>
 
 <form method="POST">
+	<input name="omise_setting_tab" type="hidden" value="chatbot" />
+
 	<table class="form-table">
 		<tbody>
 			<tr>

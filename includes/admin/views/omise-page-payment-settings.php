@@ -13,7 +13,10 @@
 	);
 	?>
 </p>
+
 <form method="POST">
+	<input name="omise_setting_tab" type="hidden" value="payment" />
+
 	<table class="form-table">
 		<tbody>
 			<tr>

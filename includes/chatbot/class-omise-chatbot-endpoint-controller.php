@@ -19,6 +19,16 @@ class Omise_Chatbot_Endpoint_Controller {
 	const ENDPOINT = 'chatbot';
 
 	/**
+	 * @var Omise_Chatbot
+	 */
+	protected $chatbot;
+
+	/**
+	 * @var Omise_Chatbot_Facebook_Webhook_Events
+	 */
+	protected $event;
+
+	/**
 	 * @var Omise_Setting
 	 */
 	protected $settings;
@@ -27,6 +37,8 @@ class Omise_Chatbot_Endpoint_Controller {
 	 * @since 3.1
 	 */
 	public function __construct() {
+		$this->chatbot  = new Omise_Chatbot;
+		$this->event    = new Omise_Chatbot_Facebook_Webhook_Events;
 		$this->settings = new Omise_Setting;
 	}
 
@@ -38,9 +50,17 @@ class Omise_Chatbot_Endpoint_Controller {
 			self::ENDPOINT_NAMESPACE,
 			'/' . self::ENDPOINT . '/facebook',
 			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'chatbot_facebook_verification' ),
-				'permission_callback' => array( $this, 'chatbot_facebook_verification_permission_check' )
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'chatbot_facebook_verification' ),
+					'permission_callback' => array( $this, 'chatbot_facebook_verification_permission_check' )
+				),
+
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'chatbot_facebook_response' ),
+					'permission_callback' => array( $this, 'chatbot_facebook_response_permission_check' )
+				)
 			)
 		);
 	}
@@ -83,5 +103,47 @@ class Omise_Chatbot_Endpoint_Controller {
 	 	}
 
 		return new WP_Error( 'omise_chatbot_failed_facebook_verification', __( 'Failed Facebook verification' ), array( 'status' => 400 ) );
+	}
+
+	/**
+	 * @param  WP_REST_Request $request  Full details about the request.
+	 *
+	 * @return true|WP_Error             True if the request has read access, otherwise WP_Error object.
+	 *
+	 * @see    https://developers.facebook.com/docs/messenger-platform/webhook
+	 *
+	 * @since  3.2
+	 */
+	public function chatbot_facebook_response( $request ) {
+		foreach ( $request['entry'] as $entry ) {
+			// Note, Facebook document says "even though this is an array, it will only contain one messaging object.".
+			// Ref. https://developers.facebook.com/docs/messenger-platform/webhook
+			$this->event->handle( $entry['messaging'][0] );
+		}
+	}
+
+	/**
+	 * @param  WP_REST_Request $request  Full details about the request.
+	 *
+	 * @return true|WP_Error             True if the request has read access, otherwise WP_Error object.
+	 *
+	 * @see    https://developers.facebook.com/docs/messenger-platform/webhook
+	 *
+	 * @since  3.2
+	 */
+	public function chatbot_facebook_response_permission_check( $request ) {
+		if ( ! isset( $request['object'] ) || 'page' !== $request['object'] ) {
+			return new WP_Error( 'omise_chatbot_failed_facebook_webhook', __( 'Attribute "object" must exist and its value must be "page"' ), array( 'status' => 400 ) );
+		}
+
+		if ( ! isset( $request['entry'] ) || empty( $request['entry'] ) ) {
+			return new WP_Error( 'omise_chatbot_failed_facebook_webhook', __( 'Attribute "entry" must exist and cannot be empty' ), array( 'status' => 400 ) );
+		}
+
+		if ( ! isset( $request['entry'][0]['messaging'] ) || empty( $request['entry'][0]['messaging'] ) ) {
+			return new WP_Error( 'omise_chatbot_failed_facebook_webhook', __( 'Attribute "messaging" must exist and cannot be empty' ), array( 'status' => 400 ) );
+		}
+
+		return true;
 	}
 }
