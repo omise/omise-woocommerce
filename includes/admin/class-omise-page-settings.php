@@ -46,13 +46,19 @@ class Omise_Page_Settings {
 		global $title;
 
 		$page = new self;
-
-		// Save settings if data has been posted
-		if ( ! empty( $_POST ) ) {
-			$page->save( $_POST );
-		}
+		$page->update_settings_if_needed();
 
 		include_once __DIR__ . '/views/omise-page-settings.php';
+	}
+
+	protected function update_settings_if_needed() {
+		if ( ! empty( $_POST ) ) {
+			$this->save( $_POST );
+
+			$hook = 'omise_saved_setting' . ( isset( $_POST['omise_setting_tab'] ) ? '_' . $_POST['omise_setting_tab'] : '' );
+
+			do_action( $hook );
+		}
 	}
 
 	/**

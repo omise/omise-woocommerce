@@ -76,8 +76,10 @@ class Omise {
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ), 0 );
 		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 10 );
 
-		$chatbot = new Omise_Chatbot;
-		$chatbot->setup();
+		add_action( 'omise_saved_setting_chatbot', function () {
+			$chatbot = new Omise_Chatbot;
+			$chatbot->setup();
+		} );
 
 		$this->init_admin();
 		$this->init_route();
