@@ -63,6 +63,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-endpoint-controller.php';
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
@@ -74,6 +75,9 @@ class Omise {
 		add_action( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ), 0 );
 		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 10 );
+
+		$chatbot = new Omise_Chatbot;
+		$chatbot->setup();
 
 		$this->init_admin();
 		$this->init_route();

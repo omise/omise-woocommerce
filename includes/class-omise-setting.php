@@ -49,6 +49,18 @@ class Omise_Setting {
 	}
 
 	/**
+	 * @param  string $field
+	 * @param  mixed  $default
+	 *
+	 * @return array
+	 *
+	 * @since  3.2
+	 */
+	public function get_setting( $field, $default = null ) {
+		return isset( $this->settings[ $field ] ) ? $this->settings[ $field ] : $default;
+	}
+
+	/**
 	 * Returns the payment gateway settings option name
 	 *
 	 * @param  string $payment_id  Payment ID can be found at each of gateway classes (includes/gateway).
