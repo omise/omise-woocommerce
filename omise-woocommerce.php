@@ -65,6 +65,7 @@ class Omise {
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-endpoint-controller.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-payloads.php';
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 

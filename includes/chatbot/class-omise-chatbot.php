@@ -11,6 +11,7 @@ class Omise_Chatbot extends Omise_Setting {
 	 */
 	const FACEBOOK_BASE_ENDPOINT    = 'https://graph.facebook.com/v2.6/me';
 	const FACEBOOK_PROFILE_ENDPOINT = 'messenger_profile';
+	const FACEBOOK_MESSAGE_ENDPOINT = 'messages';
 
 	/**
 	 * @return string
@@ -36,6 +37,15 @@ class Omise_Chatbot extends Omise_Setting {
 	}
 
 	/**
+	 * @return string
+	 *
+	 * @since  3.2
+	 */
+	public function get_facebook_message_endpoint() {
+		return $this->get_facebook_endpoint( self::FACEBOOK_MESSAGE_ENDPOINT );
+	}
+
+	/**
 	 * Setup Facebook Messenger bot.
 	 *
 	 * @see   https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api
@@ -49,6 +59,9 @@ class Omise_Chatbot extends Omise_Setting {
 				array(
 					'timeout' => 60,
 					'body'    => array(
+						'get_started' => array(
+							'payload' => Omise_Chatbot_Payloads::GET_START_TAPPED
+						),
 						'greeting' => array(
 							array(
 								'locale' => 'default',
