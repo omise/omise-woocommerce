@@ -26,7 +26,7 @@ class Omise_Chatbot_Component_Attachment {
 	}
 
 	/**
-	 * @return array  of required attributes for create a button element on Facebook Messenger.
+	 * @return array  of required attributes for create an element on Facebook Messenger.
 	 */
 	public function to_array() {
 		return array(

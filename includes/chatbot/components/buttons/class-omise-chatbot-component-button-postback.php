@@ -9,6 +9,9 @@ if ( class_exists( 'Omise_Chatbot_Component_Button_Postback' ) ) {
  * @see https://developers.facebook.com/docs/messenger-platform/send-messages/buttons/postback
  */
 class Omise_Chatbot_Component_Button_Postback extends Omise_Chatbot_Component_Button {
+	/**
+	 * @var array
+	 */
 	protected $attributes = array(
 		'type'    => 'postback',
 		'title'   => '',

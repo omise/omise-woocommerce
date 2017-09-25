@@ -9,9 +9,12 @@ if ( class_exists( 'Omise_Chatbot_Component_Button' ) ) {
  * @see https://developers.facebook.com/docs/messenger-platform/send-messages/buttons
  */
 class Omise_Chatbot_Component_Button {
+	/**
+	 * @var array
+	 */
 	protected $attributes = array(
-		'type'    => '',
-		'title'   => ''
+		'type'  => '',
+		'title' => ''
 	);
 
 	/**

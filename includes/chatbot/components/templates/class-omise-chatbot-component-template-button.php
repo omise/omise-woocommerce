@@ -32,7 +32,9 @@ class Omise_Chatbot_Component_Template_Button extends Omise_Chatbot_Component_Te
 	}
 
 	/**
-	 * @param Omise_Chatbot_Component_Button $button
+	 * @param  Omise_Chatbot_Component_Button $button
+	 *
+	 * @return self
 	 */
 	public function add_button( Omise_Chatbot_Component_Button $button ) {
 		$this->template_payload['buttons'][] = $button->to_array();
@@ -41,7 +43,9 @@ class Omise_Chatbot_Component_Template_Button extends Omise_Chatbot_Component_Te
 	}
 
 	/**
-	 * @param array $buttons  of Omise_Chatbot_Component_Button object
+	 * @param  array $buttons  of Omise_Chatbot_Component_Button object
+	 *
+	 * @return self
 	 */
 	public function add_buttons( array $buttons ) {
 		foreach ( $buttons as $button ) {

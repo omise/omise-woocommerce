@@ -40,7 +40,7 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 	 *
 	 * @return void
 	 *
-	 * @since 3.2
+	 * @since  3.2
 	 */
 	public function handle( $messaging ) {
 		$payload = strtolower( 'payload_' . $messaging['postback']['payload'] );
@@ -55,7 +55,7 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 	 *
 	 * @return void
 	 *
-	 * @since 3.2
+	 * @since  3.2
 	 */
 	protected function payload_get_start_tapped( $messaging ) {
 		$this->components['template_button']
@@ -74,6 +74,13 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 		);
 	}
 
+	/**
+	 * @param  mixed $messaging
+	 *
+	 * @return void
+	 *
+	 * @since  3.2
+	 */
 	protected function payload_action_featured_products( $messaging ) {
 		// TODO: This whole code inside this method is just for mock.
 		$this->components['text']->set_text( 'Hey! You just tapped "Featured Products" button.' );
@@ -86,6 +93,13 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 		$this->payload_get_start_tapped( $messaging );
 	}
 
+	/**
+	 * @param  mixed $messaging
+	 *
+	 * @return void
+	 *
+	 * @since  3.2
+	 */
 	protected function payload_action_product_category( $messaging ) {
 		// TODO: This whole code inside this method is just for mock.
 		$this->components['text']->set_text( 'Hey! You just tapped "Product Category" button.' );
@@ -98,6 +112,13 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 		$this->payload_get_start_tapped( $messaging );
 	}
 
+	/**
+	 * @param  mixed $messaging
+	 *
+	 * @return void
+	 *
+	 * @since  3.2
+	 */
 	protected function payload_action_order_status( $messaging ) {
 		// TODO: This whole code inside this method is just for mock.
 		$this->components['text']->set_text( 'Hey! You just tapped "Order Status" button.' );

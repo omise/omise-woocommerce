@@ -23,6 +23,9 @@ class Omise_Chatbot_Component_Template extends Omise_Chatbot_Component_Attachmen
 	 */
 	protected $template_payload = array();
 
+	/**
+	 * @return array  of required attributes for create an element on Facebook Messenger.
+	 */
 	public function to_array() {
 		$this->payload(
 			array_merge(
