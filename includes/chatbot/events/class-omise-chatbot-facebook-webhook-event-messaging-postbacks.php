@@ -34,17 +34,28 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 	 * @since 3.2
 	 */
 	public function handle( $messaging ) {
-		// Event payload.
-		$sender_id = $messaging['sender']['id'];
-		$payload   = $messaging['postback']['payload'];
+		$payload = strtolower( 'payload_' . $messaging['postback']['payload'] );
 
+		if ( method_exists( $this, $payload ) ) {
+			$this->$payload( $messaging );
+		}
+	}
+
+	/**
+	 * @param  mixed $messaging
+	 *
+	 * @return void
+	 *
+	 * @since 3.2
+	 */
+	protected function payload_get_start_tapped( $messaging ) {
 		// TODO: This is just to prove concept, need to find other solution.
 		wp_safe_remote_post(
 			$this->chatbot->get_facebook_message_endpoint(),
 			array(
 				'timeout' => 60,
 				'body'    => array(
-					'recipient' => array('id' => $sender_id),
+					'recipient' => array('id' => $messaging['sender']['id']),
 					'message'   => array(
 						'attachment' => array(
 							'type'    => 'template',
