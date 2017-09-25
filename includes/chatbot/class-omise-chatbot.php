@@ -14,6 +14,17 @@ class Omise_Chatbot extends Omise_Setting {
 	const FACEBOOK_MESSAGE_ENDPOINT = 'messages';
 
 	/**
+	 * @var Omise_Chatbot_Client
+	 */
+	protected $client;
+
+	public function __construct() {
+		parent::__construct();
+
+		$this->client = new Omise_Chatbot_Client;
+	}
+
+	/**
 	 * @return string
 	 *
 	 * @since  3.2
@@ -72,5 +83,30 @@ class Omise_Chatbot extends Omise_Setting {
 				)
 			);
 		}
+	}
+
+	/**
+	 * @return Omise_Chatbot_Client
+	 */
+	public function client() {
+		return $this->client;
+	}
+
+	/**
+	 * @param  string $recipient_id
+	 * @param  string $message
+	 *
+	 * @return WP_Error|array  The response or WP_Error on failure.
+	 *
+	 * @since  3.2
+	 */
+	public function message_to( $recipient_id, $message ) {
+		return $this->client()->post(
+			$this->get_facebook_message_endpoint(),
+			array(
+				'recipient' => array( 'id' => $recipient_id ),
+				'message'   => $message
+			)
+		);
 	}
 }

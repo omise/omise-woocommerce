@@ -66,6 +66,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/events/class-omise-chatbot-facebook-webhook-event-messages.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/events/class-omise-chatbot-facebook-webhook-event-messaging-postbacks.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-client.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-endpoint-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-facebook-webhook-events.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-payloads.php';

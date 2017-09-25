@@ -49,26 +49,19 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 	 * @since 3.2
 	 */
 	protected function payload_get_start_tapped( $messaging ) {
-		// TODO: This is just to prove concept, need to find other solution.
-		wp_safe_remote_post(
-			$this->chatbot->get_facebook_message_endpoint(),
+		$this->chatbot->message_to(
+			$messaging['sender']['id'],
 			array(
-				'timeout' => 60,
-				'body'    => array(
-					'recipient' => array('id' => $messaging['sender']['id']),
-					'message'   => array(
-						'attachment' => array(
-							'type'    => 'template',
-							'payload' => array(
-								'template_type' => 'button',
-								'text'          => 'Hello, now you can talk to me :)',
-								'buttons'       => array(
-									array(
-										'type'    => 'postback',
-										'title'   => 'Check Items',
-										'payload' => 'CHECKITEM'
-									)
-								)
+				'attachment' => array(
+					'type'    => 'template',
+					'payload' => array(
+						'template_type' => 'button',
+						'text'          => 'Hello, now you can talk to me :)',
+						'buttons'       => array(
+							array(
+								'type'    => 'postback',
+								'title'   => 'Check Items',
+								'payload' => 'CHECKITEM'
 							)
 						)
 					)
