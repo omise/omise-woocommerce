@@ -108,8 +108,6 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 			$messaging['sender']['id'],
 			$this->components['template_generic']->to_array()
 		);
-
-		$this->payload_get_start_tapped( $messaging );
 	}
 
 	/**
