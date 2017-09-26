@@ -63,9 +63,20 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/class-omise-chatbot-component-attachment.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/class-omise-chatbot-component-template.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/class-omise-chatbot-component-text.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-postback.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-featuredproducts.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-productcategory.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-orderstatus.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/templates/class-omise-chatbot-component-template-button.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/templates/class-omise-chatbot-component-template-generic.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/events/class-omise-chatbot-facebook-webhook-event-messages.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/events/class-omise-chatbot-facebook-webhook-event-messaging-postbacks.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-client.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-endpoint-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-facebook-webhook-events.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/class-omise-chatbot-payloads.php';
