@@ -20,4 +20,15 @@ class Omise_Chatbot_Component_Template_Generic extends Omise_Chatbot_Component_T
 	protected $template_payload = array(
 		'elements' => array()
 	);
+
+	/**
+	 * @param  Omise_Chatbot_Component_Element $element
+	 *
+	 * @return self
+	 */
+	public function add_element( Omise_Chatbot_Component_Element $element ) {
+		$this->template_payload['elements'][] = $element->to_array();
+
+		return $this;
+	}
 }
