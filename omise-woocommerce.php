@@ -68,9 +68,11 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/class-omise-chatbot-component-text.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-postback.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-url.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-featuredproducts.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-productcategory.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-productgallery.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-productpage.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/buttons/class-omise-chatbot-component-button-orderstatus.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/elements/class-omise-chatbot-component-element.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/chatbot/components/elements/class-omise-chatbot-component-element-product.php';

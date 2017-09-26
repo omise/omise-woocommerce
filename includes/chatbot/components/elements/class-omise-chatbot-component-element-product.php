@@ -21,9 +21,13 @@ class Omise_Chatbot_Component_Element_Product extends Omise_Chatbot_Component_El
 
 		$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $this->product->get_id() ) );
 
-		$this->set_subtitle( $product->get_short_description() );
-		$this->add_button(
-			new Omise_Chatbot_Component_Button_Productgallery( $product )
+		$this->set_image_url( $image_url[0] );
+		$this->set_subtitle( $this->product->get_short_description() );
+		$this->add_buttons(
+			array(
+				new Omise_Chatbot_Component_Button_Productgallery( $this->product ),
+				new Omise_Chatbot_Component_Button_Productpage( $this->product )
+			)
 		);
 	}
 }
