@@ -6,9 +6,24 @@ if ( class_exists( 'Omise_Chatbot_Component_Button_Productgallery' ) ) {
 }
 
 class Omise_Chatbot_Component_Button_Productgallery extends Omise_Chatbot_Component_Button_Postback {
-	public function __construct() {
+	/**
+	 * @param WC_Product $product
+	 */
+	public function __construct( WC_Product $product ) {
 		parent::__construct( __( 'Gallery', 'omise' ) );
 
-		$this->set_payload( Omise_Chatbot_Payloads::ACTION_PRODUCT_GALLERY );
+		$this->init_payload( $product );
+	}
+
+	/**
+	 * @param WC_Product $product
+	 */
+	protected function init_payload( WC_Product $product ) {
+		$payload = Omise_Chatbot_Payloads::create( Omise_Chatbot_Payloads::ACTION_PRODUCT_GALLERY );
+		$payload->set_data(
+			array( 'product_id' => $product->get_id() )
+		);
+
+		$this->set_payload( $payload->to_json() );
 	}
 }

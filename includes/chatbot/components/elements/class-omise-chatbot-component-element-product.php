@@ -23,7 +23,7 @@ class Omise_Chatbot_Component_Element_Product extends Omise_Chatbot_Component_El
 
 		$this->set_subtitle( $product->get_short_description() );
 		$this->add_button(
-			new Omise_Chatbot_Component_Button_Productgallery
+			new Omise_Chatbot_Component_Button_Productgallery( $product )
 		);
 	}
 }

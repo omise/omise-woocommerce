@@ -44,11 +44,26 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 	 * @since  3.2
 	 */
 	public function handle( $messaging ) {
-		$payload = strtolower( 'payload_' . $messaging['postback']['payload'] );
+		$event = strtolower( 'payload_' . $this->read_event_from_payload( $messaging['postback']['payload'] ) );
 
-		if ( method_exists( $this, $payload ) ) {
-			$this->$payload( $messaging );
+		if ( method_exists( $this, $event ) ) {
+			$this->$event( $messaging );
 		}
+	}
+
+	/**
+	 * @param  string $payload
+	 *
+	 * @return string  of an event of a callback payload
+	 */
+	protected function read_event_from_payload( $payload ) {
+		$json_payload = json_decode( $payload );
+
+		if ( ! is_null( $json_payload ) ) {
+			return $json_payload->event;
+		}
+
+		return $payload;
 	}
 
 	/**
