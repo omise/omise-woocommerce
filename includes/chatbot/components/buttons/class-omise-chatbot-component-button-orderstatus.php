@@ -7,7 +7,8 @@ if ( class_exists( 'Omise_Chatbot_Component_Button_Orderstatus' ) ) {
 
 class Omise_Chatbot_Component_Button_Orderstatus extends Omise_Chatbot_Component_Button_Postback {
 	public function __construct() {
-		$this->attributes['title']   = __( 'Check order status', 'omise' );
-		$this->attributes['payload'] = Omise_Chatbot_Payloads::ACTION_ORDER_STATUS;
+		parent::__construct( __( 'Check order status', 'omise' ) );
+
+		$this->set_payload( Omise_Chatbot_Payloads::ACTION_ORDER_STATUS );
 	}
 }

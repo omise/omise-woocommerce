@@ -7,7 +7,8 @@ if ( class_exists( 'Omise_Chatbot_Component_Button_Productgallery' ) ) {
 
 class Omise_Chatbot_Component_Button_Productgallery extends Omise_Chatbot_Component_Button_Postback {
 	public function __construct() {
-		$this->attributes['title']   = __( 'See gallery', 'omise' );
-		$this->attributes['payload'] = 'ACTION_PRODUCT_GALLERY';
+		parent::__construct( __( 'Gallery', 'omise' ) );
+
+		$this->set_payload( Omise_Chatbot_Payloads::ACTION_PRODUCT_GALLERY );
 	}
 }

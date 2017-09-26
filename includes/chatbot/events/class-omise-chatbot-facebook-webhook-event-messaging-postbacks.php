@@ -134,4 +134,21 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 
 		$this->payload_get_start_tapped( $messaging );
 	}
+
+	/**
+	 * @param  mixed $messaging
+	 *
+	 * @return void
+	 *
+	 * @since  3.2
+	 */
+	protected function payload_action_product_gallery( $messaging ) {
+		// TODO: This whole code inside this method is just for mock.
+		$this->components['text']->set_text( 'Hey! You just tapped "Gallery" button.' );
+
+		$this->chatbot->message_to(
+			$messaging['sender']['id'],
+			$this->components['text']->to_array()
+		);
+	}
 }
