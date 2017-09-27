@@ -10,11 +10,35 @@ if ( class_exists( 'Omise_Chatbot_Component_Button_Postback' ) ) {
  */
 class Omise_Chatbot_Component_Button_Postback extends Omise_Chatbot_Component_Button {
 	/**
-	 * @var array
+	 * @param string $title
 	 */
-	protected $attributes = array(
-		'type'    => 'postback',
-		'title'   => '',
-		'payload' => ''
-	);
+	public function __construct( $title ) {
+		parent::__construct( 'postback' );
+
+		$this->set_title( $title );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function default_attributes() {
+		return array(
+			'title'   => '',
+			'payload' => ''
+		);
+	}
+
+	/**
+	 * @param string $title
+	 */
+	public function set_title( $title ) {
+		$this->set_attribute( 'title', $title );
+	}
+
+	/**
+	 * @param string $payload
+	 */
+	public function set_payload( $payload ) {
+		$this->set_attribute( 'payload', $payload );
+	}
 }
