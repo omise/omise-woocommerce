@@ -118,15 +118,41 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 	 * @since  3.2
 	 */
 	protected function payload_action_product_category( $messaging ) {
-		// TODO: This whole code inside this method is just for mock.
-		$this->components['text']->set_text( 'Hey! You just tapped "Product Category" button.' );
+		$categories = get_terms( array(
+			'taxonomy'   => 'product_cat',
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'parent'     => false,
+			'pad_counts' => true,
+			'hide_empty' => true
+		) );
+
+		foreach ( $categories as $category ) {
+			$this->components['template_generic']->add_element(
+				new Omise_Chatbot_Component_Element_Productcategory( $category )
+			);
+		}
+
+		$this->chatbot->message_to(
+			$messaging['sender']['id'],
+			$this->components['template_generic']->to_array()
+		);
+	}
+
+	/**
+	 * @param  mixed $messaging
+	 *
+	 * @return void
+	 *
+	 * @since  3.2
+	 */
+	protected function payload_action_product_list( $messaging ) {
+		$this->components['text']->set_text( 'Hey! You just tapped "View product" button.' );
 
 		$this->chatbot->message_to(
 			$messaging['sender']['id'],
 			$this->components['text']->to_array()
 		);
-
-		$this->payload_get_start_tapped( $messaging );
 	}
 
 	/**
