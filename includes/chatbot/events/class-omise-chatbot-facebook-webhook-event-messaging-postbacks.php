@@ -147,11 +147,21 @@ class Omise_Chatbot_Facebook_Webhook_Event_Messaging_Postbacks {
 	 * @since  3.2
 	 */
 	protected function payload_action_product_list( $messaging ) {
-		$this->components['text']->set_text( 'Hey! You just tapped "View product" button.' );
+		$payload = json_decode( $messaging['postback']['payload'] );
+		$filters = array(
+			'category' => $payload->data->category_slug,
+			'status'   => array( 'publish' )
+		);
+
+		foreach( wc_get_products( $filters ) as $product ) {
+			$this->components['template_generic']->add_element(
+				new Omise_Chatbot_Component_Element_Product( $product )
+			);
+		}
 
 		$this->chatbot->message_to(
 			$messaging['sender']['id'],
-			$this->components['text']->to_array()
+			$this->components['template_generic']->to_array()
 		);
 	}
 
