@@ -21,9 +21,11 @@ class Omise_FBBot_WCCategory {
 		$this->thumbnail_img = wp_get_attachment_url( $thumbnail_id );
 	}
 
-	public static function products( $category_slug ) {
+	public static function products( $category_slug, $paged = 1 ) {
+		// Facebook list template is limit at 10
 		$args = array(
-			'posts_per_page' => -1,
+			'posts_per_page' => 10,
+    		'paged' => $paged,
 			'tax_query' => array(
 				'relation' => 'AND',
 				array(
@@ -38,9 +40,13 @@ class Omise_FBBot_WCCategory {
 
 		$loop = new WP_Query( $args );
 
+		$total_pages = $loop->max_num_pages;
+
 		if ( ! $loop->have_posts() ) {
 			return NULL;
 		}
+
+		$current_page = max(1, $paged);
 
 		$func = function ($post) {
 			return Omise_FBBot_WCProduct::create( $post->ID );
@@ -49,7 +55,13 @@ class Omise_FBBot_WCCategory {
 		$products = array_map( $func, $loop->posts );
 		wp_reset_postdata();
 
-		return $products;
+		$product_data = array(
+			'products' => $products,
+			'current_page' => $current_page,
+			'total_pages' => $total_pages
+		);
+
+		return $product_data;
 	}
 
 	public static function collection() {

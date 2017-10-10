@@ -81,9 +81,16 @@ class Omise_FBBot_Conversation_Generator {
 				if ($explode[0] == 'VIEW_PRODUCT') {
 					$product_id = $explode[1];
 					return self::product_gallery_message( $this->sender_id, $product_id );
+
 				} else if ($explode[0] == 'VIEW_CATEGORY_PRODUCTS') {
 					$category_slug = $explode[1];
 					return self::product_list_in_category_message( $this->sender_id, $category_slug );
+				
+				} else if ( $explode[0] == 'VIEW_MORE_PRODUCT' ) {
+					$category_slug = $explode[1];
+					$paged = $explode[2];
+
+					return self::product_list_in_category_message( $this->sender_id, $category_slug, $paged );
 				}
 
 				return self::unrecognized_message();
@@ -203,15 +210,16 @@ class Omise_FBBot_Conversation_Generator {
 		return FB_Generic_Template::create( $elements );
 	}
 
-	public static function product_list_in_category_message( $messenger_id, $category_slug ) {
-		$products = Omise_FBBot_WCCategory::products( $category_slug );
+	public static function product_list_in_category_message( $messenger_id, $category_slug, $paged = 1 ) {
+		$data = Omise_FBBot_WCCategory::products( $category_slug, $paged );
 
-		if ( ! $products ) {
+		if ( ! $data ) {
 			return FB_Message_Item::create( Omise_FBBot_Message_Store::get_products_is_empty_message() );
 		}
 
-		// Facebook list template is limit at 10
-		$products = array_slice( $products, 0, 10 );
+		$products = $data['products'];
+		$current_page = $data['current_page'];
+		$total_pages = $data['total_pages'];
 	
 		$elements = array();
 
@@ -229,7 +237,17 @@ class Omise_FBBot_Conversation_Generator {
 			array_push( $elements, $element );
 		}
 
-		return FB_Generic_Template::create( $elements );
+		$product_list_message = array( FB_Generic_Template::create( $elements ) );
+
+		if ( $current_page == $total_pages ) {
+			return $product_list_message;
+		}
+
+		$view_more_button = FB_Postback_Button_Item::create( __( 'View more', 'omise' ), 'VIEW_MORE_PRODUCT__' . $category_slug . '__' . ($current_page + 1) );
+
+		array_push( $product_list_message, FB_Button_Template::create( __( '🙋 Do you want to view more product ? 🛍', 'omise' ), [$view_more_button] ) );
+		
+		return $product_list_message;
 	}
 
 	public static function product_gallery_message( $messenger_id, $product_id ) {
