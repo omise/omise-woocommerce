@@ -64,22 +64,55 @@ class Omise_FBBot_WCCategory {
 		return $product_data;
 	}
 
-	public static function collection() {
+	public static function collection( $paged = 1 ) {
 		$args = array(
 			'taxonomy' => 'product_cat',
-			'orderby'    => 'name',
+			'orderby'    => 'id',
 			'order'      => 'ASC',
+			'pad_counts' => true,
+			'child_of'   => '',
+			'hide_empty' => false,
+			'number' => 2,
+            'offset' => $paged,
+		);
+
+		$product_categories = get_terms( $args );
+		$total_pages = self::max_num_pages_collection();
+		$current_page = max(1, $paged);
+
+		$func = function( $wc_category ) {
+			return self::create( $wc_category );
+		};
+
+		$categories = array_map( $func, $product_categories );
+
+		$categories_data = array(
+			'categories' => $categories,
+			'current_page' => $current_page,
+			'total_pages' => $total_pages
+		);
+
+		return $categories_data;
+	}
+
+	public static function max_num_pages_collection() {
+		$args = array(
+			'taxonomy' => 'product_cat',
 			'pad_counts' => true,
 			'child_of'   => '',
 			'hide_empty' => false
 		);
 
 		$product_categories = get_terms( $args );
-		
-		$func = function( $wc_category ) {
-			return self::create( $wc_category );
-		};
+		$total_categories = count($product_categories);
 
-		return array_map( $func, $product_categories );
+
+
+		$total_pages = ceil( $total_categories / 2 );
+
+		error_log('total_categories : ' . count($product_categories));
+		error_log('total_pages : ' . $total_pages);
+
+		return $total_pages;
 	}
 }

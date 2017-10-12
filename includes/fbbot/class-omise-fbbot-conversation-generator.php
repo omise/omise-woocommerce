@@ -91,6 +91,10 @@ class Omise_FBBot_Conversation_Generator {
 					$paged = $explode[2];
 
 					return self::product_list_in_category_message( $this->sender_id, $category_slug, $paged );
+				} else if ( $explode[0] == 'VIEW_MORE_CATEGORY' ) {
+					$paged = $explode[1];
+					error_log('VIEW_MORE_CATEGORY : ' . $paged);
+					return self::product_category_message( $paged );
 				}
 
 				return self::unrecognized_message();
@@ -194,8 +198,12 @@ class Omise_FBBot_Conversation_Generator {
 		return FB_Generic_Template::create( $elements );
 	}
 
-	public static function product_category_message() {
-		$categories = Omise_FBBot_WCCategory::collection();
+	public static function product_category_message( $paged = 1 ) {
+		$data = Omise_FBBot_WCCategory::collection( $paged );
+
+		$categories = $data['categories'];
+		$current_page = $data['current_page'];
+		$total_pages = $data['total_pages'];
 
 		$func = function( $category ) {
 			$viewProductsButton = FB_Postback_Button_Item::create( __('View ') . $category->name, 'VIEW_CATEGORY_PRODUCTS__' . $category->slug );
@@ -207,7 +215,17 @@ class Omise_FBBot_Conversation_Generator {
 
 		$elements = array_map( $func, $categories );
 
-		return FB_Generic_Template::create( $elements );
+		$category_list_message = array( FB_Generic_Template::create( $elements ) );
+
+		if ( $current_page == $total_pages ) {
+			return $category_list_message;
+		}
+
+		$view_more_button = FB_Postback_Button_Item::create( __( 'View more', 'omise' ), 'VIEW_MORE_CATEGORY__' . ($current_page + 1) );
+
+		array_push( $category_list_message, FB_Button_Template::create( __( '🙋 Do you want to view more category ? 🛍', 'omise' ), [$view_more_button] ) );
+
+		return $category_list_message;
 	}
 
 	public static function product_list_in_category_message( $messenger_id, $category_slug, $paged = 1 ) {
