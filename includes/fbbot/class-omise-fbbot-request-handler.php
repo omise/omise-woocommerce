@@ -6,7 +6,6 @@ if ( class_exists( 'Omise_FBBot_Request_Handler' ) ) {
 }
 
 class Omise_FBBot_Request_Handler {
-	
 	private function __construct() {
 		// Hide the constructor
 	}
@@ -20,7 +19,15 @@ class Omise_FBBot_Request_Handler {
 	public static function handle_payload_from( $sender_id, $payload ) {
 		$bot = new Omise_FBBot_Conversation_Generator();
 		$bot->listen_payload( $sender_id, $payload );
-		$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $bot->reply_for_payload() );
+
+		if ( is_array($bot->reply_for_payload()[0]) ) {
+			// In case of more than 1 reply message, check from array dimension
+			foreach ($bot->reply_for_payload() as $reply_message) {
+				$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $reply_message );
+			}
+		} else {
+			$response = Omise_FBBot_HTTPService::send_message_to( $sender_id, $bot->reply_for_payload() );
+		}
 	}
 
 	public static function handle_callback_omise_webhook( $request ) {
