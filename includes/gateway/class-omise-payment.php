@@ -40,8 +40,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	private $currency_subunits = array(
 		'THB' => 100,
 		'JPY' => 1,
-		'SGD' => 100,
-		'IDR' => 100
+		'SGD' => 100
 	);
 
 	/**
