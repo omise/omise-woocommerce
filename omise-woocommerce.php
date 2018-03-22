@@ -38,6 +38,18 @@ class Omise {
 		do_action( 'omise_initiated' );
 	}
 
+	/** 
+	 * Plugin Activation Hook to check if WooCommerce is installed
+	 *   
+	 */
+	function activate() {
+		if (!is_plugin_active('woocommerce/woocommerce.php')){
+			deactivate_plugins( basename( __FILE__ ) );
+			wp_die( '<p>The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be installed and active.</p>',
+						'Plugin Activation Error', array( 'response'=>200, 'back_link'=>true ) );
+		}
+	}
+
 	/**
 	 * @since  3.0
 	 */
@@ -62,6 +74,8 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
+
+		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 
 		add_action( 'init', 'register_omise_wc_gateway_post_type' );
 		add_action( 'plugins_loaded', 'register_omise_alipay', 0 );
