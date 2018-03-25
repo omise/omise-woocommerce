@@ -39,14 +39,15 @@ class Omise {
 	}
 
 	/** 
-	 * Plugin Activation Hook to check if WooCommerce is installed
+	 * Plugin Activation Hook
 	 *   
 	 */
 	function activate() {
+		// check if WooCommerce Plugin is installed and active
 		if (!is_plugin_active('woocommerce/woocommerce.php')){
 			deactivate_plugins( basename( __FILE__ ) );
-			wp_die( '<p>The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be installed and active.</p>',
-						'Plugin Activation Error', array( 'response'=>200, 'back_link'=>true ) );
+			wp_die( __( '<p>The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be installed and active.</p>', 'omise' ),
+					__( 'Plugin Activation Error', 'omise'), array( 'response'=>403, 'back_link'=>true ) );
 		}
 	}
 
