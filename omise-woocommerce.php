@@ -38,6 +38,31 @@ class Omise {
 		do_action( 'omise_initiated' );
 	}
 
+	/** 
+	 * Callback to display message about activation error
+	 * 
+	 * @since  3.2
+	 */
+	public function woocommerce_plugin_notice(){
+		?>
+		<div class="error">
+			<p><?php echo __( 'Plugin <strong>deactivated</strong>. The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be installed and active.', 'omise' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/** 
+	 * Callback checking if WooCommerce is active
+	 * 
+	 * @since  3.2
+	 */
+	public function check_woocommerce_active() {
+		if ( is_admin() && current_user_can( 'activate_plugins' ) && !is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+			add_action( 'admin_notices', array($this, 'woocommerce_plugin_notice') );
+			deactivate_plugins( plugin_basename( __FILE__ ) ); 	
+		}
+	}
+
 	/**
 	 * @since  3.0
 	 */
@@ -60,10 +85,10 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';		
 
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
-
-		add_action( 'init', 'register_omise_wc_gateway_post_type' );
+		add_action( 'admin_init', array( $this, 'check_woocommerce_active' ) );
+		add_action( 'init', 'register_omise_wc_gateway_post_type' );		
 		add_action( 'plugins_loaded', 'register_omise_alipay', 0 );
 		add_action( 'plugins_loaded', 'register_omise_creditcard', 0 );
 		add_action( 'plugins_loaded', 'register_omise_internetbanking', 0 );
@@ -111,7 +136,7 @@ class Omise {
 	public function register_user_agent() {
 		global $wp_version;
 
-		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version );
+		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, class_exists('WC') ? WC()->version : '' );
 		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', $user_agent );
 	}
 
