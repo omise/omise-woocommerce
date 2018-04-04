@@ -4,62 +4,89 @@
 
 ## Supported Versions
 
-Our aim is to support as many versions of WooCommerce as we can.  
-
 **Here's the list of versions we tested on:**
-- WooCommerce v3.1.1 _(on WordPress v4.8)_
-
-To report problems for the version you're using, feel free to submit the issue through [GitHub's issue channel](https://github.com/omise/omise-woocommerce/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
+- WooCommerce v3.3.4
 
 **Can't find the version you're looking for?**  
-Submit your requirement as an issue to [https://github.com/omise/omise-woocommerce/issues](https://github.com/omise/omise-woocommerce/issues)
+Our aim is to support as many versions of WooCommerce as we can.  
+If the version you are currently using has not been tested on, you can try install it and let us know if there is any issues at [GitHub's issue channel](https://github.com/omise/omise-woocommerce/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
 
 ## Getting Started
 
+- [Installation Instructions](https://github.com/omise/omise-woocommerce/tree/improve-readme#installation-instructions)
+  - [Manually](https://github.com/omise/omise-woocommerce/tree/improve-readme#manually)
+- [First Time Setup](https://github.com/omise/omise-woocommerce/tree/improve-readme#first-time-setup)
+  - [Connect your store with your Omise account](https://github.com/omise/omise-woocommerce/tree/improve-readme#connect-your-store-with-your-omise-account)
+  - [Enable payment methods](https://github.com/omise/omise-woocommerce/tree/improve-readme#enable-payment-methods)
+
+...
+
 ### Installation Instructions
+
+In order to install Omise-WooCommerce plugin, you can either manually download the plugin from this repository and install it or download it via WordPress Plugin Store.  
 
 #### Manually
 
-You can manually download the plugin from this repository, then extract and copy the plugin files into your WordPress / WooCommerce application.  
-
-The steps below shows how to install the plugin manually.
-
 1. Download and extract the zip file from [Omise-WooCommerce](https://github.com/omise/omise-woocommerce/archive/v3.1.zip) to your local machine.
+  ![screen shot 2560-07-26 at 12 36 43 pm](https://user-images.githubusercontent.com/2154669/38302382-ac3b1cf8-382c-11e8-80d4-61e935b7a567.png)
 
-    ![screen shot 2560-07-26 at 12 31 34 pm](https://user-images.githubusercontent.com/2154669/28605935-6c0cd2ce-71fe-11e7-8b9a-f912f11d5006.png)
-
-2. Copy all files from the step 1 into WordPress plugin folder (`your-wordpress-dir/wp-content/plugins/omise-woocommerce-3.1`)
+2. Copy all files from the step 1 to WordPress plugin folder, `your-wordpress-dir/wp-content/plugins/omise-woocommerce-3.1`.
 
 3. Rename `omise-woocommerce-3.1` folder to `omise`
-    ![screen shot 2560-07-26 at 12 36 43 pm](https://user-images.githubusercontent.com/2154669/28606035-2b9387dc-71ff-11e7-887d-dc90ce774a39.png)
+  ![screen shot 2560-07-26 at 12 36 43 pm](https://user-images.githubusercontent.com/2154669/28606035-2b9387dc-71ff-11e7-887d-dc90ce774a39.png)
 
-4. Once done, you will see `Omise Payment Gateway` plugin sits right away in the **Installed Plugins** page. Click `activate` to activate the plugin.
-    ![Omise WooCommerce plugin](https://user-images.githubusercontent.com/2154669/28614862-642dc20c-7221-11e7-964b-3c4afc120292.png)
+4. Once done, `Omise Payment Gateway` plugin will be shown at the **Installed Plugins** page. Click `activate` to activate the plugin.
+  ![omise-woocommerce-plugin-activate](https://user-images.githubusercontent.com/2154669/38302722-dd2404c8-382d-11e8-9f21-09cbe9829dbe.png)
 
-Now you've done installing Omise-WooCommerce plugin. Next, check [First Time Setup](#first-time-setup) to continue setting up your Omise account to WooCommerce store.
+Now you've done installing Omise-WooCommerce plugin.  
+Next, check **[First Time Setup](#first-time-setup)** to continue setting up your Omise account with your WooCommerce store.
 
 ### First Time Setup
 
-#### Enabling Omise plugin and setup Omise keys
+#### Connect your store with your Omise account
 
-![Omise WooCommerce plugin - setting page](https://user-images.githubusercontent.com/2154669/28621776-38755cc2-723c-11e7-932d-43811cde5ad8.png)
+![Omise-WooCommerce plugin - setting page](https://user-images.githubusercontent.com/2154669/38303577-a27696b2-3830-11e8-9114-02d9e658f7ed.png)
 
-In order to enable **Omise Payment Gateway** in the checkout page to allow buyer make a charge with Omise, you have to enable the plugin and link the store to your Omise account by using your [credentials](https://www.omise.co/api-authentication) (public and secret keys):
+Once the installation is done, the next thing that you are going to do is to connect your store with your Omise account and enable payment methods so your customers can make a purchase with an online payment.
 
-1. Log in into WordPress admin page.
+1. Log in to WordPress admin page.
 
-2. From the sidebar, go to `WooCommerce > Settings > Checkout > Omise Credit / Debit Card`. (or you can also click at `Omise` menu on the sidebar).
+2. From the sidebar, go to `Omise > Settings`.
 
-3. Check at `Enable/Disable` option.
+3. At the Omise Settings page, you are going to set your `Public key` and `Secret key` (these keys can be found at Omise Dashboard).
 
-4. Set your Omise keys at `Public key` and `Secret key` fields.  
-    Make sure that you check at the `Test mode` option and set your Omise keys at `Public key for test` and `Secret key for test` fields if you want to test Omise service integration.
+4. Make sure that the option `Test mode` is checked and set your Omise keys at `Public key for test` and `Secret key for test` fields if you would like to test Omise service integration.
 
-5. Then, click **'Save changes'** to save the setting.
+5. Click **'Save Settings'**.
 
-Once done, you will see **Credit / Debit Card** appears at the checkout page.
+#### Enable payment methods
 
-![screen shot 2560-07-26 at 8 13 55 pm](https://user-images.githubusercontent.com/2154669/28622536-030403e2-723f-11e7-8a93-a06e65e350d3.png)
+> Note that Alipay and Internet Banking payment methods are only available for merchants with a Thai-registered Omise account.
+
+There are 3 payment methods that you can enable on your store, which are **Alipay**, **Credit / Debit Card**, and **Internet Banking**.
+
+1. At Omise Settings page, Payment Methods section, there will be 3 available payment methods show on the list.
+
+2. Click `config` at the table on a payment method that you would like to accept payment with.
+
+3. You will see a configuration page differently depends on which payment method you are choosing. The screenshot below shows Credit / Debit Card payment method's configuration page.
+  ![omise-woocommerce-creditcard-setting-page](https://user-images.githubusercontent.com/2154669/38306405-a9afba30-383a-11e8-8c7b-e54ba1f2df88.png)
+
+4. At the configuration page, mark **Enable/Disable** as checked.
+
+5. You may change or update other options in this configuration page (optional).
+
+5. Click **'Save changes'**.
+
+Once done, those payment methods will be shown at the store's checkout page.
+  ![screen shot 2560-07-26 at 8 13 55 pm](https://user-images.githubusercontent.com/2154669/28622536-030403e2-723f-11e7-8a93-a06e65e350d3.png)
+
+...
+
+### What's Next?
+
+Want to know more detail on how to create a charge, refund, and using the plugin?  
+Please check [Omise-WooCommerce's Wiki](https://github.com/omise/omise-woocommerce/wiki).
 
 ## Contributing
 
