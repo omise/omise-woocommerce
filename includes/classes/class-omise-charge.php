@@ -7,14 +7,6 @@ if ( ! class_exists( 'Omise_Charge' ) ) {
 		 * @param OmiseCharge $charge  Omise's charge object
 		 * @return boolean
 		 */
-		public static function is_charge_object( $charge ) {
-			return OmisePluginHelperCharge::isChargeObject( $charge );
-		}
-
-		/**
-		 * @param OmiseCharge $charge  Omise's charge object
-		 * @return boolean
-		 */
 		public static function is_authorized( $charge ) {
 			return OmisePluginHelperCharge::isAuthorized( $charge );
 		}
