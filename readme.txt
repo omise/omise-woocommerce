@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin
 Requires at least: 4.3.1
 Tested up to: 4.8
-Stable tag: 3.1
+Stable tag: 3.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,20 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 3.2 =
+
+#### ✨ Highlights
+
+- Support multi currency (PR [#84](https://github.com/omise/omise-woocommerce/pull/84))
+
+#### 🚀 Enhancements
+
+- Remove legacy files and codes (that we no longer use) (PR [#85](https://github.com/omise/omise-woocommerce/pull/85))
+
+#### 👾 Bug Fixes
+
+- Issue #78 fatal error, if install omise plugin before woo commerce (PR [#83](https://github.com/omise/omise-woocommerce/pull/83), [#88](https://github.com/omise/omise-woocommerce/pull/88))
 
 = 3.1 =
 

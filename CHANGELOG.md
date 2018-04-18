@@ -1,5 +1,21 @@
 # CHANGELOG
 
+### [v3.2 _(Apr 20, 2018)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.2)
+
+#### ✨ Highlights
+
+- Support multi currency (PR [#84](https://github.com/omise/omise-woocommerce/pull/84))
+
+#### 🚀 Enhancements
+
+- Remove legacy files and codes (that we no longer use) (PR [#85](https://github.com/omise/omise-woocommerce/pull/85))
+
+#### 👾 Bug Fixes
+
+- Issue #78 fatal error, if install omise plugin before woo commerce (PR [#83](https://github.com/omise/omise-woocommerce/pull/83), [#88](https://github.com/omise/omise-woocommerce/pull/88))
+
+---
+
 ### [v3.1 _(Sep 19, 2017)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.1)
 
 #### ✨ Highlights

@@ -1,7 +1,7 @@
 # This file is distributed under the same license as the Omise package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Omise Payment Gateway v3.1\n"
+"Project-Id-Version: Omise Payment Gateway v3.2\n"
 "Report-Msgid-Bugs-To: https://github.com/omise/omise-woocommerce/issues\n"
 "POT-Creation-Date: 2017-07-14 20:17+0700\n"
 "MIME-Version: 1.0\n"
