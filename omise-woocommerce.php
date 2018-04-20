@@ -136,7 +136,7 @@ class Omise {
 	public function register_user_agent() {
 		global $wp_version;
 
-		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, class_exists('WC') ? WC()->version : '' );
+		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, function_exists('WC') ? WC()->version : '' );
 		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', $user_agent );
 	}
 
