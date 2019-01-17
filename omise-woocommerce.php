@@ -30,10 +30,18 @@ class Omise {
 	protected static $the_instance = null;
 
 	/**
+	 * @since 3.3
+	 *
+	 * @var   boolean
+	 */
+	protected static $can_initiate = false;
+
+	/**
 	 * @since  3.0
 	 */
 	public function __construct() {
-		$this->initiate();
+		add_action( 'plugins_loaded', array( $this, 'check_woocommerce_active' ) );
+		add_action( 'init', array( $this, 'initiate' ) );
 
 		do_action( 'omise_initiated' );
 	}
@@ -46,7 +54,7 @@ class Omise {
 	public function woocommerce_plugin_notice(){
 		?>
 		<div class="error">
-			<p><?php echo __( 'Plugin <strong>deactivated</strong>. The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be installed and active.', 'omise' ); ?></p>
+			<p><?php echo __( 'Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
 		</div>
 		<?php
 	}
@@ -57,16 +65,21 @@ class Omise {
 	 * @since  3.2
 	 */
 	public function check_woocommerce_active() {
-		if ( is_admin() && current_user_can( 'activate_plugins' ) && !is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-			add_action( 'admin_notices', array($this, 'woocommerce_plugin_notice') );
-			deactivate_plugins( plugin_basename( __FILE__ ) ); 	
+		if ( function_exists( 'WC' ) ) {
+			static::$can_initiate = true;
+			return;
 		}
 	}
 
 	/**
 	 * @since  3.0
 	 */
-	protected function initiate() {
+	public function initiate() {
+		if ( ! static::$can_initiate ) {
+			add_action( 'admin_notices', array($this, 'woocommerce_plugin_notice') );
+			return;
+		}
+
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version );
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
 		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2014-07-27' );
@@ -87,14 +100,13 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';		
 
-		add_action( 'admin_init', array( $this, 'check_woocommerce_active' ) );
-		add_action( 'init', 'register_omise_wc_gateway_post_type' );		
-		add_action( 'plugins_loaded', 'register_omise_alipay', 0 );
-		add_action( 'plugins_loaded', 'register_omise_creditcard', 0 );
-		add_action( 'plugins_loaded', 'register_omise_internetbanking', 0 );
-		add_action( 'plugins_loaded', 'prepare_omise_myaccount_panel', 0 );
-		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ), 0 );
-		add_action( 'plugins_loaded', array( $this, 'register_user_agent' ), 10 );
+		register_omise_wc_gateway_post_type();
+		register_omise_alipay();
+		register_omise_creditcard();
+		register_omise_internetbanking();
+		prepare_omise_myaccount_panel();
+		$this->load_plugin_textdomain();
+		$this->register_user_agent();
 
 		$this->init_admin();
 		$this->init_route();
@@ -108,7 +120,7 @@ class Omise {
 			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-settings.php';
 			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-admin.php';
 
-			add_action( 'plugins_loaded', array( Omise_Admin::get_instance(), 'register_admin_menu' ) );
+			Omise_Admin::get_instance()->register_admin_menu();
 			add_filter( 'woocommerce_order_actions', array( $this, 'register_order_actions' ) );
 		}
 	}
