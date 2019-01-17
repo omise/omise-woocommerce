@@ -80,10 +80,38 @@ class Omise {
 			return;
 		}
 
+		$this->define_constants();
+		$this->include_classes();
+
+		register_omise_wc_gateway_post_type();
+		register_omise_alipay();
+		register_omise_creditcard();
+		register_omise_internetbanking();
+		prepare_omise_myaccount_panel();
+		$this->load_plugin_textdomain();
+
+		$this->init_admin();
+		$this->init_route();
+	}
+
+	/**
+	 * Define Omise necessary constants.
+	 *
+	 * @since 3.3
+	 */
+	private function define_constants() {
+		global $wp_version;
+
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version );
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
 		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2014-07-27' );
+		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version ) );
+	}
 
+	/**
+	 * @since 3.3
+	 */
+	private function include_classes() {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-capture.php';
@@ -98,18 +126,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';		
-
-		register_omise_wc_gateway_post_type();
-		register_omise_alipay();
-		register_omise_creditcard();
-		register_omise_internetbanking();
-		prepare_omise_myaccount_panel();
-		$this->load_plugin_textdomain();
-		$this->register_user_agent();
-
-		$this->init_admin();
-		$this->init_route();
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 	}
 
 	/**
@@ -140,16 +157,6 @@ class Omise {
 	 */
 	public function load_plugin_textdomain() {
 		load_plugin_textdomain( 'omise', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
-	}
-
-	/**
-	 * @since  3.0
-	 */
-	public function register_user_agent() {
-		global $wp_version;
-
-		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, function_exists('WC') ? WC()->version : '' );
-		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', $user_agent );
 	}
 
 	/**
