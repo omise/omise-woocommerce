@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/res/OmiseApiResource.php';
-
 /**
  * This class is not intended to be used directly from client code.
  *
@@ -96,6 +94,18 @@ class OmiseSearch extends OmiseApiResource
     public function page($page)
     {
         return $this->mergeAttributes('page', $page);
+    }
+
+    /**
+     * Update `per_page` parameter.
+     *
+     * @param  int $limit   Number of items that will be shown per page.
+     *
+     * @return OmiseSearch  This instance.
+     */
+    public function per_page($limit)
+    {
+        return $this->mergeAttributes('per_page', $limit);
     }
 
     /**

@@ -1,5 +1,66 @@
 # CHANGELOG
 
+### [v2.11.1 _(Jan 16, 2019)_](https://github.com/omise/omise-php/releases/tag/v2.11.1)
+
+#### 👾 Bug Fixes
+
+- Fixes issue with use of array constant (mandated PHP 5.6+). (PR [#106](https://github.com/omise/omise-php/pull/106))
+
+---
+
+### [v2.11.0 _(Jan 9, 2019)_](https://github.com/omise/omise-php/releases/tag/v2.11.0)
+
+#### ✨ Highlights
+
+- Introducing Capability API. (PR [#100](https://github.com/omise/omise-php/pull/100))
+- Officially dropping support of PHP v5.3. (PR [#101](https://github.com/omise/omise-php/pull/101))
+
+---
+
+### [v2.10.0 _(December 2, 2018)_](https://github.com/omise/omise-php/releases/tag/v2.10.0)
+
+#### ✨ Highlights
+
+- Refundable within charge class. (PR [#92](https://github.com/omise/omise-php/pull/92))
+
+#### 🚀 Enhancements
+
+- Be able to filter when retrieving a Refund List from a Charge object. (PR [#91](https://github.com/omise/omise-php/pull/91))
+- OmiseCardList, relocate the card-fetching logic back to its parent class (OmiseCustomer). (PR [#90](https://github.com/omise/omise-php/pull/90))
+- Apply PSR Code Styling Standard to the library. (PR [#89](https://github.com/omise/omise-php/pull/89))
+- Add PHP Code Sniffer 3.x to the composer package. (PR [#88](https://github.com/omise/omise-php/pull/88))
+- Update Composer Spec. (PR [#87](https://github.com/omise/omise-php/pull/87))
+- Upgrade CircleCI to v2. (PR [#82](https://github.com/omise/omise-php/pull/82))
+- Centralising all loaders into one file, `lib/Omise.php`. (PR [#81](https://github.com/omise/omise-php/pull/81))
+- README.md: enhancing 'how-to' and other contents, make it clearer and easy to follow. (PR [#77](https://github.com/omise/omise-php/pull/77))
+
+#### 👾 Bug Fixes
+
+- Fix bug "authentication failed" when executing OmiseTransfer::search(). (PR [#94](https://github.com/omise/omise-php/pull/94))
+
+---
+
+### [v2.9.1 _(March 21, 2018)_](https://github.com/omise/omise-php/releases/tag/v2.9.1)
+
+#### 🚀 Enhancements
+
+- Be able to limit items that will be shown at the Search Object. (PR [#75](https://github.com/omise/omise-php/pull/75))
+
+#### 👾 Bug Fixes
+
+- Fix PHP v7.2 raise a warning message when execute OmiseApiResource::execute() with non-array assigned at the first argument. (PR [#71](https://github.com/omise/omise-php/pull/71), thanks @forfunza)
+
+### [v2.9.0 _(November 6, 2017)_](https://github.com/omise/omise-php/releases/tag/v2.9.0)
+
+#### ✨ Highlights
+
+- Support Omise [Source API](https://www.omise.co/source-api). (PR [#68](https://github.com/omise/omise-php/pull/68))
+- Link to Omise Forum instead of Gitter (deprecate Gitter channel). (PR [#67](https://github.com/omise/omise-php/pull/67))
+
+For more information, please visit https://github.com/omise/omise-php/releases/tag/v2.9.0
+
+---
+
 ### [v2.8.0 _(June 24, 2017)_](https://github.com/omise/omise-php/releases/tag/v2.8.0)
 
 #### ✨ Highlights
