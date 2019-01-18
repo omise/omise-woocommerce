@@ -47,19 +47,6 @@ class Omise {
 	}
 
 	/** 
-	 * Callback to display message about activation error
-	 * 
-	 * @since  3.2
-	 */
-	public function init_error_messages(){
-		?>
-		<div class="error">
-			<p><?php echo __( 'The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
-		</div>
-		<?php
-	}
-
-	/** 
 	 * Check if all dependencies are loaded
 	 * properly before Omise-WooCommerce.
 	 * 
@@ -84,17 +71,28 @@ class Omise {
 
 		$this->define_constants();
 		$this->include_classes();
+		$this->load_plugin_textdomain();
+		$this->register_post_types();
+		$this->init_admin();
+		$this->init_route();
 
 		register_omise_alipay();
 		register_omise_creditcard();
 		register_omise_internetbanking();
 		prepare_omise_myaccount_panel();
+	}
 
-		$this->load_plugin_textdomain();
-		$this->register_post_types();
-
-		$this->init_admin();
-		$this->init_route();
+	/**
+	 * Callback to display message about activation error
+	 *
+	 * @since  3.2
+	 */
+	public function init_error_messages(){
+		?>
+		<div class="error">
+			<p><?php echo __( 'Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
+		</div>
+		<?php
 	}
 
 	/**
