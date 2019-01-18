@@ -33,10 +33,6 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 * @return void
 		 */
 		public function register_admin_menu() {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return;
-			}
-
 			add_action( 'admin_menu', array( $this, 'wordpress_hook_admin_menu' ) );
 		}
 
