@@ -161,6 +161,21 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * @since 3.3
+	 *
+	 * @param string $transaction_id
+	 */
+	public function set_order_transaction_id( $transaction_id ) {
+		/** backward compatible with WooCommerce v2.x series **/
+		if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+			$this->order()->set_transaction_id( $transaction_id );
+			$this->order()->save();
+		} else {
+			update_post_meta( $this->order_id(), '_transaction_id', $transaction_id );
+		}
+	}
+
+	/**
 	 * Retrieve an attached charge id.
 	 *
 	 * @return string
@@ -248,13 +263,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
 			if ( ! $this->order()->get_transaction_id() ) {
-				/** backward compatible with WooCommerce v2.x series **/
-				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
-					$this->order()->set_transaction_id( $charge['id'] );
-					$this->order()->save();
-				} else {
-					update_post_meta( $this->order()->id, '_transaction_id', $charge['id'] );
-				}
+				$this->set_transaction_id( $charge['id'] );
 			}
 
 			if ( 'failed' === $charge['status'] ) {

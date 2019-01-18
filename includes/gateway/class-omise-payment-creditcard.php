@@ -301,13 +301,7 @@ function register_omise_creditcard() {
 					throw new Exception( Omise_Charge::get_error_message( $charge ) );
 				}
 
-				/** backward compatible with WooCommerce v2.x series **/
-				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
-					$order->set_transaction_id( $charge['id'] );
-					$order->save();
-				} else {
-					update_post_meta( $order->id, '_transaction_id', $charge['id'] );
-				}
+				$this->set_order_transaction_id( $charge['id'] );
 
 				if ( $this->omise_3ds ) {
 					$order->add_order_note(
