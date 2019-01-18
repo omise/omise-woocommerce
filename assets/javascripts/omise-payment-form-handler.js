@@ -32,7 +32,7 @@
 			$card_list = $("input[name='card_id']");
 			$selected_card_id = $("input[name='card_id']:checked");
 			// there is some existing cards but nothing selected then warning
-			if($card_list.size() > 0 && $selected_card_id.size() === 0){
+			if($card_list.length > 0 && $selected_card_id.length === 0){
 				return false;
 			}
 			
@@ -41,7 +41,7 @@
 		
 		function getSelectedCardId(){
 			$selected_card_id = $("input[name='card_id']:checked");
-			if($selected_card_id.size() > 0){
+			if($selected_card_id.length > 0){
 				return $selected_card_id.val();
 			}
 			
@@ -60,7 +60,7 @@
 				return true;
 			}
 			
-			if ( 0 === $( 'input.omise_token' ).size() ) {
+			if ( 0 === $( 'input.omise_token' ).length ) {
 				$form.block({
 					message: null,
 					overlayCSS: {
