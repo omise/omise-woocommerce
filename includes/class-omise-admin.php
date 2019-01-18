@@ -6,10 +6,13 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		/**
 		 * The Omise Instance.
 		 *
-		 * @var   \Omise_Admin
+		 * @var \Omise_Admin
 		 */
 		protected static $the_instance;
 
+		/**
+		 * @return \Omise_Admin  The instance.
+		 */
 		public static function get_instance() {
 			if ( ! self::$the_instance ) {
 				self::$the_instance = new self();
@@ -29,16 +32,15 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		}
 
 		/**
-		 * Register Omise to WordPress, WooCommerce
-		 * @return void
+		 * Register Omise's custom menu to WordPress admin menus.
 		 */
 		public function register_admin_menu() {
 			add_action( 'admin_menu', array( $this, 'wordpress_hook_admin_menu' ) );
 		}
 
 		/**
-		 * Add Omise menu to sidebar admin menu
-		 * @return void
+		 * Callback to $this::register_admin_menu() method.
+		 * Register Omise's custom menu to WordPress admin menus.
 		 */
 		public function wordpress_hook_admin_menu() {
 			add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise', array( $this, 'page_settings') );
@@ -46,6 +48,9 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			add_submenu_page( 'omise', __( 'Omise Settings', 'omise' ), __( 'Settings', 'omise' ), 'manage_options', 'omise-settings', array( $this, 'page_settings') );
 		}
 
+		/**
+		 * Render Omise Setting page.
+		 */
 		public function page_settings() {
 			Omise_Page_Settings::render();
 		}
@@ -58,6 +63,10 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		}
 
 		/**
+		 * Callback to $this::register_woocommerce_filters() method.
+		 *
+		 * @since  3.3
+		 *
 		 * @param  array $order_actions
 		 *
 		 * @return array
