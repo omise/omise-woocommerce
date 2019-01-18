@@ -83,12 +83,13 @@ class Omise {
 		$this->define_constants();
 		$this->include_classes();
 
-		register_omise_wc_gateway_post_type();
 		register_omise_alipay();
 		register_omise_creditcard();
 		register_omise_internetbanking();
 		prepare_omise_myaccount_panel();
+
 		$this->load_plugin_textdomain();
+		$this->register_post_types();
 
 		$this->init_admin();
 		$this->init_route();
@@ -177,6 +178,31 @@ class Omise {
 		$order_actions[ $payment_method . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
 
 		return $order_actions;
+	}
+
+	/**
+	 * Register necessary post-types
+	 *
+	 * @deprecated 3.0  Omise-WooCommerce was once storing Omise's charge id
+	 *                  with WooCommerce's order id together in a
+	 *                  customed-post-type, 'omise_charge_items'.
+	 *
+	 *                  Since Omise-WooCoomerce v3.0, now the plugin stores
+	 *                  Omise's charge id as a 'customed-post-meta' in the
+	 *                  WooCommerce's 'order' post-type instead.
+	 */
+	public function register_post_types() {
+		register_post_type(
+			'omise_charge_items',
+			array(
+				'supports' => array('title','custom-fields'),
+				'label'    => 'Omise Charge Items',
+				'labels'   => array(
+					'name'          => 'Omise Charge Items',
+					'singular_name' => 'Omise Charge Item'
+				)
+			)
+		);
 	}
 
 	/**
