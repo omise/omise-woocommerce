@@ -237,12 +237,56 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * @param  array $params
+	 * @since  3.3
 	 *
-	 * @return OmiseCharge
+	 * @param  int $order_id
+	 *
+	 * @see    WC_Payment_Gateway::process_payment( $order_id )
+	 * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
+	 *
+	 * @return array
 	 */
-	public function sale( $params ) {
-		return OmiseCharge::create( $params );
+	public function process_payment( $order_id ) {
+		try {
+			if ( ! $order = $this->load_order( $order_id ) ) {
+				throw new Exception(
+					sprintf(
+						wp_kses(
+							__( 'Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is \'%s\')', 'omise' ),
+							array( 'br' => array() )
+						),
+						$order_id
+					),
+					1
+				);
+			}
+
+			$order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
+
+			$charge = $this->charge( $order_id, $order );
+
+			$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
+
+			return $this->handle_payment_result( $order_id, $order, $charge );
+
+		} catch (Exception $e) {
+			wc_add_notice(
+				sprintf(
+					wp_kses(
+						__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
+						array( 'br' => array() )
+					),
+					$e->getMessage()
+				),
+				'error'
+			);
+
+			if ( $order ) {
+				$order->add_order_note(
+					sprintf( __( 'Omise: Payment failed, %s', 'omise' ), $e->getMessage() )
+				);
+			}
+		}
 	}
 
 	/**
