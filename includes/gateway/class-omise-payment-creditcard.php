@@ -281,12 +281,9 @@ function register_omise_creditcard() {
 		 * @return array|Exception
 		 */
 		public function handle_payment_result( $order_id, $order, $charge ) {
-			$this->attach_charge_id_to_order( $charge['id'] );
 			if ( Omise_Charge::is_failed( $charge ) ) {
 				throw new Exception( Omise_Charge::get_error_message( $charge ) );
 			}
-
-			$this->set_order_transaction_id( $charge['id'] );
 
 			if ( $this->omise_3ds ) {
 				$order->add_order_note(

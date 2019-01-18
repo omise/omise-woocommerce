@@ -105,11 +105,7 @@ function register_omise_internetbanking() {
 		public function handle_payment_result( $order_id, $order, $charge ) {
 			switch ( $charge['status'] ) {
 				case 'pending':
-					$this->attach_charge_id_to_order( $charge['id'] );
-
 					$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer out to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
-
-					$this->set_order_transaction_id( $charge['id'] );
 
 					return array (
 						'result'   => 'success',

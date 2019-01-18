@@ -219,6 +219,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
 
 			$charge = $this->charge( $order_id, $order );
+			$this->attach_charge_id_to_order( $charge['id'] );
+			$this->set_order_transaction_id( $charge['id'] );
 
 			$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 
