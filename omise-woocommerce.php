@@ -135,11 +135,8 @@ class Omise {
 	 */
 	protected function init_admin() {
 		if ( is_admin() ) {
-			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-settings.php';
 			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-admin.php';
-
-			Omise_Admin::get_instance()->register_admin_menu();
-			add_filter( 'woocommerce_order_actions', array( $this, 'register_order_actions' ) );
+			Omise_Admin::get_instance()->init();
 		}
 	}
 
@@ -158,26 +155,6 @@ class Omise {
 	 */
 	public function load_plugin_textdomain() {
 		load_plugin_textdomain( 'omise', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
-	}
-
-	/**
-	 * @param  array $order_actions
-	 *
-	 * @return array
-	 */
-	public function register_order_actions( $order_actions ) {
-		global $theorder;
-
-		/** backward compatible with WooCommerce v2.x series **/
-		$payment_method = version_compare( WC()->version, '3.0.0', '>=' ) ? $theorder->get_payment_method() : $theorder->payment_method;
-
-		if ( 'omise' === $payment_method ) {
-			$order_actions[ $payment_method . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
-		}
-
-		$order_actions[ $payment_method . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
-
-		return $order_actions;
 	}
 
 	/**

@@ -19,6 +19,16 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		}
 
 		/**
+		 * @since 3.3
+		 */
+		public function init() {
+			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-settings.php';
+
+			$this->register_admin_menu();
+			$this->register_woocommerce_filters();
+		}
+
+		/**
 		 * Register Omise to WordPress, WooCommerce
 		 * @return void
 		 */
@@ -27,14 +37,14 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 				return;
 			}
 
-			add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+			add_action( 'admin_menu', array( $this, 'wordpress_hook_admin_menu' ) );
 		}
 
 		/**
 		 * Add Omise menu to sidebar admin menu
 		 * @return void
 		 */
-		public function add_admin_menu() {
+		public function wordpress_hook_admin_menu() {
 			add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise', array( $this, 'page_settings') );
 
 			add_submenu_page( 'omise', __( 'Omise Settings', 'omise' ), __( 'Settings', 'omise' ), 'manage_options', 'omise-settings', array( $this, 'page_settings') );
@@ -42,6 +52,33 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 
 		public function page_settings() {
 			Omise_Page_Settings::render();
+		}
+
+		/**
+		 * @since 3.3
+		 */
+		public function register_woocommerce_filters() {
+			add_filter( 'woocommerce_order_actions', array( $this, 'woocommerce_filter_order_actions' ) );
+		}
+
+		/**
+		 * @param  array $order_actions
+		 *
+		 * @return array
+		 */
+		public function woocommerce_filter_order_actions( $order_actions ) {
+			global $theorder;
+
+			/** backward compatible with WooCommerce v2.x series **/
+			$payment_method = version_compare( WC()->version, '3.0.0', '>=' ) ? $theorder->get_payment_method() : $theorder->payment_method;
+
+			if ( 'omise' === $payment_method ) {
+				$order_actions[ $payment_method . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
+			}
+
+			$order_actions[ $payment_method . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
+
+			return $order_actions;
 		}
 	}
 }
