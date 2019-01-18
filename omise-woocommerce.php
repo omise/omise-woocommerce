@@ -54,7 +54,7 @@ class Omise {
 	public function woocommerce_plugin_notice(){
 		?>
 		<div class="error">
-			<p><?php echo __( 'Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
+			<p><?php echo __( 'The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
 		</div>
 		<?php
 	}
