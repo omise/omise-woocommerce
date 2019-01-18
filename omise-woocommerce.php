@@ -40,8 +40,8 @@ class Omise {
 	 * @since  3.0
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'check_woocommerce_active' ) );
-		add_action( 'init', array( $this, 'initiate' ) );
+		add_action( 'plugins_loaded', array( $this, 'check_dependencies' ) );
+		add_action( 'init', array( $this, 'init' ) );
 
 		do_action( 'omise_initiated' );
 	}
@@ -51,7 +51,7 @@ class Omise {
 	 * 
 	 * @since  3.2
 	 */
-	public function woocommerce_plugin_notice(){
+	public function init_error_messages(){
 		?>
 		<div class="error">
 			<p><?php echo __( 'The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
@@ -60,23 +60,25 @@ class Omise {
 	}
 
 	/** 
-	 * Callback checking if WooCommerce is active
+	 * Check if all dependencies are loaded
+	 * properly before Omise-WooCommerce.
 	 * 
 	 * @since  3.2
 	 */
-	public function check_woocommerce_active() {
-		if ( function_exists( 'WC' ) ) {
-			static::$can_initiate = true;
+	public function check_dependencies() {
+		if ( ! function_exists( 'WC' ) ) {
 			return;
 		}
+
+		static::$can_initiate = true;
 	}
 
 	/**
 	 * @since  3.0
 	 */
-	public function initiate() {
+	public function init() {
 		if ( ! static::$can_initiate ) {
-			add_action( 'admin_notices', array($this, 'woocommerce_plugin_notice') );
+			add_action( 'admin_notices', array($this, 'init_error_messages') );
 			return;
 		}
 
