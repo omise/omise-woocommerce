@@ -1,9 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/res/OmiseApiResource.php';
-require_once dirname(__FILE__).'/OmiseCardList.php';
-require_once dirname(__FILE__).'/OmiseScheduleList.php';
-
 class OmiseCustomer extends OmiseApiResource
 {
     const ENDPOINT = 'customers';
@@ -103,9 +99,13 @@ class OmiseCustomer extends OmiseApiResource
      */
     public function cards($options = array())
     {
-        if ($this['object'] === 'customer') {
-            return new OmiseCardList($this['cards'], $this['id'], $options, $this->_publickey, $this->_secretkey);
+        if (is_array($options) && ! empty($options)) {
+            $cards = parent::execute(self::getUrl($this['id']) . '/cards?' . http_build_query($options), parent::REQUEST_GET, parent::getResourceKey());
+        } else {
+            $cards = $this['cards'];
         }
+
+        return new OmiseCardList($cards, $this['id'], $this->_publickey, $this->_secretkey);
     }
   
     /**

@@ -1,9 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/res/OmiseApiResource.php';
-require_once dirname(__FILE__).'/OmiseRefundList.php';
-require_once dirname(__FILE__).'/OmiseScheduleList.php';
-
 class OmiseCharge extends OmiseApiResource
 {
     const ENDPOINT = 'charges';
@@ -102,6 +98,17 @@ class OmiseCharge extends OmiseApiResource
     }
 
     /**
+     * Refund a charge.
+     *
+     * @return OmiseRefund
+     */
+    public function refund($params)
+    {
+        $result = parent::execute(self::getUrl($this['id']) . '/refunds', parent::REQUEST_POST, parent::getResourceKey(), $params);
+        return new OmiseRefund($result, $this->_publickey, $this->_secretkey);
+    }
+
+    /**
      * Reverses a charge.
      *
      * @return OmiseCharge
@@ -119,11 +126,15 @@ class OmiseCharge extends OmiseApiResource
      *
      * @return OmiseRefundList
      */
-    public function refunds()
+    public function refunds($options = array())
     {
-        $result = parent::execute(self::getUrl($this['id']).'/refunds', parent::REQUEST_GET, parent::getResourceKey());
+        if (is_array($options) && ! empty($options)) {
+            $refunds = parent::execute(self::getUrl($this['id']) . '/refunds?' . http_build_query($options), parent::REQUEST_GET, parent::getResourceKey());
+        } else {
+            $refunds = $this['refunds'];
+        }
 
-        return new OmiseRefundList($result, $this['id'], $this->_publickey, $this->_secretkey);
+        return new OmiseRefundList($refunds, $this['id'], $this->_publickey, $this->_secretkey);
     }
 
     /**

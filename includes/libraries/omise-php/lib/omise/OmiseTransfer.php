@@ -1,9 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/res/OmiseApiResource.php';
-
-require_once dirname(__FILE__).'/OmiseScheduleList.php';
-
 class OmiseTransfer extends OmiseApiResource
 {
     const ENDPOINT = 'transfers';
@@ -31,7 +27,7 @@ class OmiseTransfer extends OmiseApiResource
      *
      * @return OmiseSearch
      */
-    public static function search($query = '', $publickey = '', $secretkey = '')
+    public static function search($query = '', $publickey = null, $secretkey = null)
     {
         return OmiseSearch::scope('transfer', $publickey, $secretkey)->query($query);
     }
