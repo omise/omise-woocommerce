@@ -40,50 +40,79 @@ class Omise {
 	 * @since  3.0
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'check_woocommerce_active' ) );
-		add_action( 'init', array( $this, 'initiate' ) );
+		add_action( 'plugins_loaded', array( $this, 'check_dependencies' ) );
+		add_action( 'init', array( $this, 'init' ) );
 
 		do_action( 'omise_initiated' );
 	}
 
 	/** 
-	 * Callback to display message about activation error
+	 * Check if all dependencies are loaded
+	 * properly before Omise-WooCommerce.
 	 * 
 	 * @since  3.2
 	 */
-	public function woocommerce_plugin_notice(){
-		?>
-		<div class="error">
-			<p><?php echo __( 'The Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
-		</div>
-		<?php
-	}
-
-	/** 
-	 * Callback checking if WooCommerce is active
-	 * 
-	 * @since  3.2
-	 */
-	public function check_woocommerce_active() {
-		if ( function_exists( 'WC' ) ) {
-			static::$can_initiate = true;
+	public function check_dependencies() {
+		if ( ! function_exists( 'WC' ) ) {
 			return;
 		}
+
+		static::$can_initiate = true;
 	}
 
 	/**
 	 * @since  3.0
 	 */
-	public function initiate() {
+	public function init() {
 		if ( ! static::$can_initiate ) {
-			add_action( 'admin_notices', array($this, 'woocommerce_plugin_notice') );
+			add_action( 'admin_notices', array($this, 'init_error_messages') );
 			return;
 		}
+
+		$this->define_constants();
+		$this->include_classes();
+		$this->load_plugin_textdomain();
+		$this->register_post_types();
+		$this->init_admin();
+		$this->init_route();
+
+		register_omise_alipay();
+		register_omise_creditcard();
+		register_omise_internetbanking();
+		prepare_omise_myaccount_panel();
+	}
+
+	/**
+	 * Callback to display message about activation error
+	 *
+	 * @since  3.2
+	 */
+	public function init_error_messages(){
+		?>
+		<div class="error">
+			<p><?php echo __( 'Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Define Omise necessary constants.
+	 *
+	 * @since 3.3
+	 */
+	private function define_constants() {
+		global $wp_version;
 
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version );
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
 		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2014-07-27' );
+		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version ) );
+	}
 
+	/**
+	 * @since 3.3
+	 */
+	private function include_classes() {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-capture.php';
@@ -98,18 +127,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';		
-
-		register_omise_wc_gateway_post_type();
-		register_omise_alipay();
-		register_omise_creditcard();
-		register_omise_internetbanking();
-		prepare_omise_myaccount_panel();
-		$this->load_plugin_textdomain();
-		$this->register_user_agent();
-
-		$this->init_admin();
-		$this->init_route();
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 	}
 
 	/**
@@ -143,16 +161,6 @@ class Omise {
 	}
 
 	/**
-	 * @since  3.0
-	 */
-	public function register_user_agent() {
-		global $wp_version;
-
-		$user_agent = sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, function_exists('WC') ? WC()->version : '' );
-		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', $user_agent );
-	}
-
-	/**
 	 * @param  array $order_actions
 	 *
 	 * @return array
@@ -170,6 +178,31 @@ class Omise {
 		$order_actions[ $payment_method . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
 
 		return $order_actions;
+	}
+
+	/**
+	 * Register necessary post-types
+	 *
+	 * @deprecated 3.0  Omise-WooCommerce was once storing Omise's charge id
+	 *                  with WooCommerce's order id together in a
+	 *                  customed-post-type, 'omise_charge_items'.
+	 *
+	 *                  Since Omise-WooCoomerce v3.0, now the plugin stores
+	 *                  Omise's charge id as a 'customed-post-meta' in the
+	 *                  WooCommerce's 'order' post-type instead.
+	 */
+	public function register_post_types() {
+		register_post_type(
+			'omise_charge_items',
+			array(
+				'supports' => array('title','custom-fields'),
+				'label'    => 'Omise Charge Items',
+				'labels'   => array(
+					'name'          => 'Omise Charge Items',
+					'singular_name' => 'Omise Charge Item'
+				)
+			)
+		);
 	}
 
 	/**

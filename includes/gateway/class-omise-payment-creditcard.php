@@ -674,17 +674,3 @@ function register_omise_creditcard() {
 		add_filter( 'woocommerce_payment_gateways', 'add_omise_creditcard' );
 	}
 }
-
-function register_omise_wc_gateway_post_type() {
-	register_post_type(
-		'omise_charge_items',
-		array(
-			'supports' => array('title','custom-fields'),
-			'label'    => 'Omise Charge Items',
-			'labels'   => array(
-				'name'          => 'Omise Charge Items',
-				'singular_name' => 'Omise Charge Item'
-			)
-		)
-	);
-}
