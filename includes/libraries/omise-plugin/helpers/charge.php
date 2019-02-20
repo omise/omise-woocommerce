@@ -35,9 +35,7 @@ if (! class_exists('OmisePluginHelperCharge')) {
         public static function isPaid($charge)
         {
             if (self::isChargeObject($charge)) {
-                // support Omise API version '2014-07-27' by checking if 'captured' exist.
-                $paid = isset($charge['captured']) ? $charge['captured'] : $charge['paid'];
-                if ($paid === true)
+                if ($charge['paid'] === true)
                     return true;
             }
 

@@ -93,7 +93,7 @@ function register_omise_alipay() {
 					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
 					'currency'    => $order->get_order_currency(),
 					'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-					'offsite'     => 'alipay',
+					'source'      => array( 'type' => 'alipay' ),
 					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_alipay_callback" ),
 					'metadata'    => array_merge( $metadata, array(
 						/** override order_id as a reference for webhook handlers **/
@@ -186,10 +186,7 @@ function register_omise_alipay() {
 					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 				}
 
-				// Backward compatible with Omise API version 2014-07-27 by checking if 'captured' exist.
-				$paid = isset( $charge['captured'] ) ? $charge['captured'] : $charge['paid'];
-
-				if ( 'pending' === $charge['status'] && ! $paid ) {
+				if ( 'pending' === $charge['status'] && ! $charge['paid'] ) {
 					$order->add_order_note(
 						wp_kses(
 							__( 'Omise: The payment has been processing.<br/>Due to the Alipay process, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),
@@ -204,10 +201,7 @@ function register_omise_alipay() {
 					die();
 				}
 
-				// Backward compatible with Omise API version 2014-07-27 by checking if 'captured' exist.
-				$paid = isset( $charge['captured'] ) ? $charge['captured'] : $charge['paid'];
-
-				if ( 'successful' === $charge['status'] && $paid ) {
+				if ( 'successful' === $charge['status'] && $charge['paid'] ) {
 					$order->add_order_note(
 						sprintf(
 							wp_kses(
