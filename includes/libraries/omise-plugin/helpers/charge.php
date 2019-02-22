@@ -20,12 +20,7 @@ if (! class_exists('OmisePluginHelperCharge')) {
          */
         public static function isAuthorized($charge)
         {
-            if (self::isChargeObject($charge)) {
-                if ($charge['authorized'] === true)
-                    return true;
-            }
-
-            return false;
+            return self::isChargeObject($charge) && $charge['authorized'];
         }
 
         /**
@@ -34,12 +29,7 @@ if (! class_exists('OmisePluginHelperCharge')) {
          */
         public static function isPaid($charge)
         {
-            if (self::isChargeObject($charge)) {
-                if ($charge['paid'] === true)
-                    return true;
-            }
-
-            return false;
+            return self::isChargeObject($charge) && $charge['paid'];
         }
 
         /**
