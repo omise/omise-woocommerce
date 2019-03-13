@@ -70,9 +70,9 @@ class Omise_Event_Charge_Complete {
 						$data->failure_message . ' (code: ' . $data->failure_code . ')'
 					)
 				);
-				if( $order->get_status() !== 'successful'){
+				if (!in_array( $order->get_status(), array('processing', 'completed' ))) {
 					$order->update_status( 'failed' );
-				}		
+				}
 				break;
 
 			case 'successful':
