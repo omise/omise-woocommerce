@@ -102,18 +102,19 @@ function register_omise_internetbanking() {
 			}
 
 			$order->add_order_note( __( 'Omise: Processing a payment with Internet Banking solution..', 'omise' ) );
-
 			try {
+				$metadata = apply_filters( 'omise_charge_params_metadata', array(), $order );
 				$charge = $this->sale( array(
 					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
 					'currency'    => $order->get_order_currency(),
-					'description' => 'WooCommerce Order id ' . $order_id,
-					'offsite'     => $_POST['omise-offsite'],
+					'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
+					'source'      => array( 'type' => $_POST['omise-offsite'] ),
 					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_internetbanking_callback" ),
-					'metadata'    => array(
+					'metadata'    => array_merge( $metadata, array(
+						/** override order_id as a reference for webhook handlers **/
 						/** backward compatible with WooCommerce v2.x series **/
 						'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
-					)
+					) )
 				) );
 
 				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
@@ -200,10 +201,7 @@ function register_omise_internetbanking() {
 					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 				}
 
-				// Backward compatible with Omise API version 2014-07-27 by checking if 'captured' exist.
-				$paid = isset( $charge['captured'] ) ? $charge['captured'] : $charge['paid'];
-
-				if ( 'pending' === $charge['status'] && ! $paid ) {
+				if ( 'pending' === $charge['status'] && ! $charge['paid'] ) {
 					$order->add_order_note(
 						wp_kses(
 							__( 'Omise: The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),
@@ -218,10 +216,7 @@ function register_omise_internetbanking() {
 					die();
 				}
 
-				// Backward compatible with Omise API version 2014-07-27 by checking if 'captured' exist.
-				$paid = isset( $charge['captured'] ) ? $charge['captured'] : $charge['paid'];
-
-				if ( 'successful' === $charge['status'] && $paid ) {
+				if ( 'successful' === $charge['status'] && $charge['paid'] ) {
 					$order->add_order_note(
 						sprintf(
 							wp_kses(

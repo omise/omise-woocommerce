@@ -20,12 +20,7 @@ if (! class_exists('OmisePluginHelperCharge')) {
          */
         public static function isAuthorized($charge)
         {
-            if (self::isChargeObject($charge)) {
-                if ($charge['authorized'] === true)
-                    return true;
-            }
-
-            return false;
+            return self::isChargeObject($charge) && $charge['authorized'];
         }
 
         /**
@@ -34,14 +29,7 @@ if (! class_exists('OmisePluginHelperCharge')) {
          */
         public static function isPaid($charge)
         {
-            if (self::isChargeObject($charge)) {
-                // support Omise API version '2014-07-27' by checking if 'captured' exist.
-                $paid = isset($charge['captured']) ? $charge['captured'] : $charge['paid'];
-                if ($paid === true)
-                    return true;
-            }
-
-            return false;
+            return self::isChargeObject($charge) && $charge['paid'];
         }
 
         /**
