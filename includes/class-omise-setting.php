@@ -84,7 +84,12 @@ class Omise_Setting {
 	 * @since  3.1
 	 */
 	public function update_settings( $data ) {
+		$data            = array_intersect_key( $data, $this->get_default_settings() );
 		$data['sandbox'] = isset( $data['sandbox'] ) && ! is_null( $data['sandbox'] ) ? 'yes' : 'no';
+
+		array_walk( $data, function( &$input, $key ) {
+			$input = esc_html( sanitize_text_field( $input ) );
+		} );
 
 		$this->settings = array_merge(
 			$this->settings,
