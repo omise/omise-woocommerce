@@ -175,6 +175,7 @@
 			</tbody>
 		</table>
 
+		<input type="hidden" name="omise_setting_page_nonce" value="<?= wp_create_nonce( 'omise-setting' ); ?>" />
 		<?php submit_button( __( 'Save Settings', 'omise' ) ); ?>
 
 	</form>

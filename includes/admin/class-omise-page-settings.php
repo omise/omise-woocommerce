@@ -34,6 +34,10 @@ class Omise_Page_Settings {
 	 * @since  3.1
 	 */
 	protected function save( $data ) {
+		if ( ! isset( $data['omise_setting_page_nonce'] ) || ! wp_verify_nonce( $data['omise_setting_page_nonce'], 'omise-setting' ) ) {
+			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
+		}
+
 		$this->settings->update_settings( $data );
 	}
 
