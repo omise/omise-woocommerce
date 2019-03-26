@@ -1,7 +1,7 @@
 {
   "name": "omise",
   "title": "Omise Payment Gateway",
-  "version": "3.2",
+  "version": "3.3",
   "homepage": "https://www.omise.co/",
   "repository": {
     "type": "git",

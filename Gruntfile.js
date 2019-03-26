@@ -10,7 +10,7 @@ module.exports = function(grunt) {
                     potHeaders: {
                         poedit: false,                  // Includes common Poedit headers.
                         'x-poedit-keywordslist': true,  // Include a list of all possible gettext functions.
-                        'Project-Id-Version': 'Omise Payment Gateway v3.2',
+                        'Project-Id-Version': 'Omise Payment Gateway v3.3',
                         'Report-Msgid-Bugs-To': 'https://github.com/omise/omise-woocommerce/issues'
                     },                                  // Headers to add to the generated POT file.
                     processPot: null,                   // A callback function for manipulating the POT file.
