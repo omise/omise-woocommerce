@@ -4,12 +4,11 @@
 
 ## Supported Versions
 
-**Here's the list of versions we tested on:**
-- WooCommerce v3.3.4
+WooCommerce version 3.3.4 and above (tested to version 3.5.7).
 
-**Can't find the version you're looking for?**  
+**The extension doesn't work on your version?**  
 Our aim is to support as many versions of WooCommerce as we can.  
-If the version you are currently using has not been tested on, you can try install it and let us know if there is any issues at [GitHub's issue channel](https://github.com/omise/omise-woocommerce/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
+If the version you are currently using has not been listed, you can try installing it and report any issues to us at [GitHub's issue channel](https://github.com/omise/omise-woocommerce/issues) by following the [Reporting the issue Guideline](https://guides.github.com/activities/contributing-to-open-source/#contributing).
 
 ## Getting Started
 
