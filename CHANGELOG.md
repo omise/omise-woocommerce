@@ -1,5 +1,25 @@
 # CHANGELOG
 
+### [v3.3 _(Mar 28, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.3)
+
+#### 🚀 Enhancements
+
+- [#106](https://github.com/omise/omise-woocommerce/pull/106): Removing unused stylesheet & js file.
+- [#102](https://github.com/omise/omise-woocommerce/pull/102): Migrating all related code to support Omise API version v2017-11-02.
+- [#98](https://github.com/omise/omise-woocommerce/pull/98): Added filter hooks for charge.description and charge.metadata.
+- [#96](https://github.com/omise/omise-woocommerce/pull/96): Refactoring plugin-initial code structure - part 3: Organizing Omise_Admin class.
+- [#95](https://github.com/omise/omise-woocommerce/pull/95): Refactoring plugin-initial code structure - part 2: Relocating, renaming functions and method.
+- [#94](https://github.com/omise/omise-woocommerce/pull/94): Refactoring plugin-initial code structure - part 1: Enhancing the behavior of checking dependency plugin.
+- [#93](https://github.com/omise/omise-woocommerce/pull/93): Upgrade Omise-PHP library from v2.8.0 to v2.11.1.
+- [#91](https://github.com/omise/omise-woocommerce/pull/91): Removing the deprecated function (from jQuery's reported).
+- [#86](https://github.com/omise/omise-woocommerce/pull/86): README, update the installation instruction, enhance overall contents.
+
+#### 👾 Bug Fixes
+
+- [#104](https://github.com/omise/omise-woocommerce/pull/104): Omise Setting Page, sanitizing input fields before save.
+
+---
+
 ### [v3.2 _(Apr 20, 2018)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.2)
 
 #### ✨ Highlights
