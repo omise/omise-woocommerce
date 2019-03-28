@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 if ( ! class_exists( 'Omise_MyAccount' ) ) {
 	class Omise_MyAccount {
 		private static $instance;
-		private $private_key, $public_key, $omise_customer_id;
+		private $omise_customer_id;
 
 		public static function get_instance() {
 			if ( ! self::$instance) {
@@ -20,31 +20,9 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				return;
 			}
 
-			$settings = get_option( 'woocommerce_omise_settings', null );
-
-			if ( is_null($settings) || ! is_array( $settings ) ) {
-				return;
-			}
-
-			if ( empty( $settings['sandbox'] )
-				|| empty( $settings['test_private_key'] )
-				|| empty( $settings['live_private_key'] )
-				|| empty( $settings['test_public_key'] )
-				|| empty( $settings['live_public_key'] )) {
-				return;
-			}
-
-			$test_mode = isset( $settings['sandbox'] ) && $settings['sandbox'] == 'yes';
-			$this->private_key = $test_mode ? $settings['test_private_key'] : $settings['live_private_key'];
-			$this->public_key  = $test_mode ? $settings['test_public_key'] : $settings['live_public_key'];
-
-			if ( empty( $this->private_key ) || empty( $this->public_key ) ) {
-				return;
-			}
-
 			if ( is_user_logged_in() ) {
 				$current_user = wp_get_current_user();
-				$this->omise_customer_id = $test_mode ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
+				$this->omise_customer_id = Omise()->setting()->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 			}
 
 			add_action( 'woocommerce_after_my_account', array( $this, 'init_panel' ) );
@@ -60,7 +38,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function init_panel() {
 			if ( ! empty( $this->omise_customer_id ) ) {
 				try {
-					$customer                  = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
+					$customer                  = OmiseCustomer::retrieve( $this->omise_customer_id );
 					$viewData['existingCards'] = $customer->cards();
 
 					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
@@ -103,7 +81,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				'omise-myaccount-card-handler',
 				'omise_params',
 				array(
-					'key'             => $this->public_key,
+					'key'             => Omise()->setting->public_key(),
 					'ajax_url'        => admin_url( 'admin-ajax.php' ),
 					'ajax_loader_url' => plugins_url( '/assets/images/ajax-loader@2x.gif', dirname( __FILE__ ) )
 				)
@@ -126,7 +104,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				die();
 			}
 
-			$customer = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
+			$customer = OmiseCustomer::retrieve( $this->omise_customer_id );
 			$card     = $customer->cards()->retrieve( $card_id );
 			$card->destroy();
 
@@ -152,7 +130,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			}
 
 			try {
-				$customer = OmiseCustomer::retrieve( $this->omise_customer_id, '', $this->private_key );
+				$customer = OmiseCustomer::retrieve( $this->omise_customer_id );
 				$customer->update( array(
 					'card' => $token
 				) );

@@ -152,7 +152,7 @@ function register_omise_creditcard() {
 				$omise_customer_id = $this->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 				if ( ! empty( $omise_customer_id ) ) {
 					try {
-						$customer                  = OmiseCustomer::retrieve( $omise_customer_id, '', $this->secret_key() );
+						$customer                  = OmiseCustomer::retrieve( $omise_customer_id );
 						$viewData['existingCards'] = $customer->cards( array( 'order' => 'reverse_chronological' ) );
 					} catch (Exception $e) {
 						// nothing
@@ -211,7 +211,7 @@ function register_omise_creditcard() {
 					if ( ! empty( $omise_customer_id ) ) {
 						try {
 							// attach a new card to customer
-							$customer = OmiseCustomer::retrieve( $omise_customer_id, '', $this->secret_key() );
+							$customer = OmiseCustomer::retrieve( $omise_customer_id );
 							$customer->update( array(
 								'card' => $token
 							) );
@@ -232,7 +232,7 @@ function register_omise_creditcard() {
 							"card"        => $token
 						);
 
-						$omise_customer = OmiseCustomer::create( $customer_data, '', $this->secret_key() );
+						$omise_customer = OmiseCustomer::create( $customer_data );
 
 						if ( $omise_customer['object'] == "error" ) {
 							throw new Exception( $omise_customer['message'] );
@@ -293,7 +293,7 @@ function register_omise_creditcard() {
 					'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
 				) );
 
-				$charge = OmiseCharge::create( $data, '', $this->secret_key() );
+				$charge = OmiseCharge::create( $data );
 
 				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 
@@ -441,7 +441,7 @@ function register_omise_creditcard() {
 			);
 
 			try {
-				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 				$refund = $charge->refunds()->create( array(
 					'amount' => $this->format_amount_subunit( $amount, $order->get_order_currency() )
 				) );
@@ -516,7 +516,7 @@ function register_omise_creditcard() {
 			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
 
 			try {
-				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
 				switch ( strtoupper( $this->payment_action ) ) {
 					case 'MANUAL_CAPTURE':

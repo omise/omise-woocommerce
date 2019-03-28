@@ -180,7 +180,7 @@ function register_omise_alipay() {
 			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
 
 			try {
-				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
 				if ( 'failed' === $charge['status'] ) {
 					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
