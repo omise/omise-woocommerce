@@ -8,9 +8,35 @@ if ( class_exists( 'Omise_Setting' ) ) {
 
 class Omise_Setting {
 	/**
+	 * The Omise_Setting Instance.
+	 *
+	 * @since 3.4
+	 *
+	 * @var   \Omise_Setting
+	 */
+	protected static $the_instance = null;
+
+	/**
 	 * @var null | array
 	 */
 	public $settings;
+
+	/**
+	 * The Omise_Setting Instance.
+	 *
+	 * @since  3.4
+	 *
+	 * @static
+	 *
+	 * @return \Omise_Setting - The instance.
+	 */
+	public static function instance() {
+		if ( is_null( self::$the_instance ) ) {
+			self::$the_instance = new self();
+		}
+
+		return self::$the_instance;
+	}
 
 	/**
 	 * @since 3.1
