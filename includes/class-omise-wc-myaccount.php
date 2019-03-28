@@ -22,7 +22,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 
 			if ( is_user_logged_in() ) {
 				$current_user = wp_get_current_user();
-				$this->omise_customer_id = Omise()->setting()->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
+				$this->omise_customer_id = Omise()->settings()->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 			}
 
 			add_action( 'woocommerce_after_my_account', array( $this, 'init_panel' ) );
@@ -81,7 +81,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				'omise-myaccount-card-handler',
 				'omise_params',
 				array(
-					'key'             => Omise()->setting->public_key(),
+					'key'             => Omise()->settings()->public_key(),
 					'ajax_url'        => admin_url( 'admin-ajax.php' ),
 					'ajax_loader_url' => plugins_url( '/assets/images/ajax-loader@2x.gif', dirname( __FILE__ ) )
 				)

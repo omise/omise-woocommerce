@@ -104,8 +104,8 @@ class Omise {
 		global $wp_version;
 
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version );
-		defined( 'OMISE_PUBLIC_KEY' ) || define( 'OMISE_PUBLIC_KEY', $this->setting()->public_key() );
-		defined( 'OMISE_SECRET_KEY' ) || define( 'OMISE_SECRET_KEY', $this->setting()->secret_key() );
+		defined( 'OMISE_PUBLIC_KEY' ) || define( 'OMISE_PUBLIC_KEY', $this->settings()->public_key() );
+		defined( 'OMISE_SECRET_KEY' ) || define( 'OMISE_SECRET_KEY', $this->settings()->secret_key() );
 		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2017-11-02' );
 		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version ) );
 	}
@@ -211,7 +211,7 @@ class Omise {
 	 *
 	 * @return Omise_Setting
 	 */
-	public function setting() {
+	public function settings() {
 		return Omise_Setting::instance();
 	}
 }

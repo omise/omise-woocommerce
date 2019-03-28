@@ -16,7 +16,7 @@ class Omise_Page_Settings {
 	 * @since 3.1
 	 */
 	public function __construct() {
-		$this->settings = new Omise_Setting;
+		$this->settings = Omise()->settings();
 	}
 
 	/**

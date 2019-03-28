@@ -52,7 +52,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	protected $order;
 
 	public function __construct() {
-		$this->omise_settings   = Omise()->setting();
+		$this->omise_settings   = Omise()->settings();
 		$this->payment_settings = $this->omise_settings->get_settings();
 	}
 
