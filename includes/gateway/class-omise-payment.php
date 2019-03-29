@@ -52,7 +52,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	protected $order;
 
 	public function __construct() {
-		$this->omise_settings   = new Omise_Setting;
+		$this->omise_settings   = Omise()->settings();
 		$this->payment_settings = $this->omise_settings->get_settings();
 	}
 
@@ -185,7 +185,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$this->load_order( $order );
 
 		try {
-			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 			$charge->capture();
 
 			if ( ! OmisePluginHelperCharge::isPaid( $charge ) ) {
@@ -222,7 +222,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return OmiseCharge
 	 */
 	public function sale( $params ) {
-		return OmiseCharge::create( $params, '', $this->secret_key() );
+		return OmiseCharge::create( $params );
 	}
 
 	/**
@@ -240,7 +240,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$this->load_order( $order );
 
 		try {
-			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order(), '', $this->secret_key() );
+			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
 			if ( ! $this->order()->get_transaction_id() ) {
 				/** backward compatible with WooCommerce v2.x series **/

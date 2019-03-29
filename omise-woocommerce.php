@@ -69,8 +69,8 @@ class Omise {
 			return;
 		}
 
-		$this->define_constants();
 		$this->include_classes();
+		$this->define_constants();
 		$this->load_plugin_textdomain();
 		$this->register_post_types();
 		$this->init_admin();
@@ -104,7 +104,8 @@ class Omise {
 		global $wp_version;
 
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version );
-		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
+		defined( 'OMISE_PUBLIC_KEY' ) || define( 'OMISE_PUBLIC_KEY', $this->settings()->public_key() );
+		defined( 'OMISE_SECRET_KEY' ) || define( 'OMISE_SECRET_KEY', $this->settings()->secret_key() );
 		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2017-11-02' );
 		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version ) );
 	}
@@ -113,6 +114,8 @@ class Omise {
 	 * @since 3.3
 	 */
 	private function include_classes() {
+		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
+
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-capture.php';
@@ -199,6 +202,17 @@ class Omise {
 		}
 
 		return self::$the_instance;
+	}
+
+	/**
+	 * Get setting class.
+	 *
+	 * @since  3.4
+	 *
+	 * @return Omise_Setting
+	 */
+	public function settings() {
+		return Omise_Setting::instance();
 	}
 }
 
