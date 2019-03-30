@@ -297,18 +297,10 @@ function register_omise_creditcard() {
 
 				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 
-				$this->attach_charge_id_to_order( $charge['id'] );
+				$this->set_order_transaction_id( $charge['id'] );
 
 				if ( Omise_Charge::is_failed( $charge ) ) {
 					throw new Exception( Omise_Charge::get_error_message( $charge ) );
-				}
-
-				/** backward compatible with WooCommerce v2.x series **/
-				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
-					$order->set_transaction_id( $charge['id'] );
-					$order->save();
-				} else {
-					update_post_meta( $order->id, '_transaction_id', $charge['id'] );
 				}
 
 				if ( $this->omise_3ds ) {
