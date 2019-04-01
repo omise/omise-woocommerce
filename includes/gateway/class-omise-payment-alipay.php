@@ -61,14 +61,7 @@ function register_omise_alipay() {
 		}
 
 		/**
-		 * @since  3.4
-		 *
-		 * @see    Omise_Payment::process_payment( $order_id )
-		 *
-		 * @param  int $order_id
-		 * @param  WC_Order $order
-		 *
-		 * @return OmiseCharge|OmiseException
+		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
 			$metadata = array_merge(
@@ -87,15 +80,7 @@ function register_omise_alipay() {
 		}
 
 		/**
-		 * @since  3.4
-		 *
-		 * @see    Omise_Payment::process_payment( $order_id )
-		 *
-		 * @param  int         $order_id
-		 * @param  WC_Order    $order
-		 * @param  OmiseCharge $charge
-		 *
-		 * @return array|Exception
+		 * @inheritdoc
 		 */
 		public function result( $order_id, $order, $charge ) {
 			if ( 'failed' == $charge['status'] ) {

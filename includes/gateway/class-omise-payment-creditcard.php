@@ -166,14 +166,7 @@ function register_omise_creditcard() {
 		}
 
 		/**
-		 * @since  3.4
-		 *
-		 * @see    Omise_Payment::process_payment( $order_id )
-		 *
-		 * @param  int $order_id
-		 * @param  WC_Order $order
-		 *
-		 * @return OmiseCharge|OmiseException
+		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
 			$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
@@ -281,15 +274,7 @@ function register_omise_creditcard() {
 		}
 
 		/**
-		 * @since  3.4
-		 *
-		 * @see    Omise_Payment::process_payment( $order_id )
-		 *
-		 * @param  int         $order_id
-		 * @param  WC_Order    $order
-		 * @param  OmiseCharge $charge
-		 *
-		 * @return array|Exception
+		 * @inheritdoc
 		 */
 		public function result( $order_id, $order, $charge ) {
 			if ( Omise_Charge::is_failed( $charge ) ) {
