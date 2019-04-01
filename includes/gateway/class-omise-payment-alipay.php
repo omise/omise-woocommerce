@@ -61,95 +61,62 @@ function register_omise_alipay() {
 		}
 
 		/**
+		 * @since  3.4
+		 *
+		 * @see    Omise_Payment::process_payment( $order_id )
+		 *
 		 * @param  int $order_id
+		 * @param  WC_Order $order
 		 *
-		 * @see    WC_Payment_Gateway::process_payment( $order_id )
-		 * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
-		 *
-		 * @return array
+		 * @return OmiseCharge|OmiseException
 		 */
-		public function process_payment( $order_id ) {
-			if ( ! $order = $this->load_order( $order_id ) ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'We have been unable to process your payment.<br/>Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
-							array(
-								'br' => array()
-							)
-						),
-						$order_id
-					),
-					'error'
-				);
-				return;
+		public function charge( $order_id, $order ) {
+			$metadata = array_merge(
+				apply_filters( 'omise_charge_params_metadata', array(), $order ),
+				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
+			);
+
+			return OmiseCharge::create( array(
+				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+				'currency'    => $order->get_order_currency(),
+				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
+				'source'      => array( 'type' => 'alipay' ),
+				'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_alipay_callback" ),
+				'metadata'    => $metadata
+			) );
+		}
+
+		/**
+		 * @since  3.4
+		 *
+		 * @see    Omise_Payment::process_payment( $order_id )
+		 *
+		 * @param  int         $order_id
+		 * @param  WC_Order    $order
+		 * @param  OmiseCharge $charge
+		 *
+		 * @return array|Exception
+		 */
+		public function result( $order_id, $order, $charge ) {
+			if ( 'failed' == $charge['status'] ) {
+				return $this->payment_failed( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 			}
 
-			$order->add_order_note( __( 'Omise: Processing a payment with Alipay solution..', 'omise' ) );
+			if ( 'pending' == $charge['status'] ) {
+				$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
 
-			try {
-				$metadata = apply_filters( 'omise_charge_params_metadata', array(), $order );
-				$charge = $this->sale( array(
-					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
-					'currency'    => $order->get_order_currency(),
-					'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-					'source'      => array( 'type' => 'alipay' ),
-					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_alipay_callback" ),
-					'metadata'    => array_merge( $metadata, array(
-						/** override order_id as a reference for webhook handlers **/
-						/** backward compatible with WooCommerce v2.x series **/
-						'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
-					) )
-				) );
-
-				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
-
-				switch ( $charge['status'] ) {
-					case 'pending':
-						$this->set_order_transaction_id( $charge['id'] );
-
-						$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
-
-						return array (
-							'result'   => 'success',
-							'redirect' => $charge['authorize_uri'],
-						);
-						break;
-
-					case 'failed':
-						throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
-						break;
-
-					default:
-						throw new Exception(
-							sprintf(
-								__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
-								$order_id
-							)
-						);
-						break;
-				}
-			} catch ( Exception $e ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$e->getMessage()
-					),
-					'error'
+				return array (
+					'result'   => 'success',
+					'redirect' => $charge['authorize_uri'],
 				);
-
-				$order->add_order_note(
-					sprintf(
-						__( 'Omise: Payment failed, %s', 'omise' ),
-						$e->getMessage()
-					)
-				);
-
-				return;
 			}
+
+			return $this->payment_failed(
+				sprintf(
+					__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
+					$order_id
+				)
+			);
 		}
 
 		/**
