@@ -89,7 +89,7 @@ function register_omise_internetbanking() {
 				wc_add_notice(
 					sprintf(
 						wp_kses(
-							__( 'We cannot process your payment.<br/>Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is \'%s\')', 'omise' ),
+							__( 'We have been unable to process your payment.<br/>Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
 							array(
 								'br' => array()
 							)
@@ -123,7 +123,7 @@ function register_omise_internetbanking() {
 					case 'pending':
 						$this->set_order_transaction_id( $charge['id'] );
 
-						$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer out to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
+						$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
 
 						return array (
 							'result'   => 'success',
@@ -138,7 +138,7 @@ function register_omise_internetbanking() {
 					default:
 						throw new Exception(
 							sprintf(
-								__( 'Please feel free to try submit your order again or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
+								__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
 								$order_id
 							)
 						);
@@ -148,7 +148,7 @@ function register_omise_internetbanking() {
 				wc_add_notice(
 					sprintf(
 						wp_kses(
-							__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
+							__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
 							array( 'br' => array() )
 						),
 						$e->getMessage()

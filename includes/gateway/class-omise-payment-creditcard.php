@@ -178,7 +178,7 @@ function register_omise_creditcard() {
 				wc_add_notice(
 					sprintf(
 						wp_kses(
-							__( 'We cannot process your payment.<br/>Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is \'%s\')', 'omise' ),
+							__( 'We have been unable to process your payment.<br/>Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
 							array(
 								'br' => array()
 							)
@@ -197,7 +197,7 @@ function register_omise_creditcard() {
 				$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
 
 				if ( empty( $token ) && empty( $card_id ) ) {
-					throw new Exception( __( 'Please select an existing card or enter a new card information.', 'omise' ) );
+					throw new Exception( __( 'Please select an existing card or enter new card information.', 'omise' ) );
 				}
 
 				$user              = $order->get_user();
@@ -205,7 +205,7 @@ function register_omise_creditcard() {
 
 				if ( isset( $_POST['omise_save_customer_card'] ) && empty( $card_id ) ) {
 					if ( empty( $token ) ) {
-						throw new Exception( __( 'Cannot process with a card that you\'re using. Please make sure that the card info is correct or contact our support team if you have any questions.', 'omise' ) );
+						throw new Exception( __( 'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise' ) );
 					}
 
 					if ( ! empty( $omise_customer_id ) ) {
@@ -249,7 +249,7 @@ function register_omise_creditcard() {
 							throw new Exception(
 								sprintf(
 									wp_kses(
-										__( 'Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is \'%s\')', 'omise' ),
+										__( 'Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
 										array(
 											'br' => array()
 										)
@@ -306,7 +306,7 @@ function register_omise_creditcard() {
 				if ( $this->omise_3ds ) {
 					$order->add_order_note(
 						sprintf(
-							__( 'Omise: Processing with a 3-D Secure payment, redirecting buyer out to %s', 'omise' ),
+							__( 'Omise: Processing a 3-D Secure payment, redirecting buyer to %s', 'omise' ),
 							esc_url( $charge['authorize_uri'] )
 						)
 					);
@@ -323,7 +323,7 @@ function register_omise_creditcard() {
 								$order->add_order_note(
 									sprintf(
 										wp_kses(
-											__( 'Omise: Payment processing.<br/>An amount %1$s %2$s has been authorized', 'omise' ),
+											__( 'Omise: Payment processing.<br/>An amount of %1$s %2$s has been authorized', 'omise' ),
 											array( 'br' => array() )
 										),
 										$order->get_total(),
@@ -341,7 +341,7 @@ function register_omise_creditcard() {
 								$order->add_order_note(
 									sprintf(
 										wp_kses(
-											__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
+											__( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ),
 											array( 'br' => array() )
 										),
 										$order->get_total(),
@@ -364,7 +364,7 @@ function register_omise_creditcard() {
 					}
 
 					if ( ! $success ) {
-						throw new Exception( __( 'Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ) );
+						throw new Exception( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
 					}
 
 					// Remove cart
@@ -378,7 +378,7 @@ function register_omise_creditcard() {
 				wc_add_notice(
 					sprintf(
 						wp_kses(
-							__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
+							__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
 							array( 'br' => array() )
 						),
 						$e->getMessage()
@@ -421,7 +421,7 @@ function register_omise_creditcard() {
 				$this->order()->add_order_note(
 					sprintf(
 						wp_kses(
-							__( 'Omise: Payment successful (manual capture).<br/>An amount %1$s %2$s has been paid', 'omise' ),
+							__( 'Omise: Payment successful (manual capture).<br/>An amount of %1$s %2$s has been paid', 'omise' ),
 							array( 'br' => array() )
 						),
 						$this->order()->get_total(),
