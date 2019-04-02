@@ -21,3 +21,92 @@ fieldset.card-exists {
 #new_card_info:checked ~ fieldset.card-exists {
     display: block;
 }
+
+/**
+ * Specific style
+ * (usually designed specifically for only one purpose).
+ */
+.omise-banks-list .installment-term-select-box {
+	width: 8rem;
+}
+
+/**
+ * Form, bank list components
+ */
+.omise-banks-list input[type="radio"] + label::before {
+	position: absolute;
+	top: 14px;
+	left: 14px;
+}
+
+.omise-banks-list .item {
+	position: relative;
+	padding: 4px 0 14px 0;
+	border-bottom: 1px solid #eee;
+}
+
+.omise-banks-list li > input {
+	position: absolute;
+	top: 26px;
+	left: 3.5px;
+}
+
+.omise-banks-list li > label {
+	display: inline-block;
+	padding: 6px 0px 0 32px;
+	cursor: pointer;
+	position: relative;
+}
+
+.omise-banks-list .bank-label {
+	display: inline-block;
+	padding-left: 8px;
+	vertical-align: top;
+}
+
+.omise-banks-list .bank-logo {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	margin-top: 4px;
+	border-radius: 2px;
+	border: 4px solid #fff;
+}
+
+/** BAY **/
+.bank-logo.bay {
+	background: url('../images/bay.svg') #fec43b;
+	border-color: #fec43b;
+}
+
+/** BBL **/
+.bank-logo.bbl {
+	background: url('../images/bbl.svg') #1e4598;
+	border-color: #1e4598;
+}
+
+/** First Choice **/
+.bank-logo.first_choice {
+	background: url('../images/firstchoice.svg') #007bc4;
+	border-color: #007bc4;
+}
+
+/** KBANK **/
+.bank-logo.kbank {
+	background: url('../images/kbank.svg') #ffffff;
+	border-color: #ffffff;
+}
+
+/** KTB **/
+.bank-logo.ktb {
+	background: url('../images/ktb.svg') #1ba5e1;
+	border-color: #1ba5e1;
+}
+
+/** KTC **/
+.bank-logo.ktc {
+	background: url('../images/ktc.svg') #ffffff;
+	border-color: #ffffff;
+}
+
+

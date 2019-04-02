@@ -33,6 +33,7 @@ function register_omise_installment() {
 			$this->title       = $this->get_option( 'title' );
 			$this->description = $this->get_option( 'description' );
 
+			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		}
 
@@ -62,6 +63,24 @@ function register_omise_installment() {
 					'description' => __( 'This controls the description which the user sees during checkout.', 'omise' )
 				),
 			);
+		}
+
+		/**
+		 * @inheritdoc
+		 */
+		public function payment_fields() {
+			Omise_Util::render_view( 'templates/payment/form-installment.php', array() );
+		}
+
+		/**
+		 * Register all required javascripts
+		 */
+		public function omise_assets() {
+			if ( ! is_checkout() || ! $this->is_available() ) {
+				return;
+			}
+
+			wp_enqueue_style( 'omise-css', plugins_url( '../../assets/css/omise-css.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION );
 		}
 
 		/**
