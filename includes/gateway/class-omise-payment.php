@@ -137,41 +137,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Attach a charge id into an order.
-	 *
-	 * @param string $charge_id
-	 */
-	public function attach_charge_id_to_order( $charge_id ) {
-		/** backward compatible with WooCommerce v2.x series **/
-		$order_id = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
-
-		if ( $this->get_charge_id_from_order() ) {
-			delete_post_meta( $order_id, self::CHARGE_ID );
-		}
-
-		add_post_meta( $order_id, self::CHARGE_ID, $charge_id );
-	}
-
-	/**
-	 * Retrieve an attached charge id.
-	 *
-	 * @return string
-	 */
-	public function get_charge_id_from_order() {
-		/** backward compatible with WooCommerce v2.x series **/
-		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
-
-		$charge_id = get_post_meta( $order_id, self::CHARGE_ID, true );
-
-		// Backward compatible for Omise v1.2.3
-		if ( empty( $charge_id ) ) {
-			$charge_id = $this->deprecated_get_charge_id_from_post();
-		}
-
-		return $charge_id;
-	}
-
-	/**
 	 * @param  array $params
 	 *
 	 * @return OmiseCharge
@@ -265,6 +230,64 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Set an order transaction id
+	 *
+	 * @param string $transaction_id  Omise charge id.
+	 */
+	protected function set_order_transaction_id( $transaction_id ) {
+		/** backward compatible with WooCommerce v2.x series **/
+		if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+			$this->order()->set_transaction_id( $transaction_id );
+			$this->order()->save();
+		} else {
+			update_post_meta( $this->order()->id, '_transaction_id', $transaction_id );
+		}
+	}
+
+	/**
+	 * Retrieve an attached charge id.
+	 *
+	 * @deprecated 3.4  We can simply retrieve Omise charge id via WC_Order::get_transaction_id().
+	 *                  Unfortunately, we may need to leave this code
+	 *                  as it is for backward compatibility reason.
+	 *
+	 * @return    string
+	 */
+	public function get_charge_id_from_order() {
+		if ( $charge_id = $this->order()->get_transaction_id() ) {
+			return $charge_id;
+		}
+
+		/**
+		 * @deprecated 3.4
+		 * The following code are for backward compatible only.
+		 */
+		// Backward compatible for Omise v3.0 - v3.3
+		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+		$charge_id = get_post_meta( $order_id, self::CHARGE_ID, true );
+
+		// Backward compatible for Omise v1.2.3
+		if ( empty( $charge_id ) ) {
+			$charge_id = $this->deprecated_get_charge_id_from_post();
+		}
+
+		return $charge_id;
+	}
+
+	/**
+	 * Attach a charge id into an order.
+	 *
+	 * @deprecated 3.4  Now using Omise_Payment::set_order_transaction_id().
+	 *                  However, keeping this method here just in case
+	 *                  if this method has been implemented in some other of 3rd-party plugins.
+	 *
+	 * @param      string $charge_id  Omise charge id.
+	 */
+	public function attach_charge_id_to_order( $charge_id ) {
+		$this->set_order_transaction_id( $charge_id );
 	}
 
 	/**
