@@ -13,6 +13,9 @@ function register_omise_creditcard() {
 	}
 
 	class Omise_Payment_Creditcard extends Omise_Payment {
+		const PAYMENT_ACTION_AUTHORIZE         = 'manual_capture';
+		const PAYMENT_ACTION_AUTHORIZE_CAPTURE = 'auto_capture';
+
 		public function __construct() {
 			parent::__construct();
 
@@ -81,11 +84,11 @@ function register_omise_creditcard() {
 						'title'       => __( 'Payment action', 'omise' ),
 						'type'        => 'select',
 						'description' => __( 'Capture automatically during the checkout process or manually after order has been placed', 'omise' ),
-						'default'     => 'auto_capture',
+						'default'     => self::PAYMENT_ACTION_AUTHORIZE_CAPTURE,
 						'class'       => 'wc-enhanced-select',
 						'options'     => array(
-							'auto_capture'   => __( 'Auto Capture', 'omise' ),
-							'manual_capture' => __( 'Manual Capture', 'omise' )
+							self::PAYMENT_ACTION_AUTHORIZE_CAPTURE => __( 'Auto Capture', 'omise' ),
+							self::PAYMENT_ACTION_AUTHORIZE         => __( 'Manual Capture', 'omise' )
 						),
 						'desc_tip'    => true
 					),
@@ -257,9 +260,9 @@ function register_omise_creditcard() {
 			}
 
 			// Set capture status (otherwise, use API's default behaviour)
-			if ( 'AUTO_CAPTURE' === strtoupper( $this->payment_action ) ) {
+			if ( self::PAYMENT_ACTION_AUTHORIZE_CAPTURE === $this->payment_action ) {
 				$data['capture'] = true;
-			} else if ( 'MANUAL_CAPTURE' === strtoupper( $this->payment_action ) ) {
+			} else if ( self::PAYMENT_ACTION_AUTHORIZE === $this->payment_action ) {
 				$data['capture'] = false;
 			}
 			$metadata = apply_filters( 'omise_charge_params_metadata', array(), $order );
@@ -295,8 +298,8 @@ function register_omise_creditcard() {
 				);
 			}
 
-			switch ( strtoupper( $this->payment_action ) ) {
-				case 'MANUAL_CAPTURE':
+			switch ( $this->payment_action ) {
+				case self::PAYMENT_ACTION_AUTHORIZE:
 					$success = Omise_Charge::is_authorized( $charge );
 					if ( $success ) {
 						$order->add_order_note(
@@ -313,7 +316,7 @@ function register_omise_creditcard() {
 
 					break;
 
-				case 'AUTO_CAPTURE':
+				case self::PAYMENT_ACTION_AUTHORIZE_CAPTURE:
 					$success = Omise_Charge::is_paid( $charge );
 					if ( $success ) {
 						$order->payment_complete();
@@ -512,8 +515,8 @@ function register_omise_creditcard() {
 			try {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
-				switch ( strtoupper( $this->payment_action ) ) {
-					case 'MANUAL_CAPTURE':
+				switch ( $this->payment_action ) {
+					case self::PAYMENT_ACTION_AUTHORIZE:
 						$success = Omise_Charge::is_authorized( $charge );
 						if ( $success ) {
 							$order->add_order_note(
@@ -530,7 +533,7 @@ function register_omise_creditcard() {
 
 						break;
 
-					case 'AUTO_CAPTURE':
+					case self::PAYMENT_ACTION_AUTHORIZE_CAPTURE:
 						$success = Omise_Charge::is_paid( $charge );
 						if ( $success ) {
 							$order->add_order_note(
