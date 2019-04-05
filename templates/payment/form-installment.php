@@ -1,73 +1,27 @@
-<fieldset id="omise-form-installment">
-	<ul class="omise-banks-list">
-		<!-- BAY -->
-		<li class="item">
-			<input id="installment_bay" type="radio" name="source[type]" value="installment_bay" />
-			<label for="installment_bay">
-				<div class="bank-logo bay"></div>
-				<div class="bank-label">
-					<span class="title"><?php _e( 'Krungsri', 'omise' ); ?></span><br/>
-					<select class="installment-term-select-box">
-						<option>Select term</option>
-					</select>
-				</div>
-			</label>
-		</li>
-
-		<!-- FIRST_CHOICE -->
-		<li class="item">
-			<input id="installment_first_choice" type="radio" name="source[type]" value="installment_first_choice" />
-			<label for="installment_first_choice">
-				<div class="bank-logo first_choice"></div>
-				<div class="bank-label">
-					<span class="title"><?php _e( 'Krungsri First Choice', 'omise' ); ?></span><br/>
-					<select class="installment-term-select-box">
-						<option>Select term</option>
-					</select>
-				</div>
-			</label>
-		</li>
-
-		<!-- KBANK -->
-		<li class="item">
-			<input id="installment_kbank" type="radio" name="source[type]" value="installment_kbank" />
-			<label for="installment_kbank">
-				<div class="bank-logo kbank"></div>
-				<div class="bank-label">
-					<span class="title"><?php _e( 'Kasikorn', 'omise' ); ?></span><br/>
-					<select class="installment-term-select-box">
-						<option>Select term</option>
-					</select>
-				</div>
-			</label>
-		</li>
-
-		<!-- KTC -->
-		<li class="item">
-			<input id="installment_ktc" type="radio" name="source[type]" value="installment_ktc" />
-			<label for="installment_ktc">
-				<div class="bank-logo ktc"></div>
-				<div class="bank-label">
-					<span class="title"><?php _e( 'Krungthai', 'omise' ); ?></span><br/>
-					<select class="installment-term-select-box">
-						<option>Select term</option>
-					</select>
-				</div>
-			</label>
-		</li>
-
-		<!-- BBL -->
-		<li class="item">
-			<input id="installment_bbl" type="radio" name="source[type]" value="installment_bbl" />
-			<label for="installment_bbl">
-				<div class="bank-logo bbl"></div>
-				<div class="bank-label">
-					<span class="title"><?php _e( 'Bangkok', 'omise' ); ?></span><br/>
-					<select class="installment-term-select-box">
-						<option>Select term</option>
-					</select>
-				</div>
-			</label>
-		</li>
-	</ul>
-</fieldset>
+<?php if ( ! empty( $viewData['installment_backends'] ) ) : ?>
+	<fieldset id="omise-form-installment">
+		<ul class="omise-banks-list">
+			<?php foreach ( $viewData['installment_backends'] as $backend ) : ?>
+				<li class="item">
+					<input id="<?php echo $backend->_id; ?>" type="radio" name="source[type]" value="<?php echo $backend->_id; ?>" />
+					<label for="<?php echo $backend->_id; ?>">
+						<div class="bank-logo <?php echo $backend->provider_code; ?>"></div>
+						<div class="bank-label">
+							<span class="title"><?php echo $backend->provider_name; ?></span><br/>
+							<select id="<?php echo $backend->_id; ?>_installment_terms" name="<?php echo $backend->_id; ?>_installment_terms" class="installment-term-select-box">
+								<option>Select term</option>
+								<?php foreach ( $backend->allowed_installment_terms as $term ) : ?>
+									<option value="<?php echo $term; ?>"><?php echo $term; ?> <?php echo __('months'); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+					</label>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</fieldset>
+<?php else: ?>
+	<p>
+		<?php echo __( 'There are no installment plans available for this purchase amount.', 'omise' ); ?>
+	</p>
+<?php endif; ?>
