@@ -110,12 +110,55 @@ function register_omise_installment() {
 		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
+			$source_type       = isset( $_POST['source']['type'] ) ? $_POST['source']['type'] : '';
+			$installment_terms = isset( $_POST[ $source_type . '_installment_terms'] ) ? $_POST[ $source_type . '_installment_terms'] : '';
+			$metadata          = array_merge(
+				apply_filters( 'omise_charge_params_metadata', array(), $order ),
+				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
+			);
+
+			return OmiseCharge::create( array(
+				'amount'            => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+				'currency'          => $order->get_order_currency(),
+				'description'       => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
+				'source'            => array(
+					'type'              => $source_type,
+					'installment_terms' => $installment_terms
+				),
+				'return_uri'        => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_installment_callback" ),
+				'metadata'          => $metadata
+			) );
 		}
 
 		/**
 		 * @inheritdoc
 		 */
 		public function result( $order_id, $order, $charge ) {
+			if ( 'failed' == $charge['status'] ) {
+				return $this->payment_failed( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
+			}
+
+			if ( 'pending' == $charge['status'] ) {
+				$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
+
+				return array (
+					'result'   => 'success',
+					'redirect' => $charge['authorize_uri'],
+				);
+			}
+
+			return $this->payment_failed(
+				sprintf(
+					__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
+					$order_id
+				)
+			);
+		}
+
+		/**
+		 * @return void
+		 */
+		public function callback() {
 		}
 	}
 
