@@ -35,6 +35,7 @@ function register_omise_installment() {
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 		}
 
 		/**
@@ -159,6 +160,93 @@ function register_omise_installment() {
 		 * @return void
 		 */
 		public function callback() {
+			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
+				wc_add_notice(
+					wp_kses(
+						__( 'We cannot validate your payment result:<br/>Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ),
+						array( 'br' => array() )
+					),
+					'error'
+				);
+
+				header( 'Location: ' . wc_get_checkout_url() );
+				die();
+			}
+
+			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
+
+			try {
+				$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
+
+				if ( 'failed' === $charge['status'] ) {
+					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
+				}
+
+				if ( 'successful' === $charge['status'] && $charge['paid'] ) {
+					$order->add_order_note(
+						sprintf(
+							wp_kses(
+								__( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ),
+								array( 'br' => array() )
+							),
+							$order->get_total(),
+							$order->get_order_currency()
+						)
+					);
+
+					$order->payment_complete();
+
+					WC()->cart->empty_cart();
+
+					header( 'Location: ' . $order->get_checkout_order_received_url() );
+					die();
+				}
+
+				if ( 'pending' === $charge['status'] && ! $charge['paid'] ) {
+					$order->add_order_note(
+						wp_kses(
+							__( 'Omise: The payment has been processing.<br/>Due to the installment provider, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),
+							array( 'br' => array() )
+						)
+					);
+
+					$order->update_status( 'on-hold' );
+
+					header( 'Location: ' . $order->get_checkout_order_received_url() );
+					die();
+				}
+
+				throw new Exception( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
+			} catch ( Exception $e ) {
+				wc_add_notice(
+					sprintf(
+						wp_kses(
+							__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					),
+					'error'
+				);
+
+				$order->add_order_note(
+					sprintf(
+						wp_kses(
+							__( 'Omise: Payment failed.<br/>%s', 'omise' ),
+							array( 'br' => array() )
+						),
+						$e->getMessage()
+					)
+				);
+
+				$order->update_status( 'failed' );
+
+				header( 'Location: ' . wc_get_checkout_url() );
+				die();
+			}
+
+			wp_die( 'Access denied', 'Access Denied', array( 'response' => 401 ) );
+			die();
 		}
 	}
 
