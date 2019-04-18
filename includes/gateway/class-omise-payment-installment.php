@@ -33,7 +33,6 @@ function register_omise_installment() {
 			$this->title       = $this->get_option( 'title' );
 			$this->description = $this->get_option( 'description' );
 
-			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 		}
@@ -92,15 +91,6 @@ function register_omise_installment() {
 				'templates/payment/form-installment.php',
 				array( 'installment_backends' => $installment_backends )
 			);
-		}
-
-		/**
-		 * Register all required css and javascripts.
-		 */
-		public function omise_assets() {
-			if ( is_checkout() && $this->is_available() ) {
-				wp_enqueue_style( 'omise-css', plugins_url( '../../assets/css/omise-css.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION );
-			}
 		}
 
 		/**

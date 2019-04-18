@@ -40,7 +40,7 @@ function register_omise_creditcard() {
 
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'omise_assets' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'omise_scripts' ) );
 			add_action( 'woocommerce_order_action_' . $this->id . '_charge_capture', array( $this, 'process_capture' ) );
 			add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 
@@ -642,20 +642,13 @@ function register_omise_creditcard() {
 		/**
 		 * Register all required javascripts
 		 */
-		public function omise_assets() {
-			if ( ! is_checkout() || ! $this->is_available() ) {
-				return;
+		public function omise_scripts() {
+			if ( is_checkout() && $this->is_available() ) {
+				wp_enqueue_script( 'omise-js', 'https://cdn.omise.co/omise.js', array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
+				wp_enqueue_script( 'omise-util', plugins_url( '../../assets/javascripts/omise-util.js', __FILE__ ), array( 'omise-js' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
+				wp_enqueue_script( 'omise-payment-form-handler', plugins_url( '../../assets/javascripts/omise-payment-form-handler.js', __FILE__ ), array( 'omise-js', 'omise-util' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
+				wp_localize_script( 'omise-payment-form-handler', 'omise_params', array( 'key' => $this->public_key() ) );
 			}
-
-			wp_enqueue_style( 'omise-css', plugins_url( '../../assets/css/omise-css.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION );
-
-			wp_enqueue_script( 'omise-js', 'https://cdn.omise.co/omise.js', array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
-			wp_enqueue_script( 'omise-util', plugins_url( '../../assets/javascripts/omise-util.js', __FILE__ ), array( 'omise-js' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
-			wp_enqueue_script( 'omise-payment-form-handler', plugins_url( '../../assets/javascripts/omise-payment-form-handler.js', __FILE__ ), array( 'omise-js', 'omise-util' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
-
-			wp_localize_script( 'omise-payment-form-handler', 'omise_params', array(
-				'key'       => $this->public_key()
-			) );
 		}
 	}
 
