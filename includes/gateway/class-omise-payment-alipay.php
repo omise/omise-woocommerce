@@ -83,11 +83,11 @@ function register_omise_alipay() {
 		 * @inheritdoc
 		 */
 		public function result( $order_id, $order, $charge ) {
-			if ( 'failed' == $charge['status'] ) {
+			if ( self::STATUS_FAILED == $charge['status'] ) {
 				return $this->payment_failed( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 			}
 
-			if ( 'pending' == $charge['status'] ) {
+			if ( self::STATUS_PENDING == $charge['status'] ) {
 				$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
 
 				return array (
@@ -126,11 +126,11 @@ function register_omise_alipay() {
 			try {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
-				if ( 'failed' === $charge['status'] ) {
+				if ( self::STATUS_FAILED === $charge['status'] ) {
 					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 				}
 
-				if ( 'pending' === $charge['status'] && ! $charge['paid'] ) {
+				if ( self::STATUS_PENDING === $charge['status'] && ! $charge['paid'] ) {
 					$order->add_order_note(
 						wp_kses(
 							__( 'Omise: The payment has been processing.<br/>Due to the Alipay process, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),
@@ -145,7 +145,7 @@ function register_omise_alipay() {
 					die();
 				}
 
-				if ( 'successful' === $charge['status'] && $charge['paid'] ) {
+				if ( self::STATUS_SUCCESSFUL === $charge['status'] && $charge['paid'] ) {
 					$order->add_order_note(
 						sprintf(
 							wp_kses(

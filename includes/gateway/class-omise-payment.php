@@ -14,6 +14,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	const CHARGE_ID = 'omise_charge_id';
 
 	/**
+	 * @var string Omise charge statuses
+	 */
+	const STATUS_SUCCESSFUL = 'successful';
+	const STATUS_FAILED     = 'failed';
+	const STATUS_PENDING    = 'pending';
+
+	/**
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 *
 	 * @var string
