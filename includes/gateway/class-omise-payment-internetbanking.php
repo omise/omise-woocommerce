@@ -89,7 +89,7 @@ function register_omise_internetbanking() {
 				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
 				'currency'    => $order->get_order_currency(),
 				'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-				'source'      => array( 'type' => $_POST['omise-offsite'] ),
+				'source'      => array( 'type' => sanitize_text_field( $_POST['omise-offsite'] ) ),
 				'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_internetbanking_callback" ),
 				'metadata'    => $metadata
 			) );
