@@ -90,21 +90,17 @@ function register_omise_installment() {
 
 			Omise_Util::render_view(
 				'templates/payment/form-installment.php',
-				array(
-					'installment_backends' => $installment_backends
-				)
+				array( 'installment_backends' => $installment_backends )
 			);
 		}
 
 		/**
-		 * Register all required javascripts
+		 * Register all required css and javascripts.
 		 */
 		public function omise_assets() {
-			if ( ! is_checkout() || ! $this->is_available() ) {
-				return;
+			if ( is_checkout() && $this->is_available() ) {
+				wp_enqueue_style( 'omise-css', plugins_url( '../../assets/css/omise-css.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION );
 			}
-
-			wp_enqueue_style( 'omise-css', plugins_url( '../../assets/css/omise-css.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION );
 		}
 
 		/**
@@ -121,12 +117,12 @@ function register_omise_installment() {
 			return OmiseCharge::create( array(
 				'amount'            => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
 				'currency'          => $order->get_order_currency(),
-				'description'       => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
+				'description'       => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 				'source'            => array(
-					'type'              => $source_type,
-					'installment_terms' => $installment_terms
+					'type'              => sanitize_text_field( $source_type ),
+					'installment_terms' => sanitize_text_field( $installment_terms )
 				),
-				'return_uri'        => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_installment_callback" ),
+				'return_uri'        => add_query_arg( 'order_id', $order_id, site_url() . '?wc-api=omise_installment_callback' ),
 				'metadata'          => $metadata
 			) );
 		}
@@ -135,11 +131,11 @@ function register_omise_installment() {
 		 * @inheritdoc
 		 */
 		public function result( $order_id, $order, $charge ) {
-			if ( 'failed' == $charge['status'] ) {
+			if ( self::STATUS_FAILED == $charge['status'] ) {
 				return $this->payment_failed( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 			}
 
-			if ( 'pending' == $charge['status'] ) {
+			if ( self::STATUS_PENDING == $charge['status'] ) {
 				$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
 
 				return array (
@@ -178,11 +174,11 @@ function register_omise_installment() {
 			try {
 				$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
 
-				if ( 'failed' === $charge['status'] ) {
+				if ( self::STATUS_FAILED == $charge['status'] ) {
 					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 				}
 
-				if ( 'successful' === $charge['status'] && $charge['paid'] ) {
+				if ( self::STATUS_SUCCESSFUL == $charge['status'] && $charge['paid'] ) {
 					$order->add_order_note(
 						sprintf(
 							wp_kses(
@@ -202,7 +198,7 @@ function register_omise_installment() {
 					die();
 				}
 
-				if ( 'pending' === $charge['status'] && ! $charge['paid'] ) {
+				if ( self::STATUS_PENDING == $charge['status'] && ! $charge['paid'] ) {
 					$order->add_order_note(
 						wp_kses(
 							__( 'Omise: The payment has been processing.<br/>Due to the installment provider, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),

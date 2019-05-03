@@ -32,18 +32,17 @@ class Omise_Capabilities {
 	 *
 	 * @return string
 	 */
-	public function getInstallmentBackends($currency = '', $amount = null)
-	{
+	public function getInstallmentBackends( $currency = '', $amount = null ) {
 		$params   = array();
 		$params[] = $this->capabilities->backendFilter['type']('installment');
 
-		if ($currency) {
-			$params[] = $this->capabilities->backendFilter['currency']($currency);
+		if ( $currency ) {
+			$params[] = $this->capabilities->backendFilter['currency']( $currency );
 		}
-		if (!is_null($amount)) {
-			$params[] = $this->capabilities->backendFilter['chargeAmount']($amount);
+		if ( ! is_null( $amount ) ) {
+			$params[] = $this->capabilities->backendFilter['chargeAmount']( $amount );
 		}
 
-		return $this->capabilities->getBackends($params);
+		return $this->capabilities->getBackends( $params );
 	}
 }
