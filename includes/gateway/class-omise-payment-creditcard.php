@@ -13,6 +13,9 @@ function register_omise_creditcard() {
 	}
 
 	class Omise_Payment_Creditcard extends Omise_Payment {
+		const PAYMENT_ACTION_AUTHORIZE         = 'manual_capture';
+		const PAYMENT_ACTION_AUTHORIZE_CAPTURE = 'auto_capture';
+
 		public function __construct() {
 			parent::__construct();
 
@@ -81,11 +84,11 @@ function register_omise_creditcard() {
 						'title'       => __( 'Payment action', 'omise' ),
 						'type'        => 'select',
 						'description' => __( 'Capture automatically during the checkout process or manually after order has been placed', 'omise' ),
-						'default'     => 'auto_capture',
+						'default'     => self::PAYMENT_ACTION_AUTHORIZE_CAPTURE,
 						'class'       => 'wc-enhanced-select',
 						'options'     => array(
-							'auto_capture'   => __( 'Auto Capture', 'omise' ),
-							'manual_capture' => __( 'Manual Capture', 'omise' )
+							self::PAYMENT_ACTION_AUTHORIZE_CAPTURE => __( 'Auto Capture', 'omise' ),
+							self::PAYMENT_ACTION_AUTHORIZE         => __( 'Manual Capture', 'omise' )
 						),
 						'desc_tip'    => true
 					),
@@ -166,235 +169,192 @@ function register_omise_creditcard() {
 		}
 
 		/**
-		 * @param  int $order_id
-		 *
-		 * @see    WC_Payment_Gateway::process_payment( $order_id )
-		 * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
-		 *
-		 * @return array
+		 * @inheritdoc
 		 */
-		public function process_payment( $order_id ) {
-			if ( ! $order = $this->load_order( $order_id ) ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'We have been unable to process your payment.<br/>Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
-							array(
-								'br' => array()
-							)
-						),
-						$order_id
-					),
-					'error'
-				);
-				return;
+		public function charge( $order_id, $order ) {
+			$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
+			$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
+
+			if ( empty( $token ) && empty( $card_id ) ) {
+				throw new Exception( __( 'Please select an existing card or enter new card information.', 'omise' ) );
 			}
 
-			$order->add_order_note( __( 'Omise: Processing a payment with Credit Card solution..', 'omise' ) );
+			$user              = $order->get_user();
+			$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 
-			try {
-				$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
-				$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
-
-				if ( empty( $token ) && empty( $card_id ) ) {
-					throw new Exception( __( 'Please select an existing card or enter new card information.', 'omise' ) );
+			// Saving card.
+			if ( isset( $_POST['omise_save_customer_card'] ) && empty( $card_id ) ) {
+				if ( empty( $token ) ) {
+					throw new Exception( __( 'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise' ) );
 				}
 
-				$user              = $order->get_user();
-				$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
+				if ( ! empty( $omise_customer_id ) ) {
+					try {
+						// attach a new card to customer
+						$customer = OmiseCustomer::retrieve( $omise_customer_id );
+						$customer->update( array(
+							'card' => $token
+						) );
 
-				if ( isset( $_POST['omise_save_customer_card'] ) && empty( $card_id ) ) {
-					if ( empty( $token ) ) {
-						throw new Exception( __( 'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise' ) );
+						$cards = $customer->cards( array(
+							'limit' => 1,
+							'order' => 'reverse_chronological'
+						) );
+
+						$card_id = $cards['data'][0]['id'];
+					} catch (Exception $e) {
+						throw new Exception( $e->getMessage() );
+					}
+				} else {
+					$description   = "WooCommerce customer " . $user->ID;
+					$customer_data = array(
+						"description" => $description,
+						"card"        => $token
+					);
+
+					$omise_customer = OmiseCustomer::create( $customer_data );
+
+					if ( $omise_customer['object'] == "error" ) {
+						throw new Exception( $omise_customer['message'] );
 					}
 
-					if ( ! empty( $omise_customer_id ) ) {
-						try {
-							// attach a new card to customer
-							$customer = OmiseCustomer::retrieve( $omise_customer_id );
-							$customer->update( array(
-								'card' => $token
-							) );
-
-							$cards = $customer->cards( array(
-								'limit' => 1,
-								'order' => 'reverse_chronological'
-							) );
-
-							$card_id = $cards['data'][0]['id'];
-						} catch (Exception $e) {
-							throw new Exception( $e->getMessage() );
-						}
+					$omise_customer_id = $omise_customer['id'];
+					if ( $this->is_test() ) {
+						update_user_meta( $user->ID, 'test_omise_customer_id', $omise_customer_id );
 					} else {
-						$description   = "WooCommerce customer " . $user->ID;
-						$customer_data = array(
-							"description" => $description,
-							"card"        => $token
+						update_user_meta( $user->ID, 'live_omise_customer_id', $omise_customer_id );
+					}
+
+					if ( 0 == sizeof( $omise_customer['cards']['data'] ) ) {
+						throw new Exception(
+							sprintf(
+								wp_kses(
+									__( 'Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
+									array(
+										'br' => array()
+									)
+								),
+								$order_id
+							)
 						);
-
-						$omise_customer = OmiseCustomer::create( $customer_data );
-
-						if ( $omise_customer['object'] == "error" ) {
-							throw new Exception( $omise_customer['message'] );
-						}
-
-						$omise_customer_id = $omise_customer['id'];
-						if ( $this->is_test() ) {
-							update_user_meta( $user->ID, 'test_omise_customer_id', $omise_customer_id );
-						} else {
-							update_user_meta( $user->ID, 'live_omise_customer_id', $omise_customer_id );
-						}
-
-						if ( 0 == sizeof( $omise_customer['cards']['data'] ) ) {
-							throw new Exception(
-								sprintf(
-									wp_kses(
-										__( 'Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
-										array(
-											'br' => array()
-										)
-									),
-									$order_id
-								)
-							);
-						}
-
-						$cards   = $omise_customer->cards( array( 'order' => 'reverse_chronological' ) );
-						$card_id = $cards['data'][0]['id']; //use the latest card
-					}
-				}
-
-				$success = false;
-				$data    = array(
-					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
-					'currency'    => $order->get_order_currency(),
-					'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . '?wc-api=omise_callback' )
-				);
-
-				if ( ! empty( $omise_customer_id ) && ! empty( $card_id ) ) {
-					$data['customer'] = $omise_customer_id;
-					$data['card']     = $card_id;
-				} else {
-					$data['card'] = $token;
-				}
-
-				// Set capture status (otherwise, use API's default behaviour)
-				if ( 'AUTO_CAPTURE' === strtoupper( $this->payment_action ) ) {
-					$data['capture'] = true;
-				} else if ( 'MANUAL_CAPTURE' === strtoupper( $this->payment_action ) ) {
-					$data['capture'] = false;
-				}
-				$metadata = apply_filters( 'omise_charge_params_metadata', array(), $order );
-
-				$data['metadata'] = array_merge( $metadata, array(
-					/** override order_id as a reference for webhook handlers **/
-					/** backward compatible with WooCommerce v2.x series **/
-					'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
-				) );
-
-				$charge = OmiseCharge::create( $data );
-
-				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
-
-				$this->set_order_transaction_id( $charge['id'] );
-
-				if ( Omise_Charge::is_failed( $charge ) ) {
-					throw new Exception( Omise_Charge::get_error_message( $charge ) );
-				}
-
-				if ( $this->omise_3ds ) {
-					$order->add_order_note(
-						sprintf(
-							__( 'Omise: Processing a 3-D Secure payment, redirecting buyer to %s', 'omise' ),
-							esc_url( $charge['authorize_uri'] )
-						)
-					);
-
-					return array(
-						'result'   => 'success',
-						'redirect' => $charge['authorize_uri'],
-					);
-				} else {
-					switch ( strtoupper( $this->payment_action ) ) {
-						case 'MANUAL_CAPTURE':
-							$success = Omise_Charge::is_authorized( $charge );
-							if ( $success ) {
-								$order->add_order_note(
-									sprintf(
-										wp_kses(
-											__( 'Omise: Payment processing.<br/>An amount of %1$s %2$s has been authorized', 'omise' ),
-											array( 'br' => array() )
-										),
-										$order->get_total(),
-										$order->get_order_currency()
-									)
-								);
-							}
-
-							break;
-
-						case 'AUTO_CAPTURE':
-							$success = Omise_Charge::is_paid( $charge );
-							if ( $success ) {
-								$order->payment_complete();
-								$order->add_order_note(
-									sprintf(
-										wp_kses(
-											__( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ),
-											array( 'br' => array() )
-										),
-										$order->get_total(),
-										$order->get_order_currency()
-									)
-								);
-							}
-
-							break;
-
-						default:
-							// Default behaviour is, check if it paid first.
-							$success = Omise_Charge::is_paid( $charge );
-
-							// Then, check is authorized after if the first condition is false.
-							if ( ! $success )
-								$success = Omise_Charge::is_authorized( $charge );
-
-							break;
 					}
 
-					if ( ! $success ) {
-						throw new Exception( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
-					}
-
-					// Remove cart
-					WC()->cart->empty_cart();
-					return array (
-						'result'   => 'success',
-						'redirect' => $this->get_return_url( $order )
-					);
+					$cards   = $omise_customer->cards( array( 'order' => 'reverse_chronological' ) );
+					$card_id = $cards['data'][0]['id']; //use the latest card
 				}
-			} catch( Exception $e ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$e->getMessage()
-					),
-					'error'
-				);
+			}
 
+			$success = false;
+			$data    = array(
+				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+				'currency'    => $order->get_order_currency(),
+				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
+				'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . '?wc-api=omise_callback' )
+			);
+
+			if ( ! empty( $omise_customer_id ) && ! empty( $card_id ) ) {
+				$data['customer'] = $omise_customer_id;
+				$data['card']     = $card_id;
+			} else {
+				$data['card'] = $token;
+			}
+
+			// Set capture status (otherwise, use API's default behaviour)
+			if ( self::PAYMENT_ACTION_AUTHORIZE_CAPTURE === $this->payment_action ) {
+				$data['capture'] = true;
+			} else if ( self::PAYMENT_ACTION_AUTHORIZE === $this->payment_action ) {
+				$data['capture'] = false;
+			}
+			$metadata = apply_filters( 'omise_charge_params_metadata', array(), $order );
+
+			$data['metadata'] = array_merge( $metadata, array(
+				/** override order_id as a reference for webhook handlers **/
+				/** backward compatible with WooCommerce v2.x series **/
+				'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
+			) );
+
+			return OmiseCharge::create( $data );
+		}
+
+		/**
+		 * @inheritdoc
+		 */
+		public function result( $order_id, $order, $charge ) {
+			if ( Omise_Charge::is_failed( $charge ) ) {
+				return $this->payment_failed( Omise_Charge::get_error_message( $charge ) );
+			}
+
+			if ( $this->omise_3ds ) {
 				$order->add_order_note(
 					sprintf(
-						__( 'Omise: Payment failed, %s', 'omise' ),
-						$e->getMessage()
+						__( 'Omise: Processing a 3-D Secure payment, redirecting buyer to %s', 'omise' ),
+						esc_url( $charge['authorize_uri'] )
 					)
 				);
 
-				return;
+				return array(
+					'result'   => 'success',
+					'redirect' => $charge['authorize_uri'],
+				);
 			}
+
+			switch ( $this->payment_action ) {
+				case self::PAYMENT_ACTION_AUTHORIZE:
+					$success = Omise_Charge::is_authorized( $charge );
+					if ( $success ) {
+						$order->add_order_note(
+							sprintf(
+								wp_kses(
+									__( 'Omise: Payment processing.<br/>An amount of %1$s %2$s has been authorized', 'omise' ),
+									array( 'br' => array() )
+								),
+								$order->get_total(),
+								$order->get_order_currency()
+							)
+						);
+					}
+
+					break;
+
+				case self::PAYMENT_ACTION_AUTHORIZE_CAPTURE:
+					$success = Omise_Charge::is_paid( $charge );
+					if ( $success ) {
+						$order->payment_complete();
+						$order->add_order_note(
+							sprintf(
+								wp_kses(
+									__( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ),
+									array( 'br' => array() )
+								),
+								$order->get_total(),
+								$order->get_order_currency()
+							)
+						);
+					}
+
+					break;
+
+				default:
+					// Default behaviour is, check if it paid first.
+					$success = Omise_Charge::is_paid( $charge );
+
+					// Then, check is authorized after if the first condition is false.
+					if ( ! $success )
+						$success = Omise_Charge::is_authorized( $charge );
+
+					break;
+			}
+
+			if ( ! $success ) {
+				return $this->payment_failed( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
+			}
+
+			// Remove cart
+			WC()->cart->empty_cart();
+			return array (
+				'result'   => 'success',
+				'redirect' => $this->get_return_url( $order )
+			);
 		}
 
 		/**
@@ -555,8 +515,8 @@ function register_omise_creditcard() {
 			try {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
-				switch ( strtoupper( $this->payment_action ) ) {
-					case 'MANUAL_CAPTURE':
+				switch ( $this->payment_action ) {
+					case self::PAYMENT_ACTION_AUTHORIZE:
 						$success = Omise_Charge::is_authorized( $charge );
 						if ( $success ) {
 							$order->add_order_note(
@@ -573,7 +533,7 @@ function register_omise_creditcard() {
 
 						break;
 
-					case 'AUTO_CAPTURE':
+					case self::PAYMENT_ACTION_AUTHORIZE_CAPTURE:
 						$success = Omise_Charge::is_paid( $charge );
 						if ( $success ) {
 							$order->add_order_note(

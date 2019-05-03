@@ -77,94 +77,47 @@ function register_omise_internetbanking() {
 		}
 
 		/**
-		 * @param  int $order_id
-		 *
-		 * @see    WC_Payment_Gateway::process_payment( $order_id )
-		 * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
-		 *
-		 * @return array
+		 * @inheritdoc
 		 */
-		public function process_payment( $order_id ) {
-			if ( ! $order = $this->load_order( $order_id ) ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'We have been unable to process your payment.<br/>Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
-							array(
-								'br' => array()
-							)
-						),
-						$order_id
-					),
-					'error'
-				);
-				return;
+		public function charge( $order_id, $order ) {
+			$metadata = array_merge(
+				apply_filters( 'omise_charge_params_metadata', array(), $order ),
+				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
+			);
+
+			return OmiseCharge::create( array(
+				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+				'currency'    => $order->get_order_currency(),
+				'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
+				'source'      => array( 'type' => sanitize_text_field( $_POST['omise-offsite'] ) ),
+				'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_internetbanking_callback" ),
+				'metadata'    => $metadata
+			) );
+		}
+
+		/**
+		 * @inheritdoc
+		 */
+		public function result( $order_id, $order, $charge ) {
+			if ( self::STATUS_FAILED == $charge['status'] ) {
+				return $this->payment_failed( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 			}
 
-			$order->add_order_note( __( 'Omise: Processing a payment with Internet Banking solution..', 'omise' ) );
-			try {
-				$metadata = apply_filters( 'omise_charge_params_metadata', array(), $order );
-				$charge = $this->sale( array(
-					'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
-					'currency'    => $order->get_order_currency(),
-					'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-					'source'      => array( 'type' => $_POST['omise-offsite'] ),
-					'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_internetbanking_callback" ),
-					'metadata'    => array_merge( $metadata, array(
-						/** override order_id as a reference for webhook handlers **/
-						/** backward compatible with WooCommerce v2.x series **/
-						'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
-					) )
-				) );
+			if ( self::STATUS_PENDING == $charge['status'] ) {
+				$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
 
-				$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
-
-				switch ( $charge['status'] ) {
-					case 'pending':
-						$this->set_order_transaction_id( $charge['id'] );
-
-						$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
-
-						return array (
-							'result'   => 'success',
-							'redirect' => $charge['authorize_uri'],
-						);
-						break;
-
-					case 'failed':
-						throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
-						break;
-
-					default:
-						throw new Exception(
-							sprintf(
-								__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
-								$order_id
-							)
-						);
-						break;
-				}
-			} catch ( Exception $e ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$e->getMessage()
-					),
-					'error'
+				return array (
+					'result'   => 'success',
+					'redirect' => $charge['authorize_uri'],
 				);
-
-				$order->add_order_note(
-					sprintf(
-						__( 'Omise: Payment failed, %s', 'omise' ),
-						$e->getMessage()
-					)
-				);
-
-				return;
 			}
+
+			return $this->payment_failed(
+				sprintf(
+					__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
+					$order_id
+				)
+			);
 		}
 
 		/**
@@ -189,11 +142,11 @@ function register_omise_internetbanking() {
 			try {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
-				if ( 'failed' === $charge['status'] ) {
+				if ( self::STATUS_FAILED === $charge['status'] ) {
 					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
 				}
 
-				if ( 'pending' === $charge['status'] && ! $charge['paid'] ) {
+				if ( self::STATUS_PENDING === $charge['status'] && ! $charge['paid'] ) {
 					$order->add_order_note(
 						wp_kses(
 							__( 'Omise: The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),
@@ -208,7 +161,7 @@ function register_omise_internetbanking() {
 					die();
 				}
 
-				if ( 'successful' === $charge['status'] && $charge['paid'] ) {
+				if ( self::STATUS_SUCCESSFUL === $charge['status'] && $charge['paid'] ) {
 					$order->add_order_note(
 						sprintf(
 							wp_kses(
