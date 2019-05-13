@@ -21,9 +21,9 @@ function register_omise_installment() {
 
 			$this->id                 = 'omise_installment';
 			$this->has_fields         = true;
-			$this->method_title       = __( 'Omise Installment', 'omise' );
+			$this->method_title       = __( 'Omise Installments', 'omise' );
 			$this->method_description = wp_kses(
-				__( 'Accept payment through <strong>Installment</strong> via Omise payment gateway.', 'omise' ),
+				__( 'Accept <strong>installment payments</strong> via Omise payment gateway.', 'omise' ),
 				array( 'strong' => array() )
 			);
 
@@ -47,21 +47,21 @@ function register_omise_installment() {
 				'enabled' => array(
 					'title'   => __( 'Enable/Disable', 'omise' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable Omise Installment Payment', 'omise' ),
+					'label'   => __( 'Enable Omise Installment Payments', 'omise' ),
 					'default' => 'no'
 				),
 
 				'title' => array(
 					'title'       => __( 'Title', 'omise' ),
 					'type'        => 'text',
-					'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
-					'default'     => __( 'Installment', 'omise' ),
+					'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
+					'default'     => __( 'Installments', 'omise' ),
 				),
 
 				'description' => array(
 					'title'       => __( 'Description', 'omise' ),
 					'type'        => 'textarea',
-					'description' => __( 'This controls the description which the user sees during checkout.', 'omise' )
+					'description' => __( 'This controls the description the user sees during checkout.', 'omise' )
 				),
 			);
 		}

@@ -22,6 +22,6 @@
 	</fieldset>
 <?php else: ?>
 	<p>
-		<?php echo __( 'There are no installment plans available for this purchase amount.', 'omise' ); ?>
+		<?php echo __( 'There are no installment plans available for this purchase amount  (minimum amount is 3,000 THB).', 'omise' ); ?>
 	</p>
 <?php endif; ?>
