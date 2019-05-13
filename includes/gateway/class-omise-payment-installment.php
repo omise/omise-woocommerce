@@ -165,8 +165,8 @@ function register_omise_installment() {
 					'error'
 				);
 
-				header( 'Location: ' . wc_get_checkout_url() );
-				die();
+				wp_redirect( wc_get_checkout_url() );
+				exit;
 			}
 
 			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
@@ -194,8 +194,8 @@ function register_omise_installment() {
 
 					WC()->cart->empty_cart();
 
-					header( 'Location: ' . $order->get_checkout_order_received_url() );
-					die();
+					wp_redirect( $order->get_checkout_order_received_url() );
+					exit;
 				}
 
 				if ( self::STATUS_PENDING == $charge['status'] && ! $charge['paid'] ) {
@@ -208,8 +208,8 @@ function register_omise_installment() {
 
 					$order->update_status( 'on-hold' );
 
-					header( 'Location: ' . $order->get_checkout_order_received_url() );
-					die();
+					wp_redirect( $order->get_checkout_order_received_url() );
+					exit;
 				}
 
 				throw new Exception( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
@@ -237,8 +237,8 @@ function register_omise_installment() {
 
 				$order->update_status( 'failed' );
 
-				header( 'Location: ' . wc_get_checkout_url() );
-				die();
+				wp_redirect( wc_get_checkout_url() );
+				exit;
 			}
 
 			wp_die( 'Access denied', 'Access Denied', array( 'response' => 401 ) );
