@@ -19,20 +19,44 @@ fieldset.card-exists {
 }
 
 #new_card_info:checked ~ fieldset.card-exists {
-    display: block;
+	display: block;
 }
 
 /**
- * Specific style
+ * 1). Specific style
  * (usually designed specifically for only one purpose).
  */
+#payment .payment_methods li .payment_box fieldset#omise-form-installment,
+#payment .payment_methods li .payment_box fieldset#omise-form-internetbanking {
+	padding: 0;
+}
+
 .omise-banks-list .installment-term-select-box {
 	width: 8rem;
+	border: 1px solid #d4d4d4;
+	font-size: 80%;
+}
+
+
+/**
+ * 2). Components
+ * (stylesheets that are designed generally and may be commonly used as a component).
+ */
+/**
+ * 2.1). Typography
+ */
+.omise-secondary-text {
+	color: #aaa;
+	font-size: 80%;
 }
 
 /**
- * Form, bank list components
+ * 2.2). Form, bank list components
  */
+ul.omise-banks-list {
+	margin: 0;
+}
+
 .omise-banks-list input[type="radio"] + label::before {
 	position: absolute;
 	top: 14px;
@@ -41,26 +65,34 @@ fieldset.card-exists {
 
 .omise-banks-list .item {
 	position: relative;
-	padding: 4px 0 14px 0;
+	padding: 14px 0;
 	border-bottom: 1px solid #eee;
 }
 
-.omise-banks-list li > input {
-	position: absolute;
-	top: 26px;
-	left: 3.5px;
+.omise-banks-list .item:first-child {
+	padding-top: 0;
 }
 
-.omise-banks-list li > label {
+.omise-banks-list .item > input {
+	position: absolute;
+	top: 28px;
+	left: 8px;
+}
+
+.omise-banks-list .item:first-child > input {
+	top: 14px;
+}
+
+.omise-banks-list .item > label {
 	display: inline-block;
-	padding: 6px 0px 0 32px;
+	padding: 0 0 0 32px;
 	cursor: pointer;
 	position: relative;
 }
 
 .omise-banks-list .bank-label {
 	display: inline-block;
-	padding-left: 8px;
+	width: 180px;
 	vertical-align: top;
 }
 
@@ -73,6 +105,52 @@ fieldset.card-exists {
 	border: 4px solid #fff;
 }
 
+/** Media Quries **/
+@media all and (min-width: 375px) {
+	ul.omise-banks-list {
+		margin: 0 0 0 1.75em;
+	}
+
+	.omise-banks-list .item > input {
+		left: 3.5px;
+	}
+
+	.omise-banks-list .bank-label {
+		padding-left: 8px;
+	}
+}
+
+@media all and (min-width: 768px) {
+	ul.omise-banks-list {
+		margin: 0;
+	}
+
+	.omise-banks-list .bank-label {
+		padding-left: 0px;
+		width: auto;
+	}
+}
+
+@media all and (min-width: 1024px) {
+	ul.omise-banks-list {
+		margin: 0 0 0 1.75em;
+	}
+
+	.omise-banks-list .bank-label {
+		padding-left: 8px;
+		width: 148px;
+	}
+}
+
+@media all and (min-width: 1280px) {
+	.omise-banks-list .bank-label {
+		width: 180px;
+	}
+}
+
+/**
+ * 2.3). Bank logos
+ */
 /** BAY **/
 .bank-logo.bay {
 	background: url('../images/bay.svg') #fec43b;
@@ -109,4 +187,8 @@ fieldset.card-exists {
 	border-color: #ffffff;
 }
 
-
+/** SCB **/
+.bank-logo.scb {
+	background: url('../images/scb.svg') #4e2e7f;
+	border-color: #4e2e7f;
+}
