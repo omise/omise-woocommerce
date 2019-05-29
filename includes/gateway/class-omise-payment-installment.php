@@ -77,7 +77,8 @@ function register_omise_installment() {
 			Omise_Util::render_view(
 				'templates/payment/form-installment.php',
 				array(
-					'installment_backends' => $this->backend->get_available_providers( $currency, $cart_total )
+					'installment_backends' => $this->backend->get_available_providers( $currency, $cart_total ),
+					'is_zero_interest'     => $this->backend->capabilities()->is_zero_interest()
 				)
 			);
 		}
