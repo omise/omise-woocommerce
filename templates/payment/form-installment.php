@@ -10,8 +10,8 @@
 							<span class="title"><?php echo $backend->provider_name; ?></span><br/>
 							<select id="<?php echo $backend->_id; ?>_installment_terms" name="<?php echo $backend->_id; ?>_installment_terms" class="installment-term-select-box">
 								<option>Select term</option>
-								<?php foreach ( $backend->allowed_installment_terms as $term ) : ?>
-									<option value="<?php echo $term; ?>"><?php echo $term; ?> <?php echo __('months'); ?></option>
+								<?php foreach ( $backend->allowed_installment_terms as $installment_term ) : ?>
+									<option value="<?php echo $installment_term['term']; ?>"><?php echo $installment_term['term']; ?> <?php echo __('months'); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
