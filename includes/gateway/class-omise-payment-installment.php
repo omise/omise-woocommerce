@@ -74,8 +74,8 @@ function register_omise_installment() {
 			$currency   = get_woocommerce_currency();
 			$cart_total = WC()->cart->total;
 
-			Omise_Util::render_view(
-				'templates/payment/form-installment.php',
+			Omise_Template::view(
+				'payment/form-installment.php',
 				array(
 					'installment_backends' => $this->backend->get_available_providers( $currency, $cart_total ),
 					'is_zero_interest'     => $this->backend->capabilities()->is_zero_interest()

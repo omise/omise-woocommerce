@@ -72,7 +72,7 @@ function register_omise_internetbanking() {
 		public function payment_fields() {
 			parent::payment_fields();
 
-			Omise_Util::render_view( 'templates/payment/form-internetbanking.php', array() );
+			Omise_Template::view( 'payment/form-internetbanking.php' );
 		}
 
 		/**

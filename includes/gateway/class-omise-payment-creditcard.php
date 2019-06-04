@@ -165,7 +165,7 @@ function register_omise_creditcard() {
 				$viewData['user_logged_in'] = false;
 			}
 
-			Omise_Util::render_view( 'templates/payment/form.php', $viewData );
+			Omise_Template::view( 'payment/form.php', $viewData );
 		}
 
 		/**

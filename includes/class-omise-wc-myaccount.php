@@ -41,7 +41,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 					$customer                  = OmiseCustomer::retrieve( $this->omise_customer_id );
 					$viewData['existingCards'] = $customer->cards();
 
-					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
+					Omise_Template::view( 'myaccount/my-card.php', $viewData );
 					$this->register_omise_my_account_scripts();
 				} catch (Exception $e) {
 					// nothing.
