@@ -11,10 +11,10 @@ class Omise_Backend_Installment_Test extends TestCase {
 	/**
 	 * @test
 	 */
-	public function filtering_bbl_installment_term() {
+	public function get_only_valid_terms_from_given_bbl_allowed_installment_terms() {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 3000.00;
-		$available_terms     = array( 3, 4, 6, 8, 10 );
+		$allowed_terms     = array( 3, 4, 6, 8, 10 );
 		$provider_detail     = array(
 			'bank_code'          => 'bbl',
 			'title'              => __( 'Bangkok Bank', 'omise' ),
@@ -22,7 +22,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 			'min_allowed_amount' => 500.00,
 		);
 
-		$result = $installment_backend->filter_available_terms( $available_terms, $provider_detail, $purchase_amount );
+		$result = $installment_backend->get_valid_terms( $allowed_terms, $provider_detail, $purchase_amount );
 
 		$this->assertEquals( 3, count( $result ) );
 		$this->assertEquals( array(
@@ -35,7 +35,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 	/**
 	 * @test
 	 */
-	public function making_sure_that_we_can_filter_terms_properly_even_available_terms_is_not_in_a_proper_order() {
+	public function get_only_valid_terms_from_given_bbl_unsorted_allowed_installment_terms() {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 3000.00;
 		$available_terms     = array( 3, 10, 4, 8, 6 );
@@ -46,7 +46,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 			'min_allowed_amount' => 500.00,
 		);
 
-		$result = $installment_backend->filter_available_terms( $available_terms, $provider_detail, $purchase_amount );
+		$result = $installment_backend->get_valid_terms( $available_terms, $provider_detail, $purchase_amount );
 
 		$this->assertEquals( 3, count( $result ) );
 		$this->assertEquals( array(
@@ -141,7 +141,7 @@ class Omise_Capabilities {
 	protected static $the_instance = null;
 
 	public static function retrieve() {
-		self::$the_instance = new self();
+		self::$the_instance = self::$the_instance ?: new self();
 		return self::$the_instance;
 	}
 

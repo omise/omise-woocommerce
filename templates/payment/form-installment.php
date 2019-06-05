@@ -11,11 +11,27 @@
 							<select id="<?php echo $backend->_id; ?>_installment_terms" name="<?php echo $backend->_id; ?>_installment_terms" class="installment-term-select-box">
 								<option>Select term</option>
 								<?php foreach ( $backend->allowed_installment_terms as $installment_term ) : ?>
-									<option value="<?php echo $installment_term['term']; ?>"><?php echo $installment_term['term']; ?> <?php echo __('months'); ?> ( <?php echo wc_price( $installment_term['monthly_amount'] ); ?> / <?php echo __('months'); ?> )</option>
+									<option value="<?php echo $installment_term['term']; ?>">
+										<?php
+										echo sprintf(
+											__( '%d months', 'omise', 'omise_installment_term_option' ),
+											$installment_term['term']
+										);
+										?>
+
+										<?php
+										echo sprintf(
+											__( '( %s / months )', 'omise', 'omise_installment_payment_per_month' ),
+											wc_price( $installment_term['monthly_amount'] )
+										);
+										?>
+									</option>
 								<?php endforeach; ?>
 							</select>
 							<?php if ( ! $viewData['is_zero_interest'] ): ?>
-								<br/><span class="omise-installment-interest-rate">( <?php echo __( 'interest', 'omise' ); ?> <?php echo $backend->interest; ?>% )</span>
+								<br/><span class="omise-installment-interest-rate">
+									<?php echo sprintf( __( '( interest %g%% )', 'omise' ), $backend->interest ); ?>
+								</span>
 							<?php endif; ?>
 						</div>
 					</label>

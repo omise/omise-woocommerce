@@ -8,7 +8,7 @@
  *
  * @method public initiate
  * @method public get_available_providers
- * @method public filter_available_terms
+ * @method public get_valid_terms
  * @method public calculate_monthly_payment_amount
  */
 class Omise_Backend_Installment extends Omise_Backend {
@@ -70,7 +70,7 @@ class Omise_Backend_Installment extends Omise_Backend {
 		foreach ( $providers as &$provider ) {
 			$provider->provider_code             = str_replace( 'installment_', '', $provider->_id );
 			$provider->provider_name             = isset( self::$providers[ $provider->_id ] ) ? self::$providers[ $provider->_id ]['title'] : strtoupper( $provider->code );
-			$provider->allowed_installment_terms = $this->filter_available_terms( $provider->allowed_installment_terms, self::$providers[ $provider->_id ], $purchase_amount );
+			$provider->allowed_installment_terms = $this->get_valid_terms( $provider->allowed_installment_terms, self::$providers[ $provider->_id ], $purchase_amount );
 			$provider->interest                  = $this->capabilities()->is_zero_interest() ? 0 : ( self::$providers[ $provider->_id ]['interest_rate'] * 100 );
 		}
 
@@ -84,13 +84,13 @@ class Omise_Backend_Installment extends Omise_Backend {
 	 *
 	 * @return array  of an filtered available terms
 	 */
-	public function filter_available_terms( $available_terms, $provider_detail, $purchase_amount ) {
+	public function get_valid_terms( $available_terms, $provider_detail, $purchase_amount ) {
 		$filtered_available_terms = array();
 
 		sort( $available_terms );
 
-		for ( $i = 0; $i < count( $available_terms ); $i++ ) {
-			$term           = $available_terms[ $i ];
+		foreach ( $available_terms as $key => $available_term ) {
+			$term           = $available_terms[ $key ];
 			$monthly_amount = $this->calculate_monthly_payment_amount(
 				$purchase_amount,
 				$term,
@@ -101,7 +101,7 @@ class Omise_Backend_Installment extends Omise_Backend {
 				break;
 			}
 
-			$filtered_available_terms[ $i ] = array(
+			$filtered_available_terms[ $key ] = array(
 				'term'           => $term,
 				'monthly_amount' => $monthly_amount
 			);
