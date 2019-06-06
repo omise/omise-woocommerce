@@ -70,10 +70,10 @@ class Omise_Backend_Installment extends Omise_Backend {
 		foreach ( $providers as &$provider ) {
 			$provider_detail = self::$providers[ $provider->_id ];
 
-			$provider->provider_code      = str_replace( 'installment_', '', $provider->_id );
-			$provider->provider_name      = isset( $provider_detail ) ? $provider_detail['title'] : strtoupper( $provider->code );
-			$provider->interest_rate      = $this->capabilities()->is_zero_interest() ? 0 : ( $provider_detail['interest_rate'] * 100 );
-			$provider->available_plans    = $this->get_available_plans(
+			$provider->provider_code   = str_replace( 'installment_', '', $provider->_id );
+			$provider->provider_name   = isset( $provider_detail ) ? $provider_detail['title'] : strtoupper( $provider->code );
+			$provider->interest_rate   = $this->capabilities()->is_zero_interest() ? 0 : ( $provider_detail['interest_rate'] * 100 );
+			$provider->available_plans = $this->get_available_plans(
 				$purchase_amount,
 				$provider->allowed_installment_terms,
 				$provider->interest_rate,
