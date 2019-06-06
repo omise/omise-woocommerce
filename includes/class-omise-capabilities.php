@@ -47,7 +47,7 @@ class Omise_Capabilities {
 	}
 
 	/**
-	 * @return bool  True if merchant absorbs an interest or else, false.
+	 * @return bool  True if merchant absorbs the interest or else, false.
 	 */
 	public function is_zero_interest() {
 		return $this->capabilities['zero_interest_installments'];

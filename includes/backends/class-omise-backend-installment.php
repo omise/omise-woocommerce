@@ -1,6 +1,6 @@
 <?php
 /**
- * Note: all of calculations in this class are based only on Thailand VAT and fee
+ * Note: all calculations in this class are based only on Thailand VAT and fee
  *       as currently Installment feature supported only for merchants
  *       that have registered with Omise Thailand account.
  *
@@ -8,7 +8,7 @@
  *
  * @method public initiate
  * @method public get_available_providers
- * @method public get_valid_terms
+ * @method public get_available_plans
  * @method public calculate_monthly_payment_amount
  */
 class Omise_Backend_Installment extends Omise_Backend {
@@ -68,56 +68,60 @@ class Omise_Backend_Installment extends Omise_Backend {
 		$providers = $this->capabilities()->getInstallmentBackends( $currency, ( $purchase_amount * 100 ) );
 
 		foreach ( $providers as &$provider ) {
-			$provider->provider_code             = str_replace( 'installment_', '', $provider->_id );
-			$provider->provider_name             = isset( self::$providers[ $provider->_id ] ) ? self::$providers[ $provider->_id ]['title'] : strtoupper( $provider->code );
-			$provider->allowed_installment_terms = $this->get_valid_terms( $provider->allowed_installment_terms, self::$providers[ $provider->_id ], $purchase_amount );
-			$provider->interest                  = $this->capabilities()->is_zero_interest() ? 0 : ( self::$providers[ $provider->_id ]['interest_rate'] * 100 );
+			$provider_detail = self::$providers[ $provider->_id ];
+
+			$provider->provider_code      = str_replace( 'installment_', '', $provider->_id );
+			$provider->provider_name      = isset( $provider_detail ) ? $provider_detail['title'] : strtoupper( $provider->code );
+			$provider->interest_rate      = $this->capabilities()->is_zero_interest() ? 0 : ( $provider_detail['interest_rate'] * 100 );
+			$provider->available_plans    = $this->get_available_plans(
+				$purchase_amount,
+				$provider->allowed_installment_terms,
+				$provider->interest_rate,
+				$provider_detail['min_allowed_amount']
+			);
 		}
 
 		return $providers;
 	}
 
 	/**
-	 * @param  array $available_terms
-	 * @param  array $provider_detail
 	 * @param  float $purchase_amount
+	 * @param  array $allowed_installment_terms
+	 * @param  float $interest_rate
+	 * @param  float $min_allowed_amount
 	 *
 	 * @return array  of an filtered available terms
 	 */
-	public function get_valid_terms( $available_terms, $provider_detail, $purchase_amount ) {
-		$valid_terms = array();
+	public function get_available_plans( $purchase_amount, $allowed_installment_terms, $interest_rate, $min_allowed_amount ) {
+		$plans = array();
 
-		sort( $available_terms );
+		sort( $allowed_installment_terms );
 
-		foreach ( $available_terms as $term ) {
-			$monthly_amount = $this->calculate_monthly_payment_amount(
-				$purchase_amount,
-				$term,
-				$this->capabilities()->is_zero_interest() ? 0 : $provider_detail['interest_rate']
-			);
+		foreach ( $allowed_installment_terms as $term_length ) {
+			$monthly_amount = $this->calculate_monthly_payment_amount( $purchase_amount, $term_length, $interest_rate );
 
-			if ( $monthly_amount < $provider_detail['min_allowed_amount'] ) {
+			if ( $monthly_amount < $min_allowed_amount ) {
 				break;
 			}
 
-			$valid_terms[] = array(
-				'term'           => $term,
+			$plans[] = array(
+				'term_length'    => $term_length,
 				'monthly_amount' => $monthly_amount
 			);
 		}
 
-		return $valid_terms;
+		return $plans;
 	}
 
 	/**
 	 * @param  float $purchase_amount
-	 * @param  int   $term             installment term.
+	 * @param  int   $term_length      A length of a given installment term.
 	 * @param  float $interest_rate    its value can be '0' if merchant absorbs an interest.
 	 *
 	 * @return float  of a installment monthly payment (round up to 2 decimals).
 	 */
-	public function calculate_monthly_payment_amount( $purchase_amount, $term, $interest_rate ) {
-		$interest = $purchase_amount * $term * $interest_rate;
-		return round( ( $purchase_amount + $interest ) / $term, 2 );
+	public function calculate_monthly_payment_amount( $purchase_amount, $term_length, $interest_rate ) {
+		$interest = $purchase_amount * $term_length * $interest_rate;
+		return round( ( $purchase_amount + $interest ) / $term_length, 2 );
 	}
 }

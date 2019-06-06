@@ -11,48 +11,40 @@ class Omise_Backend_Installment_Test extends TestCase {
 	/**
 	 * @test
 	 */
-	public function get_only_valid_terms_from_given_bbl_allowed_installment_terms() {
+	public function get_only_valid_plans_from_given_bbl_allowed_installment_terms() {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 3000.00;
-		$allowed_terms     = array( 3, 4, 6, 8, 10 );
-		$provider_detail     = array(
-			'bank_code'          => 'bbl',
-			'title'              => __( 'Bangkok Bank', 'omise' ),
-			'interest_rate'      => 0.008,
-			'min_allowed_amount' => 500.00,
-		);
+		$allowed_terms       = array( 3, 4, 6, 8, 10 );
+		$interest_rate       = 0.008;
+		$min_allowed_amount  = 500.00;
 
-		$result = $installment_backend->get_valid_terms( $allowed_terms, $provider_detail, $purchase_amount );
+		$result = $installment_backend->get_available_plans( $purchase_amount, $allowed_terms, $interest_rate, $min_allowed_amount );
 
 		$this->assertEquals( 3, count( $result ) );
 		$this->assertEquals( array(
-			array( 'term' => 3, 'monthly_amount' => 1024.00 ),
-			array( 'term' => 4, 'monthly_amount' => 774.00 ),
-			array( 'term' => 6, 'monthly_amount' => 524.00 ),
+			array( 'term_length' => 3, 'monthly_amount' => 1024.00 ),
+			array( 'term_length' => 4, 'monthly_amount' => 774.00 ),
+			array( 'term_length' => 6, 'monthly_amount' => 524.00 ),
 		), $result );
 	}
 
 	/**
 	 * @test
 	 */
-	public function get_only_valid_terms_from_given_bbl_unsorted_allowed_installment_terms() {
+	public function get_only_valid_plans_from_given_bbl_unsorted_allowed_installment_terms() {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 3000.00;
-		$available_terms     = array( 3, 10, 4, 8, 6 );
-		$provider_detail     = array(
-			'bank_code'          => 'bbl',
-			'title'              => __( 'Bangkok Bank', 'omise' ),
-			'interest_rate'      => 0.008,
-			'min_allowed_amount' => 500.00,
-		);
+		$allowed_terms       = array( 3, 10, 4, 8, 6 );
+		$interest_rate       = 0.008;
+		$min_allowed_amount  = 500.00;
 
-		$result = $installment_backend->get_valid_terms( $available_terms, $provider_detail, $purchase_amount );
+		$result = $installment_backend->get_available_plans( $purchase_amount, $allowed_terms, $interest_rate, $min_allowed_amount );
 
 		$this->assertEquals( 3, count( $result ) );
 		$this->assertEquals( array(
-			array( 'term' => 3, 'monthly_amount' => 1024.00 ),
-			array( 'term' => 4, 'monthly_amount' => 774.00 ),
-			array( 'term' => 6, 'monthly_amount' => 524.00 ),
+			array( 'term_length' => 3, 'monthly_amount' => 1024.00 ),
+			array( 'term_length' => 4, 'monthly_amount' => 774.00 ),
+			array( 'term_length' => 6, 'monthly_amount' => 524.00 ),
 		), $result );
 	}
 

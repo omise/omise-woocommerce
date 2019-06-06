@@ -10,19 +10,19 @@
 							<span class="title"><?php echo $backend->provider_name; ?></span><br/>
 							<select id="<?php echo $backend->_id; ?>_installment_terms" name="<?php echo $backend->_id; ?>_installment_terms" class="installment-term-select-box">
 								<option>Select term</option>
-								<?php foreach ( $backend->allowed_installment_terms as $installment_term ) : ?>
-									<option value="<?php echo $installment_term['term']; ?>">
+								<?php foreach ( $backend->available_plans as $installment_plan ) : ?>
+									<option value="<?php echo $installment_plan['term_length']; ?>">
 										<?php
 										echo sprintf(
 											__( '%d months', 'omise', 'omise_installment_term_option' ),
-											$installment_term['term']
+											$installment_plan['term_length']
 										);
 										?>
 
 										<?php
 										echo sprintf(
 											__( '( %s / months )', 'omise', 'omise_installment_payment_per_month' ),
-											wc_price( $installment_term['monthly_amount'] )
+											wc_price( $installment_plan['monthly_amount'] )
 										);
 										?>
 									</option>
@@ -30,7 +30,7 @@
 							</select>
 							<?php if ( ! $viewData['is_zero_interest'] ): ?>
 								<br/><span class="omise-installment-interest-rate">
-									<?php echo sprintf( __( '( interest %g%% )', 'omise' ), $backend->interest ); ?>
+									<?php echo sprintf( __( '( interest %g%% )', 'omise' ), $backend->interest_rate ); ?>
 								</span>
 							<?php endif; ?>
 						</div>
