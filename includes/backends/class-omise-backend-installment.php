@@ -85,12 +85,11 @@ class Omise_Backend_Installment extends Omise_Backend {
 	 * @return array  of an filtered available terms
 	 */
 	public function get_valid_terms( $available_terms, $provider_detail, $purchase_amount ) {
-		$filtered_available_terms = array();
+		$valid_terms = array();
 
 		sort( $available_terms );
 
-		foreach ( $available_terms as $key => $available_term ) {
-			$term           = $available_terms[ $key ];
+		foreach ( $available_terms as $term ) {
 			$monthly_amount = $this->calculate_monthly_payment_amount(
 				$purchase_amount,
 				$term,
@@ -101,13 +100,13 @@ class Omise_Backend_Installment extends Omise_Backend {
 				break;
 			}
 
-			$filtered_available_terms[ $key ] = array(
+			$valid_terms[] = array(
 				'term'           => $term,
 				'monthly_amount' => $monthly_amount
 			);
 		}
 
-		return $filtered_available_terms;
+		return $valid_terms;
 	}
 
 	/**
