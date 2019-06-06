@@ -15,7 +15,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 3000.00;
 		$allowed_terms       = array( 3, 4, 6, 8, 10 );
-		$interest_rate       = 0.008;
+		$interest_rate       = 0.8;
 		$min_allowed_amount  = 500.00;
 
 		$result = $installment_backend->get_available_plans( $purchase_amount, $allowed_terms, $interest_rate, $min_allowed_amount );
@@ -35,7 +35,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 3000.00;
 		$allowed_terms       = array( 3, 10, 4, 8, 6 );
-		$interest_rate       = 0.008;
+		$interest_rate       = 0.8;
 		$min_allowed_amount  = 500.00;
 
 		$result = $installment_backend->get_available_plans( $purchase_amount, $allowed_terms, $interest_rate, $min_allowed_amount );
@@ -55,7 +55,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 10000.00;
 		$term                = 10;
-		$interest_rate       = 0.008;
+		$interest_rate       = 0.8;
 
 		$result = $installment_backend->calculate_monthly_payment_amount( $purchase_amount, $term, $interest_rate );
 
@@ -69,7 +69,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 17900.00;
 		$term                = 6;
-		$interest_rate       = 0.0069;
+		$interest_rate       = 0.69;
 
 		$result = $installment_backend->calculate_monthly_payment_amount( $purchase_amount, $term, $interest_rate );
 
@@ -83,7 +83,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 5000.00;
 		$term                = 10;
-		$interest_rate       = 0.008;
+		$interest_rate       = 0.8;
 
 		$result = $installment_backend->calculate_monthly_payment_amount( $purchase_amount, $term, $interest_rate );
 

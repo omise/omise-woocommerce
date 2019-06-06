@@ -22,35 +22,35 @@ class Omise_Backend_Installment extends Omise_Backend {
 			'installment_first_choice' => array(
 				'bank_code'          => 'first_choice',
 				'title'              => __( 'Krungsri First Choice', 'omise' ),
-				'interest_rate'      => 0.013,
+				'interest_rate'      => 1.3,
 				'min_allowed_amount' => 300.00,
 			),
 
 			'installment_bay' => array(
 				'bank_code'          => 'bay',
 				'title'              => __( 'Krungsri', 'omise' ),
-				'interest_rate'      => 0.008,
+				'interest_rate'      => 0.8,
 				'min_allowed_amount' => 300.00,
 			),
 
 			'installment_ktc' => array(
 				'bank_code'          => 'ktc',
 				'title'              => __( 'Krungthai Card (KTC)', 'omise' ),
-				'interest_rate'      => 0.008,
+				'interest_rate'      => 0.8,
 				'min_allowed_amount' => 300.00,
 			),
 
 			'installment_bbl' => array(
 				'bank_code'          => 'bbl',
 				'title'              => __( 'Bangkok Bank', 'omise' ),
-				'interest_rate'      => 0.008,
+				'interest_rate'      => 0.8,
 				'min_allowed_amount' => 500.00,
 			),
 
 			'installment_kbank' => array(
 				'bank_code'          => 'kbank',
 				'title'              => __( 'Kasikorn Bank', 'omise' ),
-				'interest_rate'      => 0.0065,
+				'interest_rate'      => 0.65,
 				'min_allowed_amount' => 500.00,
 			),
 		);
@@ -72,7 +72,7 @@ class Omise_Backend_Installment extends Omise_Backend {
 
 			$provider->provider_code   = str_replace( 'installment_', '', $provider->_id );
 			$provider->provider_name   = isset( $provider_detail ) ? $provider_detail['title'] : strtoupper( $provider->code );
-			$provider->interest_rate   = $this->capabilities()->is_zero_interest() ? 0 : ( $provider_detail['interest_rate'] * 100 );
+			$provider->interest_rate   = $this->capabilities()->is_zero_interest() ? 0 : ( $provider_detail['interest_rate'] );
 			$provider->available_plans = $this->get_available_plans(
 				$purchase_amount,
 				$provider->allowed_installment_terms,
@@ -116,12 +116,12 @@ class Omise_Backend_Installment extends Omise_Backend {
 	/**
 	 * @param  float $purchase_amount
 	 * @param  int   $term_length      A length of a given installment term.
-	 * @param  float $interest_rate    its value can be '0' if merchant absorbs an interest.
+	 * @param  float $interest_rate    Its value can be '0' if merchant absorbs an interest.
 	 *
 	 * @return float  of a installment monthly payment (round up to 2 decimals).
 	 */
 	public function calculate_monthly_payment_amount( $purchase_amount, $term_length, $interest_rate ) {
-		$interest = $purchase_amount * $term_length * $interest_rate;
+		$interest = $purchase_amount * $interest_rate * $term_length / 100;
 		return round( ( $purchase_amount + $interest ) / $term_length, 2 );
 	}
 }
