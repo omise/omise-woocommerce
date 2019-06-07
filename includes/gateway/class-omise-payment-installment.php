@@ -33,6 +33,8 @@ function register_omise_installment() {
 			$this->title       = $this->get_option( 'title' );
 			$this->description = $this->get_option( 'description' );
 
+			$this->backend     = new Omise_Backend_Installment;
+
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 		}
@@ -69,27 +71,15 @@ function register_omise_installment() {
 		 * @inheritdoc
 		 */
 		public function payment_fields() {
-			$provider_names = array(
-				'installment_bay'          => __( 'Krungsri', 'omise' ),
-				'installment_first_choice' => __( 'Krungsri First Choice', 'omise' ),
-				'installment_kbank'        => __( 'Kasikorn Bank', 'omise' ),
-				'installment_bbl'          => __( 'Bangkok Bank', 'omise' ),
-				'installment_ktc'          => __( 'Krungthai Card (KTC)', 'omise' ),
-			);
-
-			$currency             = get_woocommerce_currency();
-			$cart_total           = WC()->cart->total;
-			$capabilities         = Omise_Capabilities::retrieve();
-			$installment_backends = $capabilities->getInstallmentBackends( $currency, $this->format_amount_subunit( $cart_total, $currency ) );
-
-			foreach ( $installment_backends as &$backend ) {
-				$backend->provider_code = str_replace( 'installment_', '', $backend->_id );
-				$backend->provider_name = isset( $provider_names[ $backend->_id ] ) ? $provider_names[ $backend->_id ] : strtoupper( $backend->provider_code );
-			}
+			$currency   = get_woocommerce_currency();
+			$cart_total = WC()->cart->total;
 
 			Omise_Util::render_view(
 				'templates/payment/form-installment.php',
-				array( 'installment_backends' => $installment_backends )
+				array(
+					'installment_backends' => $this->backend->get_available_providers( $currency, $cart_total ),
+					'is_zero_interest'     => $this->backend->capabilities()->is_zero_interest()
+				)
 			);
 		}
 

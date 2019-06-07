@@ -1,0 +1,18 @@
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.1/phpunit.xsd"
+	backupGlobals="true"
+	backupStaticAttributes="false"
+	colors="true"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnIncomplete="false"
+	stopOnSkipped="false"
+	stopOnRisky="false"
+	verbose="true">
+	<testsuites>
+		<testsuite name="Omise WooCommerce Test Suite">
+			<directory suffix="-test.php">tests/unit</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

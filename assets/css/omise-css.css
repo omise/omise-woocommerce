@@ -37,6 +37,16 @@ fieldset.card-exists {
 	font-size: 80%;
 }
 
+#payment .payment_methods li .payment_box fieldset#omise-form-installment .omise-buttom-note {
+	margin-top: 4em;
+}
+
+#payment .payment_methods li .payment_box fieldset#omise-form-installment .omise-installment-interest-rate {
+	color: #aaa;
+	font-size: 80%;
+	line-height: 1;
+}
+
 
 /**
  * 2). Components
@@ -51,7 +61,16 @@ fieldset.card-exists {
 }
 
 /**
- * 2.2). Form, bank list components
+ * 2.2). Components
+ */
+.omise-buttom-note {
+	margin-top: 2em;
+	color: #aaa;
+	font-size: 80%;
+}
+
+/**
+ * 2.3). Form, bank list components
  */
 ul.omise-banks-list {
 	margin: 0;
@@ -149,7 +168,7 @@ ul.omise-banks-list {
 }
 
 /**
- * 2.3). Bank logos
+ * 2.4). Bank logos
  */
 /** BAY **/
 .bank-logo.bay {
