@@ -40,7 +40,7 @@
 		</ul>
 		<div class="omise-buttom-note">
 			<p>
-				<?php echo $viewData['is_zero_interest'] ? 'All installment payments are interest free' : __( 'Monthly payment rates shown may be inaccurate as interest rates are subject to change by its bank issuer.', 'omise' ); ?>
+				<?php echo $viewData['is_zero_interest'] ? __( 'All installment payments are interest free', 'omise' ) : __( 'Monthly payment rates shown may be inaccurate as interest rates are subject to change by its bank issuer.', 'omise' ); ?>
 			</p>
 		</div>
 	</fieldset>
