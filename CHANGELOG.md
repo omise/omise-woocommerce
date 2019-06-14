@@ -1,5 +1,24 @@
 # CHANGELOG
 
+### [v3.4 _(Jun 14, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.4)
+
+#### ✨ Highlights
+
+- [#115](https://github.com/omise/omise-woocommerce/pull/115): Installment, display instalment monthly amount & interest fee at the checkout page.
+- [#99](https://github.com/omise/omise-woocommerce/pull/99): Introduce Installment payment method.
+
+#### 🚀 Enhancements
+
+- [#114](https://github.com/omise/omise-woocommerce/pull/114): Update Omise-PHP library from v2.11.1 to v2.11.2.
+- [#113](https://github.com/omise/omise-woocommerce/pull/113): Unifying stylesheet & fixing some broken styles.
+- [#112](https://github.com/omise/omise-woocommerce/pull/112): Correcting & enhancing payment response messages.
+- [#111](https://github.com/omise/omise-woocommerce/pull/111): Removing all redundant code regarding to WC Order transaction ID assignment.
+- [#109](https://github.com/omise/omise-woocommerce/pull/109): 🧹 Code Cleaning: Relocating 'capture' method from Omise_Payment class to Omise_Payment_Creditcard.
+- [#108](https://github.com/omise/omise-woocommerce/pull/108): Refactoring, unify Omise key(s)-defining into one place.
+- [#101](https://github.com/omise/omise-woocommerce/pull/101): Refactoring, simplifying payment processors.
+
+---
+
 ### [v3.3 _(Mar 28, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.3)
 
 #### 🚀 Enhancements
