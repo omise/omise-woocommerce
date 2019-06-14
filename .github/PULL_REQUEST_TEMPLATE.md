@@ -24,7 +24,7 @@ Specify the details of your test environments, including, for each, the platform
 
 i.e.
 - **Platform version**: WooCommerce 3.1.1.
-- **Omise plugin version**: Omise-WooCommerce 3.3.
+- **Omise plugin version**: Omise-WooCommerce 3.4.
 - **PHP version**: 7.0.16.
 
 **✏️ Details:**

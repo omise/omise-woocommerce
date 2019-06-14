@@ -4,7 +4,7 @@
 
 ## Supported Versions
 
-WooCommerce version 3.3.4 and above (tested to version 3.5.7).
+WooCommerce version 3.3.4 and above (tested to version 3.6.4).
 
 **The extension doesn't work on your version?**  
 Our aim is to support as many versions of WooCommerce as we can.  
@@ -26,12 +26,12 @@ In order to install Omise-WooCommerce plugin, you can either manually download t
 
 #### Manually
 
-1. Download and extract the zip file from [Omise-WooCommerce](https://github.com/omise/omise-woocommerce/archive/v3.3.zip) to your local machine.
+1. Download and extract the zip file from [Omise-WooCommerce](https://github.com/omise/omise-woocommerce/archive/v3.4.zip) to your local machine.
   ![screen shot 2560-07-26 at 12 36 43 pm](https://user-images.githubusercontent.com/2154669/38302382-ac3b1cf8-382c-11e8-80d4-61e935b7a567.png)
 
-2. Copy all files from the step 1 to WordPress plugin folder, `your-wordpress-dir/wp-content/plugins/omise-woocommerce-3.3`.
+2. Copy all files from the step 1 to WordPress plugin folder, `your-wordpress-dir/wp-content/plugins/omise-woocommerce-3.4`.
 
-3. Rename `omise-woocommerce-3.3` folder to `omise`
+3. Rename `omise-woocommerce-3.4` folder to `omise`
   ![screen shot 2560-07-26 at 12 36 43 pm](https://user-images.githubusercontent.com/2154669/28606035-2b9387dc-71ff-11e7-887d-dc90ce774a39.png)
 
 4. Once done, `Omise Payment Gateway` plugin will be shown at the **Installed Plugins** page. Click `activate` to activate the plugin.
