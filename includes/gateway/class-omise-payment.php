@@ -148,20 +148,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * @param  int    $amount
-	 * @param  string $currency
-	 *
-	 * @return int
-	 */
-	protected function format_amount_subunit( $amount, $currency ) {
-		if ( isset( $this->currency_subunits[ strtoupper( $currency ) ] ) ) {
-			return $amount * $this->currency_subunits[ $currency ];
-		}
-
-		return $amount;
-	}
-
-	/**
 	 * @since  3.4
 	 *
 	 * @see    WC_Payment_Gateway::process_payment( $order_id )

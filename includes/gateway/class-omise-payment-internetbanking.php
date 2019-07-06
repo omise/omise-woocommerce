@@ -79,6 +79,7 @@ function register_omise_internetbanking() {
 		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
+			$money    = new Omise_Money( $order->get_total(), $order->get_order_currency() );
 			$metadata = array_merge(
 				apply_filters( 'omise_charge_params_metadata', array(), $order ),
 				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
@@ -92,7 +93,7 @@ function register_omise_internetbanking() {
 			);
 
 			return OmiseCharge::create( array(
-				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+				'amount'      => $money->toSubunit(),
 				'currency'    => $order->get_order_currency(),
 				'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
 				'source'      => array( 'type' => sanitize_text_field( $_POST['omise-offsite'] ) ),
