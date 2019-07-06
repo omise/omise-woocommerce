@@ -1,4 +1,5 @@
 <?php
+define( 'ABSPATH', '' );
 
 class Omise_Unit_Test {
 	public static function include_class( $path ): void {
