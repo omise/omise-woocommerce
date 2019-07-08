@@ -48,7 +48,7 @@ class Omise_Money {
 	}
 
 	/**
-	 * @param mixed $amount
+	 * @param  int|float|string $amount
 	 *
 	 * @return int|float|string
 	 */
@@ -72,7 +72,7 @@ class Omise_Money {
 	}
 
 	/**
-	 * @return float
+	 * @return int|float|string  Depending on what type of value that is passed through the construction.
 	 */
 	public function getAmount() {
 		return $this->amount;
