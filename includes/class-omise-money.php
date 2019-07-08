@@ -43,16 +43,16 @@ class Omise_Money {
 			throw new Exception( __( 'We do not support the currency you are using.', 'omise' ) );
 		}
 
-		$this->amount   = (float) $this->purifyAmount( $amount );
+		$this->amount   = $this->purify_amount( $amount );
 		$this->currency = strtoupper( $currency );
 	}
 
 	/**
 	 * @param  int|float|string $amount
 	 *
-	 * @return int|float|string
+	 * @return float
 	 */
-	public function purifyAmount( $amount ) {
+	public function purify_amount( $amount ) {
 		if ( ! is_string( $amount ) && ! is_float( $amount ) && ! is_numeric( $amount ) ) {
 			throw new Exception( __( 'An amount has to be integer, float, or string.', 'omise' ) );
 		} 
@@ -61,27 +61,27 @@ class Omise_Money {
 			$amount = preg_replace("/[^0-9.]/", '', $amount);
 		}
 
-		return $amount;
+		return (float) $amount;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function toSubunit() {
+	public function to_subunit() {
 		return (int) ( ( floor( $this->amount * 100 ) / 100 ) * $this->subunit_multiplier[ $this->currency ] );
 	}
 
 	/**
-	 * @return int|float|string  Depending on what type of value that is passed through the construction.
+	 * @return float
 	 */
-	public function getAmount() {
+	public function get_amount() {
 		return $this->amount;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCurrency() {
+	public function get_currency() {
 		return $this->currency;
 	}
 }

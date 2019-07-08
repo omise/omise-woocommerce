@@ -254,7 +254,7 @@ function register_omise_creditcard() {
 			);
 			$money   = new Omise_Money( $order->get_total(), $order->get_order_currency() );
 			$data    = array(
-				'amount'      => $money->toSubunit(),
+				'amount'      => $money->to_subunit(),
 				'currency'    => $order->get_order_currency(),
 				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 				'return_uri'  => $return_uri
@@ -449,7 +449,7 @@ function register_omise_creditcard() {
 				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 				$money  = new Omise_Money( $amount, $order->get_order_currency() );
 				$refund = $charge->refunds()->create( array(
-					'amount' => $money->toSubunit()
+					'amount' => $money->to_subunit()
 				) );
 
 				if ( $refund['voided'] ) {

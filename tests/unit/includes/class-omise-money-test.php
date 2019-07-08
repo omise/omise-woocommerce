@@ -16,9 +16,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 849, $money->getAmount() );
-		$this->assertEquals( 84900, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 849, $money->get_amount() );
+		$this->assertEquals( 84900, $money->to_subunit() );
 	}
 
 	/**
@@ -30,9 +30,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 350.49, $money->getAmount() );
-		$this->assertEquals( 35049, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 350.49, $money->get_amount() );
+		$this->assertEquals( 35049, $money->to_subunit() );
 	}
 
 	/**
@@ -44,9 +44,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 4780.0409, $money->getAmount() );
-		$this->assertEquals( 478004, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 4780.0409, $money->get_amount() );
+		$this->assertEquals( 478004, $money->to_subunit() );
 	}
 
 	/**
@@ -58,9 +58,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 688.123456789, $money->getAmount() );
-		$this->assertEquals( 68812, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 688.123456789, $money->get_amount() );
+		$this->assertEquals( 68812, $money->to_subunit() );
 	}
 
 	/**
@@ -72,9 +72,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 14900.987654321, $money->getAmount() );
-		$this->assertEquals( 1490098, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 14900.987654321, $money->get_amount() );
+		$this->assertEquals( 1490098, $money->to_subunit() );
 	}
 
 	/**
@@ -86,9 +86,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 5400, $money->getAmount() );
-		$this->assertEquals( 540000, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 5400, $money->get_amount() );
+		$this->assertEquals( 540000, $money->to_subunit() );
 	}
 
 	/**
@@ -100,9 +100,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 350.49, $money->getAmount() );
-		$this->assertEquals( 35049, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 350.49, $money->get_amount() );
+		$this->assertEquals( 35049, $money->to_subunit() );
 	}
 
 	/**
@@ -114,9 +114,9 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 46000.4951, $money->getAmount() );
-		$this->assertEquals( 4600049, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 46000.4951, $money->get_amount() );
+		$this->assertEquals( 4600049, $money->to_subunit() );
 	}
 
 	/**
@@ -154,8 +154,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'AUD', $money->getCurrency() );
-		$this->assertEquals( 99949, $money->toSubunit() );
+		$this->assertEquals( 'AUD', $money->get_currency() );
+		$this->assertEquals( 99949, $money->to_subunit() );
 	}
 
 	/**
@@ -167,8 +167,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'CAD', $money->getCurrency() );
-		$this->assertEquals( 274900, $money->toSubunit() );
+		$this->assertEquals( 'CAD', $money->get_currency() );
+		$this->assertEquals( 274900, $money->to_subunit() );
 	}
 
 	/**
@@ -180,8 +180,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'CHF', $money->getCurrency() );
-		$this->assertEquals( 30099, $money->toSubunit() );
+		$this->assertEquals( 'CHF', $money->get_currency() );
+		$this->assertEquals( 30099, $money->to_subunit() );
 	}
 
 	/**
@@ -193,8 +193,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'CNY', $money->getCurrency() );
-		$this->assertEquals( 999950, $money->toSubunit() );
+		$this->assertEquals( 'CNY', $money->get_currency() );
+		$this->assertEquals( 999950, $money->to_subunit() );
 	}
 
 	/**
@@ -206,8 +206,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'DKK', $money->getCurrency() );
-		$this->assertEquals( 2000, $money->toSubunit() );
+		$this->assertEquals( 'DKK', $money->get_currency() );
+		$this->assertEquals( 2000, $money->to_subunit() );
 	}
 
 	/**
@@ -219,8 +219,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'EUR', $money->getCurrency() );
-		$this->assertEquals( 900, $money->toSubunit() );
+		$this->assertEquals( 'EUR', $money->get_currency() );
+		$this->assertEquals( 900, $money->to_subunit() );
 	}
 
 	/**
@@ -232,8 +232,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'GBP', $money->getCurrency() );
-		$this->assertEquals( 1295, $money->toSubunit() );
+		$this->assertEquals( 'GBP', $money->get_currency() );
+		$this->assertEquals( 1295, $money->to_subunit() );
 	}
 
 	/**
@@ -245,8 +245,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'HKD', $money->getCurrency() );
-		$this->assertEquals( 1199, $money->toSubunit() );
+		$this->assertEquals( 'HKD', $money->get_currency() );
+		$this->assertEquals( 1199, $money->to_subunit() );
 	}
 
 	/**
@@ -258,8 +258,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'JPY', $money->getCurrency() );
-		$this->assertEquals( 34980, $money->toSubunit() );
+		$this->assertEquals( 'JPY', $money->get_currency() );
+		$this->assertEquals( 34980, $money->to_subunit() );
 	}
 
 	/**
@@ -271,8 +271,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'MYR', $money->getCurrency() );
-		$this->assertEquals( 9099, $money->toSubunit() );
+		$this->assertEquals( 'MYR', $money->get_currency() );
+		$this->assertEquals( 9099, $money->to_subunit() );
 	}
 
 	/**
@@ -284,8 +284,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'SGD', $money->getCurrency() );
-		$this->assertEquals( 1000, $money->toSubunit() );
+		$this->assertEquals( 'SGD', $money->get_currency() );
+		$this->assertEquals( 1000, $money->to_subunit() );
 	}
 
 	/**
@@ -297,8 +297,8 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'THB', $money->getCurrency() );
-		$this->assertEquals( 2000, $money->toSubunit() );
+		$this->assertEquals( 'THB', $money->get_currency() );
+		$this->assertEquals( 2000, $money->to_subunit() );
 	}
 
 	/**
@@ -310,7 +310,7 @@ class Omise_Money_Test extends TestCase {
 
 		$money = new Omise_Money( $amount, $currency );
 
-		$this->assertEquals( 'USD', $money->getCurrency() );
-		$this->assertEquals( 9909, $money->toSubunit() );
+		$this->assertEquals( 'USD', $money->get_currency() );
+		$this->assertEquals( 9909, $money->to_subunit() );
 	}
 }

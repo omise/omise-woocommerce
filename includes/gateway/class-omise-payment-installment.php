@@ -103,7 +103,7 @@ function register_omise_installment() {
 			);
 
 			return OmiseCharge::create( array(
-				'amount'            => $money->toSubunit(),
+				'amount'            => $money->to_subunit(),
 				'currency'          => $order->get_order_currency(),
 				'description'       => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 				'source'            => array(
