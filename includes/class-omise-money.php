@@ -6,19 +6,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class Omise_Money {
 	/**
-	 * @var float
-	 */
-	protected $amount;
-
-	/**
-	 * @var string
-	 */
-	protected $currency;
-
-	/**
 	 * @var array
 	 */
-	private $subunit_multiplier = array(
+	private static $subunit_multiplier = array(
 		'AUD' => 100,
 		'CAD' => 100,
 		'CHF' => 100,
@@ -35,53 +25,32 @@ class Omise_Money {
 	);
 
 	/**
-	 * @param int|float|string $amount
-	 * @param string           $currency
-	 */
-	public function __construct( $amount, $currency ) {
-		if ( ! isset( $this->subunit_multiplier[ strtoupper( $currency ) ] ) ) {
-			throw new Exception( __( 'We do not support the currency you are using.', 'omise' ) );
-		}
-
-		$this->amount   = $this->purify_amount( $amount );
-		$this->currency = strtoupper( $currency );
-	}
-
-	/**
-	 * @param  int|float|string $amount
+	 * @param  int|float $amount
 	 *
 	 * @return float
 	 */
-	public function purify_amount( $amount ) {
-		if ( ! is_string( $amount ) && ! is_float( $amount ) && ! is_numeric( $amount ) ) {
-			throw new Exception( __( 'An amount has to be integer, float, or string.', 'omise' ) );
-		} 
-
-		if ( is_string( $amount ) ) {
-			$amount = preg_replace("/[^0-9.]/", '', $amount);
+	public static function purify_amount( $amount ) {
+		if ( ! is_numeric( $amount ) ) {
+			throw new Exception( __( 'An amount has to be integer, or float.', 'omise' ) );
 		}
 
 		return (float) $amount;
 	}
 
 	/**
+	 * @param  int|float $amount
+	 * @param  string    $currency
+	 *
 	 * @return int
 	 */
-	public function to_subunit() {
-		return (int) ( ( floor( $this->amount * 100 ) / 100 ) * $this->subunit_multiplier[ $this->currency ] );
-	}
+	public function to_subunit( $amount, $currency ) {
+		$amount   = static::purify_amount( $amount );
+		$currency = strtoupper( $currency );
 
-	/**
-	 * @return float
-	 */
-	public function get_amount() {
-		return $this->amount;
-	}
+		if ( ! isset( static::$subunit_multiplier[ $currency ] ) ) {
+			throw new Exception( __( 'We do not support the currency you are using.', 'omise' ) );
+		}
 
-	/**
-	 * @return string
-	 */
-	public function get_currency() {
-		return $this->currency;
+		return (int) ( ( floor( $amount * 100 ) / 100 ) * static::$subunit_multiplier[ $currency ] );
 	}
 }

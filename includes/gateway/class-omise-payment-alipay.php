@@ -64,7 +64,6 @@ function register_omise_alipay() {
 		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
-			$money    = new Omise_Money( $order->get_total(), $order->get_order_currency() );
 			$metadata = array_merge(
 				apply_filters( 'omise_charge_params_metadata', array(), $order ),
 				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
@@ -78,7 +77,7 @@ function register_omise_alipay() {
 			);
 
 			return OmiseCharge::create( array(
-				'amount'      => $money->to_subunit(),
+				'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_order_currency() ),
 				'currency'    => $order->get_order_currency(),
 				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 				'source'      => array( 'type' => 'alipay' ),
