@@ -93,6 +93,13 @@ function register_omise_installment() {
 				apply_filters( 'omise_charge_params_metadata', array(), $order ),
 				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
 			);
+			$return_uri = add_query_arg(
+				array(
+					'wc-api'   => 'omise_installment_callback',
+					'order_id' => $order_id
+				),
+				home_url()
+			);
 
 			return OmiseCharge::create( array(
 				'amount'            => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
@@ -102,7 +109,7 @@ function register_omise_installment() {
 					'type'              => sanitize_text_field( $source_type ),
 					'installment_terms' => sanitize_text_field( $installment_terms )
 				),
-				'return_uri'        => add_query_arg( 'order_id', $order_id, site_url() . '?wc-api=omise_installment_callback' ),
+				'return_uri'        => $return_uri,
 				'metadata'          => $metadata
 			) );
 		}
