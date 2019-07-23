@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v3.5 _(Jul 23, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.5)
+
+#### 👾 Bug Fixes
+
+- [#120](https://github.com/omise/omise-woocommerce/pull/120): Properly assigning querystrings for the payment callback endpoints.
+
+---
+
 ### [v3.4 _(Jun 14, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.4)
 
 #### ✨ Highlights

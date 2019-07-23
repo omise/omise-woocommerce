@@ -2,8 +2,8 @@
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay
 Requires at least: 4.3.1
-Tested up to: 5.2.1
-Stable tag: 3.4
+Tested up to: 5.2.2
+Stable tag: 3.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,12 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 3.5 =
+
+#### 👾 Bug Fixes
+
+- [#120](https://github.com/omise/omise-woocommerce/pull/120): Properly assigning querystrings for the payment callback endpoints.
 
 = 3.4 =
 
