@@ -244,12 +244,19 @@ function register_omise_creditcard() {
 				}
 			}
 
-			$success = false;
+			$success    = false;
+			$return_uri = add_query_arg(
+				array(
+					'wc-api'   => 'omise_callback',
+					'order_id' => $order_id
+				),
+				home_url()
+			);
 			$data    = array(
 				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
 				'currency'    => $order->get_order_currency(),
 				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-				'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . '?wc-api=omise_callback' )
+				'return_uri'  => $return_uri
 			);
 
 			if ( ! empty( $omise_customer_id ) && ! empty( $card_id ) ) {
