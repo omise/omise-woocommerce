@@ -73,7 +73,7 @@ class Omise_Money_Test extends TestCase {
 	 */
 	public function preventing_a_troll_case() {
 		$this->expectException( 'Exception' );
-		$this->expectExceptionMessage( 'An amount has to be integer, or float.' );
+		$this->expectExceptionMessage( 'Invalid amount. An amount has to be in a number format.' );
 
 		$amount   = [ 'yahhhhh' ];
 		$currency = 'thb';
