@@ -25,8 +25,8 @@ class Omise_Money {
 	);
 
 	/**
-	 * @param  int|float $amount
-	 * @param  string    $currency
+	 * @param  int|float|string $amount
+	 * @param  string           $currency
 	 *
 	 * @return int
 	 */
@@ -38,7 +38,7 @@ class Omise_Money {
 			throw new Exception( __( 'We do not support the currency you are using.', 'omise' ) );
 		}
 
-		return (int) ( ( floor( $amount * 100 ) / 100 ) * static::$subunit_multiplier[ $currency ] );
+		return $amount * static::$subunit_multiplier[ $currency ];
 	}
 
 	/**
@@ -48,7 +48,7 @@ class Omise_Money {
 	 */
 	private static function purify_amount( $amount ) {
 		if ( ! is_numeric( $amount ) ) {
-			throw new Exception( __( 'Invalid amount. An amount has to be in a number format.', 'omise' ) );
+			throw new Exception( __( 'Invalid amount type given. Should be int, float, or numeric string.', 'omise' ) );
 		}
 
 		return (float) $amount;

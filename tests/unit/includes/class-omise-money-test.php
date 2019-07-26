@@ -34,7 +34,7 @@ class Omise_Money_Test extends TestCase {
 		$amount   = 4780.0409;
 		$currency = 'thb';
 
-		$this->assertEquals( 478004, Omise_Money::to_subunit( $amount, $currency ) );
+		$this->assertEquals( 478004.09, Omise_Money::to_subunit( $amount, $currency ) );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Omise_Money_Test extends TestCase {
 		$amount   = 688.123456789;
 		$currency = 'thb';
 
-		$this->assertEquals( 68812, Omise_Money::to_subunit( $amount, $currency ) );
+		$this->assertEquals( 68812.3456789, Omise_Money::to_subunit( $amount, $currency ) );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Omise_Money_Test extends TestCase {
 		$amount   = 14900.987654321;
 		$currency = 'thb';
 
-		$this->assertEquals( 1490098, Omise_Money::to_subunit( $amount, $currency ) );
+		$this->assertEquals( 1490098.7654321, Omise_Money::to_subunit( $amount, $currency ) );
 	}
 
 	/**
@@ -73,7 +73,7 @@ class Omise_Money_Test extends TestCase {
 	 */
 	public function preventing_a_troll_case() {
 		$this->expectException( 'Exception' );
-		$this->expectExceptionMessage( 'Invalid amount. An amount has to be in a number format.' );
+		$this->expectExceptionMessage( 'Invalid amount type given. Should be int, float, or numeric string.' );
 
 		$amount   = [ 'yahhhhh' ];
 		$currency = 'thb';
@@ -108,7 +108,7 @@ class Omise_Money_Test extends TestCase {
 	 * @test
 	 */
 	public function CAD_to_subunit() {
-		$amount   = 2749;
+		$amount   = 2749.00;
 		$currency = 'cad';
 
 		$this->assertEquals( 274900, Omise_Money::to_subunit( $amount, $currency ) );
@@ -158,7 +158,7 @@ class Omise_Money_Test extends TestCase {
 	 * @test
 	 */
 	public function GBP_to_subunit() {
-		$amount   = 12.95450;
+		$amount   = 12.95;
 		$currency = 'gbp';
 
 		$this->assertEquals( 1295, Omise_Money::to_subunit( $amount, $currency ) );
