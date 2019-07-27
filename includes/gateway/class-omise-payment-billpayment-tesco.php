@@ -30,6 +30,7 @@ function register_omise_billpayment_tesco() {
 			$this->description = $this->get_option( 'description' );
 
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_barcode' ) );
 		}
 
 		/**
@@ -100,6 +101,34 @@ function register_omise_billpayment_tesco() {
 					$order_id
 				)
 			);
+		}
+
+		/**
+		 * @param  int $order_id
+		 */
+		public function display_barcode( $order_id ) {
+			if ( ! $order = $this->load_order( $order_id ) ) {
+				return;
+			}
+
+			$charge_id = $this->get_charge_id_from_order();
+			$charge    = OmiseCharge::retrieve( $charge_id );
+
+			$amount  = $charge['amount'];
+			$barcode = $charge['source']['references']['barcode'];
+			$tax_id  = $charge['source']['references']['omise_tax_id'];
+			$ref_1   = $charge['source']['references']['reference_number_1'];
+			$ref_2   = $charge['source']['references']['reference_number_2'];
+			?>
+
+			<div class="omise omise-billpayment-tesco-details">
+				<p><?php echo __( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
+				<div class="omise-billpayment-tesco-barcode">
+					<img src="<?php echo $barcode; ?>" title="Omise Tesco Bill Payment Barcode" alt="Omise Tesco Bill Payment Barcode">
+				</div>
+				<small class="omise-billpayment-tesco-reference-number">|&nbsp;&nbsp;&nbsp; <?php echo $tax_id; ?> &nbsp;&nbsp;&nbsp; 00 &nbsp;&nbsp;&nbsp; <?php echo $ref_1; ?> &nbsp;&nbsp;&nbsp; <?php echo $ref_2; ?> &nbsp;&nbsp;&nbsp; <?php echo $amount; ?></small>
+			</div>
+			<?php
 		}
 	}
 

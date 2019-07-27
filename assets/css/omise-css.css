@@ -47,6 +47,13 @@ fieldset.card-exists {
 	line-height: 1;
 }
 
+/**
+ * Omise Bill Payment Tesco
+ * CSS for the 'Thank You' (order-received) page.
+ */
+.omise-billpayment-tesco-details     { margin-bottom: 4em; text-align:center; }
+.omise-billpayment-tesco-barcode img { margin: auto; }
+
 
 /**
  * 2). Components
