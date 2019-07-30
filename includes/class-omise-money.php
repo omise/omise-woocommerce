@@ -28,7 +28,14 @@ class Omise_Money {
 	 * @param  int|float|string $amount
 	 * @param  string           $currency
 	 *
-	 * @return int
+	 * @return int|float  Note that the expected output value's type of this method is to be `int` as Omise Charge API requires.
+	 *                    However, there is a case that this method will return a `float` regarding to
+	 *                    the improper WooCommerce currency setting, which considered as an invalid type of amount.
+	 *
+	 *                    And we would like to let the API raises an error out loud instead of silently remove
+	 *                    or casting a `float` value to `int` subunit.
+	 *                    This is to prevent any miscalculation for those fractional subunits
+	 *                    between the amount that is charged, and the actual amount from the store.
 	 */
 	public function to_subunit( $amount, $currency ) {
 		$amount   = static::purify_amount( $amount );
