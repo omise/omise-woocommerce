@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * @since 3.5
+ * @since 3.6
  */
 class Omise_Money {
 	/**
