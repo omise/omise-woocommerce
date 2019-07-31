@@ -77,7 +77,7 @@ function register_omise_alipay() {
 			);
 
 			return OmiseCharge::create( array(
-				'amount'      => $this->format_amount_subunit( $order->get_total(), $order->get_order_currency() ),
+				'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_order_currency() ),
 				'currency'    => $order->get_order_currency(),
 				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 				'source'      => array( 'type' => 'alipay' ),
