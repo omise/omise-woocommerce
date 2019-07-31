@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### [v3.6 _(Aug 1, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.6)
+
+#### ✨ Highlights
+
+- [#118](https://github.com/omise/omise-woocommerce/pull/118): Better way to handle amount subunit, adding support for more currencies.
+
+#### 🚀 Enhancements
+
+- [#124](https://github.com/omise/omise-woocommerce/pull/124): Updating npm vulnerable dependencies.
+
+---
+
 ### [v3.5 _(Jul 23, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.5)
 
 #### 👾 Bug Fixes
