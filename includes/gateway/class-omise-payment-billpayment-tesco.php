@@ -31,6 +31,7 @@ function register_omise_billpayment_tesco() {
 
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_barcode' ) );
+			add_action( 'woocommerce_email_after_order_table', array( $this, 'email_barcode' ) );
 		}
 
 		/**
@@ -109,31 +110,82 @@ function register_omise_billpayment_tesco() {
 		}
 
 		/**
-		 * @param  int $order_id
+		 * @param int|WC_Order $order
+		 * @param string       $context  pass 'email' value through this argument only for 'sending out an email' case.
 		 */
-		public function display_barcode( $order_id ) {
-			if ( ! $order = $this->load_order( $order_id ) ) {
+		public function display_barcode( $order, $context = 'view' ) {
+			if ( ! $order = $this->load_order( $order ) ) {
 				return;
 			}
 
-			$charge_id = $this->get_charge_id_from_order();
-			$charge    = OmiseCharge::retrieve( $charge_id );
-
-			$amount  = $charge['amount'];
-			$barcode = $charge['source']['references']['barcode'];
-			$tax_id  = $charge['source']['references']['omise_tax_id'];
-			$ref_1   = $charge['source']['references']['reference_number_1'];
-			$ref_2   = $charge['source']['references']['reference_number_2'];
+			$charge_id    = $this->get_charge_id_from_order();
+			$charge       = OmiseCharge::retrieve( $charge_id );
+			$barcode_svg  = file_get_contents( $charge['source']['references']['barcode'] );
+			$barcode_html = $this->barcode_svg_to_html( $barcode_svg );
 			?>
 
-			<div class="omise omise-billpayment-tesco-details">
+			<div class="omise omise-billpayment-tesco-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><?php echo __( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
 				<div class="omise-billpayment-tesco-barcode">
-					<img src="<?php echo $barcode; ?>" title="Omise Tesco Bill Payment Barcode" alt="Omise Tesco Bill Payment Barcode">
+					<?php if ( 'email' === $context ) : ?>
+						<?php echo $barcode_html; ?>
+					<?php else : ?>
+						<?php echo $barcode_svg; ?>
+					<?php endif; ?>
 				</div>
-				<small class="omise-billpayment-tesco-reference-number">|&nbsp;&nbsp;&nbsp; <?php echo $tax_id; ?> &nbsp;&nbsp;&nbsp; 00 &nbsp;&nbsp;&nbsp; <?php echo $ref_1; ?> &nbsp;&nbsp;&nbsp; <?php echo $ref_2; ?> &nbsp;&nbsp;&nbsp; <?php echo $amount; ?></small>
+				<small class="omise-billpayment-tesco-reference-number">
+					<?php
+					echo sprintf(
+						'| &nbsp; %1$s &nbsp; 00 &nbsp; %2$s &nbsp; %3$s &nbsp; %4$s',
+						$charge['source']['references']['omise_tax_id'],
+						$charge['source']['references']['reference_number_1'],
+						$charge['source']['references']['reference_number_2'],
+						$charge['amount']
+					);
+					?>
+				</small>
 			</div>
 			<?php
+		}
+
+		public function email_barcode( $order ) {
+			$this->display_barcode( $order, 'email' );
+		}
+
+		/**
+		 * Convert a given SVG Bill Payment Tesco's barcode to HTML format.
+		 *
+		 * @param  string $barcode_svg
+		 *
+		 * @return string  of a generated Bill Payment Tesco's barcode in HTML format.
+	     */
+		public function barcode_svg_to_html( $barcode_svg ) {
+			$xml       = new SimpleXMLElement( $barcode_svg );
+			$xhtml     = new DOMDocument();
+			$prevX     = 0;
+			$prevWidth = 0;
+
+			// Get data from all <rect> nodes.
+			foreach ( $xml->g->g->children() as $rect ) {
+				$attributes = $rect->attributes();
+				$width      = $attributes['width'];
+				$margin     = ( $attributes['x'] - $prevX - $prevWidth ) . 'px';
+
+				//set html attributes based on SVG attributes
+				$divRect = $xhtml->createElement( 'div' );
+				$divRect->setAttribute( 'style', "float:left; position:relative; height:50px; width:$width; background-color:#000; margin-left:$margin" );
+				$xhtml->appendChild( $divRect );
+
+				$prevX     = $attributes['x'];
+				$prevWidth = $attributes['width'];
+			}
+
+			// Add outer empty div tag to clear 'float' css property.
+			$div = $xhtml->createElement( 'div' );
+			$div->setAttribute( 'style', 'clear:both' );
+			$xhtml->appendChild( $div );
+
+			return $xhtml->saveXML( null, LIBXML_NOEMPTYTAG );
 		}
 	}
 
