@@ -146,6 +146,12 @@ function register_omise_billpayment_tesco() {
 					);
 					?>
 				</small>
+
+				<?php if ( 'email' !== $context ) : ?>
+					<div class="omise-billpayment-tesco-print-button">
+						<button onClick="window.print()" class="button button-primary">Print barcode</button>
+					</div>
+				<?php endif; ?>
 			</div>
 			<?php
 		}
