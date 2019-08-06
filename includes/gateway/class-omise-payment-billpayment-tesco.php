@@ -49,14 +49,14 @@ function register_omise_billpayment_tesco() {
 				'title' => array(
 					'title'       => __( 'Title', 'omise' ),
 					'type'        => 'text',
-					'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
+					'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
 					'default'     => __( 'Bill Payment: Tesco', 'omise' ),
 				),
 
 				'description' => array(
 					'title'       => __( 'Description', 'omise' ),
 					'type'        => 'textarea',
-					'description' => __( 'This controls the description which the user sees during checkout.', 'omise' )
+					'description' => __( 'This controls the description the user sees during checkout.', 'omise' )
 				),
 			);
 		}
@@ -65,17 +65,22 @@ function register_omise_billpayment_tesco() {
 		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
-			$metadata = array_merge(
+			$total      = $order->get_total();
+			$currency   = $order->get_order_currency();
+			$return_uri = add_query_arg(
+				array( 'wc-api' => 'omise_billpayment_tesco_callback', 'order_id' => $order_id ), home_url()
+			);
+			$metadata   = array_merge(
 				apply_filters( 'omise_charge_params_metadata', array(), $order ),
 				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
 			);
 
 			return OmiseCharge::create( array(
-				'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_order_currency() ),
-				'currency'    => $order->get_order_currency(),
+				'amount'      => Omise_Money::to_subunit( $total, $currency ),
+				'currency'    => $currency,
 				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 				'source'      => array( 'type' => 'bill_payment_tesco_lotus' ),
-				'return_uri'  => add_query_arg( 'order_id', $order_id, site_url() . "?wc-api=omise_billpayment_tesco_callback" ),
+				'return_uri'  => $return_uri,
 				'metadata'    => $metadata
 			) );
 		}
@@ -89,10 +94,10 @@ function register_omise_billpayment_tesco() {
 			}
 
 			if ( 'pending' == $charge['status'] ) {
-				return [
+				return array(
 					'result'   => 'success',
 					'redirect' => $this->get_return_url( $order )
-				];
+				);
 			}
 
 			return $this->payment_failed(
