@@ -199,7 +199,7 @@ function register_omise_billpayment_tesco() {
 
 				// Set HTML attributes based on <rect> node's attributes.
 				$divRect = $xhtml->createElement( 'div' );
-				$divRect->setAttribute( 'style', "float:left; position:relative; height:50px; width:$width; background-color:#000; margin-left:$margin" );
+				$divRect->setAttribute( 'style', "float: left; position: relative; height: 50px; border-left: $width solid #000000; width: 0; margin-left: $margin" );
 				$xhtml->appendChild( $divRect );
 
 				$prevX     = $attributes['x'];
