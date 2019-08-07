@@ -134,6 +134,7 @@
 								<?php
 								$available_gateways = array(
 									new Omise_Payment_Alipay,
+									new Omise_Payment_Billpayment_Tesco,
 									new Omise_Payment_Creditcard,
 									new Omise_Payment_Installment,
 									new Omise_Payment_Internetbanking
