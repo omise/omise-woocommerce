@@ -44,7 +44,7 @@ Next, check **[First Time Setup](#first-time-setup)** to continue setting up you
 
 #### Connect your store with your Omise account
 
-![Omise-WooCommerce plugin - setting page](https://user-images.githubusercontent.com/2154669/38303577-a27696b2-3830-11e8-9114-02d9e658f7ed.png)
+![Omise-WooCommerce plugin - setting page](https://user-images.githubusercontent.com/2154669/62671292-7b991480-b9c0-11e9-8627-0bc85c078365.png)
 
 Once the installation is done, the next thing that you are going to do is to connect your store with your Omise account and enable payment methods so your customers can make a purchase with an online payment.
 
@@ -60,11 +60,11 @@ Once the installation is done, the next thing that you are going to do is to con
 
 #### Enable payment methods
 
-> Note that Alipay and Internet Banking payment methods are only available for merchants with a Thai-registered Omise account.
+> Note that Alipay, Bill Payment: Tesco, Installment, and Internet Banking payment methods are only available for merchants with a Thai-registered Omise account.
 
-There are 3 payment methods that you can enable on your store, which are **Alipay**, **Credit / Debit Card**, and **Internet Banking**.
+There are 5 payment methods that you can enable on your store, which are **Alipay**, **Bill Payment: Tesco**, **Credit / Debit Card**, **Installment**, and **Internet Banking**.
 
-1. At Omise Settings page, Payment Methods section, there will be 3 available payment methods show on the list.
+1. At Omise Settings page, Payment Methods section, there will be 5 available payment methods show on the list.
 
 2. Click `config` at the table on a payment method that you would like to accept payment with.
 
