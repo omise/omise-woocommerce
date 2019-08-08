@@ -160,47 +160,50 @@ function register_omise_billpayment_tesco() {
 			<?php if ( 'email' !== $context ) : ?>
 
 				<div class="omise-billpayment-tesco-print-detail">
-					<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', __( 'Thank you. Your order has been received.', 'woocommerce' ), $order ); ?></p>
-					<ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details">
+					<div>
+						<h2><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', __( 'Thank you. Your order has been received.', 'woocommerce' ), $order ); ?></h2>
+					</div>
 
-						<li class="woocommerce-order-overview__order order">
+					<div class="omise-billpayment-tesco-print-order-overview">
+						<div class="omise-billpayment-tesco-print-order-overview-item">
 							<?php _e( 'Order number:', 'woocommerce' ); ?>
-							<strong><?php echo $this->order()->get_order_number(); ?></strong>
-						</li>
+							<br/><strong><?php echo $this->order()->get_order_number(); ?></strong>
+						</div>
 
-						<li class="woocommerce-order-overview__date date">
-							<?php _e( 'Date:', 'woocommerce' ); ?>
-							<strong><?php echo wc_format_datetime( $this->order()->get_date_created() ); ?></strong>
-						</li>
+						<div class="omise-billpayment-tesco-print-order-overview-item">
+							<?php _e( 'Date:', 'woocommerce' ); ?>:
+							<br/><strong><?php echo wc_format_datetime( $this->order()->get_date_created() ); ?></strong>
+						</div>
 
 						<?php if ( is_user_logged_in() && $this->order()->get_user_id() === get_current_user_id() && $this->order()->get_billing_email() ) : ?>
-							<li class="woocommerce-order-overview__email email">
-								<?php _e( 'Email:', 'woocommerce' ); ?>
-								<strong><?php echo $this->order()->get_billing_email(); ?></strong>
-							</li>
+							<div class="omise-billpayment-tesco-print-order-overview-item">
+								<?php _e( 'Email:', 'woocommerce' ); ?>:
+								<br/><strong><?php echo $this->order()->get_billing_email(); ?></strong>
+							</div>
 						<?php endif; ?>
 
-						<li class="woocommerce-order-overview__total total">
-							<?php _e( 'Total:', 'woocommerce' ); ?>
-							<strong><?php echo $this->order()->get_formatted_order_total(); ?></strong>
-						</li>
+						<div class="omise-billpayment-tesco-print-order-overview-item">
+							<?php _e( 'Total:', 'woocommerce' ); ?>:
+							<br/><strong><?php echo $this->order()->get_formatted_order_total(); ?></strong>
+						</div>
+					</div>
 
-						<?php if ( $this->order()->get_payment_method_title() ) : ?>
-							<li class="woocommerce-order-overview__payment-method method">
-								<?php _e( 'Payment method:', 'woocommerce' ); ?>
-								<strong><?php echo wp_kses_post( $this->order()->get_payment_method_title() ); ?></strong>
-							</li>
-						<?php endif; ?>
+					<?php if ( $this->order()->get_payment_method_title() ) : ?>
+						<div class="omise-billpayment-tesco-print-order-payment-method">
+							<?php _e( 'Payment method:', 'woocommerce' ); ?>
+							<br/><strong><?php echo wp_kses_post( $this->order()->get_payment_method_title() ); ?></strong>
+						</div>
+					<?php endif; ?>
 
-					</ul>
+					<p class="omise-billpayment-tesco-print-barcode-message"><?php _e( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
 
-					<p><?php echo __( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
-					<div class="omise-billpayment-tesco-barcode-wrapper">
+					<div class="omise-billpayment-tesco-print-barcode-wrapper">
 						<?php echo $barcode_html; ?>
 					</div>
-					<small class="omise-billpayment-tesco-reference-number">
-						<?php echo $barcode_ref_number; ?>
-					</small>
+
+					<div class="omise-billpayment-tesco-print-reference-number">
+						<small><?php echo $barcode_ref_number; ?></small>
+					</div>
 				</div>
 
 				<script type="text/javascript">
@@ -208,6 +211,8 @@ function register_omise_billpayment_tesco() {
 					let cloned_omise_billpayment_print_detail = omise_billpayment_print_detail[0].cloneNode( true );
 
 					document.body.appendChild( cloned_omise_billpayment_print_detail );
+
+					omise_billpayment_print_detail[0].parentNode.removeChild( omise_billpayment_print_detail[0] );
 				</script>
 
 			<?php endif;
