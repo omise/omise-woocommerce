@@ -1,0 +1,34 @@
+.omise-billpayment-tesco-print-detail {
+    visibility: hidden;
+    width: 100%;
+    height: 0;
+    text-align: center;
+}
+
+@media print {
+    body * {
+        display: none;
+        visibility: hidden;
+    }
+
+    body .omise-billpayment-tesco-print-detail {
+        display: block;
+        visibility: visible;
+        position: static;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    
+    .omise-billpayment-tesco-print-detail * {
+        display: block;
+        visibility: visible;
+        width: auto;
+        margin: auto;
+        height: auto;
+    }
+
+    .omise-billpayment-tesco-barcode {
+        display: inline-block;
+    }
+}

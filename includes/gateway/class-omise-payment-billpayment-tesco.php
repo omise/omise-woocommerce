@@ -32,6 +32,7 @@ function register_omise_billpayment_tesco() {
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_barcode' ) );
 			add_action( 'woocommerce_email_after_order_table', array( $this, 'email_barcode' ) );
+			add_action( 'omise_checkout_assets', array( $this, 'omise_billpayment_checkout_assets' ) );
 		}
 
 		/**
@@ -60,6 +61,13 @@ function register_omise_billpayment_tesco() {
 					'description' => __( 'This controls the description the user sees during checkout.', 'omise' )
 				),
 			);
+		}
+
+		/**
+		 * @see Omise_Payment::omise_checkout_assets()
+		 */
+		public function omise_billpayment_checkout_assets() {
+			wp_enqueue_style( 'omise-billpayment-print', plugins_url( '../../assets/css/omise-billpayment-print.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION );
 		}
 
 		/**
@@ -118,33 +126,26 @@ function register_omise_billpayment_tesco() {
 				return;
 			}
 
-			$charge_id    = $this->get_charge_id_from_order();
-			$charge       = OmiseCharge::retrieve( $charge_id );
-			$barcode_svg  = file_get_contents( $charge['source']['references']['barcode'] );
+			$charge_id          = $this->get_charge_id_from_order();
+			$charge             = OmiseCharge::retrieve( $charge_id );
+			$barcode_svg        = file_get_contents( $charge['source']['references']['barcode'] );
+			$barcode_html       = $this->barcode_svg_to_html( $barcode_svg );
+			$barcode_ref_number = sprintf(
+				'| &nbsp; %1$s &nbsp; 00 &nbsp; %2$s &nbsp; %3$s &nbsp; %4$s',
+				$charge['source']['references']['omise_tax_id'],
+				$charge['source']['references']['reference_number_1'],
+				$charge['source']['references']['reference_number_2'],
+				$charge['amount']
+			);
 			?>
 
 			<div class="omise omise-billpayment-tesco-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><?php echo __( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
-				<div class="omise-billpayment-tesco-barcode">
-					<?php
-					if ( 'email' === $context ) {
-						$barcode_html = $this->barcode_svg_to_html( $barcode_svg );
-						echo $barcode_html;
-					} else {
-						echo $barcode_svg;
-					}
-					?>
+				<div class="omise-billpayment-tesco-barcode-wrapper">
+					<?php echo $barcode_html; ?>
 				</div>
 				<small class="omise-billpayment-tesco-reference-number">
-					<?php
-					echo sprintf(
-						'| &nbsp; %1$s &nbsp; 00 &nbsp; %2$s &nbsp; %3$s &nbsp; %4$s',
-						$charge['source']['references']['omise_tax_id'],
-						$charge['source']['references']['reference_number_1'],
-						$charge['source']['references']['reference_number_2'],
-						$charge['amount']
-					);
-					?>
+					<?php echo $barcode_ref_number; ?>
 				</small>
 
 				<?php if ( 'email' !== $context ) : ?>
@@ -153,7 +154,63 @@ function register_omise_billpayment_tesco() {
 					</div>
 				<?php endif; ?>
 			</div>
-			<?php
+
+			<!-- Display for printing only. -->
+			<!-- Hidden by assets/css/omise-billpayment-print.css. -->
+			<?php if ( 'email' !== $context ) : ?>
+
+				<div class="omise-billpayment-tesco-print-detail">
+					<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', __( 'Thank you. Your order has been received.', 'woocommerce' ), $order ); ?></p>
+					<ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details">
+
+						<li class="woocommerce-order-overview__order order">
+							<?php _e( 'Order number:', 'woocommerce' ); ?>
+							<strong><?php echo $this->order()->get_order_number(); ?></strong>
+						</li>
+
+						<li class="woocommerce-order-overview__date date">
+							<?php _e( 'Date:', 'woocommerce' ); ?>
+							<strong><?php echo wc_format_datetime( $this->order()->get_date_created() ); ?></strong>
+						</li>
+
+						<?php if ( is_user_logged_in() && $this->order()->get_user_id() === get_current_user_id() && $this->order()->get_billing_email() ) : ?>
+							<li class="woocommerce-order-overview__email email">
+								<?php _e( 'Email:', 'woocommerce' ); ?>
+								<strong><?php echo $this->order()->get_billing_email(); ?></strong>
+							</li>
+						<?php endif; ?>
+
+						<li class="woocommerce-order-overview__total total">
+							<?php _e( 'Total:', 'woocommerce' ); ?>
+							<strong><?php echo $this->order()->get_formatted_order_total(); ?></strong>
+						</li>
+
+						<?php if ( $this->order()->get_payment_method_title() ) : ?>
+							<li class="woocommerce-order-overview__payment-method method">
+								<?php _e( 'Payment method:', 'woocommerce' ); ?>
+								<strong><?php echo wp_kses_post( $this->order()->get_payment_method_title() ); ?></strong>
+							</li>
+						<?php endif; ?>
+
+					</ul>
+
+					<p><?php echo __( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
+					<div class="omise-billpayment-tesco-barcode-wrapper">
+						<?php echo $barcode_html; ?>
+					</div>
+					<small class="omise-billpayment-tesco-reference-number">
+						<?php echo $barcode_ref_number; ?>
+					</small>
+				</div>
+
+				<script type="text/javascript">
+					let omise_billpayment_print_detail        = document.getElementsByClassName( 'omise-billpayment-tesco-print-detail' );
+					let cloned_omise_billpayment_print_detail = omise_billpayment_print_detail[0].cloneNode( true );
+
+					document.body.appendChild( cloned_omise_billpayment_print_detail );
+				</script>
+
+			<?php endif;
 		}
 
 		/**
@@ -197,6 +254,9 @@ function register_omise_billpayment_tesco() {
 			$prevX     = 0;
 			$prevWidth = 0;
 
+			$div_wrapper = $xhtml->createElement( 'div' );
+			$div_wrapper->setAttribute( 'class', 'omise-billpayment-tesco-barcode' );
+
 			// Read data from all <rect> nodes.
 			foreach ( $xml->g->g->children() as $rect ) {
 				$attributes = $rect->attributes();
@@ -204,13 +264,15 @@ function register_omise_billpayment_tesco() {
 				$margin     = ( $attributes['x'] - $prevX - $prevWidth ) . 'px';
 
 				// Set HTML attributes based on <rect> node's attributes.
-				$divRect = $xhtml->createElement( 'div' );
-				$divRect->setAttribute( 'style', "float: left; position: relative; height: 50px; border-left: $width solid #000000; width: 0; margin-left: $margin" );
-				$xhtml->appendChild( $divRect );
+				$div_rect = $xhtml->createElement( 'div' );
+				$div_rect->setAttribute( 'style', "float: left; position: relative; height: 50px; border-left: $width solid #000000; width: 0; margin-left: $margin" );
+				$div_wrapper->appendChild( $div_rect );
 
 				$prevX     = $attributes['x'];
 				$prevWidth = $attributes['width'];
 			}
+
+			$xhtml->appendChild( $div_wrapper );
 
 			// Add an empty <div></div> element to clear those floating elements.
 			$div = $xhtml->createElement( 'div' );

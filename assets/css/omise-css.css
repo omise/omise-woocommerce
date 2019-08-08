@@ -51,15 +51,16 @@ fieldset.card-exists {
  * Omise Bill Payment Tesco
  * CSS for the 'Thank You' (order-received) page.
  */
-.omise-billpayment-tesco-details      { margin-bottom: 4em; text-align:center; }
-.omise-billpayment-tesco-barcode img  { margin: auto; }
-.omise-billpayment-tesco-print-button { margin-top: 1em; }
-@media print {
-	.omise-billpayment-tesco-print-button {
-		display: none;
-	}
+.omise-billpayment-tesco-details {
+	margin-bottom: 4em;
+	text-align: center;
 }
-
+.omise-billpayment-tesco-barcode {
+	display: inline-block;
+}
+.omise-billpayment-tesco-print-button {
+	margin-top: 2em;
+}
 
 /**
  * 2). Components

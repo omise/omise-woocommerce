@@ -78,6 +78,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public function omise_checkout_assets() {
 		if ( is_checkout() ) {
 			wp_enqueue_style( 'omise', plugins_url( '../../assets/css/omise-css.css', __FILE__ ), array(), OMISE_WOOCOMMERCE_PLUGIN_VERSION );
+
+			do_action( 'omise_checkout_assets' );
 		}
 	}
 
