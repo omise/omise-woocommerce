@@ -31,6 +31,7 @@ function register_omise_billpayment_tesco() {
 
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_barcode' ) );
+			add_action( 'woocommerce_email_after_order_table', array( $this, 'email_barcode' ) );
 		}
 
 		/**
@@ -109,31 +110,108 @@ function register_omise_billpayment_tesco() {
 		}
 
 		/**
-		 * @param  int $order_id
+		 * @param int|WC_Order $order
+		 * @param string       $context  pass 'email' value through this argument only for 'sending out an email' case.
 		 */
-		public function display_barcode( $order_id ) {
-			if ( ! $order = $this->load_order( $order_id ) ) {
+		public function display_barcode( $order, $context = 'view' ) {
+			if ( ! $this->load_order( $order ) ) {
 				return;
 			}
 
-			$charge_id = $this->get_charge_id_from_order();
-			$charge    = OmiseCharge::retrieve( $charge_id );
-
-			$amount  = $charge['amount'];
-			$barcode = $charge['source']['references']['barcode'];
-			$tax_id  = $charge['source']['references']['omise_tax_id'];
-			$ref_1   = $charge['source']['references']['reference_number_1'];
-			$ref_2   = $charge['source']['references']['reference_number_2'];
+			$charge_id    = $this->get_charge_id_from_order();
+			$charge       = OmiseCharge::retrieve( $charge_id );
+			$barcode_svg  = file_get_contents( $charge['source']['references']['barcode'] );
 			?>
 
-			<div class="omise omise-billpayment-tesco-details">
+			<div class="omise omise-billpayment-tesco-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><?php echo __( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
 				<div class="omise-billpayment-tesco-barcode">
-					<img src="<?php echo $barcode; ?>" title="Omise Tesco Bill Payment Barcode" alt="Omise Tesco Bill Payment Barcode">
+					<?php
+					if ( 'email' === $context ) {
+						$barcode_html = $this->barcode_svg_to_html( $barcode_svg );
+						echo $barcode_html;
+					} else {
+						echo $barcode_svg;
+					}
+					?>
 				</div>
-				<small class="omise-billpayment-tesco-reference-number">|&nbsp;&nbsp;&nbsp; <?php echo $tax_id; ?> &nbsp;&nbsp;&nbsp; 00 &nbsp;&nbsp;&nbsp; <?php echo $ref_1; ?> &nbsp;&nbsp;&nbsp; <?php echo $ref_2; ?> &nbsp;&nbsp;&nbsp; <?php echo $amount; ?></small>
+				<small class="omise-billpayment-tesco-reference-number">
+					<?php
+					echo sprintf(
+						'| &nbsp; %1$s &nbsp; 00 &nbsp; %2$s &nbsp; %3$s &nbsp; %4$s',
+						$charge['source']['references']['omise_tax_id'],
+						$charge['source']['references']['reference_number_1'],
+						$charge['source']['references']['reference_number_2'],
+						$charge['amount']
+					);
+					?>
+				</small>
 			</div>
 			<?php
+		}
+
+		/**
+		 * @param WC_Order $order
+		 *
+		 * @see   woocommerce/templates/emails/email-order-details.php
+		 * @see   woocommerce/templates/emails/plain/email-order-details.php
+		 */
+		public function email_barcode( $order ) {
+			$this->display_barcode( $order, 'email' );
+		}
+
+		/**
+		 * Convert a given SVG Bill Payment Tesco's barcode to HTML format.
+		 *
+		 * Note that the SVG barcode contains with the following structure:
+		 *
+		 * <?xml version="1.0" encoding="UTF-8"?>
+		 * <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="515px" height="90px" viewBox="0 0 515 90" version="1.1" preserveAspectRatio="none">
+		 *   <title>** reference number **</title>
+		 *   <g id="canvas">
+		 *     <rect x="0" y="0" width="515px" height="90px" fill="#fff" />
+		 *     <g id="barcode" fill="#000">
+		 *       <rect x="20" y="20" width="2px" height="50px" />
+		 *       ... (repeat <rect> node for displaying barcode) ...
+		 *       <rect x="493" y="20" width="2px" height="50px" />
+		 *     </g>
+		 *   </g>
+		 * </svg>
+		 *
+		 * The following code in this method is to read all <rect> nodes' attributes under the <g id="barcode"></g>
+		 * in order to replicate the barcode in HTML <div></div> element.
+		 *
+		 * @param  string $barcode_svg
+		 *
+		 * @return string  of a generated Bill Payment Tesco's barcode in HTML format.
+	     */
+		public function barcode_svg_to_html( $barcode_svg ) {
+			$xml       = new SimpleXMLElement( $barcode_svg );
+			$xhtml     = new DOMDocument();
+			$prevX     = 0;
+			$prevWidth = 0;
+
+			// Read data from all <rect> nodes.
+			foreach ( $xml->g->g->children() as $rect ) {
+				$attributes = $rect->attributes();
+				$width      = $attributes['width'];
+				$margin     = ( $attributes['x'] - $prevX - $prevWidth ) . 'px';
+
+				// Set HTML attributes based on <rect> node's attributes.
+				$divRect = $xhtml->createElement( 'div' );
+				$divRect->setAttribute( 'style', "float: left; position: relative; height: 50px; border-left: $width solid #000000; width: 0; margin-left: $margin" );
+				$xhtml->appendChild( $divRect );
+
+				$prevX     = $attributes['x'];
+				$prevWidth = $attributes['width'];
+			}
+
+			// Add an empty <div></div> element to clear those floating elements.
+			$div = $xhtml->createElement( 'div' );
+			$div->setAttribute( 'style', 'clear:both' );
+			$xhtml->appendChild( $div );
+
+			return $xhtml->saveXML( null, LIBXML_NOEMPTYTAG );
 		}
 	}
 
