@@ -261,6 +261,7 @@ function register_omise_billpayment_tesco() {
 
 			$div_wrapper = $xhtml->createElement( 'div' );
 			$div_wrapper->setAttribute( 'class', 'omise-billpayment-tesco-barcode' );
+			$div_wrapper->setAttribute( 'style', 'background-color: #ffffff;' );
 
 			// Read data from all <rect> nodes.
 			foreach ( $xml->g->g->children() as $rect ) {
@@ -277,13 +278,12 @@ function register_omise_billpayment_tesco() {
 				$prevWidth = $attributes['width'];
 			}
 
-			$xhtml->appendChild( $div_wrapper );
-
 			// Add an empty <div></div> element to clear those floating elements.
 			$div = $xhtml->createElement( 'div' );
 			$div->setAttribute( 'style', 'clear:both' );
-			$xhtml->appendChild( $div );
+			$div_wrapper->appendChild( $div );
 
+			$xhtml->appendChild( $div_wrapper );
 			return $xhtml->saveXML( null, LIBXML_NOEMPTYTAG );
 		}
 	}
