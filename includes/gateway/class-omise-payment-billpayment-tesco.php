@@ -137,7 +137,8 @@ function register_omise_billpayment_tesco() {
 				$charge['source']['references']['reference_number_2'],
 				$charge['amount']
 			);
-			$expires_timestamp  = strtotime( $charge['source']['references']['expires_at'] );
+			$expires_datetime   = new WC_DateTime( $charge['source']['references']['expires_at'], new DateTimeZone( 'UTC' ) );
+			$expires_datetime->set_utc_offset( wc_timezone_offset() );
 			?>
 
 			<div class="omise omise-billpayment-tesco-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
@@ -177,8 +178,8 @@ function register_omise_billpayment_tesco() {
 							__( 'Please bring this barcode to pay at Tesco Lotus within:<br/><strong>%1$s</strong> at <strong>%2$s</strong>.', 'omise' ),
 							array( 'br' => array(), 'strong' => array() )
 						),
-						date_i18n( wc_date_format(), $expires_timestamp ),
-						date_i18n( wc_time_format(), $expires_timestamp )
+						wc_format_datetime( $expires_datetime, wc_date_format() ),
+						wc_format_datetime( $expires_datetime, wc_time_format() )
 					);
 					?>
 				</p>
