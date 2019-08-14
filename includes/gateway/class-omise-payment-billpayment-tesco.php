@@ -137,84 +137,91 @@ function register_omise_billpayment_tesco() {
 				$charge['source']['references']['reference_number_2'],
 				$charge['amount']
 			);
+			$expires_timestamp  = strtotime( $charge['source']['references']['expires_at'] );
 			?>
 
 			<div class="omise omise-billpayment-tesco-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
-				<p><?php echo __( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
+				<!-- Display for printing only. -->
+				<!-- Hidden by assets/css/omise-billpayment-print.css. -->
+				<?php if ( 'email' !== $context ) : ?>
+					<div class="omise-billpayment-tesco-print-order-overview">
+						<div>
+							<?php _e( 'Order number:', 'woocommerce' ); ?>
+							<br/><strong><?php echo $this->order()->get_order_number(); ?></strong>
+						</div>
+
+						<div>
+							<?php _e( 'Date:', 'woocommerce' ); ?>
+							<br/><strong><?php echo wc_format_datetime( $this->order()->get_date_created() ); ?></strong>
+						</div>
+
+						<div>
+							<?php _e( 'Total:', 'woocommerce' ); ?>
+							<br/><strong><?php echo $this->order()->get_formatted_order_total(); ?></strong>
+						</div>
+
+						<?php if ( $this->order()->get_payment_method_title() ) : ?>
+							<div>
+								<?php _e( 'Payment method:', 'woocommerce' ); ?>
+								<br/><strong><?php echo wp_kses_post( $this->order()->get_payment_method_title() ); ?></strong>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<!-- /END .omise-billpayment-tesco-print-detail -->
+
+				<p>
+					<?php
+					echo sprintf(
+						wp_kses(
+							__( 'Please bring this barcode to pay at Tesco Lotus within:<br/><strong>%1$s</strong> at <strong>%2$s</strong>.', 'omise' ),
+							array( 'br' => array(), 'strong' => array() )
+						),
+						date_i18n( wc_date_format(), $expires_timestamp ),
+						date_i18n( wc_time_format(), $expires_timestamp )
+					);
+					?>
+				</p>
+
 				<div class="omise-billpayment-tesco-barcode-wrapper">
 					<?php echo $barcode_html; ?>
 				</div>
-				<small class="omise-billpayment-tesco-reference-number">
-					<?php echo $barcode_ref_number; ?>
-				</small>
+
+				<div class="omise-billpayment-tesco-barcode-reference-number">
+					<small><?php echo $barcode_ref_number; ?></small>
+				</div>
 
 				<?php if ( 'email' !== $context ) : ?>
 					<div class="omise-billpayment-tesco-print-button">
 						<button onClick="window.print()" class="button button-primary">Print barcode</button>
 					</div>
 				<?php endif; ?>
+
+				<div class="omise-billpayment-tesco-footnote">
+					<p>
+						<?php
+						echo wp_kses(
+							__(
+								'
+								Tesco Lotus may charge a small fee for the transaction.<br/>
+								Failing to make payment within the mentioned date and time, your order will be automatically canceled.
+								', 'omise'
+							),
+							array( 'br' => array() )
+						);
+						?>
+					</p>
+				</div>
 			</div>
 
-			<!-- Display for printing only. -->
-			<!-- Hidden by assets/css/omise-billpayment-print.css. -->
 			<?php if ( 'email' !== $context ) : ?>
-
-				<div class="omise-billpayment-tesco-print-detail">
-					<div>
-						<h2><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', __( 'Thank you. Your order has been received.', 'woocommerce' ), $order ); ?></h2>
-					</div>
-
-					<div class="omise-billpayment-tesco-print-order-overview">
-						<div class="omise-billpayment-tesco-print-order-overview-item">
-							<?php _e( 'Order number:', 'woocommerce' ); ?>
-							<br/><strong><?php echo $this->order()->get_order_number(); ?></strong>
-						</div>
-
-						<div class="omise-billpayment-tesco-print-order-overview-item">
-							<?php _e( 'Date:', 'woocommerce' ); ?>:
-							<br/><strong><?php echo wc_format_datetime( $this->order()->get_date_created() ); ?></strong>
-						</div>
-
-						<?php if ( is_user_logged_in() && $this->order()->get_user_id() === get_current_user_id() && $this->order()->get_billing_email() ) : ?>
-							<div class="omise-billpayment-tesco-print-order-overview-item">
-								<?php _e( 'Email:', 'woocommerce' ); ?>:
-								<br/><strong><?php echo $this->order()->get_billing_email(); ?></strong>
-							</div>
-						<?php endif; ?>
-
-						<div class="omise-billpayment-tesco-print-order-overview-item">
-							<?php _e( 'Total:', 'woocommerce' ); ?>:
-							<br/><strong><?php echo $this->order()->get_formatted_order_total(); ?></strong>
-						</div>
-					</div>
-
-					<?php if ( $this->order()->get_payment_method_title() ) : ?>
-						<div class="omise-billpayment-tesco-print-order-payment-method">
-							<?php _e( 'Payment method:', 'woocommerce' ); ?>
-							<br/><strong><?php echo wp_kses_post( $this->order()->get_payment_method_title() ); ?></strong>
-						</div>
-					<?php endif; ?>
-
-					<p class="omise-billpayment-tesco-print-barcode-message"><?php _e( 'Use this barcode to pay at Tesco Lotus.', 'omise' ); ?></p>
-
-					<div class="omise-billpayment-tesco-print-barcode-wrapper">
-						<?php echo $barcode_html; ?>
-					</div>
-
-					<div class="omise-billpayment-tesco-print-reference-number">
-						<small><?php echo $barcode_ref_number; ?></small>
-					</div>
-				</div>
-
 				<script type="text/javascript">
-					let omise_billpayment_print_detail        = document.getElementsByClassName( 'omise-billpayment-tesco-print-detail' );
-					let cloned_omise_billpayment_print_detail = omise_billpayment_print_detail[0].cloneNode( true );
+					let omise_billpayment_detail        = document.getElementsByClassName( 'omise-billpayment-tesco-details' );
+					let cloned_omise_billpayment_detail = omise_billpayment_detail[0].cloneNode( true );
+					    cloned_omise_billpayment_detail.classList.add( 'omise-billpayment-tesco-print-details' );
 
-					document.body.appendChild( cloned_omise_billpayment_print_detail );
-
-					omise_billpayment_print_detail[0].parentNode.removeChild( omise_billpayment_print_detail[0] );
+					document.body.appendChild( cloned_omise_billpayment_detail );
 				</script>
-
 			<?php endif;
 		}
 
