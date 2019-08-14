@@ -184,7 +184,7 @@ function register_omise_billpayment_tesco() {
 					?>
 				</p>
 
-				<div class="omise-billpayment-tesco-barcode-wrapper">
+				<div class="omise-billpayment-tesco-barcode-wrapper" <?php echo 'email' === $context ? 'style="margin: 1em 0;"' : ''; ?>>
 					<?php echo $barcode_html; ?>
 				</div>
 
@@ -198,8 +198,8 @@ function register_omise_billpayment_tesco() {
 					</div>
 				<?php endif; ?>
 
-				<div class="omise-billpayment-tesco-footnote">
-					<p>
+				<div class="omise-billpayment-tesco-footnote" <?php echo 'email' === $context ? 'style="margin-top: 4em; padding: 1em; font-size: 85%; text-align: right; background-color: #f8f8f8;"' : ''; ?>>
+					<p <?php echo 'email' === $context ? 'style="margin: 0; padding: 0;"' : ''; ?>>
 						<?php
 						echo wp_kses(
 							__(
