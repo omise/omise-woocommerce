@@ -175,7 +175,7 @@ function register_omise_billpayment_tesco() {
 					<?php
 					echo sprintf(
 						wp_kses(
-							__( 'Please bring this barcode to pay at Tesco Lotus within:<br/><strong>%1$s</strong> at <strong>%2$s</strong>.', 'omise' ),
+							__( 'Please bring this barcode to pay at Tesco Lotus by:<br/><strong>%1$s %2$s</strong>.', 'omise' ),
 							array( 'br' => array(), 'strong' => array() )
 						),
 						wc_format_datetime( $expires_datetime, wc_date_format() ),
@@ -194,7 +194,7 @@ function register_omise_billpayment_tesco() {
 
 				<?php if ( 'email' !== $context ) : ?>
 					<div class="omise-billpayment-tesco-print-button">
-						<button onClick="window.print()" class="button button-primary">Print barcode</button>
+						<button onClick="window.print()" class="button button-primary"><?php echo __( 'Print barcode', 'omise' ); ?></button>
 					</div>
 				<?php endif; ?>
 
@@ -205,7 +205,7 @@ function register_omise_billpayment_tesco() {
 							__(
 								'
 								Tesco Lotus may charge a small fee for the transaction.<br/>
-								Failing to make payment within the mentioned date and time, your order will be automatically canceled.
+								If you fail to make payment by the stated time, your order will be automatically canceled.
 								', 'omise'
 							),
 							array( 'br' => array() )
