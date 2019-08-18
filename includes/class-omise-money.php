@@ -37,7 +37,7 @@ class Omise_Money {
 	 *                    This is to prevent any miscalculation for those fractional subunits
 	 *                    between the amount that is charged, and the actual amount from the store.
 	 */
-	public function to_subunit( $amount, $currency ) {
+	public static function to_subunit( $amount, $currency ) {
 		$amount   = static::purify_amount( $amount );
 		$currency = strtoupper( $currency );
 
