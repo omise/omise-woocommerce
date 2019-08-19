@@ -61,6 +61,17 @@ fieldset.card-exists {
 .omise-billpayment-tesco-print-button {
 	margin-top: 2em;
 }
+.omise-billpayment-tesco-footnote {
+	margin-top: 4em;
+	padding: 1em;
+	font-size: 85%;
+	text-align: left;
+	background-color: #f8f8f8;
+}
+.omise-billpayment-tesco-footnote p {
+	margin: 0;
+	padding: 0;
+}
 
 /**
  * 2). Components
