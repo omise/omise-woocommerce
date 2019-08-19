@@ -37,15 +37,15 @@ class Omise_Money {
 	 *                    This is to prevent any miscalculation for those fractional subunits
 	 *                    between the amount that is charged, and the actual amount from the store.
 	 */
-	public function to_subunit( $amount, $currency ) {
-		$amount   = static::purify_amount( $amount );
+	public static function to_subunit( $amount, $currency ) {
+		$amount   = self::purify_amount( $amount );
 		$currency = strtoupper( $currency );
 
-		if ( ! isset( static::$subunit_multiplier[ $currency ] ) ) {
+		if ( ! isset( self::$subunit_multiplier[ $currency ] ) ) {
 			throw new Exception( __( 'We do not support the currency you are using.', 'omise' ) );
 		}
 
-		return $amount * static::$subunit_multiplier[ $currency ];
+		return $amount * self::$subunit_multiplier[ $currency ];
 	}
 
 	/**
