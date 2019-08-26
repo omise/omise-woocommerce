@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay
 Requires at least: 4.3.1
 Tested up to: 5.2.2
-Stable tag: 3.6
+Stable tag: 3.7
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,21 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 3.7 =
+
+#### ✨ Highlights
+
+- Introducing Bill Payment. (PR [#122](https://github.com/omise/omise-woocommerce/pull/122), [#125](https://github.com/omise/omise-woocommerce/pull/125), [#126](https://github.com/omise/omise-woocommerce/pull/126), [#128](https://github.com/omise/omise-woocommerce/pull/128), [#129](https://github.com/omise/omise-woocommerce/pull/129))
+
+#### 👾 Bug Fixes
+
+- Event "charge.complete", making sure that event's charge id is identical with order transaction id. (PR [#131](https://github.com/omise/omise-woocommerce/pull/131))
+- Fixing calling Omise_Money's non-static method statically. (PR [#130](https://github.com/omise/omise-woocommerce/pull/130))
+
+#### 📝 Documents
+
+- Updating README.md, adding 2 missing payment methods at 'Enable Payment Method' section. (PR [#127](https://github.com/omise/omise-woocommerce/pull/127))
 
 = 3.6 =
 
