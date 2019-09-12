@@ -52,6 +52,11 @@ class Omise_Event_Charge_Complete {
 			return;
 		}
 
+		// Making sure that an event's charge id is identical with an order transaction id.
+		if ( $order->get_transaction_id() !== $data->id ) {
+			return;
+		}
+
 		$order->add_order_note(
 			__(
 				'Omise: an event charge.complete has been caught (webhook).',
