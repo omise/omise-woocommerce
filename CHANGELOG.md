@@ -1,5 +1,22 @@
 # CHANGELOG
 
+### [v3.7 _(Sep 13, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.7)
+
+#### ✨ Highlights
+
+- Introducing Bill Payment. (PR [#122](https://github.com/omise/omise-woocommerce/pull/122), [#125](https://github.com/omise/omise-woocommerce/pull/125), [#126](https://github.com/omise/omise-woocommerce/pull/126), [#128](https://github.com/omise/omise-woocommerce/pull/128), [#129](https://github.com/omise/omise-woocommerce/pull/129))
+
+#### 👾 Bug Fixes
+
+- Event "charge.complete", making sure that event's charge id is identical with order transaction id. (PR [#131](https://github.com/omise/omise-woocommerce/pull/131))
+- Fixing calling Omise_Money's non-static method statically. (PR [#130](https://github.com/omise/omise-woocommerce/pull/130))
+
+#### 📝 Documents
+
+- Updating README.md, adding 2 missing payment methods at 'Enable Payment Method' section. (PR [#127](https://github.com/omise/omise-woocommerce/pull/127))
+
+---
+
 ### [v3.6 _(Aug 1, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.6)
 
 #### ✨ Highlights
