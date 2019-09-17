@@ -2,8 +2,8 @@
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay
 Requires at least: 4.3.1
-Tested up to: 5.2.2
-Stable tag: 3.7
+Tested up to: 5.2.3
+Stable tag: 3.8
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,12 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 3.8 =
+
+#### 👾 Bug Fixes
+
+- Billpayment - check if an order is made by Bill Payment before display a barcode. (PR [#137](https://github.com/omise/omise-woocommerce/pull/137))
 
 = 3.7 =
 
