@@ -233,7 +233,9 @@ function register_omise_billpayment_tesco() {
 		 * @see   woocommerce/templates/emails/plain/email-order-details.php
 		 */
 		public function email_barcode( $order ) {
-			$this->display_barcode( $order, 'email' );
+			if ( $this->id == $order->get_payment_method() ) {
+				$this->display_barcode( $order, 'email' );
+			}
 		}
 
 		/**
