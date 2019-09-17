@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v3.8 _(Sep 17, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.8)
+
+#### 👾 Bug Fixes
+
+- Billpayment - check if an order is made by Bill Payment before display a barcode. (PR [#137](https://github.com/omise/omise-woocommerce/pull/137))
+
+---
+
 ### [v3.7 _(Sep 13, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.7)
 
 #### ✨ Highlights
