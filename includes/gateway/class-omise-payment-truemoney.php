@@ -63,6 +63,13 @@ function register_omise_truemoney() {
 		/**
 		 * @inheritdoc
 		 */
+		public function payment_fields() {
+			Omise_Util::render_view( 'templates/payment/form-truemoney.php', array() );
+		}
+
+		/**
+		 * @inheritdoc
+		 */
 		public function charge( $order_id, $order ) {
 			$total      = $order->get_total();
 			$currency   = $order->get_order_currency();
