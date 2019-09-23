@@ -71,12 +71,13 @@ function register_omise_truemoney() {
 		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
-			$total      = $order->get_total();
-			$currency   = $order->get_order_currency();
-			$return_uri = add_query_arg(
+			$phone_number = isset( $_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : '000';
+			$total        = $order->get_total();
+			$currency     = $order->get_order_currency();
+			$return_uri   = add_query_arg(
 				array( 'wc-api' => 'omise_truemoney_callback', 'order_id' => $order_id ), home_url()
 			);
-			$metadata   = array_merge(
+			$metadata     = array_merge(
 				apply_filters( 'omise_charge_params_metadata', array(), $order ),
 				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
 			);
@@ -85,7 +86,7 @@ function register_omise_truemoney() {
 				'amount'      => Omise_Money::to_subunit( $total, $currency ),
 				'currency'    => $currency,
 				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-				'source'      => array( 'type' => 'truemoney', 'phone_number' => '' ),
+				'source'      => array( 'type' => 'truemoney', 'phone_number' => $phone_number ),
 				'return_uri'  => $return_uri,
 				'metadata'    => $metadata
 			) );
