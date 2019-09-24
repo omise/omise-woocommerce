@@ -72,7 +72,7 @@ function register_omise_truemoney() {
 		 * @inheritdoc
 		 */
 		public function charge( $order_id, $order ) {
-			$phone_number = isset( $_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : '000';
+			$phone_number = isset( $_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : sanitize_text_field( $_POST['omise_phone_number'] );
 			$total        = $order->get_total();
 			$currency     = $order->get_order_currency();
 			$return_uri   = add_query_arg(
