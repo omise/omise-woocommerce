@@ -1,3 +1,9 @@
+.form-row.omise-label-inline label,
+.omise-label-inline label,
+label.omise-label-inline {
+	display: inline-block;
+}
+
 .omise-remember-card input,
 .omise-remember-card label {
 	display: inline-block;
