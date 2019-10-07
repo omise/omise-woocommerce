@@ -32,6 +32,7 @@ function register_omise_billpayment_tesco() {
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_barcode' ) );
 			add_action( 'woocommerce_email_after_order_table', array( $this, 'email_barcode' ) );
+			add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 			add_action( 'omise_checkout_assets', array( $this, 'omise_billpayment_checkout_assets' ) );
 		}
 
