@@ -2,7 +2,7 @@
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay
 Requires at least: 4.3.1
-Tested up to: 5.2.3
+Tested up to: 5.2.4
 Stable tag: 3.9
 License: MIT
 License URI: https://opensource.org/licenses/MIT

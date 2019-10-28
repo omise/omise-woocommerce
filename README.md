@@ -4,7 +4,7 @@
 
 ## Supported Versions
 
-WooCommerce version 3.3.4 and above (tested to version 3.7.0).
+WooCommerce version 3.3.4 and above (tested to version 3.7.1).
 
 **The extension doesn't work on your version?**  
 Our aim is to support as many versions of WooCommerce as we can.  
