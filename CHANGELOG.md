@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### [v3.9 _(Oct 28, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.9)
+
+#### ✨ Highlights
+
+- Introducing TrueMoney payment (only available in Thailand) (PR [#139](https://github.com/omise/omise-woocommerce/pull/139))
+
+#### 🚀 Enhancements
+
+- Adding ability to sync payment status to Bill Payment and TrueMoney Payment (PR [#140](https://github.com/omise/omise-woocommerce/pull/140))
+
+---
+
 ### [v3.8 _(Sep 17, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.8)
 
 #### 👾 Bug Fixes

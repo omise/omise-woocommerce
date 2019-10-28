@@ -26,7 +26,7 @@ i.e.
 - **WooCommerce**: v3.7.0
 - **WordPress**: v5.3.2
 - **PHP version**: 7.0.16
-- **Omise plugin version**: Omise-WooCommerce 3.8 (optional, in case of submitting a new issue)
+- **Omise plugin version**: Omise-WooCommerce 3.9 (optional, in case of submitting a new issue)
 
 **✏️ Details:**
 

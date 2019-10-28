@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay
 Requires at least: 4.3.1
 Tested up to: 5.2.3
-Stable tag: 3.8
+Stable tag: 3.9
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,16 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 3.9 =
+
+#### ✨ Highlights
+
+- Introducing TrueMoney payment (only available in Thailand) (PR [#139](https://github.com/omise/omise-woocommerce/pull/139))
+
+#### 🚀 Enhancements
+
+- Adding ability to sync payment status to Bill Payment and TrueMoney Payment (PR [#140](https://github.com/omise/omise-woocommerce/pull/140))
 
 = 3.8 =
 
