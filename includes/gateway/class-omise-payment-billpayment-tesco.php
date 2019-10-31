@@ -104,6 +104,8 @@ function register_omise_billpayment_tesco() {
 			}
 
 			if ( 'pending' == $charge['status'] ) {
+				$order->update_status( 'on-hold', __( 'Omise: Awaiting Bill Payment to be paid.', 'omise' ) );
+
 				return array(
 					'result'   => 'success',
 					'redirect' => $this->get_return_url( $order )
