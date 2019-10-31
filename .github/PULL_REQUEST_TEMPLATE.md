@@ -23,10 +23,10 @@ Specify where and how you tested this and what further testing it might need.
 Specify the details of your test environments, including, for each, the platform version (on which the plugin was run), the Omise plugin version, and the versions of your system software such as PHP or Ruby.
 
 i.e.
-- **WooCommerce**: v3.7.0
+- **WooCommerce**: v3.7.1
 - **WordPress**: v5.3.2
 - **PHP version**: 7.0.16
-- **Omise plugin version**: Omise-WooCommerce 3.8 (optional, in case of submitting a new issue)
+- **Omise plugin version**: Omise-WooCommerce 3.9 (optional, in case of submitting a new issue)
 
 **✏️ Details:**
 
