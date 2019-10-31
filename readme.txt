@@ -41,6 +41,7 @@ From there:
 
 #### 🚀 Enhancements
 
+- Bill Payment, correcting order status after a new order is placed (on-hold instead of pending-payment) (PR [#142](https://github.com/omise/omise-woocommerce/pull/142))
 - Adding ability to sync payment status to Bill Payment and TrueMoney Payment (PR [#140](https://github.com/omise/omise-woocommerce/pull/140))
 
 = 3.8 =
