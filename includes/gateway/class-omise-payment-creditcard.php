@@ -35,7 +35,6 @@ function register_omise_creditcard() {
 
 			$this->title          = $this->get_option( 'title' );
 			$this->description    = $this->get_option( 'description' );
-			$this->omise_3ds      = $this->get_option( 'omise_3ds', false ) == 'yes';
 			$this->payment_action = $this->get_option( 'payment_action' );
 
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
@@ -91,16 +90,6 @@ function register_omise_creditcard() {
 							self::PAYMENT_ACTION_AUTHORIZE         => __( 'Manual Capture', 'omise' )
 						),
 						'desc_tip'    => true
-					),
-					'omise_3ds' => array(
-						'title'       => __( '3-D Secure payment', 'omise' ),
-						'type'        => 'checkbox',
-						'label'       => __( 'Enabling 3-D Secure payment means that buyer will be redirected to the 3-D Secure authorization page during the checkout process.', 'omise' ),
-						'description' => wp_kses(
-							__( 'Please be informed that you must contact Omise support team (support@omise.co) before enable or disable this option.<br/> (Japan-based accounts are not eligible for the service.)', 'omise' ),
-							array( 'br' => array() )
-						),
-						'default'     => 'no'
 					),
 					'accept_visa' => array(
 						'title'       => __( 'Supported card icons', 'omise' ),
@@ -291,7 +280,8 @@ function register_omise_creditcard() {
 				return $this->payment_failed( Omise_Charge::get_error_message( $charge ) );
 			}
 
-			if ( $this->omise_3ds ) {
+			// If 3-D Secure feature is enabled, redirecting user out to a 3rd-party credit card authorization page.
+			if ( self::STATUS_PENDING === $charge['status'] && ! $charge['authorized'] && ! $charge['paid'] && ! empty( $charge['authorize_uri'] ) ) {
 				$order->add_order_note(
 					sprintf(
 						__( 'Omise: Processing a 3-D Secure payment, redirecting buyer to %s', 'omise' ),
