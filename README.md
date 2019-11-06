@@ -72,7 +72,7 @@ Once the installation is done, the next thing that you are going to do is to con
 
 4. Make sure that the option `Test mode` is checked and set your Omise keys at `Public key for test` and `Secret key for test` fields if you would like to test Omise service integration.
 
-5. Click **'Save Settings'**.
+5. Click **"Save Settings"**.
 
 #### Enable payment methods
 
@@ -82,16 +82,16 @@ The payment methods available for you to enable on your store are: **Alipay**, *
 
 1. At the Omise Settings page, Payment Methods section, there will be a number of available payment methods shown on the list.
 
-2. Click `config` in the table for the payment method you'd like to accept payment with.
+2. Click **"config"** in the table for the payment method you'd like to accept payment with.
 
 3. You will see a configuration page differently depends on which payment method you are choosing. The screenshot below shows Credit / Debit Card payment method's configuration page.
   ![omise-woocommerce-creditcard-setting-page](https://user-images.githubusercontent.com/2154669/38306405-a9afba30-383a-11e8-8c7b-e54ba1f2df88.png)
 
-4. At the configuration page, mark **Enable/Disable** as checked.
+4. At the configuration page, mark **"Enable/Disable"** as checked.
 
 5. You may change or update other options in this configuration page (optional).
 
-5. Click **'Save changes'**.
+5. Click **"Save changes"**.
 
 Once done, those payment methods will be shown at the store's checkout page.
   ![screen shot 2560-07-26 at 8 13 55 pm](https://user-images.githubusercontent.com/2154669/28622536-030403e2-723f-11e7-8a93-a06e65e350d3.png)
