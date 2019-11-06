@@ -41,7 +41,7 @@ abstract class Omise_Payment_Offsite extends Omise_Payment {
 		if ( ! $order ) {
 			$message = __(
 				'<strong>We cannot validate your payment result:</strong><br/>
-				 Note that your payment might already has been processed.<br/>
+				 Note that your payment may have already been processed.<br/>
 				 Please contact our support team if you have any questions.',
 				'omise'
 			);
@@ -77,9 +77,9 @@ abstract class Omise_Payment_Offsite extends Omise_Payment {
 
 			if ( self::STATUS_PENDING === $charge['status'] && ! $charge['paid'] ) {
 				$message = __(
-					'Omise: The payment has been processing.<br/>
-					 Due to the payment provider, this may take some time to process.<br/>
-					 Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel or check the payment status directly at Omise dashboard again later.',
+					'Omise: The payment is being processed.<br/>
+					 Depending on the payment provider, this may take some time to process.<br/>
+					 Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
 					'omise'
 				);
 				$order->add_order_note( wp_kses( $message, array( 'br' => array(), 'strong' => array() ) ) );
@@ -89,7 +89,7 @@ abstract class Omise_Payment_Offsite extends Omise_Payment {
 			}
 
 			$message = __(
-				'Note that your payment might already has been processed.<br/>
+				'Note that your payment may have already been processed.<br/>
 				 Please contact our support team if you have any questions.',
 				'omise'
 			);
