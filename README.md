@@ -27,7 +27,7 @@ In order to install Omise-WooCommerce plugin, you can either download it via Wor
 
 #### WordPress Plugin Directory (recommended)
 
-You can simply install Omise WooCommerce plugin via WordPress Plugin Directory by the following 4 steps
+Install Omise WooCommerce plugin via WordPress Plugin Directory by following these steps:
 1. From the left sidebar at your WordPress Admin page, under **"Plugin"** section. Click **"Add New"**.
 
 2. At the **"Add Plugins"** page, search for Omise WooCommerce plugin using keyword: `Omise`.
