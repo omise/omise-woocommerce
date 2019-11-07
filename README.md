@@ -23,7 +23,7 @@ If the version you are currently using has not been listed, you can try installi
 
 ### Installation Instructions
 
-In order to install Omise-WooCommerce plugin, you can either download it via WordPress Plugin Store or manually download the plugin from this repository.
+In order to install Omise WooCommerce plugin, you can either download it via WordPress Plugin Directory or manually download the plugin from this repository.
 
 #### WordPress Plugin Directory (recommended)
 
