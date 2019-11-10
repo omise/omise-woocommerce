@@ -70,38 +70,38 @@
 					}
 				});
 
-				var omise_card_name   = $( '#omise_card_name' ).val(),
-					omise_card_number   = $( '#omise_card_number' ).val(),
-					omise_card_expiration_month   = $( '#omise_card_expiration_month' ).val(),
-					omise_card_expiration_year = $( '#omise_card_expiration_year' ).val(),
-					omise_card_security_code    = $( '#omise_card_security_code' ).val();
-				
-				// Serialize the card into a valid card object.
-				var card = {
-				    "name": omise_card_name,
-				    "number": omise_card_number,
-				    "expiration_month": omise_card_expiration_month,
-				    "expiration_year": omise_card_expiration_year,
-				    "security_code": omise_card_security_code
-				};
-				
-				var errors = OmiseUtil.validate_card(card);
-				if(errors.length > 0){
+				let errors            = [],
+				    omise_card        = {},
+				    omise_card_fields = {
+						'name'             : $( '#omise_card_name' ),
+						'number'           : $( '#omise_card_number' ),
+						'expiration_month' : $( '#omise_card_expiration_month' ),
+						'expiration_year'  : $( '#omise_card_expiration_year' ),
+						'security_code'    : $( '#omise_card_security_code' )
+					};
+
+				$.each( omise_card_fields, function( index, field ) {
+					omise_card[ index ] = field.val();
+					if ( "" === omise_card[ index ] ) {
+						errors.push( index + ': This field is required' );
+					}
+				} );
+
+				if ( errors.length > 0 ) {
 					showError(errors);
 					$form.unblock();
 					return false;
-				}else{
+				}
+
 					hideError();
 					if(Omise){
 						Omise.setPublicKey(omise_params.key);
-						Omise.createToken("card", card, function (statusCode, response) {
+						Omise.createToken("card", omise_card, function (statusCode, response) {
 						    if (statusCode == 200) {
-						    	$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
-						    	$( '#omise_card_name' ).val("");
-						    	$( '#omise_card_number' ).val("");
-						    	$( '#omise_card_expiration_month' ).val("");
-						    	$( '#omise_card_expiration_year' ).val("");
-						    	$( '#omise_card_security_code' ).val("");
+								$.each( omise_card_fields, function( index, field ) {
+									field.val( '' );
+								} );
+								$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
 								$form.submit();
 						    } else {
 						    	if(response.message){
@@ -122,7 +122,6 @@
 					}
 					
 					return false;
-				}
 			}
 			
 		}
