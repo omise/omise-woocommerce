@@ -2,16 +2,12 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 function register_omise_truemoney() {
-	require_once dirname( __FILE__ ) . '/class-omise-payment.php';
-
-	if ( ! class_exists( 'WC_Payment_Gateway' ) || class_exists( 'Omise_Payment_Truemoney' ) ) {
-		return;
-	}
+	require_once dirname( __FILE__ ) . '/abstract-omise-payment-offsite.php';
 
 	/**
 	 * @since 3.9
 	 */
-	class Omise_Payment_Truemoney extends Omise_Payment {
+	class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 		public function __construct() {
 			parent::__construct();
 
@@ -94,124 +90,6 @@ function register_omise_truemoney() {
 				'return_uri'  => $return_uri,
 				'metadata'    => $metadata
 			) );
-		}
-
-		/**
-		 * @inheritdoc
-		 */
-		public function result( $order_id, $order, $charge ) {
-			if ( self::STATUS_FAILED == $charge['status'] ) {
-				return $this->payment_failed( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
-			}
-
-			if ( self::STATUS_PENDING == $charge['status'] ) {
-				$order->add_order_note( sprintf( __( 'Omise: Redirecting buyer to %s', 'omise' ), esc_url( $charge['authorize_uri'] ) ) );
-
-				return array (
-					'result'   => 'success',
-					'redirect' => $charge['authorize_uri'],
-				);
-			}
-
-			return $this->payment_failed(
-				sprintf(
-					__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
-					$order_id
-				)
-			);
-		}
-
-		/**
-		 * @return void
-		 */
-		public function callback() {
-			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
-				wc_add_notice(
-					wp_kses(
-						__( 'We cannot validate your payment result:<br/>Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ),
-						array( 'br' => array() )
-					),
-					'error'
-				);
-
-				wp_redirect( wc_get_checkout_url() );
-				exit;
-			}
-
-			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
-
-			try {
-				$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
-
-				if ( self::STATUS_FAILED == $charge['status'] ) {
-					throw new Exception( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
-				}
-
-				if ( self::STATUS_SUCCESSFUL == $charge['status'] && $charge['paid'] ) {
-					$order->add_order_note(
-						sprintf(
-							wp_kses(
-								__( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ),
-								array( 'br' => array() )
-							),
-							$order->get_total(),
-							$order->get_order_currency()
-						)
-					);
-
-					$order->payment_complete();
-
-					WC()->cart->empty_cart();
-
-					wp_redirect( $order->get_checkout_order_received_url() );
-					exit;
-				}
-
-				if ( self::STATUS_PENDING == $charge['status'] && ! $charge['paid'] ) {
-					$order->add_order_note(
-						wp_kses(
-							__( 'Omise: The payment has been processing.<br/>Due to the TrueMoney provider, this might takes a few seconds or an hour. Please do a manual \'Sync Payment Status\' action from the Order Actions panel or check the payment status directly at Omise dashboard again later', 'omise' ),
-							array( 'br' => array() )
-						)
-					);
-
-					$order->update_status( 'on-hold' );
-
-					wp_redirect( $order->get_checkout_order_received_url() );
-					exit;
-				}
-
-				throw new Exception( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
-			} catch ( Exception $e ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$e->getMessage()
-					),
-					'error'
-				);
-
-				$order->add_order_note(
-					sprintf(
-						wp_kses(
-							__( 'Omise: Payment failed.<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$e->getMessage()
-					)
-				);
-
-				$order->update_status( 'failed' );
-
-				wp_redirect( wc_get_checkout_url() );
-				exit;
-			}
-
-			wp_die( 'Access denied', 'Access Denied', array( 'response' => 401 ) );
-			die();
 		}
 
 		/**
