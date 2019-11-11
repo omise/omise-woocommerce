@@ -83,7 +83,7 @@
 				$.each( omise_card_fields, function( index, field ) {
 					omise_card[ index ] = field.val();
 					if ( "" === omise_card[ index ] ) {
-						errors.push( index + ': This field is required' );
+						errors.push( omise_params[ 'required_card_' + index ] );
 					}
 				} );
 
@@ -103,8 +103,10 @@
 								} );
 								$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
 								$form.submit();
-						    } else {
-						    	if(response.message){
+							} else {
+								if ( response.object && 'error' === response.object && 'invalid_card' === response.code ) {
+									showError( omise_params.invalid_card + "<br/>" + response.message );
+								} else if(response.message){
 						    		showError( "Unable to process payment with Omise. " + response.message );
 						    	}else if(response.responseJSON && response.responseJSON.message){
 						    		showError( "Unable to process payment with Omise. " + response.responseJSON.message );

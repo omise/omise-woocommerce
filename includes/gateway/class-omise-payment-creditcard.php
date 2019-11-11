@@ -644,7 +644,18 @@ function register_omise_creditcard() {
 				wp_enqueue_script( 'omise-js', 'https://cdn.omise.co/omise.js', array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
 				wp_enqueue_script( 'omise-util', plugins_url( '../../assets/javascripts/omise-util.js', __FILE__ ), array( 'omise-js' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
 				wp_enqueue_script( 'omise-payment-form-handler', plugins_url( '../../assets/javascripts/omise-payment-form-handler.js', __FILE__ ), array( 'omise-js', 'omise-util' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
-				wp_localize_script( 'omise-payment-form-handler', 'omise_params', array( 'key' => $this->public_key() ) );
+
+				$omise_params = array(
+					'key'                            => $this->public_key(),
+					'required_card_name'             => __( 'Card Holder\'s name is a required field', 'omise' ),
+					'required_card_number'           => __( 'Card Number is a required field', 'omise' ),
+					'required_card_expiration_month' => __( 'Card Expiry month is a required field', 'omise' ),
+					'required_card_expiration_year'  => __( 'Card Expiry year is a required field', 'omise' ),
+					'required_card_security_code'    => __( 'Card Security code is a required field', 'omise' ),
+					'invalid_card'                   => __( 'Invalid card.', 'omise' )
+				);
+
+				wp_localize_script( 'omise-payment-form-handler', 'omise_params', $omise_params );
 			}
 		}
 	}
