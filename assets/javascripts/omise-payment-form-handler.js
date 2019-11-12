@@ -93,37 +93,37 @@
 					return false;
 				}
 
-					hideError();
-					if(Omise){
-						Omise.setPublicKey(omise_params.key);
-						Omise.createToken("card", omise_card, function (statusCode, response) {
-						    if (statusCode == 200) {
-								$.each( omise_card_fields, function( index, field ) {
-									field.val( '' );
-								} );
-								$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
-								$form.submit();
-							} else {
-								if ( response.object && 'error' === response.object && 'invalid_card' === response.code ) {
-									showError( omise_params.invalid_card + "<br/>" + response.message );
-								} else if(response.message){
-						    		showError( "Unable to process payment with Omise. " + response.message );
-						    	}else if(response.responseJSON && response.responseJSON.message){
-						    		showError( "Unable to process payment with Omise. " + response.responseJSON.message );
-						    	}else if(response.status==0){
-						    		showError( "Unable to process payment with Omise. No response from Omise Api." );
-						    	}else {
-						    		showError( "Unable to process payment with Omise [ status=" + response.status + " ]" );
-						    	}
-						    	$form.unblock();
-						    };
-						  });
-					}else{
-						showError( 'Something wrong with connection to Omise.js. Please check your network connection' );
-						$form.unblock();
-					}
-					
-					return false;
+				hideError();
+				if(Omise){
+					Omise.setPublicKey(omise_params.key);
+					Omise.createToken("card", omise_card, function (statusCode, response) {
+						if (statusCode == 200) {
+							$.each( omise_card_fields, function( index, field ) {
+								field.val( '' );
+							} );
+							$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
+							$form.submit();
+						} else {
+							if ( response.object && 'error' === response.object && 'invalid_card' === response.code ) {
+								showError( omise_params.invalid_card + "<br/>" + response.message );
+							} else if(response.message){
+								showError( "Unable to process payment with Omise. " + response.message );
+							}else if(response.responseJSON && response.responseJSON.message){
+								showError( "Unable to process payment with Omise. " + response.responseJSON.message );
+							}else if(response.status==0){
+								showError( "Unable to process payment with Omise. No response from Omise Api." );
+							}else {
+								showError( "Unable to process payment with Omise [ status=" + response.status + " ]" );
+							}
+							$form.unblock();
+						};
+						});
+				}else{
+					showError( 'Something wrong with connection to Omise.js. Please check your network connection' );
+					$form.unblock();
+				}
+				
+				return false;
 			}
 			
 		}
