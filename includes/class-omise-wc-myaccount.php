@@ -62,17 +62,9 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			);
 
 			wp_enqueue_script(
-				'omise-util',
-				plugins_url( '/assets/javascripts/omise-util.js', dirname( __FILE__ ) ),
-				array( 'omise-js' ),
-				WC_VERSION,
-				true
-			);
-
-			wp_enqueue_script(
 				'omise-myaccount-card-handler',
 				plugins_url( '/assets/javascripts/omise-myaccount-card-handler.js', dirname( __FILE__ ) ),
-				array( 'omise-js' , 'omise-util' ),
+				array( 'omise-js' ),
 				WC_VERSION,
 				true
 			);
