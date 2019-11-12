@@ -652,7 +652,13 @@ function register_omise_creditcard() {
 					'required_card_expiration_month' => __( 'Card Expiry month is a required field', 'omise' ),
 					'required_card_expiration_year'  => __( 'Card Expiry year is a required field', 'omise' ),
 					'required_card_security_code'    => __( 'Card Security code is a required field', 'omise' ),
-					'invalid_card'                   => __( 'Invalid card.', 'omise' )
+					'invalid_card'                   => __( 'Invalid card.', 'omise' ),
+					'no_card_selected'               => __( 'Please select a card or entering a new one.', 'omise' ),
+					'cannot_create_token'            => __( 'Unable to continue to proceed the payment.', 'omise' ),
+					'cannot_connect_api'             => __( 'Currently, the payment provider server is under maintain.', 'omise' ),
+					'retry_checkout'                 => __( 'Please place your order again in a couple seconds.', 'omise' ),
+					'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
+					'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
 				);
 
 				wp_localize_script( 'omise-payment-form-handler', 'omise_params', $omise_params );

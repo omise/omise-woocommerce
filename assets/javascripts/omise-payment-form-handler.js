@@ -50,7 +50,7 @@
 		
 		if ( $( '#payment_method_omise' ).is( ':checked' ) ) {
 			if( !validSelection() ){
-				showError("Please select a card or enter new payment information");
+				showError( omise_params.no_card_selected );
 				return false;
 			}
 			
@@ -94,6 +94,7 @@
 				}
 
 				hideError();
+
 				if(Omise){
 					Omise.setPublicKey(omise_params.key);
 					Omise.createToken("card", omise_card, function (statusCode, response) {
@@ -107,19 +108,19 @@
 							if ( response.object && 'error' === response.object && 'invalid_card' === response.code ) {
 								showError( omise_params.invalid_card + "<br/>" + response.message );
 							} else if(response.message){
-								showError( "Unable to process payment with Omise. " + response.message );
+								showError( omise_params.cannot_create_token + "<br/>" + response.message );
 							}else if(response.responseJSON && response.responseJSON.message){
-								showError( "Unable to process payment with Omise. " + response.responseJSON.message );
+								showError( omise_params.cannot_create_token + "<br/>" + response.responseJSON.message );
 							}else if(response.status==0){
-								showError( "Unable to process payment with Omise. No response from Omise Api." );
+								showError( omise_params.cannot_create_token + "<br/>" + omise_params.cannot_connect_api + omise_params.retry_checkout );
 							}else {
-								showError( "Unable to process payment with Omise [ status=" + response.status + " ]" );
+								showError( omise_params.cannot_create_token + "<br/>" + omise_params.retry_checkout );
 							}
 							$form.unblock();
 						};
-						});
+					});
 				}else{
-					showError( 'Something wrong with connection to Omise.js. Please check your network connection' );
+					showError( omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection );
 					$form.unblock();
 				}
 				
