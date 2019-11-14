@@ -57,6 +57,7 @@ fieldset.card-exists {
  * Omise Bill Payment Tesco
  * CSS for the 'Thank You' (order-received) page.
  */
+.omise-konbini-details,
 .omise-billpayment-tesco-details {
 	margin-bottom: 4em;
 	text-align: center;
@@ -67,6 +68,7 @@ fieldset.card-exists {
 .omise-billpayment-tesco-print-button {
 	margin-top: 2em;
 }
+.omise-konbini-footnote,
 .omise-billpayment-tesco-footnote {
 	margin-top: 4em;
 	padding: 1em;
