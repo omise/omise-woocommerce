@@ -73,18 +73,18 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				'key'                            => Omise()->settings()->public_key(),
 				'ajax_url'                       => admin_url( 'admin-ajax.php' ),
 				'ajax_loader_url'                => plugins_url( '/assets/images/ajax-loader@2x.gif', dirname( __FILE__ ) ),
-				'required_card_name'             => __( 'Card Holder\'s name is a required field', 'omise' ),
-				'required_card_number'           => __( 'Card Number is a required field', 'omise' ),
-				'required_card_expiration_month' => __( 'Card Expiry month is a required field', 'omise' ),
-				'required_card_expiration_year'  => __( 'Card Expiry year is a required field', 'omise' ),
-				'required_card_security_code'    => __( 'Card Security code is a required field', 'omise' ),
+				'required_card_name'             => __( 'Cardholder\'s name is a required field', 'omise' ),
+				'required_card_number'           => __( 'Card number is a required field', 'omise' ),
+				'required_card_expiration_month' => __( 'Card expiry month is a required field', 'omise' ),
+				'required_card_expiration_year'  => __( 'Card expiry year is a required field', 'omise' ),
+				'required_card_security_code'    => __( 'Card security code is a required field', 'omise' ),
 				'cannot_create_card'             => __( 'Unable to add a new card.', 'omise' ),
-				'cannot_connect_api'             => __( 'Currently, the payment provider server is under maintain.', 'omise' ),
+				'cannot_connect_api'             => __( 'Currently, the payment provider server is undergoing maintenance.', 'omise' ),
 				'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
 				'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
 				'retry_or_contact_support'       => wp_kses(
-					__( 'This incident could happen either from using an invalid card or the payment provider server is under maintainence.<br/>
-					    You may retry again in a couple seconds, or contact our support team if you have any question.', 'omise' ),
+					__( 'This incident could occur either from the use of an invalid card, or the payment provider server is undergoing maintenance.<br/>
+					    You may retry again in a couple of seconds, or contact our support team if you have any questions.', 'omise' ),
 					array( 'br' => array() )
 				)
 			);
