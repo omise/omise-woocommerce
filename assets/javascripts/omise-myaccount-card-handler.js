@@ -60,23 +60,24 @@
 			}
 		});
 
-		var omise_card_name   = $( '#omise_card_name' ).val(),
-			omise_card_number   = $( '#omise_card_number' ).val(),
-			omise_card_expiration_month   = $( '#omise_card_expiration_month' ).val(),
-			omise_card_expiration_year = $( '#omise_card_expiration_year' ).val(),
-			omise_card_security_code    = $( '#omise_card_security_code' ).val();
+		let errors            = [],
+		    omise_card        = {},
+		    omise_card_fields = {
+				'name'             : $( '#omise_card_name' ),
+				'number'           : $( '#omise_card_number' ),
+				'expiration_month' : $( '#omise_card_expiration_month' ),
+				'expiration_year'  : $( '#omise_card_expiration_year' ),
+				'security_code'    : $( '#omise_card_security_code' )
+			};
+
+		$.each( omise_card_fields, function( index, field ) {
+			omise_card[ index ] = field.val();
+			if ( "" === omise_card[ index ] ) {
+				errors.push( omise_params[ 'required_card_' + index ] );
+			}
+		} );
 		
-		// Serialize the card into a valid card object.
-		var card = {
-		    "name": omise_card_name,
-		    "number": omise_card_number,
-		    "expiration_month": omise_card_expiration_month,
-		    "expiration_year": omise_card_expiration_year,
-		    "security_code": omise_card_security_code
-		};
-		
-		var errors = OmiseUtil.validate_card(card);
-		if(errors.length > 0){
+		if ( errors.length > 0 ) {
 			showError(errors, $form);
 			return false;
 		}else{
@@ -85,11 +86,10 @@
 				Omise.setPublicKey(omise_params.key);
 				Omise.createToken("card", card, function (statusCode, response) {
 				    if (statusCode == 200) {
-				    	$( '#omise_card_name' ).val("");
-				    	$( '#omise_card_number' ).val("");
-				    	$( '#omise_card_expiration_month' ).val("");
-				    	$( '#omise_card_expiration_year' ).val("");
-				    	$( '#omise_card_security_code' ).val("");
+						$.each( omise_card_fields, function( index, field ) {
+							field.val( '' );
+						} );
+
 				    	data = {
 								action: "omise_create_card", 
 								omise_token: response.id, 
@@ -105,20 +105,20 @@
 								}
 							}, "json"
 						);
-				    } else {
-				    	if(response.message){
-				    		showError( "Unable to create a card. " + response.message, $form );
-				    	}else if(response.responseJSON && response.responseJSON.message){
-				    		showError( "Unable to create a card. " + response.responseJSON.message, $form );
-				    	}else if(response.status==0){
-				    		showError( "Unable to create a card. No response from Omise Api.", $form );
-				    	}else {
-				    		showError( "Unable to create a card [ status=" + response.status + " ].", $form );
-				    	}
-				    };
-				  });
+					} else {
+						if(response.message){
+							showError( omise_params.cannot_create_card + "<br/>" + response.message, $form );
+						}else if(response.responseJSON && response.responseJSON.message){
+							showError( omise_params.cannot_create_card + "<br/>" + response.responseJSON.message, $form );
+						}else if(response.status==0){
+							showError( omise_params.cannot_create_card + "<br/>" + omise_params.cannot_connect_api, $form );
+						}else {
+							showError( omise_params.retry_or_contact_support, $form );
+						}
+					};
+				});
 			}else{
-				showError( 'Something wrong with connection to Omise.js. Please check your network connection', $form );
+				showError( omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection, $form );
 			}
 		}
 	}

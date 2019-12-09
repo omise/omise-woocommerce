@@ -62,30 +62,34 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			);
 
 			wp_enqueue_script(
-				'omise-util',
-				plugins_url( '/assets/javascripts/omise-util.js', dirname( __FILE__ ) ),
+				'omise-myaccount-card-handler',
+				plugins_url( '/assets/javascripts/omise-myaccount-card-handler.js', dirname( __FILE__ ) ),
 				array( 'omise-js' ),
 				WC_VERSION,
 				true
 			);
 
-			wp_enqueue_script(
-				'omise-myaccount-card-handler',
-				plugins_url( '/assets/javascripts/omise-myaccount-card-handler.js', dirname( __FILE__ ) ),
-				array( 'omise-js' , 'omise-util' ),
-				WC_VERSION,
-				true
-			);
-
-			wp_localize_script(
-				'omise-myaccount-card-handler',
-				'omise_params',
-				array(
-					'key'             => Omise()->settings()->public_key(),
-					'ajax_url'        => admin_url( 'admin-ajax.php' ),
-					'ajax_loader_url' => plugins_url( '/assets/images/ajax-loader@2x.gif', dirname( __FILE__ ) )
+			$omise_params = array(
+				'key'                            => Omise()->settings()->public_key(),
+				'ajax_url'                       => admin_url( 'admin-ajax.php' ),
+				'ajax_loader_url'                => plugins_url( '/assets/images/ajax-loader@2x.gif', dirname( __FILE__ ) ),
+				'required_card_name'             => __( 'Cardholder\'s name is a required field', 'omise' ),
+				'required_card_number'           => __( 'Card number is a required field', 'omise' ),
+				'required_card_expiration_month' => __( 'Card expiry month is a required field', 'omise' ),
+				'required_card_expiration_year'  => __( 'Card expiry year is a required field', 'omise' ),
+				'required_card_security_code'    => __( 'Card security code is a required field', 'omise' ),
+				'cannot_create_card'             => __( 'Unable to add a new card.', 'omise' ),
+				'cannot_connect_api'             => __( 'Currently, the payment provider server is undergoing maintenance.', 'omise' ),
+				'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
+				'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
+				'retry_or_contact_support'       => wp_kses(
+					__( 'This incident could occur either from the use of an invalid card, or the payment provider server is undergoing maintenance.<br/>
+					    You may retry again in a couple of seconds, or contact our support team if you have any questions.', 'omise' ),
+					array( 'br' => array() )
 				)
 			);
+
+			wp_localize_script( 'omise-myaccount-card-handler', 'omise_params', $omise_params );
 		}
 
 		/**

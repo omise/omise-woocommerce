@@ -50,7 +50,7 @@
 		
 		if ( $( '#payment_method_omise' ).is( ':checked' ) ) {
 			if( !validSelection() ){
-				showError("Please select a card or enter new payment information");
+				showError( omise_params.no_card_selected );
 				return false;
 			}
 			
@@ -70,59 +70,61 @@
 					}
 				});
 
-				var omise_card_name   = $( '#omise_card_name' ).val(),
-					omise_card_number   = $( '#omise_card_number' ).val(),
-					omise_card_expiration_month   = $( '#omise_card_expiration_month' ).val(),
-					omise_card_expiration_year = $( '#omise_card_expiration_year' ).val(),
-					omise_card_security_code    = $( '#omise_card_security_code' ).val();
-				
-				// Serialize the card into a valid card object.
-				var card = {
-				    "name": omise_card_name,
-				    "number": omise_card_number,
-				    "expiration_month": omise_card_expiration_month,
-				    "expiration_year": omise_card_expiration_year,
-				    "security_code": omise_card_security_code
-				};
-				
-				var errors = OmiseUtil.validate_card(card);
-				if(errors.length > 0){
+				let errors            = [],
+				    omise_card        = {},
+				    omise_card_fields = {
+						'name'             : $( '#omise_card_name' ),
+						'number'           : $( '#omise_card_number' ),
+						'expiration_month' : $( '#omise_card_expiration_month' ),
+						'expiration_year'  : $( '#omise_card_expiration_year' ),
+						'security_code'    : $( '#omise_card_security_code' )
+					};
+
+				$.each( omise_card_fields, function( index, field ) {
+					omise_card[ index ] = field.val();
+					if ( "" === omise_card[ index ] ) {
+						errors.push( omise_params[ 'required_card_' + index ] );
+					}
+				} );
+
+				if ( errors.length > 0 ) {
 					showError(errors);
 					$form.unblock();
 					return false;
-				}else{
-					hideError();
-					if(Omise){
-						Omise.setPublicKey(omise_params.key);
-						Omise.createToken("card", card, function (statusCode, response) {
-						    if (statusCode == 200) {
-						    	$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
-						    	$( '#omise_card_name' ).val("");
-						    	$( '#omise_card_number' ).val("");
-						    	$( '#omise_card_expiration_month' ).val("");
-						    	$( '#omise_card_expiration_year' ).val("");
-						    	$( '#omise_card_security_code' ).val("");
-								$form.submit();
-						    } else {
-						    	if(response.message){
-						    		showError( "Unable to process payment with Omise. " + response.message );
-						    	}else if(response.responseJSON && response.responseJSON.message){
-						    		showError( "Unable to process payment with Omise. " + response.responseJSON.message );
-						    	}else if(response.status==0){
-						    		showError( "Unable to process payment with Omise. No response from Omise Api." );
-						    	}else {
-						    		showError( "Unable to process payment with Omise [ status=" + response.status + " ]" );
-						    	}
-						    	$form.unblock();
-						    };
-						  });
-					}else{
-						showError( 'Something wrong with connection to Omise.js. Please check your network connection' );
-						$form.unblock();
-					}
-					
-					return false;
 				}
+
+				hideError();
+
+				if(Omise){
+					Omise.setPublicKey(omise_params.key);
+					Omise.createToken("card", omise_card, function (statusCode, response) {
+						if (statusCode == 200) {
+							$.each( omise_card_fields, function( index, field ) {
+								field.val( '' );
+							} );
+							$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
+							$form.submit();
+						} else {
+							if ( response.object && 'error' === response.object && 'invalid_card' === response.code ) {
+								showError( omise_params.invalid_card + "<br/>" + response.message );
+							} else if(response.message){
+								showError( omise_params.cannot_create_token + "<br/>" + response.message );
+							}else if(response.responseJSON && response.responseJSON.message){
+								showError( omise_params.cannot_create_token + "<br/>" + response.responseJSON.message );
+							}else if(response.status==0){
+								showError( omise_params.cannot_create_token + "<br/>" + omise_params.cannot_connect_api + omise_params.retry_checkout );
+							}else {
+								showError( omise_params.cannot_create_token + "<br/>" + omise_params.retry_checkout );
+							}
+							$form.unblock();
+						};
+					});
+				}else{
+					showError( omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection );
+					$form.unblock();
+				}
+				
+				return false;
 			}
 			
 		}
