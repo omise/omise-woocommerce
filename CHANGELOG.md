@@ -1,5 +1,22 @@
 # CHANGELOG
 
+### [v3.10 _(Jan 16, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.10)
+
+#### ✨ Highlights
+
+- Credit Card payment, automatically detect if a particular charge is processing using 3-D Secure feature (PR [#146](https://github.com/omise/omise-woocommerce/pull/146))
+
+#### 🚀 Enhancements
+
+- Code refactoring for a better i18n for strings that were in JS files (PR [#147](https://github.com/omise/omise-woocommerce/pull/147))
+- Refactoring offsite payment methods (introducing abstract offsite class) (PR [#143](https://github.com/omise/omise-woocommerce/pull/143))
+
+#### 📝 Documents
+
+- README, polishing and updating all missing contents (PR [#145](https://github.com/omise/omise-woocommerce/pull/145))
+
+---
+
 ### [v3.9 _(Oct 31, 2019)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.9)
 
 #### ✨ Highlights
