@@ -38,7 +38,20 @@ class Omise_Page_Settings {
 			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
 		}
 
-		$this->settings->update_settings( $data );
+		$public_key = $data['sandbox'] ? $data['test_public_key'] : $data['live_public_key'];
+		$secret_key = $data['sandbox'] ? $data['test_private_key'] : $data['live_private_key'];
+
+		try {
+			$account = OmiseAccount::retrieve( $public_key, $secret_key );
+
+			$data['account_id']      = $account['id'];
+			$data['account_email']   = $account['email'];
+			$data['account_country'] = $account['country'];
+
+			$this->settings->update_settings( $data );
+		} catch (Exception $e) {
+			// Do nothing.
+		}
 	}
 
 	/**
