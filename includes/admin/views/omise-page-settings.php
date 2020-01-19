@@ -142,34 +142,36 @@
 										new Omise_Payment_Truemoney
 									);
 									foreach ( $available_gateways as $gateway ) :
+										if ( $gateway->is_country_support( $settings['account_country'] ) ) :
 
-										echo '<tr>';
+											echo '<tr>';
 
-										foreach ( $columns as $key => $column ) :
-											switch ( $key ) {
-												case 'name' :
-													$method_title = $gateway->get_title() ? $gateway->get_title() : __( '(no title)', 'omise' );
-													echo '<td class="name">
-														<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( $gateway->id ) ) . '">' . esc_html( $method_title ) . '</a>
-													</td>';
-													break;
+											foreach ( $columns as $key => $column ) :
+												switch ( $key ) {
+													case 'name' :
+														$method_title = $gateway->get_title() ? $gateway->get_title() : __( '(no title)', 'omise' );
+														echo '<td class="name">
+															<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( $gateway->id ) ) . '">' . esc_html( $method_title ) . '</a>
+														</td>';
+														break;
 
-												case 'status' :
-													echo '<td class="status" style="text-align: center;">';
-													echo ( 'yes' === $gateway->enabled ) ? '<span>' . __( 'Yes', 'omise' ) . '</span>' : '-';
-													echo '</td>';
-													break;
+													case 'status' :
+														echo '<td class="status" style="text-align: center;">';
+														echo ( 'yes' === $gateway->enabled ) ? '<span>' . __( 'Yes', 'omise' ) . '</span>' : '-';
+														echo '</td>';
+														break;
 
-												case 'setting' :
-													echo '<td class="setting" style="text-align: center;">
-														<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( $gateway->id ) ) . '">' . __( 'config', 'omise' ) . '</a>
-													</td>';
-													break;
-											}
-										endforeach;
+													case 'setting' :
+														echo '<td class="setting" style="text-align: center;">
+															<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( $gateway->id ) ) . '">' . __( 'config', 'omise' ) . '</a>
+														</td>';
+														break;
+												}
+											endforeach;
 
-										echo '</tr>';
+											echo '</tr>';
 
+										endif;
 									endforeach;
 									?>
 								</tbody>

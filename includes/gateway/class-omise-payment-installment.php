@@ -22,8 +22,9 @@ function register_omise_installment() {
 			$this->init_form_fields();
 			$this->init_settings();
 
-			$this->title       = $this->get_option( 'title' );
-			$this->description = $this->get_option( 'description' );
+			$this->title                = $this->get_option( 'title' );
+			$this->description          = $this->get_option( 'description' );
+			$this->restricted_countries = array( 'TH' );
 
 			$this->backend     = new Omise_Backend_Installment;
 
