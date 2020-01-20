@@ -69,6 +69,17 @@ class Omise_Page_Settings {
 
 		$settings = $page->get_settings();
 
+		/**
+		 * Added later at Omise-WooCommerce v3.11.
+		 * To migrate all the users that haven been using Omise-WooCommerce
+		 * below the version v3.11.
+		 */
+		if ( ! $settings['account_country'] && ( $settings['test_private_key'] || $settings['live_private_key'] ) ) {
+			$settings['omise_setting_page_nonce'] = wp_create_nonce( 'omise-setting' );
+			$page->save( $settings );
+			$settings = $page->get_settings();
+		}
+
 		include_once __DIR__ . '/views/omise-page-settings.php';
 	}
 }
