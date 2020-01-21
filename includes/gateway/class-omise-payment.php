@@ -49,6 +49,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public $payment_settings = array();
 
 	/**
+	 * A list of countries the payment method can be operated with.
+	 *
+	 * @var array
+	 */
+	public $restricted_countries = array();
+
+	/**
 	 * @var array
 	 */
 	private $currency_subunits = array(
@@ -143,6 +150,21 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	protected function is_currency_support( $currency ) {
 		if ( isset( $this->currency_subunits[ strtoupper( $currency ) ] ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param  string $country_code
+	 *
+	 * @return bool
+	 */
+	public function is_country_support( $country_code ) {
+		array_map( 'strtoupper', $this->restricted_countries );
+
+		if ( in_array( strtoupper( $country_code ), $this->restricted_countries ) ) {
 			return true;
 		}
 

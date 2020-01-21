@@ -26,8 +26,9 @@ function register_omise_billpayment_tesco() {
 			$this->init_form_fields();
 			$this->init_settings();
 
-			$this->title       = $this->get_option( 'title' );
-			$this->description = $this->get_option( 'description' );
+			$this->title                = $this->get_option( 'title' );
+			$this->description          = $this->get_option( 'description' );
+			$this->restricted_countries = array( 'TH' );
 
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_barcode' ) );

@@ -33,9 +33,10 @@ function register_omise_creditcard() {
 			$this->init_form_fields();
 			$this->init_settings();
 
-			$this->title          = $this->get_option( 'title' );
-			$this->description    = $this->get_option( 'description' );
-			$this->payment_action = $this->get_option( 'payment_action' );
+			$this->title                = $this->get_option( 'title' );
+			$this->description          = $this->get_option( 'description' );
+			$this->payment_action       = $this->get_option( 'payment_action' );
+			$this->restricted_countries = array( 'TH', 'JP', 'SG' );
 
 			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );

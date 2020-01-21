@@ -52,6 +52,9 @@ class Omise_Setting {
 	 */
 	protected function get_default_settings() {
 		return array(
+			'account_id'       => '',
+			'account_email'    => '',
+			'account_country'  => '',
 			'sandbox'          => 'yes',
 			'test_public_key'  => '',
 			'test_private_key' => '',
