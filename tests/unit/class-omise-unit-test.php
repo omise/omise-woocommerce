@@ -11,7 +11,18 @@ class Omise_Unit_Test {
  * Mock WordPress __() function.
  *
  * @see wp-includes/l10n.php
+ * @see https://developer.wordpress.org/reference/functions/__
  */
 function __( $text, $domain = 'default' ) {
+	return $text;
+}
+
+/**
+ * Mock WordPress _x() function.
+ *
+ * @see wp-includes/l10n.php
+ * @see https://developer.wordpress.org/reference/functions/_x
+ */
+function _x( $text, $context, $domain = 'default' ) {
 	return $text;
 }
