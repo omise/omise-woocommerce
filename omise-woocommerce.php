@@ -31,6 +31,7 @@ class Omise {
 		'Omise_Payment_Creditcard',
 		'Omise_Payment_Installment',
 		'Omise_Payment_Internetbanking',
+		'Omise_Payment_Paynow',
 		'Omise_Payment_Truemoney'
 	);
 
@@ -141,6 +142,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-installment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-paynow.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-truemoney.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
