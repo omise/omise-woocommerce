@@ -31,6 +31,7 @@ function register_omise_paynow() {
 			$this->restricted_countries = array( 'SG' );
 
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+			add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_qrcode' ) );
 		}
 
 		/**
@@ -108,6 +109,31 @@ function register_omise_paynow() {
 					$order_id
 				)
 			);
+		}
+
+		/**
+		 * @param int|WC_Order $order
+		 * @param string       $context  pass 'email' value through this argument only for 'sending out an email' case.
+		 */
+		public function display_qrcode( $order, $context = 'view' ) {
+			if ( ! $this->load_order( $order ) ) {
+				return;
+			}
+
+			$charge_id = $this->get_charge_id_from_order();
+			$charge    = OmiseCharge::retrieve( $charge_id );
+			$qrcode    = $charge['source']['scannable_code']['image']['download_uri'];
+			?>
+			<div class="omise omise-paynow-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
+				<div class="omise omise-paynow-logo"></div>
+				<p>
+					<?php echo __( 'Scan the QR code to pay', 'omise' ); ?>
+				</p>
+				<div class="omise omise-paynow-qrcode">
+					<img src="<?php echo $qrcode; ?>" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
+				</div>
+			</div>
+			<?php
 		}
 	}
 
