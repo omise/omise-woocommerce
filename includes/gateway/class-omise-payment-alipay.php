@@ -1,9 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-function register_omise_alipay() {
-	require_once dirname( __FILE__ ) . '/abstract-omise-payment-offsite.php';
-
 	class Omise_Payment_Alipay extends Omise_Payment_Offsite {
 		public function __construct() {
 			parent::__construct();
@@ -79,18 +76,3 @@ function register_omise_alipay() {
 			) );
 		}
 	}
-
-	if ( ! function_exists( 'add_omise_alipay' ) ) {
-		/**
-		 * @param  array $methods
-		 *
-		 * @return array
-		 */
-		function add_omise_alipay( $methods ) {
-			$methods[] = 'Omise_Payment_Alipay';
-			return $methods;
-		}
-
-		add_filter( 'woocommerce_payment_gateways', 'add_omise_alipay' );
-	}
-}

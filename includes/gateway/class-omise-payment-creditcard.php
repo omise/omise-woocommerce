@@ -1,17 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-function register_omise_creditcard() {
-	require_once dirname( __FILE__ ) . '/class-omise-payment.php';
-
-	if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
-		return;
-	}
-
-	if ( class_exists( 'Omise_Payment_Creditcard' ) ) {
-		return;
-	}
-
 	class Omise_Payment_Creditcard extends Omise_Payment {
 		const PAYMENT_ACTION_AUTHORIZE         = 'manual_capture';
 		const PAYMENT_ACTION_AUTHORIZE_CAPTURE = 'auto_capture';
@@ -665,18 +654,3 @@ function register_omise_creditcard() {
 			}
 		}
 	}
-
-	if ( ! function_exists( 'add_omise_creditcard' ) ) {
-		/**
-		 * @param  array $methods
-		 *
-		 * @return array
-		 */
-		function add_omise_creditcard( $methods ) {
-			$methods[] = 'Omise_Payment_Creditcard';
-			return $methods;
-		}
-
-		add_filter( 'woocommerce_payment_gateways', 'add_omise_creditcard' );
-	}
-}

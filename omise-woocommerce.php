@@ -75,13 +75,8 @@ class Omise {
 		$this->register_post_types();
 		$this->init_admin();
 		$this->init_route();
+		$this->register_payment_methods();
 
-		register_omise_alipay();
-		register_omise_billpayment_tesco();
-		register_omise_creditcard();
-		register_omise_installment();
-		register_omise_internetbanking();
-		register_omise_truemoney();
 		prepare_omise_myaccount_panel();
 	}
 
@@ -96,6 +91,20 @@ class Omise {
 			<p><?php echo __( 'Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * @since 3.11
+	 */
+	public function payment_methods() {
+		return array(
+			'Omise_Payment_Alipay',
+			'Omise_Payment_Billpayment_Tesco',
+			'Omise_Payment_Creditcard',
+			'Omise_Payment_Installment',
+			'Omise_Payment_Internetbanking',
+			'Omise_Payment_Truemoney'
+		);
 	}
 
 	/**
@@ -126,12 +135,14 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-capture.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-complete.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-create.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/abstract-omise-payment-offsite.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-alipay.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-billpayment-tesco.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-installment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-truemoney.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-capabilities.php';
@@ -168,6 +179,15 @@ class Omise {
 	 */
 	public function load_plugin_textdomain() {
 		load_plugin_textdomain( 'omise', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * @since  3.11
+	 */
+	public function register_payment_methods() {
+		add_filter( 'woocommerce_payment_gateways', function( $methods ) {
+			return array_merge( $methods, $this->payment_methods() );
+		} );
 	}
 
 	/**

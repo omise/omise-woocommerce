@@ -133,15 +133,8 @@
 								</thead>
 								<tbody>
 									<?php
-									$available_gateways = array(
-										new Omise_Payment_Alipay,
-										new Omise_Payment_Billpayment_Tesco,
-										new Omise_Payment_Creditcard,
-										new Omise_Payment_Installment,
-										new Omise_Payment_Internetbanking,
-										new Omise_Payment_Truemoney
-									);
-									foreach ( $available_gateways as $gateway ) :
+									foreach ( Omise()->payment_methods() as $gateway ) :
+										$gateway = new $gateway;
 										if ( $gateway->is_country_support( $settings['account_country'] ) ) :
 
 											echo '<tr>';
