@@ -133,7 +133,7 @@
 								</thead>
 								<tbody>
 									<?php
-									foreach ( Omise()->payment_methods() as $gateway ) :
+									foreach ( Omise()->payment_methods as $gateway ) :
 										$gateway = new $gateway;
 										if ( $gateway->is_country_support( $settings['account_country'] ) ) :
 

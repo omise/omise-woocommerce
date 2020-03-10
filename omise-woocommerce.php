@@ -21,6 +21,20 @@ class Omise {
 	public $version = '3.10';
 
 	/**
+	 * @since 3.11
+	 *
+	 * @var array
+	 */
+	public $payment_methods = array(
+		'Omise_Payment_Alipay',
+		'Omise_Payment_Billpayment_Tesco',
+		'Omise_Payment_Creditcard',
+		'Omise_Payment_Installment',
+		'Omise_Payment_Internetbanking',
+		'Omise_Payment_Truemoney'
+	);
+
+	/**
 	 * The Omise Instance.
 	 *
 	 * @since 3.0
@@ -91,20 +105,6 @@ class Omise {
 			<p><?php echo __( 'Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
 		</div>
 		<?php
-	}
-
-	/**
-	 * @since 3.11
-	 */
-	public function payment_methods() {
-		return array(
-			'Omise_Payment_Alipay',
-			'Omise_Payment_Billpayment_Tesco',
-			'Omise_Payment_Creditcard',
-			'Omise_Payment_Installment',
-			'Omise_Payment_Internetbanking',
-			'Omise_Payment_Truemoney'
-		);
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Omise {
 	 */
 	public function register_payment_methods() {
 		add_filter( 'woocommerce_payment_gateways', function( $methods ) {
-			return array_merge( $methods, $this->payment_methods() );
+			return array_merge( $methods, $this->payment_methods );
 		} );
 	}
 
