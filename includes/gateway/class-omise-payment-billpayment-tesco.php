@@ -1,13 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-function register_omise_billpayment_tesco() {
-	require_once dirname( __FILE__ ) . '/class-omise-payment.php';
-
-	if ( ! class_exists( 'WC_Payment_Gateway' ) || class_exists( 'Omise_Payment_Billpayment_Tesco' ) ) {
-		return;
-	}
-
 	/**
 	 * @since 3.7
 	 */
@@ -266,7 +259,7 @@ function register_omise_billpayment_tesco() {
 		 * @param  string $barcode_svg
 		 *
 		 * @return string  of a generated Bill Payment Tesco's barcode in HTML format.
-	     */
+		 */
 		public function barcode_svg_to_html( $barcode_svg ) {
 			$xml       = new SimpleXMLElement( $barcode_svg );
 			$xhtml     = new DOMDocument();
@@ -301,18 +294,3 @@ function register_omise_billpayment_tesco() {
 			return $xhtml->saveXML( null, LIBXML_NOEMPTYTAG );
 		}
 	}
-
-	if ( ! function_exists( 'add_omise_billpayment_tesco' ) ) {
-		/**
-		 * @param  array $methods
-		 *
-		 * @return array
-		 */
-		function add_omise_billpayment_tesco( $methods ) {
-			$methods[] = 'Omise_Payment_Billpayment_Tesco';
-			return $methods;
-		}
-
-		add_filter( 'woocommerce_payment_gateways', 'add_omise_billpayment_tesco' );
-	}
-}

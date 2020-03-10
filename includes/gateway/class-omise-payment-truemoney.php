@@ -1,9 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-function register_omise_truemoney() {
-	require_once dirname( __FILE__ ) . '/abstract-omise-payment-offsite.php';
-
 	/**
 	 * @since 3.9
 	 */
@@ -171,18 +168,3 @@ function register_omise_truemoney() {
 			return false;
 		}
 	}
-
-	if ( ! function_exists( 'add_omise_truemoney' ) ) {
-		/**
-		 * @param  array $methods
-		 *
-		 * @return array
-		 */
-		function add_omise_truemoney( $methods ) {
-			$methods[] = 'Omise_Payment_Truemoney';
-			return $methods;
-		}
-
-		add_filter( 'woocommerce_payment_gateways', 'add_omise_truemoney' );
-	}
-}

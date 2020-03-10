@@ -1,9 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-function register_omise_installment() {
-	require_once dirname( __FILE__ ) . '/abstract-omise-payment-offsite.php';
-
 	/**
 	 * @since 3.4
 	 */
@@ -107,18 +104,3 @@ function register_omise_installment() {
 			) );
 		}
 	}
-
-	if ( ! function_exists( 'add_omise_installment' ) ) {
-		/**
-		 * @param  array $methods
-		 *
-		 * @return array
-		 */
-		function add_omise_installment( $methods ) {
-			$methods[] = 'Omise_Payment_Installment';
-			return $methods;
-		}
-
-		add_filter( 'woocommerce_payment_gateways', 'add_omise_installment' );
-	}
-}
