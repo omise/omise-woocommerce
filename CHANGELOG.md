@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### [v3.11 _(Mar 18, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.11)
+
+#### ✨ Highlights
+
+- Introducing PayNow payment method (only available in Singapore) (PR [#152](https://github.com/omise/omise-woocommerce/pull/152))
+
+#### 🚀 Enhancements
+
+- (proposal) Code cleaning for payment method classes. (PR [#153](https://github.com/omise/omise-woocommerce/pull/153))
+- Payment Setting: properly display payment methods based on a given Omise Account (for admin) (PR [#151](https://github.com/omise/omise-woocommerce/pull/151))
+
+---
+
 ### [v3.10 _(Jan 16, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v3.10)
 
 #### ✨ Highlights
