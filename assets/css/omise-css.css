@@ -80,6 +80,24 @@ fieldset.card-exists {
 }
 
 /**
+ * Omise PayNow
+ */
+.omise-paynow-details {
+	margin-bottom: 4em;
+	text-align: center;
+}
+.omise-paynow-details img {
+	margin: auto;
+}
+.omise-paynow-logo {
+	background: url('../images/paynow.png');
+	background-size: cover;
+	width: 200px;
+	height: 51px;
+	margin: auto;
+}
+
+/**
  * 2). Components
  * (stylesheets that are designed generally and may be commonly used as a component).
  */
