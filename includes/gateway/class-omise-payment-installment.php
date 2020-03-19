@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 				__( 'Accept <strong>installment payments</strong> via Omise payment gateway.', 'omise' ),
 				array( 'strong' => array() )
 			);
+			$this->supports           = array( 'products', 'refunds' );
 
 			$this->init_form_fields();
 			$this->init_settings();
