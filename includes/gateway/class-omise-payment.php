@@ -226,6 +226,62 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	abstract public function result( $order_id, $order, $charge );
 
 	/**
+	 * Process refund.
+	 *
+	 * @param  int    $order_id
+	 * @param  float  $amount
+	 * @param  string $reason
+	 *
+	 * @return boolean True|False based on success, or a WP_Error object.
+	 *
+	 * @see    WC_Payment_Gateway::process_refund( $order_id, $amount = null, $reason = '' )
+	 */
+	public function process_refund( $order_id, $amount = null, $reason = '' ) {
+		if ( ! $order = wc_get_order( $order_id ) ) {
+			$message = __(
+				'Refund failed. Cannot retrieve an order from the given ID: %s. Please try again or you may do a manual refund.', 
+				'omise'
+			);
+
+			return new WP_Error( 'error', sprintf( wp_kses( $message, array( 'br' => array() ) ), $order_id ) );
+		}
+
+		try {
+			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
+			$refund = $charge->refunds()->create( array(
+				'amount' => Omise_Money::to_subunit( $amount, $order->get_order_currency() )
+			) );
+
+			if ( $refund['voided'] ) {
+				$message = sprintf(
+					wp_kses(
+						__( 'Omise: Voided an amount %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+						array( 'br' => array() )
+					),
+					$amount,
+					$order->get_order_currency(),
+					$refund['id']
+				);
+			} else {
+				$message = sprintf(
+					wp_kses(
+						__( 'Omise: Refunded an amount %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+						array( 'br' => array() )
+					),
+					$amount,
+					$order->get_order_currency(),
+					$refund['id']
+				);
+			}
+
+			$order->add_order_note( $message );
+			return true;
+		} catch (Exception $e) {
+			return new WP_Error( 'error', __( 'Refund failed.' ) . ' ' . $e->getMessage() );
+		}
+	}
+
+	/**	
 	 * Retrieve a charge by a given charge id (that attach to an order).
 	 * Find some diff, then merge it back to WooCommerce system.
 	 *
