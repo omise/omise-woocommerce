@@ -108,7 +108,7 @@ Credit / Debit Card
 Credit / Debit Card, and PayNow
 
 #### 🇹🇭 Thailand
-Alipay, Bill Payment: Tesco, Credit / Debit Card, Installment, Internet Banking, and TrueMoney Wallet.
+Alipay, Bill Payment: Tesco Lotus, Credit / Debit Card, Installment, Internet Banking, and TrueMoney Wallet.
 
 ## Contributing
 
