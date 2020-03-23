@@ -80,7 +80,7 @@ Once the installation is done, the next thing that you are going to do is to con
 
 #### Enable payment methods
 
-1. After setting up Omise Account, at the Omise Settings page, **"Payment Methods"** section, there will be a number of available payment methods shown on the list.
+1. After setting up your Omise Account, there will be a number of available payment methods shown in the **"Payment Methods"** section of the Omise Settings page.
 
 2. Click **"config"** in the table for the payment method you'd like to accept payment with.
 
