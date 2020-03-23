@@ -4,7 +4,7 @@
 
 ## Supported Versions
 
-WooCommerce version 3.3.4 and above (tested to version 3.9.2).
+WooCommerce version 3.3.4 and above (tested to version 3.9.3).
 
 **The extension doesn't work on your version?**  
 Our aim is to support as many versions of WooCommerce as we can.  
@@ -18,6 +18,10 @@ If the version you are currently using has not been listed, you can try installi
 - [First Time Setup](#first-time-setup)
   - [Connect your store with your Omise account](#connect-your-store-with-your-omise-account)
   - [Enable payment methods](#enable-payment-methods)
+- [Available Payment Methods](#available-payment-methods)
+  - [🇯🇵Japan](#-japan)
+  - [🇸🇬Singapore](#-singapore)
+  - [🇹🇭Thailand](#-thailand)
 
 ...
 
@@ -60,7 +64,7 @@ Next, check **[First Time Setup](#first-time-setup)** to continue setting up you
 
 #### Connect your store with your Omise account
 
-![Omise-WooCommerce plugin - setting page](https://user-images.githubusercontent.com/2154669/68251435-b3face00-0055-11ea-9932-d2129bc3f1e7.png)
+![Omise-WooCommerce plugin - setting page](https://user-images.githubusercontent.com/2154669/77301338-1e20c080-6d22-11ea-9cd9-906fe6ca4900.png)
 
 Once the installation is done, the next thing that you are going to do is to connect your store with your Omise account and enable payment methods so your customers can make a purchase with an online payment.
 
@@ -76,11 +80,7 @@ Once the installation is done, the next thing that you are going to do is to con
 
 #### Enable payment methods
 
-> Note that Alipay, Bill Payment: Tesco, Installment, Internet Banking, and TrueMoney Wallet payment methods are only available for merchants that are registered in Thailand.
-
-The payment methods available for you to enable on your store are: **Alipay**, **Bill Payment: Tesco**, **Credit / Debit Card**, **Installment**, **Internet Banking**, and **TrueMoney Wallet**.
-
-1. At the Omise Settings page, Payment Methods section, there will be a number of available payment methods shown on the list.
+1. After setting up your Omise Account, there will be a number of available payment methods shown in the **"Payment Methods"** section of the Omise Settings page.
 
 2. Click **"config"** in the table for the payment method you'd like to accept payment with.
 
@@ -96,6 +96,19 @@ The payment methods available for you to enable on your store are: **Alipay**, *
 Once done, those payment methods will be shown at the store's checkout page.
   ![screen shot 2560-07-26 at 8 13 55 pm](https://user-images.githubusercontent.com/2154669/28622536-030403e2-723f-11e7-8a93-a06e65e350d3.png)
 
+### Available Payment Methods
+
+Payment methods that are available on the store will be determined based on the country that merchants are registered.
+The following is the list of payment methods that are supported in each country.
+
+#### 🇯🇵 Japan
+Credit / Debit Card
+
+#### 🇸🇬 Singapore
+Credit / Debit Card, and PayNow
+
+#### 🇹🇭 Thailand
+Alipay, Bill Payment: Tesco Lotus, Credit / Debit Card, Installment, Internet Banking, and TrueMoney Wallet.
 
 ## Contributing
 
