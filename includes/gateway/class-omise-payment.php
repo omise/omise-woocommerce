@@ -239,7 +239,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 		if ( ! $order = wc_get_order( $order_id ) ) {
 			$message = __(
-				'Refund failed. Cannot retrieve an order from the given ID: %s. Please try again or you may do a manual refund.', 
+				'Refund failed. Cannot retrieve an order with the given ID: %s. Please try again or do a manual refund.',
 				'omise'
 			);
 
