@@ -255,7 +255,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			if ( $refund['voided'] ) {
 				$message = sprintf(
 					wp_kses(
-						__( 'Omise: Voided an amount %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+						__( 'Omise: Voided an amount of %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
 						array( 'br' => array() )
 					),
 					$amount,
@@ -265,7 +265,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			} else {
 				$message = sprintf(
 					wp_kses(
-						__( 'Omise: Refunded an amount %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+						__( 'Omise: Refunded an amount of %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
 						array( 'br' => array() )
 					),
 					$amount,
