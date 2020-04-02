@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 			$this->backend     = new Omise_Backend_Installment;
 
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
+			add_action( 'woocommerce_api_' . $this->id . '_callback', array( new Omise_Callback, 'execute' ) );
 		}
 
 		/**

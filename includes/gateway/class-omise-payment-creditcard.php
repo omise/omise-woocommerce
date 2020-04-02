@@ -27,14 +27,14 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 			$this->payment_action       = $this->get_option( 'payment_action' );
 			$this->restricted_countries = array( 'TH', 'JP', 'SG' );
 
-			add_action( 'woocommerce_api_' . $this->id . '_callback', array( $this, 'callback' ) );
+			add_action( 'woocommerce_api_' . $this->id . '_callback', array( new Omise_Callback, 'execute' ) );
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'omise_scripts' ) );
 			add_action( 'woocommerce_order_action_' . $this->id . '_charge_capture', array( $this, 'process_capture' ) );
 			add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 
 			/** @deprecated 3.0 */
-			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( $this, 'callback' ) );
+			add_action( 'woocommerce_api_wc_gateway_' . $this->id, array( new Omise_Callback, 'callback' ) );
 		}
 
 		/**
@@ -387,110 +387,6 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 					)
 				);
 			}
-		}
-
-		public function callback() {
-			if ( ! isset( $_GET['order_id'] ) || ! $order = $this->load_order( $_GET['order_id'] ) ) {
-				wc_add_notice(
-					wp_kses(
-						__( 'We cannot validate your payment result:<br/>Note that your payment might already has been processed. Please contact our support team if you have any questions.', 'omise' ),
-						array( 'br' => array() )
-					),
-					'error'
-				);
-
-				header( 'Location: ' . WC()->cart->get_checkout_url() );
-				die();
-			}
-
-			$order->add_order_note( __( 'Omise: Validating the payment result..', 'omise' ) );
-
-			try {
-				$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
-
-				switch ( $this->payment_action ) {
-					case self::PAYMENT_ACTION_AUTHORIZE:
-						$success = Omise_Charge::is_authorized( $charge );
-						if ( $success ) {
-							$order->add_order_note(
-								sprintf(
-									wp_kses(
-										__( 'Omise: Payment processing.<br/>An amount %1$s %2$s has been authorized', 'omise' ),
-										array( 'br' => array() )
-									),
-									$order->get_total(),
-									$order->get_order_currency()
-								)
-							);
-						}
-
-						break;
-
-					case self::PAYMENT_ACTION_AUTHORIZE_CAPTURE:
-						$success = Omise_Charge::is_paid( $charge );
-						if ( $success ) {
-							$order->add_order_note(
-								sprintf(
-									wp_kses(
-										__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
-										array( 'br' => array() )
-									),
-									$order->get_total(),
-									$order->get_order_currency()
-								)
-							);
-							$order->payment_complete();
-						}
-
-						break;
-
-					default:
-						// Default behaviour is, check if it paid first.
-						$success = Omise_Charge::is_paid( $charge );
-
-						// Then, check is authorized after if the first condition is false.
-						if ( ! $success )
-							$success = Omise_Charge::is_authorized( $charge );
-
-						break;
-				}
-
-				if ( ! $success ) {
-					throw new Exception( Omise_Charge::get_error_message( $charge ) );
-				}
-
-				// Remove cart
-				WC()->cart->empty_cart();
-				header( 'Location: ' . $this->get_return_url( $order ) );
-				die();
-			} catch ( Exception $e ) {
-				wc_add_notice(
-					sprintf(
-						wp_kses(
-							__( 'Seems we cannot process your payment properly:<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$e->getMessage()
-					),
-					'error'
-				);
-
-				$order->add_order_note(
-					sprintf(
-						wp_kses(
-							__( 'Omise: Payment failed.<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$e->getMessage()
-					)
-				);
-
-				header( 'Location: ' . WC()->cart->get_checkout_url() );
-				die();
-			}
-
-			wp_die( 'Access denied', 'Access Denied', array( 'response' => 401 ) );
-			die();
 		}
 
 		/**
