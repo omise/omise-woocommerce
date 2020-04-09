@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 			$this->has_fields         = false;
 			$this->method_title       = __( 'Omise Alipay', 'omise' );
 			$this->method_description = __( 'Accept payment through Alipay', 'omise' );
+			$this->supports           = array( 'products', 'refunds' );
 
 			$this->init_form_fields();
 			$this->init_settings();
