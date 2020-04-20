@@ -249,7 +249,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		try {
 			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
 			$refund = $charge->refunds()->create( array(
-				'amount' => Omise_Money::to_subunit( $amount, $order->get_order_currency() )
+				'amount'   => Omise_Money::to_subunit( $amount, $order->get_order_currency() ),
+				'metadata' => array( 'reason' => sanitize_text_field( $reason ) )
 			) );
 
 			if ( $refund['voided'] ) {
