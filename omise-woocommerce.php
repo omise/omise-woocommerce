@@ -234,6 +234,12 @@ class Omise {
 		return Omise_Setting::instance();
 	}
 
+	/**
+	 * @since  4.0
+	 *
+	 * @return array of all the available payment methods
+	 *               that Omise WooCommerce supported.
+	 */
 	public function payment_methods() {
 		return Omise_Payment_Factory::$payment_methods;
 	}

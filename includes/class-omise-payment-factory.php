@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * @since v4.0
+ * @since 4.0
  */
 class Omise_Payment_Factory {
 	/**
