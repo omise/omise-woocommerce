@@ -84,7 +84,7 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 				}
 
 				$message         = __( 'Omise: Payment failed.<br/>%s', 'omise' );
-				$failure_message = $this->data['failure_message'] . ' (code: ' . $this->data['failure_code'] . ')';
+				$failure_message = Omise()->translate( $this->data['failure_message'] ) . ' (code: ' . $this->data['failure_code'] . ')';
 				$this->order->add_order_note(
 					sprintf(
 						wp_kses( $message, array( 'br' => array() ) ),

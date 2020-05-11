@@ -12,7 +12,7 @@ abstract class Omise_Payment_Offsite extends Omise_Payment {
 	 */
 	public function result( $order_id, $order, $charge ) {
 		if ( self::STATUS_FAILED === $charge['status'] ) {
-			return $this->payment_failed( $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')' );
+			return $this->payment_failed( Omise()->translate( $charge['failure_message'] ) . ' (code: ' . $charge['failure_code'] . ')' );
 		}
 
 		if ( self::STATUS_PENDING === $charge['status'] ) {
