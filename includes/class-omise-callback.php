@@ -6,9 +6,29 @@ defined( 'ABSPATH' ) || exit;
  * @since 4.0
  */
 class Omise_Callback {
-	public function execute() {
-		$order   = $this->retrieve_order();
-		$payment = $this->retrieve_payment( $order );
+	/**
+	 * @var \Omise_Callback
+	 */
+	protected static $the_instance = null;
+
+	/**
+	 * @static
+	 *
+	 * @return \Omise_Callback - The instance.
+	 */
+	public static function instance() {
+		if ( is_null( self::$the_instance ) ) {
+			self::$the_instance = new self();
+		}
+
+		return self::$the_instance;
+	}
+
+	public static function execute() {
+		$callback = self::instance();
+
+		$order   = $callback->retrieve_order();
+		$payment = $callback->retrieve_payment( $order );
 
 		$order->add_order_note( __( 'OMISE: Validating the payment result...', 'omise' ) );
 
@@ -16,11 +36,11 @@ class Omise_Callback {
 			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
 
 			$resolving_method = strtolower( 'payment_' . $charge['status'] );
-			if ( ! method_exists( $this, $resolving_method ) ) {
+			if ( ! method_exists( $callback, $resolving_method ) ) {
 				throw new Exception( __( 'Unrecognized Omise Charge status.', 'omise' ) );
 			}
 
-			$this->$resolving_method( $order, $charge );
+			$callback->$resolving_method( $order, $charge );
 		} catch ( Exception $e ) {
 			$order->add_order_note(
 				sprintf(
@@ -29,7 +49,7 @@ class Omise_Callback {
 				)
 			);
 
-			$this->invalid_result();
+			$callback->invalid_result();
 		}
 	}
 
