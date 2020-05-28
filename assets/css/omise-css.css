@@ -118,6 +118,11 @@ fieldset.card-exists {
 	font-size: 80%;
 }
 
+.omise-additional-payment-details-box {
+	margin-bottom: 4em;
+	text-align: center;
+}
+
 /**
  * 2.3). Form, bank list components
  */

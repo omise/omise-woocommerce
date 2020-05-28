@@ -19,6 +19,7 @@ class Omise_Payment_Factory {
 		'Omise_Payment_Installment',
 		'Omise_Payment_Internetbanking',
 		'Omise_Payment_Paynow',
+		'Omise_Payment_Promptpay',
 		'Omise_Payment_Truemoney'
 	);
 
