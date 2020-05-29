@@ -50,7 +50,8 @@ class Omise_Payment_Paynow extends Omise_Payment {
 			'description' => array(
 				'title'       => __( 'Description', 'omise' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description the user sees during checkout.', 'omise' )
+				'description' => __( 'This controls the description the user sees during checkout.', 'omise' ),
+				'default'     => __( 'You will not be charged yet. The PayNow QR code will be displayed at the next page.', 'omise' )
 			),
 		);
 	}
