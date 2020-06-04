@@ -27,20 +27,24 @@ class Omise_Callback {
 	public static function execute() {
 		$callback = self::instance();
 
-		$order   = $callback->retrieve_order();
-		$payment = $callback->retrieve_payment( $order );
-
+		$order = $callback->retrieve_order();
 		$order->add_order_note( __( 'OMISE: Validating the payment result...', 'omise' ) );
 
 		try {
 			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
 
-			$resolving_method = strtolower( 'payment_' . $charge['status'] );
-			if ( ! method_exists( $callback, $resolving_method ) ) {
-				throw new Exception( __( 'Unrecognized Omise Charge status.', 'omise' ) );
-			}
+			switch ( strtolower( $charge['status'] ) ) {
+				case 'successful':
+				case 'failed':
+				case 'pending':
+					$resolving_method = strtolower( 'payment_' . $charge['status'] );
+					$callback->$resolving_method( $order, $charge );
+					break;
 
-			$callback->$resolving_method( $order, $charge );
+				default:
+					throw new Exception( __( 'Unrecognized Omise Charge status.', 'omise' ) );
+					break;
+			}
 		} catch ( Exception $e ) {
 			$order->add_order_note(
 				sprintf(
@@ -59,16 +63,6 @@ class Omise_Callback {
 	protected function retrieve_order() {
 		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
 		return wc_get_order( $order_id ) ?: $this->invalid_result();
-	}
-
-	/**
-	 * @param WC_Abstract_Order $order
-	 *
-	 * @return Omise_Payment | HTML redirect  Returning an object that is extended from Omise_Payment class.
-	 */
-	protected function retrieve_payment( $order ) {
-		$payment = Omise_Payment_Factory::get_payment_method( $order->get_payment_method() );
-		return $payment ?: $this->invalid_result();
 	}
 
 	/**
