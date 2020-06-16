@@ -21,21 +21,6 @@ class Omise {
 	public $version = '3.11';
 
 	/**
-	 * @since 3.11
-	 *
-	 * @var array
-	 */
-	public $payment_methods = array(
-		'Omise_Payment_Alipay',
-		'Omise_Payment_Billpayment_Tesco',
-		'Omise_Payment_Creditcard',
-		'Omise_Payment_Installment',
-		'Omise_Payment_Internetbanking',
-		'Omise_Payment_Paynow',
-		'Omise_Payment_Truemoney'
-	);
-
-	/**
 	 * The Omise Instance.
 	 *
 	 * @since 3.0
@@ -147,9 +132,11 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-callback.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-capabilities.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-events.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-money.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-payment-factory.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
@@ -188,7 +175,7 @@ class Omise {
 	 */
 	public function register_payment_methods() {
 		add_filter( 'woocommerce_payment_gateways', function( $methods ) {
-			return array_merge( $methods, $this->payment_methods );
+			return array_merge( $methods, $this->payment_methods() );
 		} );
 	}
 
@@ -245,6 +232,16 @@ class Omise {
 	 */
 	public function settings() {
 		return Omise_Setting::instance();
+	}
+
+	/**
+	 * @since  4.0
+	 *
+	 * @return array of all the available payment methods
+	 *               that Omise WooCommerce supported.
+	 */
+	public function payment_methods() {
+		return Omise_Payment_Factory::$payment_methods;
 	}
 }
 
