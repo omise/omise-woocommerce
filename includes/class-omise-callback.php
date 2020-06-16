@@ -7,38 +7,42 @@ defined( 'ABSPATH' ) || exit;
  */
 class Omise_Callback {
 	/**
-	 * @var \Omise_Callback
+	 * @var \WC_Abstract_Order
 	 */
-	protected static $the_instance = null;
+	protected $order;
 
 	/**
-	 * @static
-	 *
-	 * @return \Omise_Callback - The instance.
+	 * @var \OmiseCharge
 	 */
-	public static function instance() {
-		if ( is_null( self::$the_instance ) ) {
-			self::$the_instance = new self();
-		}
+	protected $charge;
 
-		return self::$the_instance;
+	/**
+	 * @param \WC_Abstract_Order $order
+	 */
+	public function __construct( $order ) {
+		$this->order = $order;
+		if ( ! $this->order || ! $this->order instanceof WC_Abstract_Order ) $this->invalid_result();
 	}
 
 	public static function execute() {
-		$callback = self::instance();
+		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
 
-		$order = $callback->retrieve_order();
-		$order->add_order_note( __( 'OMISE: Validating the payment result...', 'omise' ) );
+		$callback = new self( wc_get_order( $order_id ) );
+		$callback->validate();
+	}
+
+	public function validate() {
+		$this->order->add_order_note( __( 'OMISE: Validating the payment result...', 'omise' ) );
 
 		try {
-			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
+			$this->charge = OmiseCharge::retrieve( $this->order->get_transaction_id() );
 
-			switch ( strtolower( $charge['status'] ) ) {
+			switch ( strtolower( $this->charge['status'] ) ) {
 				case 'successful':
 				case 'failed':
 				case 'pending':
-					$resolving_method = strtolower( 'payment_' . $charge['status'] );
-					$callback->$resolving_method( $order, $charge );
+					$resolving_method = strtolower( 'payment_' . $this->charge['status'] );
+					$this->$resolving_method();
 					break;
 
 				default:
@@ -46,23 +50,15 @@ class Omise_Callback {
 					break;
 			}
 		} catch ( Exception $e ) {
-			$order->add_order_note(
+			$this->order->add_order_note(
 				sprintf(
 					wp_kses( __( 'OMISE: Unable to validate the result.<br/>%s', 'omise' ), array( 'br' => array() ) ),
 					$e->getMessage()
 				)
 			);
 
-			$callback->invalid_result();
+			$this->invalid_result();
 		}
-	}
-
-	/**
-	 * @return WC_Abstract_Order | HTML redirect  Returning an object that is extended from WC_Order class.
-	 */
-	protected function retrieve_order() {
-		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
-		return wc_get_order( $order_id ) ?: $this->invalid_result();
 	}
 
 	/**
@@ -83,35 +79,29 @@ class Omise_Callback {
 
 	/**
 	 * Resolving a case of charge status: successful.
-	 *
-	 * @param WC_Abstract_Order $order
-	 * @param OmiseCharge       $charge
 	 */
-	protected function payment_successful( $order, $charge ) {
+	protected function payment_successful() {
 		$message = __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' );
 
-		$order->payment_complete();
-		$order->add_order_note(
+		$this->order->payment_complete();
+		$this->order->add_order_note(
 			sprintf(
 				wp_kses( $message, array( 'br' => array() ) ),
-				$order->get_total(),
-				$order->get_order_currency()
+				$this->order->get_total(),
+				$this->order->get_order_currency()
 			)
 		);
 
 		WC()->cart->empty_cart();
-		wp_redirect( $order->get_checkout_order_received_url() );
+		wp_redirect( $this->order->get_checkout_order_received_url() );
 		exit;
 	}
 
 	/**
 	 * Resolving a case of charge status: pending.
-	 *
-	 * @param WC_Abstract_Order $order
-	 * @param OmiseCharge       $charge
 	 */
-	protected function payment_pending( $order, $charge ) {
-		if ( ! $charge['capture'] && $charge['authorized'] ) {
+	protected function payment_pending() {
+		if ( ! $this->charge['capture'] && $this->charge['authorized'] ) {
 			// Card authorized case.
 			$message = __(
 				'Omise: The payment is being processed.<br/>
@@ -119,17 +109,17 @@ class Omise_Callback {
 				'omise'
 			);
 
-			$order->add_order_note(
+			$this->order->add_order_note(
 				sprintf(
 					wp_kses( $message, array( 'br' => array() ) ),
-					$order->get_total(),
-					$order->get_order_currency()
+					$this->order->get_total(),
+					$this->order->get_order_currency()
 				)
 			);
 
 			// Remove cart
 			WC()->cart->empty_cart();
-			wp_redirect( $order->get_checkout_order_received_url() );
+			wp_redirect( $this->order->get_checkout_order_received_url() );
 			exit;
 		}
 
@@ -140,29 +130,27 @@ class Omise_Callback {
 			 Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
 			'omise'
 		);
-		$order->add_order_note( wp_kses( $message, array( 'br' => array(), 'strong' => array() ) ) );
-		$order->update_status( 'on-hold' );
-		wp_redirect( $order->get_checkout_order_received_url() );
+
+		$this->order->add_order_note( wp_kses( $message, array( 'br' => array(), 'strong' => array() ) ) );
+		$this->order->update_status( 'on-hold' );
+		wp_redirect( $this->order->get_checkout_order_received_url() );
 		exit;
 	}
 
 	/**
 	 * Resolving a case of charge status: failed.
-	 *
-	 * @param WC_Abstract_Order $order
-	 * @param OmiseCharge       $charge
 	 */
-	protected function payment_failed( $order, $charge ) {
+	protected function payment_failed() {
 		$message         = __( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' );
-		$failure_message = $charge['failure_message'] . ' (code: ' . $charge['failure_code'] . ')';
+		$failure_message = $this->charge['failure_message'] . ' (code: ' . $this->charge['failure_code'] . ')';
 
-		$order->add_order_note(
+		$this->order->add_order_note(
 			sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message )
 		);
 
 		// Offsite case.
-		if ( ! is_null( $charge['source'] ) && 'redirect' === $charge['source']['flow'] ) {
-			$order->update_status( 'failed' );
+		if ( ! is_null( $this->charge['source'] ) && 'redirect' === $this->charge['source']['flow'] ) {
+			$this->order->update_status( 'failed' );
 		}
 
 		wc_add_notice( sprintf( wp_kses( $message, array( 'br' => array() ) ), $failure_message ), 'error' );
