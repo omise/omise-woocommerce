@@ -10,7 +10,7 @@ require_once dirname( __FILE__ ) . '/class-omise-payment.php';
 abstract class Omise_Payment_Offline extends Omise_Payment {
 	/**
 	 * A string of Omise Source's type
-	 * (expecting for either 'paynow' or 'bill_payment_tesco_lotus').
+	 * (e.g. paynow or bill_payment_tesco_lotus).
 	 *
 	 * @var string
 	 */
