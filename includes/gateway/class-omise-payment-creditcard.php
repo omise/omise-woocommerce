@@ -379,13 +379,11 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 			} catch ( Exception $e ) {
 				$this->order()->add_order_note(
 					sprintf(
-						wp_kses(
-							__( 'Omise: Payment failed (manual capture).<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
+						wp_kses( __( 'Omise: Payment failed (manual capture).<br/>%s', 'omise' ), array( 'br' => array() ) ),
 						$e->getMessage()
 					)
 				);
+				$this->order()->update_status( 'failed' );
 			}
 		}
 
