@@ -19,20 +19,9 @@ abstract class Omise_Payment_Offline extends Omise_Payment {
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order ) {
-		$total    = $order->get_total();
-		$currency = $order->get_order_currency();
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
-
-		return OmiseCharge::create( array(
-			'amount'      => Omise_Money::to_subunit( $total, $currency ),
-			'currency'    => $currency,
-			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => $this->source_type ),
-			'metadata'    => $metadata
+	public function build_charge_params() {
+		return array_merge( $this->charge_params_default(), array(
+			'source' => array( 'type' => $this->source_type )
 		) );
 	}
 

@@ -54,26 +54,10 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 		/**
 		 * @inheritdoc
 		 */
-		public function charge( $order_id, $order ) {
-			$metadata = array_merge(
-				apply_filters( 'omise_charge_params_metadata', array(), $order ),
-				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-			);
-			$return_uri = add_query_arg(
-				array(
-					'wc-api'   => 'omise_alipay_callback',
-					'order_id' => $order_id
-				),
-				home_url()
-			);
-
-			return OmiseCharge::create( array(
-				'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_order_currency() ),
-				'currency'    => $order->get_order_currency(),
-				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-				'source'      => array( 'type' => 'alipay' ),
-				'return_uri'  => $return_uri,
-				'metadata'    => $metadata
+		public function build_charge_params() {
+			return array_merge( $this->charge_params_default(), array(
+				'source'     => array( 'type' => 'alipay' ),
+				'return_uri' => add_query_arg( array( 'wc-api' => 'omise_alipay_callback', 'order_id' => $this->order_id ), home_url() )
 			) );
 		}
 	}

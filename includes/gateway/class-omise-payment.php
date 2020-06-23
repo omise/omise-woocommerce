@@ -68,9 +68,19 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	);
 
 	/**
+	 * @var string
+	 */
+	protected $order_id;
+
+	/**
 	 * @var Omise_Order|null
 	 */
 	protected $order;
+
+	/**
+	 * @var OmiseCharge|null
+	 */
+	protected $charge;
 
 	public function __construct() {
 		$this->omise_settings   = Omise()->settings();
@@ -91,16 +101,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * @param  string|WC_Order $order
+	 * @param  string|WC_Order $order_id
 	 *
-	 * @return Omise_Order|null
+	 * @return WC_Order|null
 	 */
-	public function load_order( $order ) {
-		if ( $order instanceof WC_Order ) {
-			$this->order = $order;
-		} else {
-			$this->order = wc_get_order( $order );
-		}
+	public function load_order( $order_id ) {
+		$this->order_id = $order_id;
+		$this->order    = $order_id instanceof WC_Order ? $order_id : wc_get_order( $order_id );
 
 		if ( ! $this->order ) {
 			$this->order = null;
@@ -182,35 +189,35 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
-		if ( ! $order = $this->load_order( $order_id ) ) {
-			return $this->payment_failed_no_order( $order_id );
+		if ( ! $this->load_order( $order_id ) ) {
+			return $this->invalid_order( $order_id );
 		}
 
-		$order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
+		$order_note = sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title );
+		$this->order->add_order_note( $order_note );
 
 		try {
-			$charge = $this->charge( $order_id, $order );
+			$charge_params = $this->build_charge_params();
+			$this->charge  = OmiseCharge::create( $charge_params );
 		} catch ( Exception $e ) {
 			return $this->payment_failed( $e->getMessage() );
 		}
 
-		$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
-		$this->set_order_transaction_id( $charge['id'] );
+		$order_note = sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $this->charge['id'] );
+		$this->order->add_order_note( $order_note );
+		$this->set_order_transaction_id( $this->charge['id'] );
 
-		return $this->result( $order_id, $order, $charge );
+		return $this->result( $order_id, $this->order, $this->charge );
 	}
 
 	/**
-	 * @since  3.4
+	 * @since  4.0
 	 *
-	 * @see    Omise_Payment::process_payment( $order_id )
-	 *
-	 * @param  int $order_id
-	 * @param  WC_Order $order
-	 *
-	 * @return OmiseCharge|OmiseException
+	 * @return array
 	 */
-	abstract public function charge( $order_id, $order );
+	public function build_charge_params() {
+		return array_merge( $this->charge_params_default(), array() );
+	}
 
 	/**
 	 * @since  3.4
@@ -370,6 +377,23 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * @since  4.0
+	 *
+	 * @return array
+	 */
+	protected function charge_params_default() {
+		return array(
+			'amount'      => Omise_Money::to_subunit( $this->order()->get_total(), $this->order()->get_order_currency() ),
+			'currency'    => $this->order()->get_order_currency(),
+			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $this->order_id, $this->order() ),
+			'metadata'    => array_merge(
+				apply_filters( 'omise_charge_params_metadata', array(), $this->order() ),
+				array( 'order_id' => $this->order_id ) // override order_id as a reference for webhook handlers.
+			)
+		);
+	}
+
+	/**
 	 * Set an order transaction id
 	 *
 	 * @param string $transaction_id  Omise charge id.
@@ -387,7 +411,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * @param int|mixed $order_id
 	 */
-	protected function payment_failed_no_order( $order_id ) {
+	protected function invalid_order( $order_id ) {
 		wc_add_notice(
 			sprintf(
 				wp_kses(

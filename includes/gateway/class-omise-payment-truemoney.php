@@ -68,25 +68,14 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 		/**
 		 * @inheritdoc
 		 */
-		public function charge( $order_id, $order ) {
-			$phone_number = isset( $_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : sanitize_text_field( $_POST['omise_phone_number'] );
-			$total        = $order->get_total();
-			$currency     = $order->get_order_currency();
-			$return_uri   = add_query_arg(
-				array( 'wc-api' => 'omise_truemoney_callback', 'order_id' => $order_id ), home_url()
-			);
-			$metadata     = array_merge(
-				apply_filters( 'omise_charge_params_metadata', array(), $order ),
-				array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-			);
+		public function build_charge_params() {
+			$phone_number = isset( $_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default']
+				? $this->order->get_billing_phone()
+				: sanitize_text_field( $_POST['omise_phone_number'] );
 
-			return OmiseCharge::create( array(
-				'amount'      => Omise_Money::to_subunit( $total, $currency ),
-				'currency'    => $currency,
-				'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-				'source'      => array( 'type' => 'truemoney', 'phone_number' => $phone_number ),
-				'return_uri'  => $return_uri,
-				'metadata'    => $metadata
+			return array_merge( $this->charge_params_default(), array(
+				'source'     => array( 'type' => 'truemoney', 'phone_number' => $phone_number ),
+				'return_uri' => add_query_arg( array( 'wc-api' => 'omise_truemoney_callback', 'order_id' => $this->order_id ), home_url() )
 			) );
 		}
 	}
