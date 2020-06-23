@@ -183,7 +183,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	public function process_payment( $order_id ) {
 		if ( ! $order = $this->load_order( $order_id ) ) {
-			return $this->payment_failed_no_order( $order_id );
+			return $this->invalid_order( $order_id );
 		}
 
 		$order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
@@ -387,7 +387,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * @param int|mixed $order_id
 	 */
-	protected function payment_failed_no_order( $order_id ) {
+	protected function invalid_order( $order_id ) {
 		wc_add_notice(
 			sprintf(
 				wp_kses(
