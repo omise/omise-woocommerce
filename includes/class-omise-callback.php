@@ -144,14 +144,8 @@ class Omise_Callback {
 		$message         = __( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' );
 		$failure_message = $this->charge['failure_message'] . ' (code: ' . $this->charge['failure_code'] . ')';
 
-		$this->order->add_order_note(
-			sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message )
-		);
-
-		// Offsite case.
-		if ( ! is_null( $this->charge['source'] ) && 'redirect' === $this->charge['source']['flow'] ) {
-			$this->order->update_status( 'failed' );
-		}
+		$this->order->add_order_note( sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
+		$this->order->update_status( 'failed' );
 
 		wc_add_notice( sprintf( wp_kses( $message, array( 'br' => array() ) ), $failure_message ), 'error' );
 		wp_redirect( wc_get_checkout_url() );
