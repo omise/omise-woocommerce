@@ -17,8 +17,8 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
 		}
 
-		$public_key = $data['sandbox'] ? $data['test_public_key'] : $data['live_public_key'];
-		$secret_key = $data['sandbox'] ? $data['test_private_key'] : $data['live_private_key'];
+		$public_key = isset( $data['sandbox'] ) ? $data['test_public_key'] : $data['live_public_key'];
+		$secret_key = isset( $data['sandbox'] ) ? $data['test_private_key'] : $data['live_private_key'];
 
 		try {
 			$account = OmiseAccount::retrieve( $public_key, $secret_key );
