@@ -1,6 +1,10 @@
 <div class="wrap omise">
 	<h1><?php echo $title; ?></h1>
+
+	<?php $page->display_messages(); ?>
+
 	<h2><?php echo _e( 'Payment Settings', 'omise' ); ?></h2>
+
 	<p>
 		<?php
 		echo sprintf(

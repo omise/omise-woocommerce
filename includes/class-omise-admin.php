@@ -25,6 +25,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 * @since 3.3
 		 */
 		public function init() {
+			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-admin-page.php';
 			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-settings.php';
 
 			$this->register_admin_menu();
