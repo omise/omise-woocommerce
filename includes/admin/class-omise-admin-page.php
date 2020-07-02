@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * @since 4.0
  */
-class Omise_Admin_Page {
+class Omise_Admin_Page extends Omise_Setting {
 	/**
 	 * @var array  a set of system messages.
 	 */

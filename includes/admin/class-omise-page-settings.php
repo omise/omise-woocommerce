@@ -8,27 +8,6 @@ if ( class_exists( 'Omise_Page_Settings' ) ) {
 
 class Omise_Page_Settings extends Omise_Admin_Page {
 	/**
-	 * @var Omise_Setting
-	 */
-	protected $settings;
-
-	/**
-	 * @since 3.1
-	 */
-	public function __construct() {
-		$this->settings = Omise()->settings();
-	}
-
-	/**
-	 * @return array
-	 *
-	 * @since  3.1
-	 */
-	protected function get_settings() {
-		return $this->settings->get_settings();
-	}
-
-	/**
 	 * @param array $data
 	 *
 	 * @since  3.1
@@ -48,7 +27,7 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 			$data['account_email']   = $account['email'];
 			$data['account_country'] = $account['country'];
 
-			$this->settings->update_settings( $data );
+			$this->update_settings( $data );
 			$this->add_message(
 				'message',
 				sprintf( __( 'The settings have been saved, an account: %s has been connected.', 'omise' ), $account['email'] )
