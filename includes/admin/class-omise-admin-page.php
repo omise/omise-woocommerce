@@ -1,4 +1,5 @@
 <?php
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -31,6 +32,9 @@ class Omise_Admin_Page extends Omise_Setting {
 		}
 	}
 
+	/**
+	 * @return HTML
+	 */
 	public function display_messages() {
 		if ( count( $this->errors ) > 0 ) {
 			foreach ( $this->errors as $error ) {

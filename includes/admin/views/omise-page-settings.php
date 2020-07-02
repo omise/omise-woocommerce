@@ -1,7 +1,21 @@
 <div class="wrap omise">
+	<style>
+		.omise-notice-testmode {
+			background: #ffce00;
+			color: #575D66;
+			border: 1px solid #efc200;
+			border-left-width: 4px;
+		}
+	</style>
 	<h1><?php echo $title; ?></h1>
 
 	<?php $page->display_messages(); ?>
+
+	<?php if ( 'yes' === $settings['sandbox'] && $settings['account_email'] ) : ?>
+		<div class="notice omise-notice-testmode">
+			<p><?php echo _e( 'You are in test mode. No actual payment is made in this mode', 'omise' ); ?></p>
+		</div>
+	<?php endif; ?>
 
 	<h2><?php echo _e( 'Payment Settings', 'omise' ); ?></h2>
 
@@ -20,7 +34,26 @@
 		);
 		?>
 	</p>
+
 	<form method="POST">
+		<!-- Section: account information -->
+		<?php if ( $settings['account_email'] ) : ?>
+			<hr />
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row"><label><?php _e( 'Account status', 'omise' ); ?></label></th>
+						<td>
+							<fieldset>
+								Connected: <em><?php echo $settings['account_email']; ?> (<?php echo $settings['account_country']; ?>)</em>
+							</fieldset>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr />
+		<?php endif; ?>
+
 		<table class="form-table">
 			<tbody>
 				<tr>
