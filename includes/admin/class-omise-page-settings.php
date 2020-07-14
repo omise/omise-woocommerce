@@ -6,28 +6,7 @@ if ( class_exists( 'Omise_Page_Settings' ) ) {
 	return;
 }
 
-class Omise_Page_Settings {
-	/**
-	 * @var Omise_Setting
-	 */
-	protected $settings;
-
-	/**
-	 * @since 3.1
-	 */
-	public function __construct() {
-		$this->settings = Omise()->settings();
-	}
-
-	/**
-	 * @return array
-	 *
-	 * @since  3.1
-	 */
-	protected function get_settings() {
-		return $this->settings->get_settings();
-	}
-
+class Omise_Page_Settings extends Omise_Admin_Page {
 	/**
 	 * @param array $data
 	 *
@@ -38,8 +17,8 @@ class Omise_Page_Settings {
 			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
 		}
 
-		$public_key = $data['sandbox'] ? $data['test_public_key'] : $data['live_public_key'];
-		$secret_key = $data['sandbox'] ? $data['test_private_key'] : $data['live_private_key'];
+		$public_key = isset( $data['sandbox'] ) ? $data['test_public_key'] : $data['live_public_key'];
+		$secret_key = isset( $data['sandbox'] ) ? $data['test_private_key'] : $data['live_private_key'];
 
 		try {
 			$account = OmiseAccount::retrieve( $public_key, $secret_key );
@@ -48,9 +27,13 @@ class Omise_Page_Settings {
 			$data['account_email']   = $account['email'];
 			$data['account_country'] = $account['country'];
 
-			$this->settings->update_settings( $data );
+			$this->update_settings( $data );
+			$this->add_message(
+				'message',
+				sprintf( __( 'The settings have been saved, an account: %s has been connected.', 'omise' ), $account['email'] )
+			);
 		} catch (Exception $e) {
-			// Do nothing.
+			$this->add_message( 'error', $e->getMessage() );
 		}
 	}
 
