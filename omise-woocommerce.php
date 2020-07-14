@@ -76,6 +76,7 @@ class Omise {
 		$this->init_admin();
 		$this->init_route();
 		$this->register_payment_methods();
+		$this->register_hooks();
 
 		prepare_omise_myaccount_panel();
 	}
@@ -138,6 +139,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-events.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-money.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-payment-factory.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-payment-result.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
@@ -178,6 +180,13 @@ class Omise {
 		add_filter( 'woocommerce_payment_gateways', function( $methods ) {
 			return array_merge( $methods, $this->payment_methods() );
 		} );
+	}
+
+	/**
+	 * @since  4.0
+	 */
+	public function register_hooks() {
+		add_action( 'omise_async_payment_result', 'Omise_Payment_Result::callback', 10, 3 );
 	}
 
 	/**

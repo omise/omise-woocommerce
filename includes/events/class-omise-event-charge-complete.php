@@ -44,68 +44,26 @@ class Omise_Event_Charge_Complete {
 	 * @return void
 	 */
 	public function handle( $data ) {
-		if ( 'charge' !== $data->object || ! isset( $data->metadata->order_id ) ) {
+		if ( 'charge' !== $data['object'] || ! isset( $data['metadata']['order_id'] ) ) {
 			return;
 		}
 
-		if ( ! $order = wc_get_order( $data->metadata->order_id ) ) {
+		if ( ! $order = wc_get_order( $data['metadata']['order_id'] ) ) {
 			return;
 		}
 
 		// Making sure that an event's charge id is identical with an order transaction id.
-		if ( $order->get_transaction_id() !== $data->id ) {
+		if ( $order->get_transaction_id() !== $data['id'] ) {
 			return;
 		}
 
-		$order->add_order_note(
-			__(
-				'Omise: an event charge.complete has been caught (webhook).',
-				'omise'
-			)
+		$order->add_order_note( __( 'Omise: Receiving charge.complete webhook event.', 'omise' ) );
+
+		WC()->queue()->add(
+			'omise_async_payment_result',
+			array( 'order_id' => $data['metadata']['order_id'], 'charge' => serialize( $data ), 'context' => 'webhook' ),
+			'omise-payment-result'
 		);
-
-		switch ($data->status) {
-			case 'failed':
-				$order->add_order_note(
-					sprintf(
-						wp_kses(
-							__( 'Omise: Payment failed.<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$data->failure_message . ' (code: ' . $data->failure_code . ')'
-					)
-				);
-
-				$order->update_status( 'failed' );
-				break;
-
-			case 'successful':
-				if ( $data->authorized && $data->paid ) {
-					$order->add_order_note(
-						sprintf(
-							wp_kses(
-								__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
-								array( 'br' => array() )
-							),
-							$order->get_total(),
-							$order->get_order_currency()
-						)
-					);
-
-					$order->payment_complete( $data->id );
-				}
-				break;
-			
-			case 'pending':
-				// Credit Card 3-D Secure with 'authorize only' payment action case.
-				if ( $data->authorized ) {
-					$order->update_status( 'processing' );
-				}
-				break;
-
-			default:
-				break;
-		}
 
 		/**
 		 * Hook after Omise handle an event from webhook.

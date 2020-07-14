@@ -21,17 +21,33 @@ class Omise_Payment_Result {
 	 */
 	protected $context;
 
+	/**
+	 * @param \WC_Abstract_Order $order
+	 * @param \OmiseCharge       $charge
+	 * @param string             $context
+	 */
 	public function __construct( $order, $charge, $context ) {
 		$this->order   = $order;
 		$this->charge  = $charge;
 		$this->context = $context;
 	}
 
-	public static function callback( $order_id, $charge, $context ) {
+	/**
+	 * @param string       $order_id
+	 * @param string       $charge
+	 * @param string|null  $context
+	 *
+	 * @static
+	 */
+	public static function callback( $order_id, $charge, $context = null ) {
 		$result = new self( wc_get_order( $order_id ), unserialize( $charge ), $context );
 		$result->resolve();
 	}
 
+	/**
+	 * Resolving order status based on
+	 * the result of a particulalr payment.
+	 */
 	public function resolve() {
 		switch ( strtolower( $this->charge['status'] ) ) {
 			case 'successful':
@@ -43,11 +59,15 @@ class Omise_Payment_Result {
 				break;
 
 			case 'pending':
-				$this->payment_pending();
+				if ( ! $this->charge['capture'] && $this->charge['authorized'] ) {
+					$this->payment_authorized();
+				} else {
+					$this->payment_pending();
+				}
 				break;
 
 			default:
-				throw new Exception( __( 'Unrecognized Omise Charge status.', 'omise' ) );
+				$this->order->add_order_note( __( 'Unrecognized Omise Charge status.', 'omise' ) );
 				break;
 		}
 	}
@@ -56,58 +76,54 @@ class Omise_Payment_Result {
 	 * Resolving a case of charge status: successful.
 	 */
 	public function payment_successful() {
-		$message = __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' );
+		if ( $this->order->has_status( 'processing' ) ) {
+			return;
+		}
 
+		$message = wp_kses( __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ), array( 'br' => array() ) );
+		$this->order->add_order_note( sprintf( $message, $this->order->get_total(), $this->order->get_currency() ) );
 		$this->order->payment_complete();
-		$this->order->add_order_note(
-			sprintf(
-				wp_kses( $message, array( 'br' => array() ) ),
-				$this->order->get_total(),
-				$this->order->get_order_currency()
-			)
-		);
 	}
 
 	/**
-	 * Resolving a case of charge status: successful.
+	 * Resolving a case of charge status: failed.
 	 */
 	public function payment_failed() {
-		$failure_message = $this->charge['failure_message'] . ' (code: ' . $this->charge['failure_code'] . ')';
+		if ( $this->order->has_status( 'failed' ) ) {
+			return;
+		}
 
+		$failure_message = $this->charge['failure_message'] . ' (code: ' . $this->charge['failure_code'] . ')';
 		$this->order->add_order_note( sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
 		$this->order->update_status( 'failed' );
 	}
 
 	/**
-	 * Resolving a case of charge status: successful.
+	 * Resolving a case of charge status: pending.
 	 */
 	public function payment_pending() {
-		if ( ! $this->charge['capture'] && $this->charge['authorized'] ) {
-			// Card authorized case.
-			$message = __(
-				'Omise: The payment is being processed.<br/>
-				 An amount %1$s %2$s has been authorized.',
-				'omise'
-			);
+		$message = wp_kses( __(
+			'Omise: The payment is being processed.<br/>
+			Depending on the payment provider, this may take some time to process.<br/>
+			Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
+			'omise'
+		), array( 'br' => array(), 'strong' => array() ) ) ;
 
-			$this->order->add_order_note(
-				sprintf(
-					wp_kses( $message, array( 'br' => array() ) ),
-					$this->order->get_total(),
-					$this->order->get_order_currency()
-				)
-			);
-		} else {
-			// Offsite case.
-			$message = __(
-				'Omise: The payment is being processed.<br/>
-				Depending on the payment provider, this may take some time to process.<br/>
-				Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
-				'omise'
-			);
+		$this->order->add_order_note( $message );
+		$this->order->update_status( 'on-hold' );
+	}
 
-			$this->order->add_order_note( wp_kses( $message, array( 'br' => array(), 'strong' => array() ) ) );
-			$this->order->update_status( 'on-hold' );
-		}
+	/**
+	 * Resolving a case of an authorized charge.
+	 */
+	public function payment_authorized() {
+		$message = wp_kses( __(
+			'Omise: The payment is being processed.<br/>
+			 An amount %1$s %2$s has been authorized.',
+			'omise'
+		), array( 'br' => array() ) );
+
+		$this->order->add_order_note( sprintf( $message, $this->order->get_total(), $this->order->get_currency() ) );
+		$this->order->update_status( 'processing' );
 	}
 }

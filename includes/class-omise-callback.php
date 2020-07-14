@@ -7,6 +7,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class Omise_Callback {
 	/**
+	 * @var string
+	 */
+	protected $order_id;
+
+	/**
 	 * @var \WC_Abstract_Order
 	 */
 	protected $order;
@@ -19,20 +24,21 @@ class Omise_Callback {
 	/**
 	 * @param \WC_Abstract_Order $order
 	 */
-	public function __construct( $order ) {
-		$this->order = $order;
+	public function __construct( $order_id ) {
+		$this->order_id = $order_id;
+		$this->order    = wc_get_order( $order_id );
 		if ( ! $this->order || ! $this->order instanceof WC_Abstract_Order ) $this->invalid_result();
 	}
 
 	public static function execute() {
 		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
 
-		$callback = new self( wc_get_order( $order_id ) );
+		$callback = new self( $order_id );
 		$callback->validate();
 	}
 
 	public function validate() {
-		$this->order->add_order_note( __( 'OMISE: Validating the payment result...', 'omise' ) );
+		$this->order->add_order_note( __( 'Omise: user is redirected back from the payment page.', 'omise' ) );
 
 		try {
 			$this->charge = OmiseCharge::retrieve( $this->order->get_transaction_id() );
@@ -41,6 +47,12 @@ class Omise_Callback {
 				case 'successful':
 				case 'failed':
 				case 'pending':
+					WC()->queue()->add(
+						'omise_async_payment_result',
+						array( 'order_id' => $this->order_id, 'charge' => serialize( $this->charge ), 'context' => 'callback' ),
+						'omise-payment-result'
+					);
+
 					$resolving_method = strtolower( 'payment_' . $this->charge['status'] );
 					$this->$resolving_method();
 					break;
@@ -81,17 +93,6 @@ class Omise_Callback {
 	 * Resolving a case of charge status: successful.
 	 */
 	protected function payment_successful() {
-		$message = __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' );
-
-		$this->order->payment_complete();
-		$this->order->add_order_note(
-			sprintf(
-				wp_kses( $message, array( 'br' => array() ) ),
-				$this->order->get_total(),
-				$this->order->get_order_currency()
-			)
-		);
-
 		WC()->cart->empty_cart();
 		wp_redirect( $this->order->get_checkout_order_received_url() );
 		exit;
@@ -101,38 +102,12 @@ class Omise_Callback {
 	 * Resolving a case of charge status: pending.
 	 */
 	protected function payment_pending() {
+		// Card authorized case.
 		if ( ! $this->charge['capture'] && $this->charge['authorized'] ) {
-			// Card authorized case.
-			$message = __(
-				'Omise: The payment is being processed.<br/>
-				 An amount %1$s %2$s has been authorized.',
-				'omise'
-			);
-
-			$this->order->add_order_note(
-				sprintf(
-					wp_kses( $message, array( 'br' => array() ) ),
-					$this->order->get_total(),
-					$this->order->get_order_currency()
-				)
-			);
-
 			// Remove cart
 			WC()->cart->empty_cart();
-			wp_redirect( $this->order->get_checkout_order_received_url() );
-			exit;
 		}
 
-		// Offsite case.
-		$message = __(
-			'Omise: The payment is being processed.<br/>
-			 Depending on the payment provider, this may take some time to process.<br/>
-			 Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
-			'omise'
-		);
-
-		$this->order->add_order_note( wp_kses( $message, array( 'br' => array(), 'strong' => array() ) ) );
-		$this->order->update_status( 'on-hold' );
 		wp_redirect( $this->order->get_checkout_order_received_url() );
 		exit;
 	}
@@ -143,9 +118,6 @@ class Omise_Callback {
 	protected function payment_failed() {
 		$message         = __( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' );
 		$failure_message = $this->charge['failure_message'] . ' (code: ' . $this->charge['failure_code'] . ')';
-
-		$this->order->add_order_note( sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
-		$this->order->update_status( 'failed' );
 
 		wc_add_notice( sprintf( wp_kses( $message, array( 'br' => array() ) ), $failure_message ), 'error' );
 		wp_redirect( wc_get_checkout_url() );
