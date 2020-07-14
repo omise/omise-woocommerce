@@ -81,18 +81,7 @@ class Omise_Event_Charge_Complete {
 
 			case 'successful':
 				if ( $data->authorized && $data->paid ) {
-					$order->add_order_note(
-						sprintf(
-							wp_kses(
-								__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
-								array( 'br' => array() )
-							),
-							$order->get_total(),
-							$order->get_order_currency()
-						)
-					);
-
-					$order->payment_complete( $data->id );
+					WC()->queue()->add( 'callback_payment_successful', array('order_id' => $data->id ), 'omise-payment-complete' );
 				}
 				break;
 			

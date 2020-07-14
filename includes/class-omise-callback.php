@@ -81,16 +81,8 @@ class Omise_Callback {
 	 * Resolving a case of charge status: successful.
 	 */
 	protected function payment_successful() {
-		$message = __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' );
 
-		$this->order->payment_complete();
-		$this->order->add_order_note(
-			sprintf(
-				wp_kses( $message, array( 'br' => array() ) ),
-				$this->order->get_total(),
-				$this->order->get_order_currency()
-			)
-		);
+		WC()->queue()->add( 'callback_payment_successful', array('order_id' => $this->order->get_id() ), 'omise-payment-complete' );
 
 		WC()->cart->empty_cart();
 		wp_redirect( $this->order->get_checkout_order_received_url() );
@@ -152,3 +144,17 @@ class Omise_Callback {
 		exit;
 	}
 }
+
+function hook_payment_successful( $order_id ) {
+	$message = __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' );
+	$order = wc_get_order( $order_id );
+	$order->payment_complete();
+	$order->add_order_note(
+		sprintf(
+			wp_kses( $message, array( 'br' => array() ) ),
+			$order->get_total(),
+			$order->get_order_currency()
+		)
+	);
+}
+add_action( 'callback_payment_successful', 'hook_payment_successful', 10, 2 );
