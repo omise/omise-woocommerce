@@ -7,12 +7,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class Omise_Admin_Page extends Omise_Setting {
 	/**
-	 * @var array  a set of system messages.
+	 * @var array  of system messages.
 	 */
 	protected $messages = array();
 
 	/**
-	 * @var array  a set of error messages.
+	 * @var array  of error messages.
 	 */
 	protected $errors = array();
 

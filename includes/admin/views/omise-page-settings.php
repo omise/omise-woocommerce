@@ -11,7 +11,7 @@
 
 	<?php $page->display_messages(); ?>
 
-	<?php if ( 'yes' === $settings['sandbox'] && $settings['account_email'] ) : ?>
+	<?php if ( 'yes' === $settings['sandbox'] ) : ?>
 		<div class="notice omise-notice-testmode">
 			<p><?php echo _e( 'You are in test mode. No actual payment is made in this mode', 'omise' ); ?></p>
 		</div>
