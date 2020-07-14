@@ -146,7 +146,7 @@ class Omise_Callback {
 }
 
 function hook_payment_successful( $order_id ) {
-	$message = __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' );
+	$message = __( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' );
 	$order = wc_get_order( $order_id );
 	$order->payment_complete();
 	$order->add_order_note(
