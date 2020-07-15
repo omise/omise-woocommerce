@@ -46,7 +46,7 @@ class Omise_Payment_Result {
 
 	/**
 	 * Resolving order status based on
-	 * the result of a particulalr payment.
+	 * the result of a particular payment.
 	 */
 	public function resolve() {
 		switch ( strtolower( $this->charge['status'] ) ) {
