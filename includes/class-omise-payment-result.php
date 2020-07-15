@@ -94,7 +94,7 @@ class Omise_Payment_Result {
 		}
 
 		$failure_message = $this->charge['failure_message'] . ' (code: ' . $this->charge['failure_code'] . ')';
-		$this->order->add_order_note( sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
+		$this->order->add_order_note( sprintf( wp_kses( __( 'Omise: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
 		$this->order->update_status( 'failed' );
 	}
 
