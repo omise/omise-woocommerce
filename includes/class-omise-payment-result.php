@@ -102,6 +102,10 @@ class Omise_Payment_Result {
 	 * Resolving a case of charge status: pending.
 	 */
 	public function payment_pending() {
+		if ( $this->order->has_status( 'on-hold' ) ) {
+			return;
+		}
+
 		$message = wp_kses( __(
 			'Omise: The payment is being processed.<br/>
 			Depending on the payment provider, this may take some time to process.<br/>
@@ -117,6 +121,10 @@ class Omise_Payment_Result {
 	 * Resolving a case of an authorized charge.
 	 */
 	public function payment_authorized() {
+		if ( $this->order->has_status( 'processing' ) ) {
+			return;
+		}
+
 		$message = wp_kses( __(
 			'Omise: The payment is being processed.<br/>
 			 An amount %1$s %2$s has been authorized.',
