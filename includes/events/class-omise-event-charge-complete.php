@@ -57,7 +57,7 @@ class Omise_Event_Charge_Complete {
 			return;
 		}
 
-		$order->add_order_note( __( 'Omise: Receiving charge.complete webhook event.', 'omise' ) );
+		$order->add_order_note( __( 'Omise: Received charge.complete webhook event.', 'omise' ) );
 
 		WC()->queue()->add(
 			'omise_async_payment_result',
