@@ -38,7 +38,7 @@ class Omise_Callback {
 	}
 
 	public function validate() {
-		$this->order->add_order_note( __( 'Omise: user is redirected back from the payment page.', 'omise' ) );
+		$this->order->add_order_note( __( 'Omise: User has been redirected back from the payment page.', 'omise' ) );
 
 		try {
 			$this->charge = OmiseCharge::retrieve( $this->order->get_transaction_id() );
