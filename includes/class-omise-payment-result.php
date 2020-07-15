@@ -80,7 +80,7 @@ class Omise_Payment_Result {
 			return;
 		}
 
-		$message = wp_kses( __( 'OMISE: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ), array( 'br' => array() ) );
+		$message = wp_kses( __( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ), array( 'br' => array() ) );
 		$this->order->add_order_note( sprintf( $message, $this->order->get_total(), $this->order->get_currency() ) );
 		$this->order->payment_complete();
 	}
