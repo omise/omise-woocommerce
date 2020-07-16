@@ -54,11 +54,11 @@ class Omise_Event_Charge_Create {
 	 * @return void
 	 */
 	public function handle( $data ) {
-		if ( 'charge' !== $data->object || ! isset( $data->metadata->order_id ) ) {
+		if ( 'charge' !== $data['object'] || ! isset( $data['metadata']['order_id'] ) ) {
 			return;
 		}
 
-		if ( ! $order = wc_get_order( $data->metadata->order_id ) ) {
+		if ( ! $order = wc_get_order( $data['metadata']['order_id'] ) ) {
 			return;
 		}
 
