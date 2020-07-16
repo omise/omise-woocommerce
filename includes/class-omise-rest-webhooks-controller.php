@@ -42,14 +42,14 @@ class Omise_Rest_Webhooks_Controller {
 			return new WP_Error( 'omise_rest_wrong_header', __( 'Wrong header type.', 'omise' ), array( 'status' => 400 ) );
 		}
 
-		$body = json_decode( $request->get_body() );
+		$body = json_decode( $request->get_body(), true );
 
-		if ( 'event' !== $body->object ) {
+		if ( 'event' !== $body['object'] ) {
 			return new WP_Error( 'omise_rest_wrong_object', __( 'Wrong object type.', 'omise' ), array( 'status' => 400 ) );
 		}
 
 		$event = new Omise_Events;
-		$event = $event->handle( $body->key, $body->data );
+		$event = $event->handle( $body['key'], $body['data'] );
 
 		return rest_ensure_response( $event );
 	}
