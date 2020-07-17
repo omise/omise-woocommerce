@@ -28,6 +28,18 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 		return true;
 	}
 
+	public function is_resolvable() {
+		if ( 'yes' === $this->order->get_meta( 'is_omise_payment_resolved' ) || $this->is_attempt_limit_exceeded() ) {
+			return true;
+		}
+
+		$schedule_action = 'omise_async_event_charge_complete';
+		$schedule_group  = 'omise_async_webhook';
+		$data            = array( 'key' => self::EVENT_NAME, 'data' => serialize( $this->data ) );
+		$this->schedule_single( $schedule_action, $data, $schedule_group );
+		return false;
+	}
+
 	/**
 	 * There are several cases with the following payment methods
 	 * that would trigger the 'charge.complete' event.
@@ -61,6 +73,8 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 	 * @return void
 	 */
 	public function resolve() {
+		if ( ! $this->is_resolvable() ) return;
+
 		$this->order->add_order_note( __( 'Omise: Received charge.complete webhook event.', 'omise' ) );
 
 		switch ( $this->data['status'] ) {

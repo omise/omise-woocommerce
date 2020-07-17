@@ -11,14 +11,20 @@ class Omise_Events {
 	 */
 	protected $events = array();
 
-	public function __construct() {
-		$events = array(
-			'Omise_Event_Charge_Capture',
-			'Omise_Event_Charge_Complete',
-			'Omise_Event_Charge_Create'
-		);
+	/**
+	 * All the available event handler classes
+	 * that Omise WooCommerce supported.
+	 *
+	 * @var array
+	 */
+	public static $event_classes = array(
+		'Omise_Event_Charge_Capture',
+		'Omise_Event_Charge_Complete',
+		'Omise_Event_Charge_Create'
+	);
 
-		foreach ( $events as $event ) {
+	public function __construct() {
+		foreach ( self::$event_classes as $event ) {
 			$this->events[ $event::EVENT_NAME ] = $event;
 		}
 	}
