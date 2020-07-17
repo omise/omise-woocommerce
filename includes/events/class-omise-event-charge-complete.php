@@ -33,7 +33,7 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 			return true;
 		}
 
-		$schedule_action = 'omise_async_event_charge_complete';
+		$schedule_action = 'omise_async_webhook_event_handler';
 		$schedule_group  = 'omise_async_webhook';
 		$data            = array( 'key' => self::EVENT_NAME, 'data' => serialize( $this->data ) );
 		$this->schedule_single( $schedule_action, $data, $schedule_group );

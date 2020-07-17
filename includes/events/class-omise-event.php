@@ -2,6 +2,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * @since 4.0
+ */
 class Omise_Event extends Omise_Queueable {
 	/**
 	 * @var array  of Omise event's payload.

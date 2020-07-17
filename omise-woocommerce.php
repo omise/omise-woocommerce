@@ -188,7 +188,7 @@ class Omise {
 	 * @since  4.0
 	 */
 	public function register_hooks() {
-		add_action( 'omise_async_event_charge_complete', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3 );
+		add_action( 'omise_async_webhook_event_handler', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3 );
 	}
 
 	/**
