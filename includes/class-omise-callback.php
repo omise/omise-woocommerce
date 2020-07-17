@@ -93,6 +93,9 @@ class Omise_Callback {
 		);
 
 		WC()->cart->empty_cart();
+		$this->order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
+		$this->order->save();
+
 		wp_redirect( $this->order->get_checkout_order_received_url() );
 		exit;
 	}
@@ -120,6 +123,9 @@ class Omise_Callback {
 
 			// Remove cart
 			WC()->cart->empty_cart();
+			$this->order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
+			$this->order->save();
+
 			wp_redirect( $this->order->get_checkout_order_received_url() );
 			exit;
 		}
@@ -134,6 +140,9 @@ class Omise_Callback {
 
 		$this->order->add_order_note( wp_kses( $message, array( 'br' => array(), 'strong' => array() ) ) );
 		$this->order->update_status( 'on-hold' );
+		$this->order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
+		$this->order->save();
+
 		wp_redirect( $this->order->get_checkout_order_received_url() );
 		exit;
 	}
@@ -147,6 +156,8 @@ class Omise_Callback {
 
 		$this->order->add_order_note( sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
 		$this->order->update_status( 'failed' );
+		$this->order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
+		$this->order->save();
 
 		wc_add_notice( sprintf( wp_kses( $message, array( 'br' => array() ) ), $failure_message ), 'error' );
 		wp_redirect( wc_get_checkout_url() );

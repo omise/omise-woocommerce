@@ -187,6 +187,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		}
 
 		$order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
+		$order->update_meta_data( 'is_omise_payment_resolved', 'no' );
 
 		try {
 			$charge = $this->charge( $order_id, $order );
