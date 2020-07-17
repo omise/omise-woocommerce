@@ -19,8 +19,7 @@ class Omise_Events {
 		);
 
 		foreach ( $events as $event ) {
-			$clazz = new $event;
-			$this->events[ $clazz->event ] = $clazz;
+			$this->events[ $event::EVENT_NAME ] = $event;
 		}
 	}
 
@@ -28,32 +27,46 @@ class Omise_Events {
 	 * Note. It doesn't return anything back because nobody using the result
 	 * unless we have a 'log' system.
 	 *
-	 * @param  string $event
+	 * @param  string $event_key
 	 * @param  mixed  $data
 	 *
 	 * @return void
 	 */
-	public function handle( $event, $data ) {
-		if ( ! isset( $this->events[ $event ] ) ) {
+	public function handle( $event_key, $data ) {
+		if ( ! isset( $this->events[ $event_key ] ) ) {
 			return;
 		}
+
+		$event_hook_name = str_replace( '.', '_', $event_key );
 
 		/**
 		 * Hook before Omise handle an event from webhook.
 		 *
 		 * @param mixed $data  a data of an event object
 		 */
-		do_action( 'omise_before_handle_event_' . $event, $data );
+		do_action( 'omise_before_handle_event_' . $event_hook_name, $data );
 
-		$result = $this->events[ $event ]->handle( $data );
+		$event = new $this->events[ $event_key ]( $data );
+		if ( $event->validate() ) {
+			$result = $event->resolve();
+
+			/**
+			 * Hook before Omise handle an event from webhook.
+			 *
+			 * @param WC_Order $order  an order object.
+			 * @param mixed    $data   a data of an event object
+			 */
+			do_action( 'omise_handled_event_' . $event_hook_name, $event->get_order(), $event->get_data() );
+		}
 
 		/**
 		 * Hook after Omise handle an event from webhook.
 		 *
-		 * @param mixed $data    a data of an event object
-		 * @param mixed $result  a result of an event handler
+		 * @param WC_Order $order  an order object.
+		 * @param mixed    $data   a data of an event object
+		 * @param mixed    $result  a result of an event handler
 		 */
-		do_action( 'omise_after_handle_event_' . $event, $data, $result );
+		do_action( 'omise_after_handle_event_' . $event_hook_name, $event->get_order(), $event->get_data(), $result );
 
 		return $result;
 	}
