@@ -76,6 +76,7 @@ class Omise {
 		$this->init_admin();
 		$this->init_route();
 		$this->register_payment_methods();
+		$this->register_hooks();
 
 		prepare_omise_myaccount_panel();
 	}
@@ -114,10 +115,13 @@ class Omise {
 	private function include_classes() {
 		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
 
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-queue-runner.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-queueable.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/backends/class-omise-backend.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/backends/class-omise-backend-installment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-capture.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-complete.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-create.php';
@@ -178,6 +182,13 @@ class Omise {
 		add_filter( 'woocommerce_payment_gateways', function( $methods ) {
 			return array_merge( $methods, $this->payment_methods() );
 		} );
+	}
+
+	/**
+	 * @since  4.0
+	 */
+	public function register_hooks() {
+		add_action( 'omise_async_webhook_event_handler', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3 );
 	}
 
 	/**

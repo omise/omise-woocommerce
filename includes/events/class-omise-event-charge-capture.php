@@ -1,81 +1,83 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-if ( class_exists( 'Omise_Event_Charge_Capture' ) ) {
-	return;
-}
+defined( 'ABSPATH' ) || exit;
 
-class Omise_Event_Charge_Capture {
+/**
+ * There are several cases that can trigger the 'charge.capture' event.
+ *
+ * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+ * Credit Card
+ * charge data in payload will be:
+ *     [status: 'successful'], [authorized: 'true'], [paid: 'true']
+ *
+ */
+class Omise_Event_Charge_Capture extends Omise_Event {
 	/**
 	 * @var string  of an event name.
 	 */
-	public $event = 'charge.capture';
+	const EVENT_NAME = 'charge.capture';
 
 	/**
-	 * There are several cases that can trigger the 'charge.capture' event.
-	 *
-	 * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	 * Credit Card
-	 * charge data in payload will be:
-	 *     [status: 'successful'], [authorized: 'true'], [paid: 'true']
-	 *
-	 * @param  mixed $data
-	 *
-	 * @return void
+	 * @inheritdoc
 	 */
-	public function handle( $data ) {
-		if ( 'charge' !== $data->object || ! isset( $data->metadata->order_id ) ) {
-			return;
+	public function validate() {
+		if ( 'charge' !== $this->data['object'] || ! isset( $this->data['metadata']['order_id'] ) ) {
+			return false;
 		}
 
-		if ( ! $order = wc_get_order( $data->metadata->order_id ) ) {
-			return;
+		if ( ! $this->order = wc_get_order( $this->data['metadata']['order_id'] ) ) {
+			return false;
 		}
 
-		$order->add_order_note(
-			__(
-				'Omise: an event charge.capture has been caught (webhook).',
-				'omise'
-			)
-		);
+		// Making sure that an event's charge id is identical with an order transaction id.
+		if ( $this->order->get_transaction_id() !== $this->data['id'] ) {
+			return false;
+		}
 
-		switch ($data->status) {
-			case 'successful':
-				if ( $data->authorized && $data->paid ) {
-					$order->add_order_note(
-						sprintf(
-							wp_kses(
-								__( 'Omise: Payment successful (manual capture).<br/>An amount %1$s %2$s has been paid', 'omise' ),
-								array( 'br' => array() )
-							),
-							$order->get_total(),
-							$order->get_order_currency()
-						)
-					);
+		return true;
+	}
 
-					$order->payment_complete( $data->id );
+	/**
+	 * This `charge.capture` event is only being used
+	 * to catch a manual-capture action that happens on 'Omise Dashboard'.
+	 * For on-store capture, it will be handled by Omise_Payment_Creditcard::process_capture.
+	 */
+	public function resolve() {
+		$this->order->add_order_note( __( 'Omise: Received charge.capture webhook event.', 'omise' ) );
+
+		switch ( $this->data['status'] ) {
+			case 'failed':
+				if ( $this->order->has_status( 'failed' ) ) {
+					return;
 				}
 
+				$message         = __( 'Omise: Payment failed.<br/>%s', 'omise' );
+				$failure_message = $this->data['failure_message'] . ' (code: ' . $this->data['failure_code'] . ')';
+				$this->order->add_order_note(
+					sprintf(
+						wp_kses( $message, array( 'br' => array() ) ),
+						$failure_message
+					)
+				);
+				$this->order->update_status( 'failed' );
 				break;
-			
-			default:
-				$order->add_order_note(
-					wp_kses(
-						__( 'Omise: Payment invalid.<br/>There was something wrong in the Webhook payload. Please contact Omise support team to investigate further.', 'omise' ),
-						array( 'br' => array() )
+
+			case 'successful':
+				$message = __( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' );
+
+				$this->order->add_order_note(
+					sprintf(
+						wp_kses( $message, array( 'br' => array() ) ),
+						$this->order->get_total(),
+						$this->order->get_currency()
 					)
 				);
 
-				break;
+				if ( ! $this->order->has_status( 'processing' ) ) {
+					$this->order->update_status( 'processing' );
+				}
+			break;
 		}
-
-		/**
-		 * Hook after Omise handle an event from webhook.
-		 *
-		 * @param WC_Order $order  an order object.
-		 * @param mixed $data      a data of an event object
-		 */
-		do_action( 'omise_handled_event_charge_capture', $order, $data );
 
 		return;
 	}

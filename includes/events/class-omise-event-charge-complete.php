@@ -1,15 +1,44 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-if ( class_exists( 'Omise_Event_Charge_Complete' ) ) {
-	return;
-}
+defined( 'ABSPATH' ) || exit;
 
-class Omise_Event_Charge_Complete {
+class Omise_Event_Charge_Complete extends Omise_Event {
 	/**
 	 * @var string  of an event name.
 	 */
-	public $event = 'charge.complete';
+	const EVENT_NAME = 'charge.complete';
+
+	/**
+	 * @inheritdoc
+	 */
+	public function validate() {
+		if ( 'charge' !== $this->data['object'] || ! isset( $this->data['metadata']['order_id'] ) ) {
+			return false;
+		}
+
+		if ( ! $this->order = wc_get_order( $this->data['metadata']['order_id'] ) ) {
+			return false;
+		}
+
+		// Making sure that an event's charge id is identical with an order transaction id.
+		if ( $this->order->get_transaction_id() !== $this->data['id'] ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function is_resolvable() {
+		if ( 'yes' === $this->order->get_meta( 'is_omise_payment_resolved' ) || $this->is_attempt_limit_exceeded() ) {
+			return true;
+		}
+
+		$schedule_action = 'omise_async_webhook_event_handler';
+		$schedule_group  = 'omise_async_webhook';
+		$data            = array( 'key' => self::EVENT_NAME, 'data' => serialize( $this->data ) );
+		$this->schedule_single( $schedule_action, $data, $schedule_group );
+		return false;
+	}
 
 	/**
 	 * There are several cases with the following payment methods
@@ -43,77 +72,56 @@ class Omise_Event_Charge_Complete {
 	 *
 	 * @return void
 	 */
-	public function handle( $data ) {
-		if ( 'charge' !== $data->object || ! isset( $data->metadata->order_id ) ) {
-			return;
-		}
+	public function resolve() {
+		if ( ! $this->is_resolvable() ) return;
 
-		if ( ! $order = wc_get_order( $data->metadata->order_id ) ) {
-			return;
-		}
+		$this->order->add_order_note( __( 'Omise: Received charge.complete webhook event.', 'omise' ) );
 
-		// Making sure that an event's charge id is identical with an order transaction id.
-		if ( $order->get_transaction_id() !== $data->id ) {
-			return;
-		}
-
-		$order->add_order_note(
-			__(
-				'Omise: an event charge.complete has been caught (webhook).',
-				'omise'
-			)
-		);
-
-		switch ($data->status) {
+		switch ( $this->data['status'] ) {
 			case 'failed':
-				$order->add_order_note(
+				if ( $this->order->has_status( 'failed' ) ) {
+					return;
+				}
+
+				$message         = __( 'Omise: Payment failed.<br/>%s', 'omise' );
+				$failure_message = $this->data['failure_message'] . ' (code: ' . $this->data['failure_code'] . ')';
+				$this->order->add_order_note(
 					sprintf(
-						wp_kses(
-							__( 'Omise: Payment failed.<br/>%s', 'omise' ),
-							array( 'br' => array() )
-						),
-						$data->failure_message . ' (code: ' . $data->failure_code . ')'
+						wp_kses( $message, array( 'br' => array() ) ),
+						$failure_message
 					)
 				);
-
-				$order->update_status( 'failed' );
+				$this->order->update_status( 'failed' );
 				break;
 
 			case 'successful':
-				if ( $data->authorized && $data->paid ) {
-					$order->add_order_note(
-						sprintf(
-							wp_kses(
-								__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' ),
-								array( 'br' => array() )
-							),
-							$order->get_total(),
-							$order->get_order_currency()
-						)
-					);
-
-					$order->payment_complete( $data->id );
+				if ( $this->order->has_status( 'processing' ) ) {
+					return;
 				}
+
+				$message = __( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' );
+
+				$this->order->add_order_note(
+					sprintf(
+						wp_kses( $message, array( 'br' => array() ) ),
+						$this->order->get_total(),
+						$this->order->get_currency()
+					)
+				);
+				$this->order->payment_complete();
 				break;
 			
 			case 'pending':
+				if ( $this->order->has_status( 'processing' ) ) {
+					return;
+				}
+
 				// Credit Card 3-D Secure with 'authorize only' payment action case.
-				if ( $data->authorized ) {
-					$order->update_status( 'processing' );
+				if ( $this->data['authorized'] ) {
+					$this->order->update_status( 'processing' );
 				}
 				break;
-
-			default:
-				break;
 		}
-
-		/**
-		 * Hook after Omise handle an event from webhook.
-		 *
-		 * @param WC_Order $order  an order object.
-		 * @param mixed $data      a data of an event object
-		 */
-		do_action( 'omise_handled_event_charge_complete', $order, $data );
 
 		return;
 	}
