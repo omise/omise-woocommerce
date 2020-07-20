@@ -2,8 +2,8 @@
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
-Tested up to: 5.3.2
-Stable tag: 3.11
+Tested up to: 5.4.2
+Stable tag: 4.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,28 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.0 =
+
+#### ✨ Highlights
+- Refactoring Event Handlers, make the code support for asynchronous request to prevent race-condition from Webhook. (PR [#179](https://github.com/omise/omise-woocommerce/pull/179))
+- Revising Omise Settings. (PR [#175](https://github.com/omise/omise-woocommerce/pull/175))
+
+#### 🚀 Enhancements
+- Credit Card payment, updating order status to 'processing' for successful 'auth-only' payment. (PR [#180](https://github.com/omise/omise-woocommerce/pull/180))
+- Bump lodash from 4.17.15 to 4.17.19. (PR [#178](https://github.com/omise/omise-woocommerce/pull/178))
+- Revise order statuses (Part 1, failing payment should result as order failed). (PR [#171](https://github.com/omise/omise-woocommerce/pull/171))
+- PayNow: adding default payment instruction at the checkout page. (PR [#169](https://github.com/omise/omise-woocommerce/pull/169))
+- Reduce duplicated code from offline payment methods to a dedicated class. (PR [#168](https://github.com/omise/omise-woocommerce/pull/168))
+- Code Refactoring, simplifying Callback function. (PR [#167](https://github.com/omise/omise-woocommerce/pull/167))
+- Integrating WooCommerce refund's reason parameter to Omise Refund object. (PR [#165](https://github.com/omise/omise-woocommerce/pull/165))
+- Be able to create a refund when placing an order with Alipay or Installment payment method. (PR [#158](https://github.com/omise/omise-woocommerce/pull/158))
+- Code refactoring, simplifying the 'process_refund' method. (PR [#157](https://github.com/omise/omise-woocommerce/pull/157))
+
+#### 📝 Documents
+- Create LICENSE. (PR [#173](https://github.com/omise/omise-woocommerce/pull/173))
+- Move usage docs to website. (PR [#172](https://github.com/omise/omise-woocommerce/pull/172))
+- README, updating document. (PR [#159](https://github.com/omise/omise-woocommerce/pull/159))
 
 = 3.11 =
 
