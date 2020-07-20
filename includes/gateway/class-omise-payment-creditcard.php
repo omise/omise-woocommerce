@@ -299,6 +299,7 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 								$order->get_order_currency()
 							)
 						);
+						$order->payment_complete();
 					}
 
 					break;
@@ -306,7 +307,6 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 				case self::PAYMENT_ACTION_AUTHORIZE_CAPTURE:
 					$success = Omise_Charge::is_paid( $charge );
 					if ( $success ) {
-						$order->payment_complete();
 						$order->add_order_note(
 							sprintf(
 								wp_kses(
@@ -317,6 +317,7 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 								$order->get_order_currency()
 							)
 						);
+						$order->payment_complete();
 					}
 
 					break;

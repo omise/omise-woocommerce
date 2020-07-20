@@ -116,6 +116,7 @@ class Omise_Callback {
 					$this->order->get_order_currency()
 				)
 			);
+			$this->order->payment_complete();
 
 			// Remove cart
 			WC()->cart->empty_cart();
