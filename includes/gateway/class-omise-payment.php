@@ -68,7 +68,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	);
 
 	/**
-	 * @var Omise_Order|null
+	 * @var WC_Order|null
 	 */
 	protected $order;
 
@@ -93,7 +93,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * @param  string|WC_Order $order
 	 *
-	 * @return Omise_Order|null
+	 * @return WC_Order|null
 	 */
 	public function load_order( $order ) {
 		if ( $order instanceof WC_Order ) {
@@ -110,7 +110,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * @return Omise_Order|null
+	 * @return WC_Order|null
 	 */
 	public function order() {
 		return $this->order;
@@ -182,24 +182,24 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
-		if ( ! $order = $this->load_order( $order_id ) ) {
+		if ( ! $this->load_order( $order_id ) ) {
 			return $this->invalid_order( $order_id );
 		}
 
-		$order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
-		$order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
-		$order->save();
+		$this->order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
+		$this->order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
+		$this->order->save();
 
 		try {
-			$charge = $this->charge( $order_id, $order );
+			$charge = $this->charge( $order_id, $this->order );
 		} catch ( Exception $e ) {
 			return $this->payment_failed( $e->getMessage() );
 		}
 
-		$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
+		$this->order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 		$this->set_order_transaction_id( $charge['id'] );
 
-		return $this->result( $order_id, $order, $charge );
+		return $this->result( $order_id, $this->order, $charge );
 	}
 
 	/**
@@ -390,39 +390,32 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @param int|mixed $order_id
 	 */
 	protected function invalid_order( $order_id ) {
-		wc_add_notice(
-			sprintf(
-				wp_kses(
-					__( 'We have been unable to process your payment.<br/>Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
-					array(
-						'br' => array()
-					)
-				),
-				$order_id
-			),
-			'error'
-		);
+		$message = wp_kses( __(
+			'We have been unable to process your payment.<br/>
+			 Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/>
+			 <br/>
+			 Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')',
+			'omise'
+		), array( 'br' => array() ) );
+
+		wc_add_notice( sprintf( $message, $order_id ), 'error' );
 	}
 
 	/**
-	 * @param string $message
+	 * @param string $reason
 	 */
-	protected function payment_failed( $message ) {
-		wc_add_notice(
-			sprintf(
-				wp_kses(
-					__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
-					array( 'br' => array() )
-				),
-				$message
-			),
-			'error'
-		);
+	protected function payment_failed( $reason ) {
+		$message = wp_kses( __(
+			'It seems we\'ve been unable to process your payment properly:<br/>%s',
+			'omise'
+		), array( 'br' => array() ) );
 
 		if ( $this->order() ) {
-			$this->order()->add_order_note( sprintf( __( 'Omise: Payment failed, %s', 'omise' ), $message ) );
+			$this->order()->add_order_note( sprintf( __( 'Omise: Payment failed, %s', 'omise' ), $reason ) );
 			$this->order()->update_status( 'failed' );
 		}
+
+		wc_add_notice( sprintf( $message, $reason ), 'error' );
 	}
 
 	/**
