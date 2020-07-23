@@ -27,6 +27,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 		$this->backend     = new Omise_Backend_Installment;
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 	}
 
