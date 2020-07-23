@@ -385,7 +385,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			}
 		} catch ( Exception $e ) {
 			$message = wp_kses(
-				__( 'Omise: Sync failed (manual sync).<br/>%s (manual sync).', 'omise' ),
+				__( 'Omise: Sync failed (manual sync).<br/>%s.', 'omise' ),
 				array( 'br' => array() )
 			);
 
