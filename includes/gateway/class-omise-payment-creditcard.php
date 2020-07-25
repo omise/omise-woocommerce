@@ -54,14 +54,14 @@ class Omise_Payment_Creditcard extends Omise_Payment {
 				'title' => array(
 					'title'       => __( 'Title', 'omise' ),
 					'type'        => 'text',
-					'description' => __( 'This controls the title which the user sees during checkout.', 'omise' ),
+					'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
 					'default'     => __( 'Credit / Debit Card', 'omise' )
 				),
 
 				'description' => array(
 					'title'       => __( 'Description', 'omise' ),
 					'type'        => 'textarea',
-					'description' => __( 'This controls the description which the user sees during checkout.', 'omise' )
+					'description' => __( 'This controls the description the user sees during checkout.', 'omise' )
 				),
 			),
 			array(
