@@ -19,6 +19,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	const STATUS_SUCCESSFUL = 'successful';
 	const STATUS_FAILED     = 'failed';
 	const STATUS_PENDING    = 'pending';
+	const STATUS_EXPIRED    = 'expired';
+	const STATUS_REVERSED   = 'reversed';
 
 	/**
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
@@ -68,7 +70,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	);
 
 	/**
-	 * @var Omise_Order|null
+	 * @var WC_Order|null
 	 */
 	protected $order;
 
@@ -93,7 +95,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * @param  string|WC_Order $order
 	 *
-	 * @return Omise_Order|null
+	 * @return WC_Order|null
 	 */
 	public function load_order( $order ) {
 		if ( $order instanceof WC_Order ) {
@@ -110,7 +112,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * @return Omise_Order|null
+	 * @return WC_Order|null
 	 */
 	public function order() {
 		return $this->order;
@@ -182,24 +184,24 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
-		if ( ! $order = $this->load_order( $order_id ) ) {
+		if ( ! $this->load_order( $order_id ) ) {
 			return $this->invalid_order( $order_id );
 		}
 
-		$order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
-		$order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
-		$order->save();
+		$this->order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
+		$this->order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
+		$this->order->save();
 
 		try {
-			$charge = $this->charge( $order_id, $order );
+			$charge = $this->charge( $order_id, $this->order );
 		} catch ( Exception $e ) {
 			return $this->payment_failed( $e->getMessage() );
 		}
 
-		$order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
+		$this->order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 		$this->set_order_transaction_id( $charge['id'] );
 
-		return $this->result( $order_id, $order, $charge );
+		return $this->result( $order_id, $this->order, $charge );
 	}
 
 	/**
@@ -301,73 +303,93 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		try {
 			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
 
+			/**
+			 * Backward compatible with WooCommerce v2.x series
+			 * This case is likely not going to happen anymore as this was provided back then
+			 * when Omise-WooCommerce was introducing of adding charge.id into WC Order transaction id.
+			 **/
 			if ( ! $this->order()->get_transaction_id() ) {
-				/** backward compatible with WooCommerce v2.x series **/
-				if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
-					$this->order()->set_transaction_id( $charge['id'] );
-					$this->order()->save();
-				} else {
-					update_post_meta( $this->order()->id, '_transaction_id', $charge['id'] );
-				}
+				$this->set_order_transaction_id( $charge['id'] );
 			}
 
-			if ( 'failed' === $charge['status'] ) {
-				$this->order()->add_order_note(
-					sprintf(
-						wp_kses(
-							__( 'Omise: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
+			switch ( $charge['status'] ) {
+				case self::STATUS_SUCCESSFUL:
+					if ( $charge['funding_amount'] == $charge['refunded_amount'] ) {
+						$message = wp_kses( __(
+							'Omise: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).', 'omise' ),
 							array( 'br' => array() )
-						),
-						$charge['failure_message'],
-						$charge['failure_code']
-					)
-				);
-				$this->order()->update_status( 'failed' );
-				return;
-			}
+						);
+						$this->order()->add_order_note( sprintf( $message, $this->order()->get_total(), $this->order()->get_currency() ) );
 
-			if ( 'pending' === $charge['status'] ) {
-				$this->order()->add_order_note(
-					wp_kses(
-						__( 'Omise: Payment is still in progress.<br/>You might wait for a moment before click sync the status again or contact Omise support team at support@omise.co if you have any questions (manual sync).', 'omise' ),
+						if ( ! $this->order()->has_status( 'refunded' ) ) {
+							$this->order()->update_status( 'refunded' );
+						}
+					} else {
+						$message = wp_kses( __(
+							'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
+							array( 'br' => array() )
+						);
+						$this->order()->add_order_note( sprintf( $message, $this->order()->get_total(), $this->order()->get_currency() ) );
+
+						if ( ! $this->order()->is_paid() ) {
+							$this->order()->payment_complete();
+						}
+					}
+					break;
+
+				case self::STATUS_FAILED:
+					$message = wp_kses(
+						__( 'Omise: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
 						array( 'br' => array() )
-					)
-				);
-				return;
+					);
+					$this->order()->add_order_note( sprintf( $message, $charge['failure_message'], $charge['failure_code'] ) );
+
+					if ( ! $this->order()->has_status( 'failed' ) ) {
+						$this->order()->update_status( 'failed' );
+					}
+					break;
+
+				case self::STATUS_PENDING:
+					$message = wp_kses( __(
+						'Omise: Payment is still in progress.<br/>
+						 You might wait for a moment before click sync the status again or contact Omise support team at support@omise.co if you have any questions (manual sync).',
+						 'omise'
+					), array( 'br' => array() ) );
+
+					$this->order()->add_order_note( $message );
+					break;
+
+				case self::STATUS_EXPIRED:
+					$message = wp_kses( __( 'Omise: Payment expired. (manual sync).', 'omise' ), array( 'br' => array() ) );
+					$this->order()->add_order_note( $message );
+
+					if ( ! $this->order()->has_status( 'cancelled' ) ) {
+						$this->order()->update_status( 'cancelled' );
+					}
+					break;
+
+				case self::STATUS_REVERSED:
+					$message = wp_kses( __( 'Omise: Payment reversed. (manual sync).', 'omise' ), array( 'br' => array() ) );
+					$this->order()->add_order_note( $message );
+
+					if ( ! $this->order()->has_status( 'cancelled' ) ) {
+						$this->order()->update_status( 'cancelled' );
+					}
+					break;
+
+				default:
+					throw new Exception(
+						__( 'Cannot read the payment status. Please try sync again or contact Omise support team at support@omise.co if you have any questions.', 'omise' )
+					);
+					break;
 			}
-
-			if ( 'successful' === $charge['status'] ) {
-				$this->order()->add_order_note(
-					sprintf(
-						wp_kses(
-							__( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
-							array( 'br' => array() )
-						),
-						$this->order()->get_total(),
-						$this->order()->get_order_currency()
-					)
-				);
-
-				if ( ! $this->order()->is_paid() ) {
-					$this->order()->payment_complete();
-				}
-
-				return;
-			}
-
-			throw new Exception(
-				__( 'Cannot read the payment status. Please try sync again or contact Omise support team at support@omise.co if you have any questions.', 'omise' )
-			);
 		} catch ( Exception $e ) {
-			$order->add_order_note(
-				sprintf(
-					wp_kses(
-						__( 'Omise: Sync failed (manual sync).<br/>%s (manual sync).', 'omise' ),
-						array( 'br' => array() )
-					),
-					$e->getMessage()
-				)
+			$message = wp_kses(
+				__( 'Omise: Sync failed (manual sync).<br/>%s (manual sync).', 'omise' ),
+				array( 'br' => array() )
 			);
+
+			$order->add_order_note( sprintf( $message, $e->getMessage() ) );
 		}
 	}
 
@@ -390,39 +412,32 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @param int|mixed $order_id
 	 */
 	protected function invalid_order( $order_id ) {
-		wc_add_notice(
-			sprintf(
-				wp_kses(
-					__( 'We have been unable to process your payment.<br/>Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
-					array(
-						'br' => array()
-					)
-				),
-				$order_id
-			),
-			'error'
-		);
+		$message = wp_kses( __(
+			'We have been unable to process your payment.<br/>
+			 Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/>
+			 <br/>
+			 Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')',
+			'omise'
+		), array( 'br' => array() ) );
+
+		wc_add_notice( sprintf( $message, $order_id ), 'error' );
 	}
 
 	/**
-	 * @param string $message
+	 * @param string $reason
 	 */
-	protected function payment_failed( $message ) {
-		wc_add_notice(
-			sprintf(
-				wp_kses(
-					__( 'It seems we\'ve been unable to process your payment properly:<br/>%s', 'omise' ),
-					array( 'br' => array() )
-				),
-				$message
-			),
-			'error'
-		);
+	protected function payment_failed( $reason ) {
+		$message = wp_kses( __(
+			'It seems we\'ve been unable to process your payment properly:<br/>%s',
+			'omise'
+		), array( 'br' => array() ) );
 
 		if ( $this->order() ) {
-			$this->order()->add_order_note( sprintf( __( 'Omise: Payment failed, %s', 'omise' ), $message ) );
+			$this->order()->add_order_note( sprintf( __( 'Omise: Payment failed, %s', 'omise' ), $reason ) );
 			$this->order()->update_status( 'failed' );
 		}
+
+		wc_add_notice( sprintf( $message, $reason ), 'error' );
 	}
 
 	/**
