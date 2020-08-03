@@ -314,7 +314,9 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
 			switch ( $charge['status'] ) {
 				case self::STATUS_SUCCESSFUL:
-					if ( $charge['funding_amount'] == $charge['refunded_amount'] ) {
+					// Omise API 2017-11-02 uses `refunded`, Omise API 2019-05-29 uses `refunded_amount`.
+					$refunded_amount = isset( $charge['refunded_amount'] ) ? $charge['refunded_amount'] : $charge['refunded'];
+					if ( $charge['funding_amount'] == $refunded_amount ) {
 						$message = wp_kses( __(
 							'Omise: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).', 'omise' ),
 							array( 'br' => array() )
