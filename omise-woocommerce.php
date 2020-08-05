@@ -260,7 +260,7 @@ class Omise {
 	/**
 	 * L10n the given string.
 	 *
-	 * @since  4.0
+	 * @since  4.1
 	 *
 	 * @return string
 	 */

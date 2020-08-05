@@ -1,12 +1,12 @@
 <?php
-/**
- * Handles all the API response messages localization.
- *
- * @since 4.0
- */
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Handles all the API response messages localization.
+ *
+ * @since 4.1
+ */
 class Omise_Localization {
 	/**
 	 * @param  string $message
