@@ -314,16 +314,18 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
 			switch ( $charge['status'] ) {
 				case self::STATUS_SUCCESSFUL:
-					if ( $charge['funding_amount'] == $charge['refunded_amount'] ) {
+					// Omise API 2017-11-02 uses `refunded`, Omise API 2019-05-29 uses `refunded_amount`.
+					$refunded_amount = isset( $charge['refunded_amount'] ) ? $charge['refunded_amount'] : $charge['refunded'];
+					if ( $charge['funding_amount'] == $refunded_amount ) {
+						if ( ! $this->order()->has_status( 'refunded' ) ) {
+							$this->order()->update_status( 'refunded' );
+						}
+
 						$message = wp_kses( __(
 							'Omise: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).', 'omise' ),
 							array( 'br' => array() )
 						);
 						$this->order()->add_order_note( sprintf( $message, $this->order()->get_total(), $this->order()->get_currency() ) );
-
-						if ( ! $this->order()->has_status( 'refunded' ) ) {
-							$this->order()->update_status( 'refunded' );
-						}
 					} else {
 						$message = wp_kses( __(
 							'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
@@ -385,7 +387,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			}
 		} catch ( Exception $e ) {
 			$message = wp_kses(
-				__( 'Omise: Sync failed (manual sync).<br/>%s (manual sync).', 'omise' ),
+				__( 'Omise: Sync failed (manual sync).<br/>%s.', 'omise' ),
 				array( 'br' => array() )
 			);
 
