@@ -27,6 +27,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 		add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_qrcode' ) );
+		add_action( 'woocommerce_email_after_order_table', array( $this, 'email_qrcode' ) );
 	}
 
 	/**
@@ -59,6 +60,18 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 	}
 
 	/**
+	 * @param WC_Order $order
+	 *
+	 * @see   woocommerce/templates/emails/email-order-details.php
+	 * @see   woocommerce/templates/emails/plain/email-order-details.php
+	 */
+	public function email_qrcode( $order ) {
+		if ( $this->id == $order->get_payment_method() ) {
+			$this->display_qrcode( $order, 'email' );
+		}
+	}
+
+	/**
 	 * @param int|WC_Order $order
 	 * @param string       $context  pass 'email' value through this argument only for 'sending out an email' case.
 	 */
@@ -70,16 +83,19 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 		$charge_id = $this->get_charge_id_from_order();
 		$charge    = OmiseCharge::retrieve( $charge_id );
 		$qrcode    = $charge['source']['scannable_code']['image']['download_uri'];
-		?>
-		<div class="omise omise-paynow-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
-			<div class="omise omise-paynow-logo"></div>
-			<p>
-				<?php echo __( 'Scan the QR code to pay', 'omise' ); ?>
-			</p>
-			<div class="omise omise-paynow-qrcode">
-				<img src="<?php echo $qrcode; ?>" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
+
+		if ( 'view' === $context ) : ?>
+			<div class="omise omise-paynow-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
+				<div class="omise omise-paynow-logo"></div>
+				<p>
+					<?php echo __( 'Scan the QR code to pay', 'omise' ); ?>
+				</p>
+				<div class="omise omise-paynow-qrcode">
+					<img src="<?php echo $qrcode; ?>" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
+				</div>
 			</div>
-		</div>
-		<?php
+		<?php elseif ( 'email' === $context ) : ?>
+			<p><a href="<?php echo $qrcode; ?>"><?php echo __( 'Click this link to display the QR code', 'omise' ); ?></a></p>
+		<?php endif;
 	}
 }
