@@ -81,6 +81,10 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		}
 
 		$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
+		if ( self::STATUS_PENDING !== $charge['status'] ) {
+			return;
+		}
+
 		$qrcode = $charge['source']['scannable_code']['image']['download_uri'];
 
 		$expires_datetime = new WC_DateTime( $charge['expires_at'], new DateTimeZone( 'UTC' ) );
