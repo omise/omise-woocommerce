@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.4.2
-Stable tag: 4.0
+Stable tag: 4.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,16 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.1 =
+
+#### ✨ Highlights
+- Introducing PromptPay payment method (Thailand). (PR [#170](https://github.com/omise/omise-woocommerce/pull/170))
+
+#### 🚀 Enhancements
+- Bypassing Callback function for Offline payment methods. (PR [#184](https://github.com/omise/omise-woocommerce/pull/184))
+- Manual Sync, handling more cases: 'expired', 'refunded', 'reversed'. (PR [#183](https://github.com/omise/omise-woocommerce/pull/183))
+- Cleaning up code style & indentation. (PR [#182](https://github.com/omise/omise-woocommerce/pull/182))
 
 = 4.0 =
 
