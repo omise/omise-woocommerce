@@ -77,6 +77,7 @@ class Omise {
 		$this->init_route();
 		$this->register_payment_methods();
 		$this->register_hooks();
+		$this->register_ajax_actions();
 
 		prepare_omise_myaccount_panel();
 	}
@@ -133,10 +134,12 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-installment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-paynow.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-promptpay.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-truemoney.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-ajax-actions.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-callback.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-capabilities.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-events.php';
@@ -189,6 +192,14 @@ class Omise {
 	 */
 	public function register_hooks() {
 		add_action( 'omise_async_webhook_event_handler', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3 );
+	}
+
+	/**
+	 * @since  4.1
+	 */
+	public function register_ajax_actions() {
+		add_action('wp_ajax_nopriv_fetch_order_status', 'Omise_Ajax_Actions::fetch_order_status' );
+		add_action('wp_ajax_fetch_order_status', 'Omise_Ajax_Actions::fetch_order_status' );
 	}
 
 	/**
