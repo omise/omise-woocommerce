@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### [v4.1 _(Aug 21, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.1)
+
+#### ✨ Highlights
+- Introducing PromptPay payment method (Thailand). (PR [#170](https://github.com/omise/omise-woocommerce/pull/170))
+
+#### 🚀 Enhancements
+- Bypassing Callback function for Offline payment methods. (PR [#184](https://github.com/omise/omise-woocommerce/pull/184))
+- Manual Sync, handling more cases: 'expired', 'refunded', 'reversed'. (PR [#183](https://github.com/omise/omise-woocommerce/pull/183))
+- Cleaning up code style & indentation. (PR [#182](https://github.com/omise/omise-woocommerce/pull/182))
+
+---
+
 ### [v4.0 _(Jul 20, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.0)
 
 #### ✨ Highlights
