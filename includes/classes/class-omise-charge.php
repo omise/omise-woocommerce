@@ -33,7 +33,7 @@ if ( ! class_exists( 'Omise_Charge' ) ) {
 		 */
 		public static function get_error_message( $charge ) {
 			if ( '' !== $charge['failure_code'] ) {
-				return '(' . $charge['failure_code'] . ') ' . $charge['failure_message'];
+				return '(' . $charge['failure_code'] . ') ' . Omise()->translate( $charge['failure_message'] );
 			}
 
 			return '';

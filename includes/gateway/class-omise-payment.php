@@ -344,7 +344,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 						__( 'Omise: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
 						array( 'br' => array() )
 					);
-					$this->order()->add_order_note( sprintf( $message, $charge['failure_message'], $charge['failure_code'] ) );
+					$this->order()->add_order_note( sprintf( $message, Omise()->translate( $charge['failure_message'] ), $charge['failure_code'] ) );
 
 					if ( ! $this->order()->has_status( 'failed' ) ) {
 						$this->order()->update_status( 'failed' );

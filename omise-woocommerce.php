@@ -143,6 +143,7 @@ class Omise {
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-callback.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-capabilities.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-events.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-localization.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-money.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-payment-factory.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
@@ -265,6 +266,17 @@ class Omise {
 	 */
 	public function payment_methods() {
 		return Omise_Payment_Factory::$payment_methods;
+	}
+
+	/**
+	 * L10n the given string.
+	 *
+	 * @since  4.1
+	 *
+	 * @return string
+	 */
+	public function translate( $message ) {
+		return Omise_Localization::translate( $message );
 	}
 }
 
