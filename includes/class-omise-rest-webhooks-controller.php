@@ -28,6 +28,7 @@ class Omise_Rest_Webhooks_Controller {
 			array(
 				'methods' => WP_REST_Server::EDITABLE,
 				'callback' => array( $this, 'callback' ),
+				'permission_callback' => '__return_true'
 			)
 		);
 	}
