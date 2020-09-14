@@ -253,7 +253,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		try {
 			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
 			$refund = $charge->refunds()->create( array(
-				'amount'   => Omise_Money::to_subunit( $amount, $order->get_order_currency() ),
+				'amount'   => Omise_Money::to_subunit( $amount, $order->get_currency() ),
 				'metadata' => array( 'reason' => sanitize_text_field( $reason ) )
 			) );
 
@@ -264,7 +264,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 						array( 'br' => array() )
 					),
 					$amount,
-					$order->get_order_currency(),
+					$order->get_currency(),
 					$refund['id']
 				);
 			} else {
@@ -274,7 +274,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 						array( 'br' => array() )
 					),
 					$amount,
-					$order->get_order_currency(),
+					$order->get_currency(),
 					$refund['id']
 				);
 			}

@@ -21,7 +21,7 @@ abstract class Omise_Payment_Offline extends Omise_Payment {
 	 */
 	public function charge( $order_id, $order ) {
 		$total    = $order->get_total();
-		$currency = $order->get_order_currency();
+		$currency = $order->get_currency();
 		$metadata = array_merge(
 			apply_filters( 'omise_charge_params_metadata', array(), $order ),
 			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
