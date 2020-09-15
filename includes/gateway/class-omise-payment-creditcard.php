@@ -232,8 +232,8 @@ class Omise_Payment_Creditcard extends Omise_Payment {
 			home_url()
 		);
 		$data    = array(
-			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_order_currency() ),
-			'currency'    => $order->get_order_currency(),
+			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
+			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'return_uri'  => $return_uri
 		);
@@ -296,7 +296,7 @@ class Omise_Payment_Creditcard extends Omise_Payment {
 								array( 'br' => array() )
 							),
 							$order->get_total(),
-							$order->get_order_currency()
+							$order->get_currency()
 						)
 					);
 					$order->payment_complete();
@@ -314,7 +314,7 @@ class Omise_Payment_Creditcard extends Omise_Payment {
 								array( 'br' => array() )
 							),
 							$order->get_total(),
-							$order->get_order_currency()
+							$order->get_currency()
 						)
 					);
 					$order->payment_complete();
@@ -373,7 +373,7 @@ class Omise_Payment_Creditcard extends Omise_Payment {
 						array( 'br' => array() )
 					),
 					$this->order()->get_total(),
-					$this->order()->get_order_currency()
+					$this->order()->get_currency()
 				)
 			);
 			$this->order()->payment_complete();

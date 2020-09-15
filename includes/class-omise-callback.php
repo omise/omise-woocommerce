@@ -88,7 +88,7 @@ class Omise_Callback {
 			sprintf(
 				wp_kses( $message, array( 'br' => array() ) ),
 				$this->order->get_total(),
-				$this->order->get_order_currency()
+				$this->order->get_currency()
 			)
 		);
 
@@ -116,7 +116,7 @@ class Omise_Callback {
 				sprintf(
 					wp_kses( $message, array( 'br' => array() ) ),
 					$this->order->get_total(),
-					$this->order->get_order_currency()
+					$this->order->get_currency()
 				)
 			);
 			$this->order->payment_complete();

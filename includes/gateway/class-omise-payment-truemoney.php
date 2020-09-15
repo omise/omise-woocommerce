@@ -71,7 +71,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 	public function charge( $order_id, $order ) {
 		$phone_number = isset( $_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : sanitize_text_field( $_POST['omise_phone_number'] );
 		$total        = $order->get_total();
-		$currency     = $order->get_order_currency();
+		$currency     = $order->get_currency();
 		$return_uri   = add_query_arg(
 			array( 'wc-api' => 'omise_truemoney_callback', 'order_id' => $order_id ), home_url()
 		);
