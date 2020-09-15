@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### [v4.2 _(Sep 15, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.2)
+
+#### 🚀 Enhancements
+- Removing Gruntfile and package.json as no longer needed grunt-wp-i18n library. (PR [#187](https://github.com/omise/omise-woocommerce/pull/187))
+
+#### 👾 Bug Fixes
+- Updating deprecated functions in WooCommerce v3. (PR [#189](https://github.com/omise/omise-woocommerce/pull/189))
+- Adding permission to callback which helps to removes a warning message on Wordpress 5.5. (PR [#188](https://github.com/omise/omise-woocommerce/pull/188))
+
+---
+
 ### [v4.1 _(Aug 21, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.1)
 
 #### ✨ Highlights
