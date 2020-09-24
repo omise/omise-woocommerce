@@ -20,6 +20,12 @@ class Omise_Localization {
 			'amount must be less than 50000'
 				=> __( 'amount must be less than 50000', 'omise' ),
 
+			'amount must be greater than or equal to 200'
+				=> __( 'amount must be greater than or equal to 200', 'omise' ),
+
+			'amount must be greater than or equal to 200 and phone_number must contain 10-11 digit characters'
+				=> __( 'amount must be greater than or equal to 200 and phone_number must contain 10-11 digit characters', 'omise' ),
+
 			'card is stolen or lost'
 				=> __( 'card is stolen or lost', 'omise' ),
 
