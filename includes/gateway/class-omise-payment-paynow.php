@@ -95,7 +95,10 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 				</div>
 			</div>
 		<?php elseif ( 'email' === $context && !$order->has_status('failed')) : ?>
-			<p><a href="<?php echo $qrcode; ?>"><?php echo __( 'Click this link to display the QR code', 'omise' ); ?></a></p>
+			<p>
+				<?php echo __( 'Scan the QR code to complete', 'omise' ); ?>
+			</p>
+			<p><img src="<?php echo $qrcode; ?>"/></p>
 		<?php endif;
 	}
 }
