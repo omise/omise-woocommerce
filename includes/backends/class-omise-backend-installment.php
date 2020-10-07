@@ -53,6 +53,13 @@ class Omise_Backend_Installment extends Omise_Backend {
 				'interest_rate'      => 0.65,
 				'min_allowed_amount' => 500.00,
 			),
+
+			'installment_scb' => array(
+				'bank_code'          => 'scb',
+				'title'              => __( 'Siam Commercial Bank', 'omise' ),
+				'interest_rate'      => 0.74,
+				'min_allowed_amount' => 500.00,
+			),
 		);
 	}
 
