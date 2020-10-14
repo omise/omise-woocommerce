@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### [v4.3 _(Oct 15, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.3)
+
+#### ✨ Highlights
+- Introducing Konbini payment method. (PR [#149](https://github.com/omise/omise-woocommerce/pull/149))
+
+#### 🚀 Enhancements
+- PayNow, adding a link to the QR code url at the order-confirmation email. (PR [#185](https://github.com/omise/omise-woocommerce/pull/185))
+
+---
+
 ### [v4.2 _(Sep 15, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.2)
 
 #### 🚀 Enhancements
