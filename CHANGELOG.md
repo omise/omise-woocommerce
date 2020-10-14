@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### [v4.3 _(Oct 08, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.3)
+### [v4.3 _(Oct 15, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.3)
 
 #### ✨ Highlights
 - Introducing Konbini payment method. (PR [#149](https://github.com/omise/omise-woocommerce/pull/149))
