@@ -33,7 +33,7 @@ From there:
 
 == Changelog ==
 
-= 4.3 =
+= 4.4 =
 
 #### ✨ Highlights
 - Adding installment SCB support. (PR [#193](https://github.com/omise/omise-woocommerce/pull/193))
