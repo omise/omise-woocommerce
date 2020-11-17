@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### [v4.4 _(Nov 17, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.4)
+
+#### ✨ Highlights
+- Adding installment SCB support. (PR [#193](https://github.com/omise/omise-woocommerce/pull/193))
+
+---
+
 ### [v4.3 _(Oct 15, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.3)
 
 #### ✨ Highlights
