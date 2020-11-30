@@ -95,7 +95,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 				</div>
 				<div class="omise-paynow-payment-status">
 					<div class="pending">
-						<?php echo __( 'Waiting for payment. Session on this window for payment would timeout in <span id="timer">10:00</span> minutes.', 'omise' ); ?>
+						<?php echo __( 'Payment session will time out in <span id="timer">10:00</span> minutes.', 'omise' ); ?>
 					</div>
 					<div class="completed" style="display:none">
 						<div class="green-check"></div>
