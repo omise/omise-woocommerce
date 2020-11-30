@@ -102,7 +102,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 						<?php echo __( 'We\'ve received your payment.', 'omise' ); ?>
 					</div>
 					<div class="timeout" style="display:none">
-						<?php echo __( 'Payment session timed out. You can still complete QR payment by scanning code sent on your email.', 'omise' ); ?>
+						<?php echo __( 'Payment session timed out. You can still complete QR payment by scanning the code sent to your email address.', 'omise' ); ?>
 					</div>
 				</div>
 			</div>
