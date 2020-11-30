@@ -19,6 +19,11 @@ class Omise_Rest_Webhooks_Controller {
 	const ENDPOINT = 'webhooks';
 
 	/**
+	 * @var string
+	 */
+	const PAYNOW_CHARGE_STATUS_ENDPOINT = 'paynow-payment-status';
+
+	/**
 	 * Register the routes for webhooks.
 	 */
 	public function register_routes() {
@@ -28,6 +33,16 @@ class Omise_Rest_Webhooks_Controller {
 			array(
 				'methods' => WP_REST_Server::EDITABLE,
 				'callback' => array( $this, 'callback' ),
+				'permission_callback' => '__return_true'
+			)
+		);
+
+		register_rest_route(
+			self::ENDPOINT_NAMESPACE,
+			'/' . self::PAYNOW_CHARGE_STATUS_ENDPOINT,
+			array(
+				'methods' => WP_REST_Server::READABLE,
+				'callback' => array( $this, 'callback_paynow_payment_status' ),
 				'permission_callback' => '__return_true'
 			)
 		);
@@ -53,5 +68,22 @@ class Omise_Rest_Webhooks_Controller {
 		$event = $event->handle( $body['key'], $body['data'] );
 
 		return rest_ensure_response( $event );
+	}
+
+	/**
+	 * @param  WP_REST_Request $request
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function callback_paynow_payment_status($request) {
+		$order_id = $request->get_param('order_id');
+		if(isset( $order_id )) {
+			$order = new WC_Order( $order_id );
+			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
+			$data['status'] =  isset($charge) ? $charge['status'] : false;
+		} else {
+			$data['status'] =  false;
+		}
+		return rest_ensure_response( $data );
 	}
 }
