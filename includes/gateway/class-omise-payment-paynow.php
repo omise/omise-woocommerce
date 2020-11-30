@@ -99,7 +99,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 					</div>
 					<div class="completed" style="display:none">
 						<div class="green-check"></div>
-						<?php echo __( 'We\'ve recieved your payment.', 'omise' ); ?>
+						<?php echo __( 'We\'ve received your payment.', 'omise' ); ?>
 					</div>
 					<div class="timeout" style="display:none">
 						<?php echo __( 'Payment session timed out. You can still complete QR payment by scanning code sent on your email.', 'omise' ); ?>
