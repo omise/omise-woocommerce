@@ -82,3 +82,18 @@
         font-size: 85%;
     }
 }
+
+@media screen and (max-width:480px) {
+    .omise-billpayment-tesco-barcode-wrapper {
+        position: relative;
+        height: 700px;
+    }
+
+    .omise-billpayment-tesco-barcode {
+        transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+        position: absolute;
+        width: 650px;
+        margin-top: 250px;
+        z-index: -1;
+    }
+}
