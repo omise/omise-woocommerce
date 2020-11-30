@@ -95,56 +95,67 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 				</div>
 				<div class="omise-paynow-payment-status">
 					<div class="pending">
-						Waiting for payment <span id="time"></span>
+						<?php echo __( 'Waiting for payment. Session on this window for payment would timeout in <span id="timer">10:00</span> minutes.', 'omise' ); ?>
 					</div>
 					<div class="completed" style="display:none">
-						We've recieved your payment.
+						<div class="green-check"></div>
+						<?php echo __( 'We\'ve recieved your payment.', 'omise' ); ?>
+					</div>
+					<div class="timeout" style="display:none">
+						<?php echo __( 'Payment session timed out. You can still complete QR payment by scanning code sent on your email.', 'omise' ); ?>
 					</div>
 				</div>
 			</div>
 			<script type="text/javascript">
-				let xhr_param_name          = "?order_id="+"<?php echo $this->order->get_id() ?>";
+				var xhr_param_name          = "?order_id="+"<?php echo $this->order->get_id() ?>";
 				    refresh_status_url      = "<?php echo get_rest_url( null, 'omise/paynow-payment-status' ); ?>"+xhr_param_name;
 				    class_payment_pending   = document.getElementsByClassName("pending");
-				    class_payment_completed = document.getElementsByClassName("pending");
-						var refresh_payment_status = function(intervalIterator) {
-							var xmlhttp = new XMLHttpRequest();
-							xmlhttp.addEventListener("load", function() {
-								if (this.status == 200) {
-									var chargeState = JSON.parse(this.responseText);
-									if(chargeState.status == "successful") {
-										class_payment_pending[0].style.display = "none";
-										class_payment_completed[0].style.display.display = "block";
-										clearInterval(intervalIterator);
-									}
-								}
-							});
-							/*xmlhttp.onreadystatechange = function(data) {
-								
-							};*/
-							xmlhttp.open("GET", refresh_status_url, true);
-							xmlhttp.send();
-						},
-						intervalTime = function(duration, display) {
-							var timer    = duration, minutes, seconds;
-							intervalIterator = setInterval(function () {
-								minutes      = parseInt(timer / 60, 10);
-								seconds      = parseInt(timer % 60, 10);
-								minutes = minutes < 10 ? "0" + minutes : minutes;
-								seconds = seconds < 10 ? "0" + seconds : seconds;
-								display.textContent = minutes + ":" + seconds;
-								if (--timer < 0) {
-									timer = duration;
-								}
-								if((timer % 5) == 0 && timer >= 5) {
-									refresh_payment_status(intervalIterator);
-								}
-							}, 1000);
-						};
+				    class_payment_completed = document.getElementsByClassName("completed");
+					class_payment_timeout   = document.getElementsByClassName("timeout");
+					class_qr_image          = document.querySelector(".omise.omise-paynow-qrcode > img");
+
+				var refresh_payment_status = function(intervalIterator) {
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.addEventListener("load", function() {
+						if (this.status == 200) {
+							var chargeState = JSON.parse(this.responseText);
+							if(chargeState.status == "processing") {
+								class_qr_image.style.display = "none";
+								class_payment_pending[0].style.display = "none";
+								class_payment_completed[0].style.display = "block";
+								clearInterval(intervalIterator);
+							}
+						}
+					});
+					xmlhttp.open("GET", refresh_status_url, true);
+					xmlhttp.send();
+				},
+				intervalTime = function(duration, display) {
+					var timer    = duration, minutes, seconds;
+					intervalIterator = setInterval(function () {
+						minutes      = parseInt(timer / 60, 10);
+						seconds      = parseInt(timer % 60, 10);
+						minutes = minutes < 10 ? "0" + minutes : minutes;
+						seconds = seconds < 10 ? "0" + seconds : seconds;
+						display.textContent = minutes + ":" + seconds;
+						if (--timer < 0) {
+							timer = duration;
+						}
+						if((timer % 5) == 0 && timer >= 5) {
+							refresh_payment_status(intervalIterator);
+						}
+						if(timer == 0) {
+							class_payment_pending[0].style.display = "none";
+							class_payment_timeout[0].style.display = "block";
+							class_qr_image.style.display = "none";
+							clearInterval(intervalIterator);
+						}
+					}, 1000);
+				};
 
 				window.onload = function () {
-					var duration = 60 * 5,
-					    display  = document.querySelector('#time');
+					var duration = 60 * 10,
+					    display  = document.querySelector('#timer');
 					intervalTime(duration, display);
 				};
 			</script>

@@ -77,12 +77,12 @@ class Omise_Rest_Webhooks_Controller {
 	 */
 	public function callback_paynow_payment_status($request) {
 		$order_id = $request->get_param('order_id');
+		$data['status'] =  false;
 		if(isset( $order_id )) {
 			$order = new WC_Order( $order_id );
-			$charge = OmiseCharge::retrieve( $order->get_transaction_id() );
-			$data['status'] =  isset($charge) ? $charge['status'] : false;
-		} else {
-			$data['status'] =  false;
+			if(isset($order)) {
+				$data['status'] =  $order->get_status();
+			}
 		}
 		return rest_ensure_response( $data );
 	}
