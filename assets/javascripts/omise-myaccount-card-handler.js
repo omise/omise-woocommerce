@@ -60,9 +60,10 @@
 			}
 		});
 
-		let errors            = [],
-		    omise_card        = {},
-		    omise_card_fields = {
+		let errors                  = [],
+			omise_card              = {},
+			omise_card_number_field = 'number',
+		    omise_card_fields       = {
 				'name'             : $( '#omise_card_name' ),
 				'number'           : $( '#omise_card_number' ),
 				'expiration_month' : $( '#omise_card_expiration_month' ),
@@ -71,7 +72,8 @@
 			};
 
 		$.each( omise_card_fields, function( index, field ) {
-			omise_card[ index ] = field.val();
+			omise_card[ index ] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
+			//omise_card[ index ] = field.val();
 			if ( "" === omise_card[ index ] ) {
 				errors.push( omise_params[ 'required_card_' + index ] );
 			}
@@ -84,7 +86,7 @@
 			hideError();
 			if(Omise){
 				Omise.setPublicKey(omise_params.key);
-				Omise.createToken("card", card, function (statusCode, response) {
+				Omise.createToken("card", omise_card, function (statusCode, response) {
 				    if (statusCode == 200) {
 						$.each( omise_card_fields, function( index, field ) {
 							field.val( '' );
