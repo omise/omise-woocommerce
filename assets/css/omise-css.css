@@ -99,6 +99,21 @@ fieldset.card-exists {
 	margin: auto;
 }
 
+.omise-paynow-payment-status {
+	margin-top: 15px;
+}
+
+.omise-paynow-payment-status #timer {
+	font-weight: 700;
+}
+
+.omise-paynow-payment-status .green-check {
+	background: url('../images/green-check.svg') no-repeat;
+	height: 150px;
+	width: 116px;
+	margin: auto;
+}
+
 /**
  * 2). Components
  * (stylesheets that are designed generally and may be commonly used as a component).
