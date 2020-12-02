@@ -70,9 +70,10 @@
 					}
 				});
 
-				let errors            = [],
-				    omise_card        = {},
-				    omise_card_fields = {
+				let errors                  = [],
+					omise_card              = {},
+					omise_card_number_field = 'number',
+					omise_card_fields       = {
 						'name'             : $( '#omise_card_name' ),
 						'number'           : $( '#omise_card_number' ),
 						'expiration_month' : $( '#omise_card_expiration_month' ),
@@ -81,7 +82,7 @@
 					};
 
 				$.each( omise_card_fields, function( index, field ) {
-					omise_card[ index ] = field.val();
+					omise_card[ index ] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
 					if ( "" === omise_card[ index ] ) {
 						errors.push( omise_params[ 'required_card_' + index ] );
 					}
