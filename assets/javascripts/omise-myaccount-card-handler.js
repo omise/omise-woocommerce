@@ -73,7 +73,6 @@
 
 		$.each( omise_card_fields, function( index, field ) {
 			omise_card[ index ] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
-			//omise_card[ index ] = field.val();
 			if ( "" === omise_card[ index ] ) {
 				errors.push( omise_params[ 'required_card_' + index ] );
 			}
