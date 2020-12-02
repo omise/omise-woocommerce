@@ -73,7 +73,7 @@
 				let errors                  = [],
 					omise_card              = {},
 					omise_card_number_field = 'number',
-				    omise_card_fields       = {
+					omise_card_fields       = {
 						'name'             : $( '#omise_card_name' ),
 						'number'           : $( '#omise_card_number' ),
 						'expiration_month' : $( '#omise_card_expiration_month' ),
