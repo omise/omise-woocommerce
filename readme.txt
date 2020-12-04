@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.5.1
-Stable tag: 4.4
+Stable tag: 4.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,14 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.5 =
+
+#### 🚀 Enhancements
+- Removing name attribute from card payment form. (PR [#196](https://github.com/omise/omise-woocommerce/pull/196))
+- Rendering barcode in mobile phones vertically to avoid breakline. (PR [#197](https://github.com/omise/omise-woocommerce/pull/197))
+- Refresh QR payment screen once customer completes payment. (PR [#198](https://github.com/omise/omise-woocommerce/pull/198))
+- Auto formatting card numbers in input field on checkout page and My account page. (PR [#200](https://github.com/omise/omise-woocommerce/pull/200))
 
 = 4.4 =
 

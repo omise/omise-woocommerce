@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### [v4.5 _(Dec 04, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.5)
+
+#### 🚀 Enhancements
+- Removing name attribute from card payment form. (PR [#196](https://github.com/omise/omise-woocommerce/pull/196))
+- Rendering barcode in mobile phones vertically to avoid breakline. (PR [#197](https://github.com/omise/omise-woocommerce/pull/197))
+- Refresh QR payment screen once customer completes payment. (PR [#198](https://github.com/omise/omise-woocommerce/pull/198))
+- Auto formatting card numbers in input field on checkout page and My account page. (PR [#200](https://github.com/omise/omise-woocommerce/pull/200))
+
+---
+
 ### [v4.4 _(Nov 17, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.4)
 
 #### ✨ Highlights
