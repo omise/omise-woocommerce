@@ -15,7 +15,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 			__( 'Accept payments through <strong>PayNow</strong> via Omise payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
-
+		$this->supports           = array( 'products', 'refunds' );
 		$this->init_form_fields();
 		$this->init_settings();
 
