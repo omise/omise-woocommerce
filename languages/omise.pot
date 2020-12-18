@@ -460,25 +460,33 @@ msgstr ""
 msgid "Remember this card"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
+#: Plugin Name of the plugin/theme
 msgid "Omise Payment Gateway"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
+#: Plugin URI of the plugin/theme
 msgid "https://www.omise.co/woocommerce"
 msgstr ""
 
-#. Description of the plugin/theme
+#: Description of the plugin/theme
 msgid ""
 "Omise WooCommerce Gateway Plugin is a wordpress plugin designed "
 "specifically for WooCommerce. The plugin adds support for Omise Payment "
 "Gateway payment method to WooCommerce."
 msgstr ""
 
-#. Author of the plugin/theme
+#: Author of the plugin/theme
 msgid "Omise"
 msgstr ""
 
-#. Author URI of the plugin/theme
+#: Author URI of the plugin/theme
 msgid "https://www.omise.co"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-konbini.php:110
+msgid "Your payment code has been sent to your email"
+msgstr ""
+
+#: includes/gateway/class-omise-payment-konbini.php:115
+msgid "Please find the payment instruction there or click on the link below and complete the payment by <br/><strong>%s %s</strong>."
 msgstr ""

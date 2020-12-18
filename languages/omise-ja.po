@@ -7,13 +7,12 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-07-14 23:10+0700\n"
+"PO-Revision-Date: 2020-12-17 20:17+0700\n"
 "Language-Team: \n"
 "Poedit: \n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;"
+"esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
+"X-Generator: Poedit 2.4.2\n"
 "Last-Translator: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "Language: ja\n"
@@ -26,8 +25,7 @@ msgstr ""
 msgid "Accept payment through Alipay"
 msgstr "Omiseを通してアリペイ決済を提供します。"
 
-#: includes/gateway/class-omise-payment-alipay.php:42
-#: includes/gateway/class-omise-payment-creditcard.php:56
+#: includes/gateway/class-omise-payment-alipay.php:42 includes/gateway/class-omise-payment-creditcard.php:56
 #: includes/gateway/class-omise-payment-internetbanking.php:48
 msgid "Enable/Disable"
 msgstr "有効/無効"
@@ -36,14 +34,12 @@ msgstr "有効/無効"
 msgid "Enable Omise Alipay Payment"
 msgstr "Omiseのアリペイ決済を有効化します。"
 
-#: includes/gateway/class-omise-payment-alipay.php:49
-#: includes/gateway/class-omise-payment-creditcard.php:63
+#: includes/gateway/class-omise-payment-alipay.php:49 includes/gateway/class-omise-payment-creditcard.php:63
 #: includes/gateway/class-omise-payment-internetbanking.php:55
 msgid "Title"
 msgstr "タイトル"
 
-#: includes/gateway/class-omise-payment-alipay.php:51
-#: includes/gateway/class-omise-payment-creditcard.php:65
+#: includes/gateway/class-omise-payment-alipay.php:51 includes/gateway/class-omise-payment-creditcard.php:65
 #: includes/gateway/class-omise-payment-internetbanking.php:57
 msgid "This controls the title which the user sees during checkout."
 msgstr "入力内容は、購入者が支払いを行う際に表示します。"
@@ -52,112 +48,85 @@ msgstr "入力内容は、購入者が支払いを行う際に表示します。
 msgid "Alipay"
 msgstr ""
 
-#: includes/gateway/class-omise-payment-alipay.php:56
-#: includes/gateway/class-omise-payment-creditcard.php:70
+#: includes/gateway/class-omise-payment-alipay.php:56 includes/gateway/class-omise-payment-creditcard.php:70
 #: includes/gateway/class-omise-payment-internetbanking.php:62
 msgid "Description"
 msgstr "説明"
 
-#: includes/gateway/class-omise-payment-alipay.php:58
-#: includes/gateway/class-omise-payment-creditcard.php:72
+#: includes/gateway/class-omise-payment-alipay.php:58 includes/gateway/class-omise-payment-creditcard.php:72
 #: includes/gateway/class-omise-payment-internetbanking.php:64
 msgid "This controls the description which the user sees during checkout."
 msgstr "入力内容は、購入者が支払いを行う際に表示します。"
 
-#: includes/gateway/class-omise-payment-alipay.php:76
-#: includes/gateway/class-omise-payment-creditcard.php:179
+#: includes/gateway/class-omise-payment-alipay.php:76 includes/gateway/class-omise-payment-creditcard.php:179
 #: includes/gateway/class-omise-payment-internetbanking.php:92
 msgid ""
-"We cannot process your payment.<br/>Note that nothing wrong by you, this "
-"might be from our store issue.<br/><br/>Please feel free to try submit your "
-"order again or report our support team that you have found this problem "
-"(Your temporary order id is '%s')"
+"We cannot process your payment.<br/>Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to "
+"try submit your order again or report our support team that you have found this problem (Your temporary order id is '%s')"
 msgstr ""
-"決済処理が正しく完了しませんでした。<br/>ストアのシステムエラーの可能性がございます。<br/><br/>"
-"誠に恐れ入りますが、もう一度始めから試していただくか、サポートまでご報告ください。"
-"（お問い合わせの際は注文ID '%s') をご提示ください。）"
+"決済処理が正しく完了しませんでした。<br/>ストアのシステムエラーの可能性がございます。<br/><br/>誠に恐れ入りますが、もう一度始めから試し"
+"ていただくか、サポートまでご報告ください。（お問い合わせの際は注文ID '%s') をご提示ください。）"
 
 #: includes/gateway/class-omise-payment-alipay.php:88
 msgid "Omise: Processing a payment with Alipay solution.."
 msgstr "Omise: アリペイ決済"
 
-#: includes/gateway/class-omise-payment-alipay.php:99
-#: includes/gateway/class-omise-payment-creditcard.php:289
+#: includes/gateway/class-omise-payment-alipay.php:99 includes/gateway/class-omise-payment-creditcard.php:289
 #: includes/gateway/class-omise-payment-internetbanking.php:115
 msgid "Omise: Charge (ID: %s) has been created"
 msgstr "Omise: 課金（ID：%s）が作成されました。"
 
-#: includes/gateway/class-omise-payment-alipay.php:106
-#: includes/gateway/class-omise-payment-internetbanking.php:122
+#: includes/gateway/class-omise-payment-alipay.php:106 includes/gateway/class-omise-payment-internetbanking.php:122
 msgid "Omise: Redirecting buyer out to %s"
 msgstr "Omise: 購入者を %s にリダイレクトします。"
 
-#: includes/gateway/class-omise-payment-alipay.php:122
-#: includes/gateway/class-omise-payment-internetbanking.php:138
+#: includes/gateway/class-omise-payment-alipay.php:122 includes/gateway/class-omise-payment-internetbanking.php:138
 msgid ""
-"Please feel free to try submit your order again or contact our support team "
-"if you have any questions (Your temporary order id is '%s')"
+"Please feel free to try submit your order again or contact our support team if you have any questions (Your temporary order id is '%s')"
 msgstr ""
 
-#: includes/gateway/class-omise-payment-alipay.php:132
-#: includes/gateway/class-omise-payment-alipay.php:217
-#: includes/gateway/class-omise-payment-creditcard.php:375
-#: includes/gateway/class-omise-payment-creditcard.php:566
-#: includes/gateway/class-omise-payment-internetbanking.php:148
-#: includes/gateway/class-omise-payment-internetbanking.php:233
+#: includes/gateway/class-omise-payment-alipay.php:132 includes/gateway/class-omise-payment-alipay.php:217
+#: includes/gateway/class-omise-payment-creditcard.php:375 includes/gateway/class-omise-payment-creditcard.php:566
+#: includes/gateway/class-omise-payment-internetbanking.php:148 includes/gateway/class-omise-payment-internetbanking.php:233
 msgid "Seems we cannot process your payment properly:<br/>%s"
 msgstr ""
 
-#: includes/gateway/class-omise-payment-alipay.php:142
-#: includes/gateway/class-omise-payment-creditcard.php:385
+#: includes/gateway/class-omise-payment-alipay.php:142 includes/gateway/class-omise-payment-creditcard.php:385
 #: includes/gateway/class-omise-payment-internetbanking.php:158
 msgid "Omise: Payment failed, %s"
 msgstr ""
 
-#: includes/gateway/class-omise-payment-alipay.php:158
-#: includes/gateway/class-omise-payment-creditcard.php:492
+#: includes/gateway/class-omise-payment-alipay.php:158 includes/gateway/class-omise-payment-creditcard.php:492
 #: includes/gateway/class-omise-payment-internetbanking.php:174
 msgid ""
-"We cannot validate your payment result:<br/>Note that your payment might "
-"already has been processed. Please contact our support team if you have any "
-"questions."
+"We cannot validate your payment result:<br/>Note that your payment might already has been processed. Please contact our support team "
+"if you have any questions."
 msgstr ""
 
-#: includes/gateway/class-omise-payment-alipay.php:168
-#: includes/gateway/class-omise-payment-creditcard.php:502
+#: includes/gateway/class-omise-payment-alipay.php:168 includes/gateway/class-omise-payment-creditcard.php:502
 #: includes/gateway/class-omise-payment-internetbanking.php:184
 msgid "Omise: Validating the payment result.."
 msgstr "Omise: 決済処理の結果を返します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:180
 msgid ""
-"Omise: The payment has been processing.<br/>Due to the Alipay process, this "
-"might takes a few seconds or an hour. Please do a manual 'Sync Payment "
-"Status' action from the Order Actions panel or check the payment status "
-"directly at Omise dashboard again later"
+"Omise: The payment has been processing.<br/>Due to the Alipay process, this might takes a few seconds or an hour. Please do a manual "
+"'Sync Payment Status' action from the Order Actions panel or check the payment status directly at Omise dashboard again later"
 msgstr ""
-"Omise: 決済処理中です。<br/>"
-"アリペイ側の決済処理により、反映には数秒から1時間程かかる場合がございます。"
-"Order Actionsパネルから手動で「決済ステータスを同期する」を実行いただくか、またはOmiseダッシュボードにてご確認ください。"
+"Omise: 決済処理中です。<br/>アリペイ側の決済処理により、反映には数秒から1時間程かかる場合がございます。Order Actionsパネルから手動で"
+"「決済ステータスを同期する」を実行いただくか、またはOmiseダッシュボードにてご確認ください。"
 
-#: includes/gateway/class-omise-payment-alipay.php:196
-#: includes/gateway/class-omise-payment-creditcard.php:338
-#: includes/gateway/class-omise-payment-creditcard.php:532
-#: includes/gateway/class-omise-payment-internetbanking.php:212
+#: includes/gateway/class-omise-payment-alipay.php:196 includes/gateway/class-omise-payment-creditcard.php:338
+#: includes/gateway/class-omise-payment-creditcard.php:532 includes/gateway/class-omise-payment-internetbanking.php:212
 msgid "Omise: Payment successful.<br/>An amount %1$s %2$s has been paid"
-msgstr "Omise: 決済が完了しました。<br/>"
-"%1$s %2$sが支払われました。"
+msgstr "Omise: 決済が完了しました。<br/>%1$s %2$sが支払われました。"
 
-#: includes/gateway/class-omise-payment-alipay.php:212
-#: includes/gateway/class-omise-payment-creditcard.php:361
+#: includes/gateway/class-omise-payment-alipay.php:212 includes/gateway/class-omise-payment-creditcard.php:361
 #: includes/gateway/class-omise-payment-internetbanking.php:228
-msgid ""
-"Note that your payment might already has been processed. Please contact our "
-"support team if you have any questions."
+msgid "Note that your payment might already has been processed. Please contact our support team if you have any questions."
 msgstr ""
 
-#: includes/gateway/class-omise-payment-alipay.php:228
-#: includes/gateway/class-omise-payment-creditcard.php:577
+#: includes/gateway/class-omise-payment-alipay.php:228 includes/gateway/class-omise-payment-creditcard.php:577
 #: includes/gateway/class-omise-payment-internetbanking.php:244
 msgid "Omise: Payment failed.<br/>%s"
 msgstr "Omise: 決済が完了できませんでした。<br/>%s"
@@ -167,9 +136,7 @@ msgid "Omise Credit / Debit Card"
 msgstr ""
 
 #: includes/gateway/class-omise-payment-creditcard.php:23
-msgid ""
-"Accept payment through <strong>Credit / Debit Card</strong> via Omise "
-"payment gateway."
+msgid "Accept payment through <strong>Credit / Debit Card</strong> via Omise payment gateway."
 msgstr "Omiseを通してクレジットカード決済を利用します。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:58
@@ -189,12 +156,10 @@ msgid "Payment action"
 msgstr "決済処理"
 
 #: includes/gateway/class-omise-payment-creditcard.php:84
-msgid ""
-"Capture automatically during the checkout process or manually after order "
-"has been placed"
+msgid "Capture automatically during the checkout process or manually after order has been placed"
 msgstr ""
-"カード認証と売上確定のタイミングをずらす場合はマニュアルキャプチャ、与信枠確"
-"保後ただちに売上確定をする場合はオートキャプチャを選択してください。"
+"カード認証と売上確定のタイミングをずらす場合はマニュアルキャプチャ、与信枠確保後ただちに売上確定をする場合はオートキャプチャを選択して"
+"ください。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:88
 msgid "Auto Capture"
@@ -209,34 +174,24 @@ msgid "3-D Secure payment"
 msgstr "3Dセキュア（二要素認証）"
 
 #: includes/gateway/class-omise-payment-creditcard.php:96
-msgid ""
-"Enabling 3-D Secure payment means that buyer will be redirected to the 3-D "
-"Secure authorization page during the checkout process."
-msgstr ""
-"3Dセキュアは、購入者が決済情報を入力後、カード発行会社のアカウントログイン情"
-"報の入力を求める事によりセキュリティを強化します。"
+msgid "Enabling 3-D Secure payment means that buyer will be redirected to the 3-D Secure authorization page during the checkout process."
+msgstr "3Dセキュアは、購入者が決済情報を入力後、カード発行会社のアカウントログイン情報の入力を求める事によりセキュリティを強化します。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:98
 msgid ""
-"Please be informed that you must contact Omise support team (support@omise."
-"co) before enable or disable this option.<br/> (Japan-based accounts are not "
-"eligible for the service.)"
+"Please be informed that you must contact Omise support team (support@omise.co) before enable or disable this option.<br/> (Japan-based "
+"accounts are not eligible for the service.)"
 msgstr ""
-"本オプションのご利用を希望される方は、Omiseサポートチーム(support@omise.co)ま"
-"でご連絡ください。<br/>なお、誠に恐れ入りますが、日本国内の加盟店様は現在ご利"
-"用いただけません。"
+"本オプションのご利用を希望される方は、Omiseサポートチーム(support@omise.co)までご連絡ください。<br/>なお、誠に恐れ入りますが、日本国内"
+"の加盟店様は現在ご利用いただけません。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:104
 msgid "Supported card icons"
 msgstr "ご利用可能ブランド"
 
 #: includes/gateway/class-omise-payment-creditcard.php:134
-msgid ""
-"This only controls the icons displayed on the checkout page.<br />It is not "
-"related to card processing on Omise payment gateway."
-msgstr ""
-"ご提供可能なカードブランドのアイコンを決済画面に表示できます。<br/>本項目の選"
-"択内容は、カード処理システムには影響いたしません。"
+msgid "This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway."
+msgstr "ご提供可能なカードブランドのアイコンを決済画面に表示できます。<br/>本項目の選択内容は、カード処理システムには影響いたしません。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:191
 msgid "Omise: Processing a payment with Credit Card solution.."
@@ -248,32 +203,28 @@ msgstr ""
 
 #: includes/gateway/class-omise-payment-creditcard.php:206
 msgid ""
-"Cannot process with a card that you're using. Please make sure that the card "
-"info is correct or contact our support team if you have any questions."
+"Cannot process with a card that you're using. Please make sure that the card info is correct or contact our support team if you have "
+"any questions."
 msgstr ""
 
 #: includes/gateway/class-omise-payment-creditcard.php:250
 msgid ""
-"Note that nothing wrong by you, this might be from our store issue.<br/><br/"
-">Please feel free to try submit your order again or report our support team "
-"that you have found this problem (Your temporary order id is '%s')"
+"Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report "
+"our support team that you have found this problem (Your temporary order id is '%s')"
 msgstr ""
 
 #: includes/gateway/class-omise-payment-creditcard.php:303
-msgid ""
-"Omise: Processing with a 3-D Secure payment, redirecting buyer out to %s"
+msgid "Omise: Processing with a 3-D Secure payment, redirecting buyer out to %s"
 msgstr "Omise: 3Dセキュアによる二要素認証のため、購入者を %s にリダイレクトします。"
 
-#: includes/gateway/class-omise-payment-creditcard.php:320
-#: includes/gateway/class-omise-payment-creditcard.php:514
+#: includes/gateway/class-omise-payment-creditcard.php:320 includes/gateway/class-omise-payment-creditcard.php:514
 msgid "Omise: Payment processing.<br/>An amount %1$s %2$s has been authorized"
 msgstr ""
 
 #: includes/gateway/class-omise-payment-creditcard.php:411
 msgid ""
-"We cannot process your refund.<br/>Note that nothing wrong by you, this "
-"might be from the store issue.<br/><br/>Please feel try to create a refund "
-"again or report our support team that you have found this problem"
+"We cannot process your refund.<br/>Note that nothing wrong by you, this might be from the store issue.<br/><br/>Please feel try to "
+"create a refund again or report our support team that you have found this problem"
 msgstr ""
 
 #: includes/gateway/class-omise-payment-creditcard.php:423
@@ -288,8 +239,7 @@ msgstr ""
 msgid "Omise: Refunded an amount %1$s %2$s.<br/>Refund id is %3$s"
 msgstr ""
 
-#: includes/gateway/class-omise-payment-creditcard.php:466
-#: includes/gateway/class-omise-payment-creditcard.php:477
+#: includes/gateway/class-omise-payment-creditcard.php:466 includes/gateway/class-omise-payment-creditcard.php:477
 msgid "Omise: Refund failed.<br/>%s"
 msgstr ""
 
@@ -298,9 +248,7 @@ msgid "Omise Internet Banking"
 msgstr ""
 
 #: includes/gateway/class-omise-payment-internetbanking.php:23
-msgid ""
-"Accept payment through <strong>Internet Banking</strong> via Omise payment "
-"gateway (only available in Thailand)."
+msgid "Accept payment through <strong>Internet Banking</strong> via Omise payment gateway (only available in Thailand)."
 msgstr "Omiseを通してインターネットバンキングを提供します（現在、タイ契約加盟店様のみご利用可能です）"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:50
@@ -317,14 +265,11 @@ msgstr "Omise: インターネットバンキング"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:196
 msgid ""
-"Omise: The payment has been processing.<br/>Due to the Bank process, this "
-"might takes a few seconds or an hour. Please do a manual 'Sync Payment "
-"Status' action from the Order Actions panel or check the payment status "
-"directly at Omise dashboard again later"
+"Omise: The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or an hour. Please do a manual "
+"'Sync Payment Status' action from the Order Actions panel or check the payment status directly at Omise dashboard again later"
 msgstr ""
-"Omise: 決済は処理中です。<br/>"
-"銀行側の決済処理により、反映には数秒から1時間程度かかる場合がございます。"
-"Order Actionsバネルから手動で「決済ステータスを同期する」を実行いただくか、またはOmiseダッシュボードにてご確認ください。"
+"Omise: 決済は処理中です。<br/>銀行側の決済処理により、反映には数秒から1時間程度かかる場合がございます。Order Actionsバネルから手動で"
+"「決済ステータスを同期する」を実行いただくか、またはOmiseダッシュボードにてご確認ください。"
 
 #: includes/gateway/class-omise-payment.php:57
 msgid "Payment Settings"
@@ -332,24 +277,19 @@ msgstr "設定"
 
 #: includes/gateway/class-omise-payment.php:61
 msgid ""
-"All of your keys can be found at your Omise dashboard, check the following "
-"links.<br/><a href=\"%s\">Test keys</a> or <a href=\"%s\">Live keys</a> "
-"(login required)"
+"All of your keys can be found at your Omise dashboard, check the following links.<br/><a href=\"%s\">Test keys</a> or <a href=\"%s"
+"\">Live keys</a> (login required)"
 msgstr ""
-"加盟店毎に付与されるAPIキーはOmiseダッシュボードから取得できます（アカウント"
-"ログイン必須）<br/><a href=\"%s\">テストキー</a>（テスト環境）<a href=\"%s\">"
-"ライブキー</a>（商用環境）"
+"加盟店毎に付与されるAPIキーはOmiseダッシュボードから取得できます（アカウントログイン必須）<br/><a href=\"%s\">テストキー</a>（テスト環"
+"境）<a href=\"%s\">ライブキー</a>（商用環境）"
 
 #: includes/gateway/class-omise-payment.php:73
 msgid "Test mode"
 msgstr "テストモード"
 
 #: includes/gateway/class-omise-payment.php:75
-msgid ""
-"Enabling test mode means that all your transactions will be performed under "
-"the Omise test account."
-msgstr ""
-"テストモードを有効化すると、全取引がOmiseテストアカウント下で実行されます。"
+msgid "Enabling test mode means that all your transactions will be performed under the Omise test account."
+msgstr "テストモードを有効化すると、全取引がOmiseテストアカウント下で実行されます。"
 
 #: includes/gateway/class-omise-payment.php:80
 msgid "Public key for test"
@@ -368,9 +308,7 @@ msgid "Secret key for live"
 msgstr "ライブモード用シークレットキー"
 
 #: includes/gateway/class-omise-payment.php:261
-msgid ""
-"Omise: Payment successful (manual capture).<br/>An amount %1$s %2$s has been "
-"paid"
+msgid "Omise: Payment successful (manual capture).<br/>An amount %1$s %2$s has been paid"
 msgstr ""
 
 #: includes/gateway/class-omise-payment.php:273
@@ -383,21 +321,17 @@ msgstr ""
 
 #: includes/gateway/class-omise-payment.php:326
 msgid ""
-"Omise: Payment is still in progress.<br/>You might wait for a moment before "
-"click sync the status again or contact Omise support team at support@omise."
-"co if you have any questions (manual sync)."
+"Omise: Payment is still in progress.<br/>You might wait for a moment before click sync the status again or contact Omise support team "
+"at support@omise.co if you have any questions (manual sync)."
 msgstr ""
 
 #: includes/gateway/class-omise-payment.php:337
-msgid ""
-"Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual "
-"sync)."
+msgid "Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync)."
 msgstr ""
 
 #: includes/gateway/class-omise-payment.php:353
 msgid ""
-"Cannot read the payment status. Please try sync again or contact Omise "
-"support team at support@omise.co if you have any questions."
+"Cannot read the payment status. Please try sync again or contact Omise support team at support@omise.co if you have any questions."
 msgstr ""
 
 #: includes/gateway/class-omise-payment.php:359
@@ -456,8 +390,7 @@ msgstr ""
 msgid "Krungthai Bank"
 msgstr ""
 
-#: templates/payment/form-internetbanking.php:26
-#: templates/payment/form-internetbanking.php:40
+#: templates/payment/form-internetbanking.php:26 templates/payment/form-internetbanking.php:40
 msgid "Fee: 15 THB (same zone), 15 THB (out zone)"
 msgstr ""
 
@@ -485,25 +418,33 @@ msgstr "新しいカードを登録する"
 msgid "Remember this card"
 msgstr "カード情報を保存する"
 
-#. Plugin Name of the plugin/theme
+#: Plugin Name of the plugin/theme
 msgid "Omise Payment Gateway"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
+#: Plugin URI of the plugin/theme
 msgid "https://www.omise.co/woocommerce"
 msgstr ""
 
-#. Description of the plugin/theme
+#: Description of the plugin/theme
 msgid ""
-"Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically "
-"for WooCommerce. The plugin adds support for Omise Payment Gateway payment "
-"method to WooCommerce."
+"Omise WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Omise "
+"Payment Gateway payment method to WooCommerce."
 msgstr ""
 
-#. Author of the plugin/theme
+#: Author of the plugin/theme
 msgid "Omise"
 msgstr ""
 
-#. Author URI of the plugin/theme
+#: Author URI of the plugin/theme
 msgid "https://www.omise.co"
 msgstr ""
+
+#: includes/gateway/class-omise-payment-konbini.php:110
+msgid "Your payment code has been sent to your email"
+msgstr "お客様のメールに決済コードが送信されました。"
+
+#: includes/gateway/class-omise-payment-konbini.php:115
+msgid "Please find the payment instruction there or click on the link below and complete the payment by <br/><strong>%s %s</strong>."
+msgstr ""
+"そちらの案内から決済方法をご確認いただくか、下記のリンクをクリックして以下の日時までにお支払いを完了してください <br/><strong>%s %s</strong>"
