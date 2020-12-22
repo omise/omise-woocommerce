@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### [v4.6 _(Dec 23, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.6)
+
+#### 🚀 Enhancements
+- Updating translation for Japanese language in konbini payment. (PR [#204](https://github.com/omise/omise-woocommerce/pull/204))
+- Adding support to online refunds in paynow. (PR [#202](https://github.com/omise/omise-woocommerce/pull/202))
+- Run tests using GitHub Actions. (PR [#203](https://github.com/omise/omise-woocommerce/pull/203))
+
 ### [v4.5 _(Dec 04, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.5)
 
 #### 🚀 Enhancements
