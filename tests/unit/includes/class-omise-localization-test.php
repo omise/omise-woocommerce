@@ -34,4 +34,22 @@ class Omise_Localization_Test extends TestCase {
 		$message = 'unrecognized message';
 		$this->assertEquals( $message, Omise_Localization::translate( $message ) );
 	}
+
+	/**
+	 * @test
+	 */
+	public function translate_payment_rejected_message() {
+		$message = 'payment rejected';
+		$translated_message = 'Payment rejected, please try again and make sure the card info is entered correctly. If the issue persists, please change to another card or contact your bank.';
+		$this->assertEquals( $translated_message, Omise_Localization::translate( $message ) );
+	}
+
+	/**
+	 * @test
+	 */
+	public function translate_failed_processing_message() {
+		$message = 'failed processing';
+		$translated_message = 'Payment encountered an unexpected error, please try again later.';
+		$this->assertEquals( $translated_message, Omise_Localization::translate( $message ) );
+	}
 }
