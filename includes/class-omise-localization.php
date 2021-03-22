@@ -39,7 +39,7 @@ class Omise_Localization {
 				=> __( 'failed fraud check', 'omise' ),
 
 			'failed processing'
-				=> __( 'failed processing', 'omise' ),
+				=> __( 'Payment encountered an unexpected error, please try again later.', 'omise' ),
 
 			'insufficient funds in the account or the card has reached the credit limit'
 				=> __( 'insufficient funds in the account or the card has reached the credit limit', 'omise' ),
@@ -54,7 +54,7 @@ class Omise_Localization {
 				=> __( 'name cannot be blank, email is in invalid format, and phone_number must contain 10-11 digit characters', 'omise' ),
 
 			'payment rejected'
-				=> __( 'payment rejected', 'omise' ),
+				=> __( 'Payment rejected, please try again and make sure the card info is entered correctly. If the issue persists, please change to another card or contact your bank.', 'omise' ),
 
 			'phone_number must contain 10-11 digit characters'
 				=> __( 'phone_number must contain 10-11 digit characters', 'omise' ),
