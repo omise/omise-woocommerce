@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.7 _(Mar 23, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.7)
+
+#### 🚀 Enhancements
+- Updating the error message mapping for payment_rejected and failed_processing error codes. (PR [#207](https://github.com/omise/omise-woocommerce/pull/207))
+
 ### [v4.6 _(Dec 23, 2020)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.6)
 
 #### 🚀 Enhancements
