@@ -1,6 +1,6 @@
 <?php
 
-define('OMISE_PHP_LIB_VERSION', '2.11.2');
+define('OMISE_PHP_LIB_VERSION', '2.13.0');
 define('OMISE_API_URL', 'https://api.omise.co/');
 define('OMISE_VAULT_URL', 'https://vault.omise.co/');
 
@@ -57,7 +57,7 @@ class OmiseApiResource extends OmiseObject
     }
 
     /**
-     * Creates the resource with given parameters.in an associative array.
+     * Creates the resource with given parameters in an associative array.
      *
      * @param  string $clazz
      * @param  string $url
@@ -86,10 +86,25 @@ class OmiseApiResource extends OmiseObject
      *
      * @throws Exception|OmiseException
      */
-    protected function g_update($url, $params)
+    protected function g_update($url, $params = null)
     {
         $result = $this->execute($url, self::REQUEST_PATCH, $this->getResourceKey(), $params);
         $this->refresh($result);
+    }
+
+    /**
+     * Set the resource to expire.
+     *
+     * @param  string $url
+     *
+     * @throws Exception|OmiseException
+     *
+     * @return OmiseApiResource
+     */
+    protected function g_expire($url)
+    {
+        $result = $this->execute($url, self::REQUEST_POST, $this->getResourceKey());
+        $this->refresh($result, true);
     }
 
     /**
@@ -104,6 +119,19 @@ class OmiseApiResource extends OmiseObject
     protected function g_destroy($url)
     {
         $result = $this->execute($url, self::REQUEST_DELETE, $this->getResourceKey());
+        $this->refresh($result, true);
+    }
+
+    /**
+     * Revokes the resource.
+     *
+     * @param  string $url
+     *
+     * @throws Exception|OmiseException
+     */
+    protected function g_revoke($url)
+    {
+        $result = $this->execute($url, self::REQUEST_POST, $this->getResourceKey());
         $this->refresh($result, true);
     }
 
@@ -281,9 +309,7 @@ class OmiseApiResource extends OmiseObject
             // Time before the request is aborted when attempting to connect.
             CURLOPT_CONNECTTIMEOUT => $this->OMISE_CONNECTTIMEOUT,
             // Authentication.
-            CURLOPT_USERPWD        => $userpwd,
-            // CA bundle.
-            CURLOPT_CAINFO         => dirname(__FILE__).'/../../../data/ca_certificates.pem'
+            CURLOPT_USERPWD        => $userpwd
         );
 
         // Config Omise API Version
