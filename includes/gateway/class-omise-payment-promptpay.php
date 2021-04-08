@@ -90,6 +90,8 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		$expires_datetime = new WC_DateTime( $charge['expires_at'], new DateTimeZone( 'UTC' ) );
 		$expires_datetime->set_utc_offset( wc_timezone_offset() );
 
+		$nonce = wp_create_nonce( OmisePluginHelperWcOrder::get_order_key_by_id( $order ) );
+
 		if ( 'view' === $context ) : ?>
 			<div id="omise-offline-additional-details" class="omise omise-additional-payment-details-box omise-promptpay-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
@@ -153,7 +155,8 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 								dataType: 'json',
 								data: {
 									'action': 'fetch_order_status',
-									'order_id': '<?php echo $order; ?>'
+									'order_id': '<?php echo $order; ?>',
+									'nonce': '<?php echo $nonce ?>'
 								},
 								success: function( response ) {
 									if ( 'processing' === response.data.order_status ) {

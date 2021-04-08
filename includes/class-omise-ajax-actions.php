@@ -17,7 +17,13 @@ class Omise_Ajax_Actions {
      * @see    Omise::register_ajax_actions()
      */
     public static function fetch_order_status() {
-        $order = wc_get_order( $_POST['order_id'] );
-        wp_send_json_success( array( 'order_status' => $order->get_status() ) );
+        $order_id = wc_get_order( $_POST['order_id'] );
+        $order_key = OmisePluginHelperWcOrder::get_order_key_by_id( $order_id );
+
+        if ( ! wp_verify_nonce( $_POST['nonce'], $order_key ) ) {
+            die ( 'Busted!');
+        }
+
+        wp_send_json_success( array( 'order_status' => $order_id->get_status() ) );
     }
 }
