@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.7.0
-Stable tag: 4.7
+Stable tag: 4.8
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
