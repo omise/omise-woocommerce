@@ -33,6 +33,15 @@ From there:
 
 == Changelog ==
 
+= 4.8 =
+
+#### 🚀 Enhancements
+- Change the minimum amount for installment payments from 3000 to 2000 THB. (PR [#210](https://github.com/omise/omise-woocommerce/pull/210))
+- Update Omise-PHP library from v2.11.2 to v2.13.0. (PR [#211](https://github.com/omise/omise-woocommerce/pull/211))
+
+#### 👾 Bug Fixes
+- Fix CVE-2020-29156 security vulnerability. (PR [#213](https://github.com/omise/omise-woocommerce/pull/213))
+
 = 4.7 =
 
 #### 🚀 Enhancements
