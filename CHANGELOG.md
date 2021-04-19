@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### [v4.8 _(Mar 23, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.7)
+### [v4.8 _(Apr 19, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.8)
 
 #### 🚀 Enhancements
 - Change the minimum amount for installment payments from 3000 to 2000 THB. (PR [#210](https://github.com/omise/omise-woocommerce/pull/210))
