@@ -82,6 +82,10 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 
 		$charge_id = $this->get_charge_id_from_order();
 		$charge    = OmiseCharge::retrieve( $charge_id );
+		if ( self::STATUS_PENDING !== $charge['status'] ) {
+			return;
+		}
+
 		$qrcode    = $charge['source']['scannable_code']['image']['download_uri'];
 
 		if ( 'view' === $context ) : ?>
