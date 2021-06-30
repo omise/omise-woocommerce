@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### [v4.9 _(Jun 30, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.9)
+
+#### 🚀 Enhancements
+- Update min amount for installment bay and kbank (PR [#218](https://github.com/omise/omise-woocommerce/pull/218))
+- Remove QR from email when charge is no longer pending (PR [#219](https://github.com/omise/omise-woocommerce/pull/219))
+- Enable credit/debit card payment methods in WooCommerce for MY (PR [#220](https://github.com/omise/omise-woocommerce/pull/220))
+
 ### [v4.8 _(Apr 19, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.8)
 
 #### 🚀 Enhancements
