@@ -25,7 +25,7 @@ class Omise_Payment_Creditcard extends Omise_Payment {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->payment_action       = $this->get_option( 'payment_action' );
-		$this->restricted_countries = array( 'TH', 'JP', 'SG' );
+		$this->restricted_countries = array( 'TH', 'JP', 'SG', 'MY' );
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
