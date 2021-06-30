@@ -30,7 +30,7 @@ class Omise_Backend_Installment extends Omise_Backend {
 				'bank_code'          => 'bay',
 				'title'              => __( 'Krungsri', 'omise' ),
 				'interest_rate'      => 0.8,
-				'min_allowed_amount' => 300.00,
+				'min_allowed_amount' => 500.00,
 			),
 
 			'installment_ktc' => array(
@@ -51,7 +51,7 @@ class Omise_Backend_Installment extends Omise_Backend {
 				'bank_code'          => 'kbank',
 				'title'              => __( 'Kasikorn Bank', 'omise' ),
 				'interest_rate'      => 0.65,
-				'min_allowed_amount' => 500.00,
+				'min_allowed_amount' => 300.00,
 			),
 
 			'installment_scb' => array(

@@ -11,6 +11,45 @@ class Omise_Backend_Installment_Test extends TestCase {
 	/**
 	 * @test
 	 */
+	public function get_only_valid_plans_from_given_bay_allowed_installment_terms() {
+		$installment_backend = new Omise_Backend_Installment();
+		$purchase_amount     = 2000.00;
+		$allowed_terms       = array( 3, 4, 6, 9, 10 );
+		$interest_rate       = 0.8;
+		$min_allowed_amount  = 500.00;
+
+		$result = $installment_backend->get_available_plans( $purchase_amount, $allowed_terms, $interest_rate, $min_allowed_amount );
+
+		$this->assertEquals( 2, count( $result ) );
+		$this->assertEquals( array(
+			array( 'term_length' => 3, 'monthly_amount' => 682.67 ),
+			array( 'term_length' => 4, 'monthly_amount' => 516.00 ),
+		), $result );
+	}
+	
+	/**
+	 * @test
+	 */
+	public function get_only_valid_plans_from_given_kbank_allowed_installment_terms() {
+		$installment_backend = new Omise_Backend_Installment();
+		$purchase_amount     = 2000.00;
+		$allowed_terms       = array( 3, 4, 6, 10 );
+		$interest_rate       = 0.65;
+		$min_allowed_amount  = 300.00;
+
+		$result = $installment_backend->get_available_plans( $purchase_amount, $allowed_terms, $interest_rate, $min_allowed_amount );
+
+		$this->assertEquals( 3, count( $result ) );
+		$this->assertEquals( array(
+			array( 'term_length' => 3, 'monthly_amount' => 679.67 ),
+			array( 'term_length' => 4, 'monthly_amount' => 513.00 ),
+			array( 'term_length' => 6, 'monthly_amount' => 346.33 ),
+		), $result );
+	}
+
+	/**
+	 * @test
+	 */
 	public function get_only_valid_plans_from_given_scb_allowed_installment_terms() {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 2000.00;
