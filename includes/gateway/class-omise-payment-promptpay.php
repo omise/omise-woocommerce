@@ -28,7 +28,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		wp_enqueue_script(
 			'omise-download-promptpay-as-png',
 			plugins_url( '../assets/javascripts/omise-download-promptpay-as-png.js', dirname( __FILE__ ) ),
-			array( 'jquery', 'canvg' ),
+			array( 'jquery' ),
 			WC_VERSION,
 			true
 		);
