@@ -115,6 +115,31 @@ fieldset.card-exists {
 }
 
 /**
+* Omise Promptpay
+*/
+@media all and (min-width: 768px) {
+	.omise-promptpay-qrcode > img {
+		max-width: 300px !important;
+	}
+}
+
+.omise-download-promptpay-qr {
+	display: inline-block;
+	color: white !important;
+	padding: 6px 12px;
+	font-weight: bold;
+	background-color: #1A53F0;
+	border-radius: 4px;
+	margin-bottom: 0.75rem;
+	cursor: pointer;
+}
+
+.omise-download-promptpay-qr:hover {
+	background-color: #0c3abb;
+}
+
+
+/**
  * 2). Components
  * (stylesheets that are designed generally and may be commonly used as a component).
  */
