@@ -6,7 +6,12 @@
             e.preventDefault();
 
             var svg = document.querySelector('svg');
-            downloadSvg(svg, "qr_code.png");
+
+            // Because of a Webkit (Safari) bug, where it won't fetch images from the SVG in time the first time around,
+            // we have to render the PNG twice or it will give us an empty PNG the first time :'(
+            // Similar issue: https://github.com/exupero/saveSvgAsPng/issues/223
+            downloadSvg(svg, "qr_code.png", false);
+            setTimeout(function(){ downloadSvg(svg, "qr_code.png", true); }, 10);
         }
     });
 
@@ -29,7 +34,7 @@
                  child.style.setProperty(style[st], style.getPropertyValue(style[st]));
             }
         }
-     }
+    }
      
     function triggerDownload (imgURI, fileName) {
         var evt = new MouseEvent("click", {
@@ -44,25 +49,24 @@
         a.dispatchEvent(evt);
     }
     
-    function downloadSvg(svg, fileName) {
+    function downloadSvg(svg, fileName, toTriggerDownload) {
         var copy = svg.cloneNode(true);
         copyStylesInline(copy, svg);
-        var canvas = document.createElement("canvas");
-        var bbox = svg.getBBox();
-        canvas.width = bbox.width;
-        canvas.height = bbox.height;
-        var ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, bbox.width, bbox.height);
         var data = (new XMLSerializer()).serializeToString(copy);
-        var DOMURL = window.URL || window.webkitURL || window;
+        var url = "data:image/svg+xml;utf8," + encodeURIComponent(data);
         var img = new Image();
-        var svgBlob = new Blob([data], {type: "image/svg+xml;charset=utf-8"});
-        var url = DOMURL.createObjectURL(svgBlob);
+        img.src = url;
+
         img.onload = function () {
+            var canvas = document.createElement("canvas");
+            var bbox = svg.getBBox();
+            canvas.width = bbox.width;
+            canvas.height = bbox.height;
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, bbox.width, bbox.height);
+
             ctx.drawImage(img, 0, 0);
-            DOMURL.revokeObjectURL(url);
-            if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob)
-            {
+            if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
                 var blob = canvas.msToBlob();         
                 navigator.msSaveOrOpenBlob(blob, fileName);
             } 
@@ -70,10 +74,11 @@
                 var imgURI = canvas
                     .toDataURL("image/png")
                     .replace("image/png", "image/octet-stream");
-                triggerDownload(imgURI, fileName);
+                if (toTriggerDownload) {
+                    triggerDownload(imgURI, fileName);
+                }
             }
         };
-        img.src = url;
     }
 }
 )(jQuery);
