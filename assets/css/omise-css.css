@@ -117,8 +117,14 @@ fieldset.card-exists {
 /**
 * Omise Promptpay
 */
+
+.omise-qr-image > svg {
+	max-width: 100%;
+	height: auto;
+}
+
 @media all and (min-width: 768px) {
-	.omise-promptpay-qrcode > img {
+	.omise-qr-image > svg {
 		max-width: 300px !important;
 	}
 }

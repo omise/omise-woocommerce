@@ -25,6 +25,18 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		$this->restricted_countries = array( 'TH' );
 		$this->source_type          = 'promptpay';
 
+		$this->register_omise_promptpay_scripts();
+
+		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
+		add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_qrcode' ) );
+		add_action( 'woocommerce_email_after_order_table', array( $this, 'email_qrcode' ) );
+	}
+
+	/**
+	 * Register all scripts
+	 */
+	public function register_omise_promptpay_scripts() {
 		wp_enqueue_script(
 			'omise-download-promptpay-as-png',
 			plugins_url( '../assets/javascripts/omise-download-promptpay-as-png.js', dirname( __FILE__ ) ),
@@ -32,11 +44,6 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 			WC_VERSION,
 			true
 		);
-
-		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
-		add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_qrcode' ) );
-		add_action( 'woocommerce_email_after_order_table', array( $this, 'email_qrcode' ) );
 	}
 
 	/**
@@ -78,7 +85,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		
 		$svg_file_new = substr($svg_file, $position);
 		
-		echo "<div id='qr-image' style='display:none;'>" . $svg_file_new . "</div>";
+		echo "<div class='omise-qr-image'>" . $svg_file_new . "</div>";
 	}
 
 	/**
@@ -117,10 +124,9 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		if ( 'view' === $context ) : ?>
 			<div id="omise-offline-additional-details" class="omise omise-additional-payment-details-box omise-promptpay-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
-				<div class="omise omise-promptpay-qrcode">
-					<img style="margin: 0 auto;" src="<?php echo $qrcode; ?>" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
+				<div class="omise omise-promptpay-qrcode" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
+					<?php $this->load_qr_svg_to_DOM($qrcode) ?>
 				</div>
-				<?php $this->load_qr_svg_to_DOM($qrcode) ?>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr">Download QR</a>
 				<div>
 					<?php echo __( 'Payment expires in: ', 'omise' ); ?>
@@ -198,7 +204,6 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 								complete: function (response ) {
 									if ( validatePaymentResultCount * intervalTime >= maxIntervalTime ) {
 										elementTimeoutMessage.fadeIn();
-										console.log('stop');
 										return;
 									}
 								}

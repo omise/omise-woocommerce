@@ -2,12 +2,18 @@
     'use strict';
     
     $('a#omise-download-promptpay-qr').click(function(e) {
-        e.preventDefault();
+        if (isCanvasSupported()) {
+            e.preventDefault();
 
-        var svg = document.querySelector('svg');
-        $("#qr-image").show();
-        downloadSvg(svg, "qr_code.png");
+            var svg = document.querySelector('svg');
+            downloadSvg(svg, "qr_code.png");
+        }
     });
+
+    function isCanvasSupported() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
 
     function copyStylesInline(destinationNode, sourceNode) {
         var containerElements = ["svg","g"];
@@ -66,9 +72,7 @@
                     .replace("image/png", "image/octet-stream");
                 triggerDownload(imgURI, fileName);
             }
-            document.removeChild(canvas);
         };
-        $("#qr-image").hide();
         img.src = url;
     }
 }
