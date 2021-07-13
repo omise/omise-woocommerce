@@ -36,7 +36,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	/**
 	 * Register all scripts
 	 */
-	public function register_omise_promptpay_scripts() {
+	private function register_omise_promptpay_scripts() {
 		wp_enqueue_script(
 			'omise-download-promptpay-as-png',
 			plugins_url( '../assets/javascripts/omise-download-promptpay-as-png.js', dirname( __FILE__ ) ),
@@ -77,7 +77,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	/**
 	 * @param string $url	url for the QR SVG image
 	 */
-	public function load_qr_svg_to_DOM($url) {
+	private function load_qr_svg_to_DOM($url) {
 		$svg_file = file_get_contents($url);
 
 		$find_string   = '<svg';
@@ -127,7 +127,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 				<div class="omise omise-promptpay-qrcode" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
 					<?php $this->load_qr_svg_to_DOM($qrcode) ?>
 				</div>
-				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr">Download QR</a>
+				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>
 				<div>
 					<?php echo __( 'Payment expires in: ', 'omise' ); ?>
 					<?php echo wc_format_datetime( $expires_datetime, wc_date_format() ); ?>
