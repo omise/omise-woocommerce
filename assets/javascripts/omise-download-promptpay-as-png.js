@@ -11,7 +11,9 @@
             // we have to render the PNG twice or it will give us an empty PNG the first time :'(
             // Similar issue: https://github.com/exupero/saveSvgAsPng/issues/223
             downloadSvg(svg, "qr_code.png", false);
-            setTimeout(function(){ downloadSvg(svg, "qr_code.png", true); }, 10);
+            setTimeout(function(){
+                downloadSvg(svg, "qr_code.png", true);
+            }, 10);
         }
     });
 
