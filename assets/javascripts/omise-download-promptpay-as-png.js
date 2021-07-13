@@ -8,7 +8,7 @@
             var svg = document.querySelector('svg');
 
             // Because of a Webkit (Safari) bug, where it won't fetch images from the SVG in time the first time around,
-            // we have to render the PNG twice or it will give us an empty PNG the first time :'(
+            // we have to render the PNG twice or it will give us a PNG without the logo and QR code the first time :'(
             // Similar issue: https://github.com/exupero/saveSvgAsPng/issues/223
             downloadSvg(svg, "qr_code.png", false);
             setTimeout(function(){
