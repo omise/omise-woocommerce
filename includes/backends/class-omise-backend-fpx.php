@@ -1,15 +1,8 @@
 <?php
 /**
- * Note: all calculations in this class are based only on Thailand VAT and fee
- *       as currently Installment feature supported only for merchants
- *       that have registered with Omise Thailand account.
- *
- * @since 3.4
  *
  * @method public initiate
- * @method public get_available_providers
- * @method public get_available_plans
- * @method public calculate_monthly_payment_amount
+ * @method public get_available_banks
  */
 class Omise_Backend_FPX extends Omise_Backend {
 	/**
