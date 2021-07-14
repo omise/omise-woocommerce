@@ -19,7 +19,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'MY' );
-    $this->backend     = new Omise_Backend_FPX;
+    $this->backend     					= new Omise_Backend_FPX;
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -76,7 +76,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 	 * @inheritdoc
 	 */
 	public function charge( $order_id, $order ) {
-    $source_bank       = isset( $_POST['source']['bank'] ) ? $_POST['source']['bank'] : '';
+    $source_bank	= isset( $_POST['source']['bank'] ) ? $_POST['source']['bank'] : '';
 
 		$metadata = array_merge(
 			apply_filters( 'omise_charge_params_metadata', array(), $order ),
