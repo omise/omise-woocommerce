@@ -148,15 +148,17 @@ ul.omise-banks-list {
 }
 
 .omise-banks-list input[type="radio"] + label::before {
-	position: absolute;
-	top: 14px;
-	left: 14px;
+	position: relative;
 }
 
 .omise-banks-list .item {
 	position: relative;
 	padding: 14px 0;
 	border-bottom: 1px solid #eee;
+}
+
+.omise-banks-list .item.fpx:first-child {
+	padding-top: 20px;
 }
 
 .omise-banks-list .item:first-child {
@@ -186,6 +188,12 @@ ul.omise-banks-list {
 	vertical-align: top;
 }
 
+.omise-banks-list .fpx-bank-label {
+	display: inline-block;
+	width: 180px;
+	vertical-align: middle;
+}
+
 .omise-banks-list .bank-logo {
 	display: inline-block;
 	width: 32px;
@@ -193,6 +201,15 @@ ul.omise-banks-list {
 	margin-top: 4px;
 	border-radius: 2px;
 	border: 4px solid #fff;
+}
+
+.omise-banks-list .fpx-bank-logo {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	vertical-align: middle;
+	margin-right: 5px;
+	margin-left: 5px;
 }
 
 /** Media Quries **/
@@ -282,3 +299,102 @@ ul.omise-banks-list {
 	background: url('../images/scb.svg') #4e2e7f;
 	border-color: #4e2e7f;
 }
+
+/**
+fpx bank logos
+**/
+.fpx-bank-logo.affin_test,.fpx-bank-logo.affin {
+	background: url('../images/fpx-affin.svg');
+}
+
+.fpx-bank-logo.agro {
+	background: url('../images/fpx-agronet.svg');
+}
+
+.fpx-bank-logo.alliance {
+	background: url('../images/fpx-alliance.svg');
+}
+
+.fpx-bank-logo.ambank {
+	background: url('../images/fpx-ambank.svg');
+}
+
+.fpx-bank-logo.islam {
+	background: url('../images/fpx-islam.svg');
+}
+
+.fpx-bank-logo.muamalat {
+	background: url('../images/fpx-muamalat.svg');
+}
+
+.fpx-bank-logo.rakyat {
+	background: url('../images/fpx-rakyat.svg');
+}
+
+.fpx-bank-logo.bsn {
+	background: url('../images/fpx-bsn.svg');
+}
+
+.fpx-bank-logo.cimb {
+	background: url('../images/fpx-cimb.svg');
+}
+
+.fpx-bank-logo.citi {
+	background: url('../images/fpx-citi.svg');
+}
+
+.fpx-bank-logo.hongleong {
+	background: url('../images/fpx-hongleong.svg');
+}
+
+.fpx-bank-logo.hsbc {
+	background: url('../images/fpx-hsbc.svg');
+}
+
+.fpx-bank-logo.public {
+	background: url('../images/fpx-publicbank.svg');
+}
+
+.fpx-bank-logo.rhb {
+	background: url('../images/fpx-rhb.svg');
+}
+
+.fpx-bank-logo.sbc_a,.fpx-bank-logo.sbc_b,.fpx-bank-logo.sbc_c {
+	background: url('../images/fpx-unknown.svg');
+}
+
+.fpx-bank-logo.sc {
+	background: url('../images/fpx-sc.svg');
+}
+
+.fpx-bank-logo.uob {
+	background: url('../images/fpx-uob.svg');
+}
+
+.fpx-bank-logo.ocbc {
+	background: url('../images/fpx-ocbc.svg');
+}
+
+.fpx-bank-logo.kfh {
+	background: url('../images/fpx-kfh.svg');
+}
+
+.fpx-bank-logo.maybank2e,.fpx-bank-logo.maybank2u {
+	background: url('../images/fpx-maybank.svg');
+}
+
+.omise-offline {
+	color: #aaa;
+	font-size: 80%;
+	float: right;
+}
+
+.omise-offline > p{
+line-height: 2;
+}
+
+.offline {
+	padding: 0 0 0 75px !important;
+	margin-bottom:0px !important;
+}
+

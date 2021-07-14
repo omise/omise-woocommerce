@@ -15,6 +15,7 @@ class Omise_Payment_Factory {
 	public static $payment_methods = array(
 		'Omise_Payment_Alipay',
 		'Omise_Payment_Billpayment_Tesco',
+		'Omise_Payment_FPX',
 		'Omise_Payment_Creditcard',
 		'Omise_Payment_Installment',
 		'Omise_Payment_Internetbanking',
