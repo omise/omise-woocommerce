@@ -76,7 +76,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 	 * @inheritdoc
 	 */
 	public function charge( $order_id, $order ) {
-    $source_bank	= isset( $_POST['source']['bank'] ) ? $_POST['source']['bank'] : '';
+		$source_bank	= isset( $_POST['source']['bank'] ) ? $_POST['source']['bank'] : '';
 
 		$metadata = array_merge(
 			apply_filters( 'omise_charge_params_metadata', array(), $order ),
@@ -94,9 +94,9 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-      'source'      => array( 'type' => 'fpx' ),
-      'source'            => array(
-				'type'              => 'fpx',
+			'source'      => array( 'type' => 'fpx' ),
+			'source'      => array(
+				'type'      => 'fpx',
 				'bank' => sanitize_text_field( $source_bank ),
 			),
 			'return_uri'  => $return_uri,
