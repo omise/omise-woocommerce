@@ -46,6 +46,19 @@ class Omise_Capabilities {
 		return $this->capabilities->getBackends( $params );
 	}
 
+
+	/**
+	 * Retrieves details of fpx bank list from capabilities.
+	 *
+	 * @return string
+	 */
+	public function getFPXBanks() {
+		$params   = array();
+		$params[] = $this->capabilities->backendFilter['type']('fpx');
+	
+		return $this->capabilities->getBackends( $params );
+	}
+
 	/**
 	 * @return bool  True if merchant absorbs the interest or else, false.
 	 */
