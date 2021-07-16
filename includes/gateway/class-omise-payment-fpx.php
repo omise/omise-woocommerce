@@ -8,7 +8,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		parent::__construct();
 
 		$this->id                 = 'omise_fpx';
-		$this->has_fields         = false;
+		$this->has_fields         = true;
 		$this->method_title       = __( 'Omise FPX', 'omise' );
 		$this->method_description = __( 'Accept payment through FPX', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
