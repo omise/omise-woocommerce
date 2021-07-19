@@ -46,7 +46,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 				'title'       => __( 'Title', 'omise' ),
 				'type'        => 'text',
 				'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
-				'default'     => __( 'FPX', 'omise' ),
+				'default'     => __( 'Online Banking by Omise', 'omise' ),
 			),
 
 			'description' => array(
