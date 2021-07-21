@@ -18,8 +18,8 @@
 </fieldset>
 
 <script type="text/javascript">
-	let phone_number_field   = document.getElementById( 'omise_phone_number_field' );
-	let phone_number_default = document.getElementById( 'omise_phone_number_default' );
+	var phone_number_field   = document.getElementById( 'omise_phone_number_field' );
+	var phone_number_default = document.getElementById( 'omise_phone_number_default' );
 
 	phone_number_default.addEventListener( 'change', ( e ) => {
 		phone_number_field.style.display = e.target.checked ? "none" : "block";
