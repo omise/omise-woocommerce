@@ -4,6 +4,8 @@
 
 #### 🚀 Enhancements
 - Introducing FPX payment method (only available in Malaysia) (PR [#223](https://github.com/omise/omise-woocommerce/pull/223))
+- Fix PromptPay QR viewing issue after downloading from email (PR [#222](https://github.com/omise/omise-woocommerce/pull/222))
+- Fix phone number input box not showing (PR [#225](https://github.com/omise/omise-woocommerce/pull/225))
 
 ### [v4.9 _(Jun 30, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.9)
 
