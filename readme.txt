@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.9.0
-Stable tag: 4.9
+Stable tag: 4.10
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,15 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.10 =
+
+#### 🚀 Enhancements
+- Introducing FPX payment method (only available in Malaysia) (PR [#223](https://github.com/omise/omise-woocommerce/pull/223))
+
+#### 👾 Bug Fixes
+- Fix PromptPay QR viewing issue after downloading from email (PR [#222](https://github.com/omise/omise-woocommerce/pull/222))
+- Fix phone number input box not showing (PR [#225](https://github.com/omise/omise-woocommerce/pull/225))
 
 = 4.9 =
 
