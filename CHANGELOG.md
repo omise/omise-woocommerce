@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### [v4.10 _(Jun 30, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.9)
+### [v4.10 _(Jul 21, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.10)
 
 #### 🚀 Enhancements
 - Introducing FPX payment method (only available in Malaysia) (PR [#223](https://github.com/omise/omise-woocommerce/pull/223))
