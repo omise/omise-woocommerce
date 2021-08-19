@@ -22,7 +22,9 @@ class Omise_Payment_Factory {
 		'Omise_Payment_Konbini',
 		'Omise_Payment_Paynow',
 		'Omise_Payment_Promptpay',
-		'Omise_Payment_Truemoney'
+		'Omise_Payment_Truemoney',
+		'Omise_Payment_Alipay_China',
+		'Omise_Payment_Alipay_Hk',
 	);
 
 	/**
