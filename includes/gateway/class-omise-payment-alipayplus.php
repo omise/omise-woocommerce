@@ -98,7 +98,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'source'      => array( 'type' => $this->wallet_source, 'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent()) ),
 			'return_uri'  => $return_uri,
-			'metadata'    => array( 'type' => $this->wallet_source, 'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent()) )
+			'metadata'    => $metadata
 		) );
 	}
 }
