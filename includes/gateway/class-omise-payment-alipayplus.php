@@ -27,7 +27,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 		$this->wallet_title = $wallet_title;
 		$this->wallet_countries = $wallet_countries;
 
-		$this->id                 = 'omise_' . $source;
+		$this->id                 = 'omise_' . $wallet_source;
 		$this->has_fields         = false;
 		$this->method_title       = __( 'Omise ' . $wallet_title, 'omise' );
 		$this->method_description = wp_kses(
@@ -65,7 +65,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 				'title'       => __( 'Title', 'omise' ),
 				'type'        => 'text',
 				'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
-				'default'     => __( $this->wallet_title, 'omise' ),
+				'default'     => __( $this->wallet_title . ' (Alipay+™ Partner)', 'omise' ),
 			),
 
 			'description' => array(
@@ -96,9 +96,9 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => $this->wallet_source ),
+			'source'      => array( 'type' => $this->wallet_source, 'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent()) ),
 			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
+			'metadata'    => array( 'type' => $this->wallet_source, 'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent()) )
 		) );
 	}
 }
@@ -107,7 +107,7 @@ class Omise_Payment_Alipay_China extends Omise_Payment_Alipayplus {
 	public function __construct() {
 		$source = 'alipay_cn';
 		$title = 'Alipay';
-		$countries = array( 'TH', 'JP', 'MY', 'SG' );
+		$countries = array( 'SG' );
 		parent::__construct($source, $title, $countries);
 	}
 }
@@ -116,7 +116,43 @@ class Omise_Payment_Alipay_Hk extends Omise_Payment_Alipayplus {
 	public function __construct() {
 		$source = 'alipay_hk';
 		$title = 'AlipayHK';
-		$countries = array( 'TH', 'JP', 'MY', 'SG' );
+		$countries = array( 'SG' );
+		parent::__construct($source, $title, $countries);
+	}
+}
+
+class Omise_Payment_Dana extends Omise_Payment_Alipayplus {
+	public function __construct() {
+		$source = 'dana';
+		$title = 'DANA';
+		$countries = array( 'SG' );
+		parent::__construct($source, $title, $countries);
+	}
+}
+
+class Omise_Payment_Gcash extends Omise_Payment_Alipayplus {
+	public function __construct() {
+		$source = 'gcash';
+		$title = 'GCash';
+		$countries = array( 'SG' );
+		parent::__construct($source, $title, $countries);
+	}
+}
+
+class Omise_Payment_Kakaopay extends Omise_Payment_Alipayplus {
+	public function __construct() {
+		$source = 'kakaopay';
+		$title = 'Kakao Pay';
+		$countries = array( 'SG' );
+		parent::__construct($source, $title, $countries);
+	}
+}
+
+class Omise_Payment_TouchNGo extends Omise_Payment_Alipayplus {
+	public function __construct() {
+		$source = 'touch_n_go';
+		$title = 'TNG eWallet';
+		$countries = array( 'SG' );
 		parent::__construct($source, $title, $countries);
 	}
 }
