@@ -24,12 +24,12 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 		 * Outputs platform type of IOS, ANDROID or null for our source API.
 		 * @param string $userAgent (normally $_SERVER['HTTP_USER_AGENT'])
 		 */
-		public static function get_platform_type($userAgent) {
-			if ( preg_match("/(Android)/i", $userAgent) ) {
+		public static function get_platform_type( $userAgent ) {
+			if ( preg_match( "/(Android)/i", $userAgent ) ) {
 				return "ANDROID";
 			}
 			
-			if ( preg_match("/(iPad|iPhone|iPod)/i", $userAgent) ) {
+			if ( preg_match( "/(iPad|iPhone|iPod)/i", $userAgent ) ) {
 				return 'IOS';
 			}
 
