@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.11 _(Aug 25, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.11)
+
+#### 🚀 Enhancements
+- Add Alipay+ wallets (Only available in Singapore currently) (PR [#227](https://github.com/omise/omise-woocommerce/pull/227))
+
 ### [v4.10 _(Jul 21, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.10)
 
 #### 🚀 Enhancements
