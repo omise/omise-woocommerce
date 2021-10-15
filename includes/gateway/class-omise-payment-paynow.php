@@ -27,7 +27,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 		add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_qrcode' ) );
-		add_action( 'woocommerce_email_after_order_table', array( $this, 'email_qrcode' ) );
+		add_action( 'woocommerce_email_after_order_table', array( $this, 'email_qrcode' ), 10, 2);
 	}
 
 	/**
@@ -65,7 +65,11 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 	 * @see   woocommerce/templates/emails/email-order-details.php
 	 * @see   woocommerce/templates/emails/plain/email-order-details.php
 	 */
-	public function email_qrcode( $order ) {
+	public function email_qrcode( $order, $sent_to_admin = false ) {
+	  if ( $sent_to_admin ) {
+  		return;
+  	}
+
 		if ( $this->id == $order->get_payment_method() ) {
 			$this->display_qrcode( $order, 'email' );
 		}
