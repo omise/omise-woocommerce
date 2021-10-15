@@ -27,7 +27,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
 		add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'display_qrcode' ) );
-		add_action( 'woocommerce_email_after_order_table', array( $this, 'email_qrcode' ), 10, 2);
+		add_action( 'woocommerce_email_after_order_table', array( $this, 'email_qrcode' ), 10, 2 );
 	}
 
 	/**
