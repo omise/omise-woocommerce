@@ -83,7 +83,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
     }
 
 	public function disable_merchant_order_on_hold_email( $recipient, $order ) {
-		if ($order->get_status() == 'on-hold') $recipient = '';
+		if (is_a($order, 'WC_Order') && $order->get_status() == 'on-hold') $recipient = '';
 		return $recipient;
 	}
 
