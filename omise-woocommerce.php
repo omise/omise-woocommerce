@@ -7,6 +7,8 @@
  * Author:      Omise and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
+ * WC requires at least: 3.3.4
+ * WC tested up to: 5.7.0
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
  */
