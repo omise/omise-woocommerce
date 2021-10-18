@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### [v4.12 _(Oct 18, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.12)
+
+#### 👾 Bug Fixes
+- Fix Paynow QR sent in new order email to merchant (PR [#229](https://github.com/omise/omise-woocommerce/pull/229))
+- No longer send email to merchant when order status is on hold (PR [#230](https://github.com/omise/omise-woocommerce/pull/230))
+
 ### [v4.11 _(Aug 25, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.11)
 
 #### 🚀 Enhancements
