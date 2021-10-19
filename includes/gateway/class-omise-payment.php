@@ -69,6 +69,10 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		'USD' => 100
 	);
 
+	private $processing_notification = array(
+		'omise_paynow' => true,
+	);
+
 	/**
 	 * @var WC_Order|null
 	 */
@@ -79,11 +83,30 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$this->payment_settings = $this->omise_settings->get_settings();
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'omise_checkout_assets' ) );
+        add_action( 'woocommerce_order_status_processing', array($this, 'email_processing_admin_notification'), 10, 2 );
 		add_filter( 'woocommerce_email_recipient_new_order', array($this, 'disable_merchant_order_on_hold_email'), 10, 2 );
     }
 
+    /**
+     * Due to payment method like paynow the new order email was disable then customize plugin to send when processing instead
+     * but need to resend for other payment method otherwise merchant will get duplicate email once new order created
+     * @param string $order_id
+     * @param string|WC_Order $order
+     */
+    public function email_processing_admin_notification( $order_id, $order ) {
+        if ( $this->processing_notification[ $order->get_payment_method() ] ) {
+            WC()->mailer()->get_emails()['WC_Email_New_Order']->trigger( $order_id );
+        }
+    }
+
+    /**
+     * Due to payment method like paynow the email send to merchant with status on-hold will confuse the merchant so let's disable
+     * @param string $recipient
+     * @param string|WC_Order $order
+     * @return mixed|string
+     */
 	public function disable_merchant_order_on_hold_email( $recipient, $order ) {
-		if (is_a($order, 'WC_Order') && $order->get_status() == 'on-hold') $recipient = '';
+		if (is_a($order, 'WC_Order') && $order->get_status() == 'on-hold' ) $recipient = '';
 		return $recipient;
 	}
 

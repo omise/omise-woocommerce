@@ -66,9 +66,9 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 	 * @see   woocommerce/templates/emails/plain/email-order-details.php
 	 */
 	public function email_qrcode( $order, $sent_to_admin = false ) {
-	  if ( $sent_to_admin ) {
-  		return;
-  	}
+		if ( $sent_to_admin ) {
+			return;
+		}
 
 		if ( $this->id == $order->get_payment_method() ) {
 			$this->display_qrcode( $order, 'email' );
