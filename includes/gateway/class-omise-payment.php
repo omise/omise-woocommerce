@@ -69,6 +69,9 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		'USD' => 100
 	);
 
+	/**
+	 * NOTE: once add new payment method like paynow which need external application to scan QR code we need to update this!!
+	 */
 	private $processing_notification = array(
 		'omise_paynow' => true,
 	);
