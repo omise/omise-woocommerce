@@ -99,7 +99,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		}
 	}
 
-    /**
+	/**
 	 * Due to payment method like paynow the email send to merchant with status on-hold will confuse the merchant so let's disable
 	 * @param string $recipient
 	 * @param string|WC_Order $order
