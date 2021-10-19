@@ -70,16 +70,11 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	);
 
 	/**
-	 * NOTE: once add new payment method like paynow which need external application to scan QR code we need to update this!!
-	 */
-	private $processing_notification = array(
-		'omise_paynow' => true,
-	);
-
-	/**
 	 * @var WC_Order|null
 	 */
 	protected $order;
+
+	protected $enabled_processing_notification = false;
 
 	public function __construct() {
 		$this->omise_settings   = Omise()->settings();
@@ -97,7 +92,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @param string|WC_Order $order
 	 */
 	public function email_processing_admin_notification( $order_id, $order ) {
-		if ( $this->processing_notification[ $order->get_payment_method() ] ) {
+		$payment_gateway = wc_get_payment_gateway_by_order( $order );
+		if (is_a( $payment_gateway, 'Omise_Payment' ) && $payment_gateway->enabled_processing_notification) {
 			WC()->mailer()->get_emails()['WC_Email_New_Order']->trigger( $order_id );
 		}
 	}
