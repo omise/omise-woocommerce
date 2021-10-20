@@ -290,7 +290,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		}
 	}
 
-	/**	
+	/**
 	 * Retrieve a charge by a given charge id (that attach to an order).
 	 * Find some diff, then merge it back to WooCommerce system.
 	 *
