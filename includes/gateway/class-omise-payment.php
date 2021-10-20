@@ -74,18 +74,16 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	protected $order;
 
+	protected $enabled_processing_notification = false;
+
 	public function __construct() {
 		$this->omise_settings   = Omise()->settings();
 		$this->payment_settings = $this->omise_settings->get_settings();
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'omise_checkout_assets' ) );
-		add_filter( 'woocommerce_email_recipient_new_order', array($this, 'disable_merchant_order_on_hold_email'), 10, 2 );
+		add_action( 'woocommerce_order_status_processing', 'OmisePluginHelperMailer::processing_admin_notification', 10, 2 );
+		add_filter( 'woocommerce_email_recipient_new_order', 'OmisePluginHelperMailer::disable_merchant_order_on_hold', 10, 2 );
     }
-
-	public function disable_merchant_order_on_hold_email( $recipient, $order ) {
-		if ($order->get_status() == 'on-hold') $recipient = '';
-		return $recipient;
-	}
 
 	/**
 	 * Register all required javascripts
@@ -292,7 +290,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		}
 	}
 
-	/**	
+	/**
 	 * Retrieve a charge by a given charge id (that attach to an order).
 	 * Find some diff, then merge it back to WooCommerce system.
 	 *
