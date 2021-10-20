@@ -74,6 +74,12 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	protected $order;
 
+    /**
+     * Fact for woocommerce to consider sending email to merchant whenever order status change to processing which will disable by default
+     * See: Omise_Payment_Paynow
+     *
+     * @var bool
+     */
 	protected $enabled_processing_notification = false;
 
 	public function __construct() {
@@ -524,4 +530,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			return $value[0];
 		}
 	}
+
+    /**
+	 * Getter method for enabled_processing_notification
+	 *
+     * @return bool
+     */
+    public function is_enabled_processing_notification(): bool
+    {
+        return $this->enabled_processing_notification;
+    }
 }
