@@ -7,9 +7,9 @@ if (! class_exists('OmisePluginHelperMailer')) {
          * @param string $order_id
          * @param string|WC_Order $order
          */
-        public static function processing_admin_notification($charge) {
+        public static function processing_admin_notification( $order_id, $order ) {
             $payment_gateway = wc_get_payment_gateway_by_order( $order );
-            if (is_a( $payment_gateway, 'Omise_Payment' ) && $payment_gateway->enabled_processing_notification) {
+            if (is_a( $payment_gateway, 'Omise_Payment' ) && $payment_gateway->is_enabled_processing_notification()) {
                 WC()->mailer()->get_emails()['WC_Email_New_Order']->trigger( $order_id );
             }
         }
