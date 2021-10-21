@@ -2,7 +2,8 @@
 ### [v4.14 _(Oct 21, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.14)
 
 #### 👾 Bug Fixes
-- No longer send email to merchant when order status is on hold (PR [#232](https://github.com/omise/omise-woocommerce/pull/232))
+- No longer sends email to merchant when order status is on hold (PR [#232](https://github.com/omise/omise-woocommerce/pull/232))
+- Sends email to merchant when order status changes from on hold to processing (PR [#233](https://github.com/omise/omise-woocommerce/pull/233))
 
 ### [v4.13 _(Oct 18, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.13)
 
