@@ -6,7 +6,7 @@
 
 ### [v4.13 _(Oct 18, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.13)
 
-- Revert changes
+- Revert breaking change which causes the email configuration page to freeze
 
 ### [v4.12 _(Oct 18, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.12)
 
