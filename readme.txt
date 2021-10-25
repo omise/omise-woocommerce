@@ -41,7 +41,7 @@ From there:
 
 = 4.13 =
 
-- Revert breaking change which causes the email configuration page to freeze
+- Revert breaking changes in v4.12 which causes the email configuration page to freeze
 
 = 4.12 =
 
