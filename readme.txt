@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.9.0
-Stable tag: 4.12
+Stable tag: 4.14
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,16 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.14 =
+
+#### 👾 Bug Fixes
+- No longer sends email to merchant when order status is on hold (PR [#232](https://github.com/omise/omise-woocommerce/pull/232))
+- Sends email to merchant when order status changes from on hold to processing (PR [#233](https://github.com/omise/omise-woocommerce/pull/233))
+
+= 4.13 =
+
+- Revert breaking changes in v4.12 which causes the email configuration page to freeze
 
 = 4.12 =
 
