@@ -16,6 +16,8 @@ abstract class Omise_Payment_Offline extends Omise_Payment {
 	 */
 	protected $source_type;
 
+	protected $enabled_processing_notification = true;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -54,7 +56,7 @@ abstract class Omise_Payment_Offline extends Omise_Payment {
 				'redirect' => $this->get_return_url( $order )
 			);
 		}
-		
+
 		return $this->payment_failed(
 			sprintf(
 				__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
