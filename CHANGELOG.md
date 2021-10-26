@@ -1,4 +1,12 @@
 # CHANGELOG
+### [v4.15 _(Oct 26, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.15)
+
+#### 🚀 Enhancements
+- Add support for Citi, Maybank (EzyPay), UOB, and TTB Installment (PR [#236](https://github.com/omise/omise-woocommerce/pull/236))
+
+#### 👾 Bug Fixes
+- Allow offline payment methods to send email when order status changes to processing (PR [#237](https://github.com/omise/omise-woocommerce/pull/237))
+
 ### [v4.14 _(Oct 21, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.14)
 
 #### 👾 Bug Fixes
