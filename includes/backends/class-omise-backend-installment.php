@@ -60,28 +60,28 @@ class Omise_Backend_Installment extends Omise_Backend {
 				'min_allowed_amount' => 500.00,
 			),
 
-      'installment_citi' => array(
+			'installment_citi' => array(
 				'bank_code'          => 'citi',
 				'title'              => __( 'Citibank', 'omise' ),
 				'interest_rate'      => 0,
 				'min_allowed_amount' => 500.00,
 			),
 
-      'installment_ttb' => array(
+			'installment_ttb' => array(
 				'bank_code'          => 'ttb',
 				'title'              => __( 'TMBThanachart Bank', 'omise' ),
 				'interest_rate'      => 0,
 				'min_allowed_amount' => 500.00,
 			),
 
-      'installment_uob' => array(
+			'installment_uob' => array(
 				'bank_code'          => 'uob',
 				'title'              => __( 'United Overseas Bank', 'omise' ),
 				'interest_rate'      => 0,
 				'min_allowed_amount' => 500.00,
 			),
 
-      'installment_ezypay' => array(
+			'installment_ezypay' => array(
 				'bank_code'          => 'ezypay',
 				'title'              => __( 'Maybank (EzyPay)', 'omise' ),
 				'interest_rate'      => 0,
@@ -115,9 +115,9 @@ class Omise_Backend_Installment extends Omise_Backend {
 			);
 		}
 
-    usort( $providers, function( $a, $b ) {
-      return strcmp( $a->provider_name, $b->provider_name );
-    });
+		usort( $providers, function( $a, $b ) {
+			return strcmp( $a->provider_name, $b->provider_name );
+		});
 
 		return $providers;
 	}

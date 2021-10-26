@@ -106,7 +106,7 @@ class Omise_Backend_Installment_Test extends TestCase {
 		), $result );
 	}
 
-  /**
+	/**
 	 * @test
 	 */
 	public function get_only_valid_plans_from_zero_interest_installments() {
