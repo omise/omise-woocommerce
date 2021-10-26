@@ -22,7 +22,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
-		$this->restricted_countries = array( 'TH' );
+		$this->restricted_countries = array( 'TH', 'MY' );
 
 		$this->backend     = new Omise_Backend_Installment;
 

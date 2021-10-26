@@ -1,8 +1,7 @@
 <?php
 /**
- * Note: all calculations in this class are based only on Thailand VAT and fee
- *       as currently Installment feature supported only for merchants
- *       that have registered with Omise Thailand account.
+ * Note: The calculations in this class depend on the countries that
+ *       the available installment payments are based on.
  *
  * @since 3.4
  *
@@ -60,6 +59,34 @@ class Omise_Backend_Installment extends Omise_Backend {
 				'interest_rate'      => 0.74,
 				'min_allowed_amount' => 500.00,
 			),
+
+      'installment_citi' => array(
+				'bank_code'          => 'citi',
+				'title'              => __( 'Citibank', 'omise' ),
+				'interest_rate'      => 0,
+				'min_allowed_amount' => 500.00,
+			),
+
+      'installment_ttb' => array(
+				'bank_code'          => 'ttb',
+				'title'              => __( 'TMBThanachart Bank', 'omise' ),
+				'interest_rate'      => 0,
+				'min_allowed_amount' => 500.00,
+			),
+
+      'installment_uob' => array(
+				'bank_code'          => 'uob',
+				'title'              => __( 'United Overseas Bank', 'omise' ),
+				'interest_rate'      => 0,
+				'min_allowed_amount' => 500.00,
+			),
+
+      'installment_ezypay' => array(
+				'bank_code'          => 'ezypay',
+				'title'              => __( 'Maybank (EzyPay)', 'omise' ),
+				'interest_rate'      => 0,
+				'min_allowed_amount' => 500.00,
+			),
 		);
 	}
 
@@ -70,8 +97,8 @@ class Omise_Backend_Installment extends Omise_Backend {
 	 * @return array  of an available installment providers
 	 */
 	public function get_available_providers( $currency, $purchase_amount ) {
-		// Note: as installment payment at the moment only supports for THB currency, so the 
-		//       $purchase_amount is multiplied with 100 to convert the amount into subunit (satang).
+		// Note: As installment payment at the moment only supports THB and MYR currency, the 
+		//       $purchase_amount is multiplied with 100 to convert the amount into subunit (satang and sen).
 		$providers = $this->capabilities()->getInstallmentBackends( $currency, ( $purchase_amount * 100 ) );
 
 		foreach ( $providers as &$provider ) {
@@ -87,6 +114,10 @@ class Omise_Backend_Installment extends Omise_Backend {
 				$provider_detail['min_allowed_amount']
 			);
 		}
+
+    usort( $providers, function( $a, $b ) {
+      return strcmp( $a->provider_name, $b->provider_name );
+    });
 
 		return $providers;
 	}
