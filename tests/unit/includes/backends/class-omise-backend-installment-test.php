@@ -109,6 +109,25 @@ class Omise_Backend_Installment_Test extends TestCase {
 	/**
 	 * @test
 	 */
+	public function get_only_valid_plans_from_zero_interest_installments() {
+		$installment_backend = new Omise_Backend_Installment();
+		$purchase_amount     = 2000.00;
+		$allowed_terms       = array( 3, 4, 5 );
+		$interest_rate       = 0;
+		$min_allowed_amount  = 500.00;
+
+		$result = $installment_backend->get_available_plans( $purchase_amount, $allowed_terms, $interest_rate, $min_allowed_amount );
+
+		$this->assertEquals( 2, count( $result ) );
+		$this->assertEquals( array(
+			array( 'term_length' => 3, 'monthly_amount' => 666.67 ),
+			array( 'term_length' => 4, 'monthly_amount' => 500.00 ),
+		), $result );
+	}
+
+	/**
+	 * @test
+	 */
 	public function correctly_calculating_monthly_payment_amount_as_buyer_absorbs_case_1() {
 		$installment_backend = new Omise_Backend_Installment();
 		$purchase_amount     = 10000.00;

@@ -301,6 +301,12 @@ ul.omise-banks-list {
 	border-color: #1e4598;
 }
 
+/** Citi **/
+.bank-logo.citi {
+	background: url('../images/citi.svg') #0b689d;
+	border-color: #0b689d;
+}
+
 /** First Choice **/
 .bank-logo.first_choice {
 	background: url('../images/firstchoice.svg') #007bc4;
@@ -309,8 +315,8 @@ ul.omise-banks-list {
 
 /** KBANK **/
 .bank-logo.kbank {
-	background: url('../images/kbank.svg') #ffffff;
-	border-color: #ffffff;
+	background: url('../images/kbank.svg') #fbfbfb;
+	border-color: #fbfbfb;
 }
 
 /** KTB **/
@@ -321,14 +327,32 @@ ul.omise-banks-list {
 
 /** KTC **/
 .bank-logo.ktc {
-	background: url('../images/ktc.svg') #ffffff;
-	border-color: #ffffff;
+	background: url('../images/ktc.svg') #fbfbfb;
+	border-color: #fbfbfb;
 }
 
 /** SCB **/
 .bank-logo.scb {
 	background: url('../images/scb.svg') #4e2e7f;
 	border-color: #4e2e7f;
+}
+
+/** TTB **/
+.bank-logo.ttb {
+	background: url('../images/ttb.svg') #fbfbfb;
+	border-color: #fbfbfb;
+}
+
+/** UOB **/
+.bank-logo.uob {
+	background: url('../images/uob.svg') #05377c;
+	border-color: #05377c;
+}
+
+/** MAYBANK **/
+.bank-logo.ezypay {
+	background: url('../images/maybank.svg') #ffcf00;
+	border-color: #ffcf00;
 }
 
 /**
