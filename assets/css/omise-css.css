@@ -234,6 +234,14 @@ ul.omise-banks-list {
 	border: 4px solid #fff;
 }
 
+.omise-banks-list .mobile-banking-logo {
+	display: inline-block;
+	background-size: cover;
+	width: 32px;
+	height: 32px;
+	margin: auto;
+}
+
 .omise-banks-list .fpx-bank-logo {
 	display: inline-block;
 	width: 30px;
@@ -353,6 +361,16 @@ ul.omise-banks-list {
 .bank-logo.ezypay {
 	background: url('../images/maybank.svg') #ffcf00;
 	border-color: #ffcf00;
+}
+
+/** KPLUS **/
+.mobile-banking-logo.kplus {
+	background: url('../images/kplus.png') #fbfbfb;
+}
+
+/** OCBC PAO **/
+.mobile-banking-logo.ocbc_pao {
+	background: url('../images/ocbc-pao.png') #fbfbfb;
 }
 
 /**
