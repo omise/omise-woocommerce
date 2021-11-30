@@ -1,25 +1,21 @@
-<fieldset id="omise-form-mobliebanking">
-	<ul class="mobile-banking-logo">
-		<!-- KBANK -->
-		<li class="item">
-			<input id="mobile_banking_kbank" type="radio" name="omise-offsite" value="mobile_banking_kbank" />
-			<label for="mobile_banking_kbank">
-				<div class="mobile-banking-logo kplus"></div>
-				<div class="bank-label">
-					<span class="title"><?php _e( 'Kasikorn Bank', 'omise' ); ?></span><br/>
-				</div>
-			</label>
-		</li>
-		<!-- OCBC PAO -->
-		<li class="item">
-			<input id="mobile_banking_ocbc_pao" type="radio" name="omise-offsite" value="mobile_banking_ocbc_pao" />
-			<label for="mobile_banking_ocbc_pao">
-				<div class="mobile-banking-logo ocbc_pao"></div>
-				<div class="bank-label">
-					<span class="title"><?php _e( 'OCBC Pay Anyone', 'omise' ); ?></span><br/>
-				</div>
-			</label>
-		</li>
-		
-	</ul>
-</fieldset>
+<?php if ( ! empty( $viewData['mobile_banking_backends'] ) ) : ?>
+	<fieldset id="omise-form-mobliebanking">
+		<ul class="omise-banks-list">
+			<?php foreach ( $viewData['mobile_banking_backends'] as $backend ) : ?>
+				<li class="item">
+					<input id="<?php echo $backend->_id; ?>" type="radio" name="omise-offsite" value="<?php echo $backend->_id; ?>" />
+					<label for="<?php echo $backend->_id; ?>">
+						<div class="mobile-banking-logo <?php echo $backend->provider_logo; ?>"></div>
+						<div class="bank-label">
+							<span class="title"><?php echo $backend->provider_name; ?></span><br/>
+						</div>
+					</label>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</fieldset>
+<?php else: ?>
+	<p>
+		<?php echo __( 'There are no payment methods available.', 'omise' ); ?>
+	</p>
+<?php endif; ?>

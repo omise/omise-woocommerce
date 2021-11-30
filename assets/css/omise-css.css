@@ -365,12 +365,14 @@ ul.omise-banks-list {
 
 /** KPLUS **/
 .mobile-banking-logo.kplus {
-	background: url('../images/kplus.png') #fbfbfb;
+	background: url('../images/kplus.png');
+	background-size: cover;
 }
 
 /** OCBC PAO **/
 .mobile-banking-logo.ocbc_pao {
-	background: url('../images/ocbc-pao.png') #fbfbfb;
+	background: url('../images/ocbc-pao.png');
+	background-size: cover;
 }
 
 /**

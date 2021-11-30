@@ -22,6 +22,8 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'TH', 'SG' );
 
+		$this->backend     = new Omise_Backend_Mobile_Banking;
+
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
@@ -62,7 +64,10 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 	public function payment_fields() {
 		parent::payment_fields();
 
-		Omise_Util::render_view( 'templates/payment/form-mobilebanking.php', array() );
+		Omise_Util::render_view( 'templates/payment/form-mobilebanking.php', 
+		array(
+			'mobile_banking_backends' => $this->backend->get_available_providers(),
+		) );
 	}
 
 	/**
@@ -85,7 +90,10 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source'      => array( 'type' => sanitize_text_field( $_POST['omise-offsite'] ), 'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) ),
+			'source'      => array(
+				'type' => sanitize_text_field( $_POST['omise-offsite']),
+				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
+			),
 			'return_uri'  => $return_uri,
 			'metadata'    => $metadata
 		) );
