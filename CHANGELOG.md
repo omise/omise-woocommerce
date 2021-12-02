@@ -1,4 +1,9 @@
 # CHANGELOG
+### [v4.16 _(Dec 2, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16)
+
+#### 🚀 Enhancements
+- Add support for OCBC Pay Anyone Mobile Banking (PR [#239](https://github.com/omise/omise-woocommerce/pull/239))
+
 ### [v4.15 _(Oct 26, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.15)
 
 #### 🚀 Enhancements
