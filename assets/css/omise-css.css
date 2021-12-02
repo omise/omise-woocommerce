@@ -188,6 +188,10 @@ ul.omise-banks-list {
 	border-bottom: 1px solid #eee;
 }
 
+.omise-banks-list .item.mobile-banking {
+	padding-bottom: 0;
+}
+
 .omise-banks-list .item.fpx:first-child {
 	padding-top: 20px;
 }
@@ -225,6 +229,12 @@ ul.omise-banks-list {
 	vertical-align: middle;
 }
 
+.omise-banks-list .mobile-banking-label {
+	display: inline-block;
+	width: 180px;
+	vertical-align: middle;
+}
+
 .omise-banks-list .bank-logo {
 	display: inline-block;
 	width: 32px;
@@ -240,6 +250,7 @@ ul.omise-banks-list {
 	width: 32px;
 	height: 32px;
 	margin: auto;
+	vertical-align: middle;
 }
 
 .omise-banks-list .fpx-bank-logo {
@@ -264,6 +275,10 @@ ul.omise-banks-list {
 	.omise-banks-list .bank-label {
 		padding-left: 8px;
 	}
+
+	.omise-banks-list .mobile-banking-label {
+		padding-left: 8px;
+	}
 }
 
 @media all and (min-width: 768px) {
@@ -272,6 +287,11 @@ ul.omise-banks-list {
 	}
 
 	.omise-banks-list .bank-label {
+		padding-left: 0px;
+		width: auto;
+	}
+
+	.omise-banks-list .mobile-banking-label {
 		padding-left: 0px;
 		width: auto;
 	}
@@ -286,10 +306,18 @@ ul.omise-banks-list {
 		padding-left: 8px;
 		width: 148px;
 	}
+
+	.omise-banks-list .mobile-banking-label {
+		padding-left: 8px;
+	}
 }
 
 @media all and (min-width: 1280px) {
 	.omise-banks-list .bank-label {
+		width: 180px;
+	}
+
+	.omise-banks-list .mobile-banking-label {
 		width: 180px;
 	}
 }
