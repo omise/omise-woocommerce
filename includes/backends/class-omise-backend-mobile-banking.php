@@ -1,16 +1,11 @@
 <?php
 /**
- * Note: The calculations in this class depend on the countries that
- *       the available installment payments are based on.
- *
- * @since 3.4
- *
  * @method public initiate
  * @method public get_available_providers
  */
 class Omise_Backend_Mobile_Banking extends Omise_Backend {
 	/**
-	 * @var array  of known installment providers.
+	 * @var array  of known mobile banking providers.
 	 */
 	protected static $providers = array();
 
@@ -30,7 +25,7 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 
 	/**
 	 *
-	 * @return array  of an available installment providers
+	 * @return array  of an available mobile banking providers
 	 */
 	public function get_available_providers() {
 
