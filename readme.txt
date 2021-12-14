@@ -33,7 +33,7 @@ From there:
 
 == Changelog ==
 
-= 4.16 =
+= 4.15.1 =
 
 #### 👾 Bug Fixes
 - Allow non Omise payment to send email to merchant once make order with status as oh-hold (PR [#242](https://github.com/omise/omise-woocommerce/pull/242))
