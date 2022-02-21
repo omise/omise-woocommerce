@@ -33,6 +33,7 @@ class Omise_Capabilities {
 	 * @return string
 	 */
 	public function getInstallmentBackends( $currency = '', $amount = null ) {
+
 		$params   = array();
 		$params[] = $this->capabilities->backendFilter['type']('installment');
 
@@ -46,6 +47,14 @@ class Omise_Capabilities {
 		return $this->capabilities->getBackends( $params );
 	}
 
+	/**
+	 * Retrieves details of payment backends from capabilities.
+	 *
+	 * @return string
+	 */
+	public function getBackends() {
+		return $this->capabilities->getBackends();
+	}
 
 	/**
 	 * Retrieves details of fpx bank list from capabilities.
