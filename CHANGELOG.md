@@ -1,4 +1,8 @@
 # CHANGELOG
+### [v4.16.2 _(Feb 22, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.2)
+#### 👾 Bug Fixes
+- Fix authentication issue  
+
 ### [v4.16.1 _(Feb 22, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.1)
 #### 👾 Bug Fixes
 - Fix issue where place order button is not working correctly
