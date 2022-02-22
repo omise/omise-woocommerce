@@ -1,10 +1,18 @@
 # CHANGELOG
+### [v4.16.1 _(Feb 22, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.1)
+#### 👾 Bug Fixes
+- Fix issue where place order button is not working correctly
+
+### [v4.16 _(Feb 21, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16)
+
+#### 🚀 Enhancements
+- Add support for OCBC Pay Anyone Mobile Banking (PR [#239](https://github.com/omise/omise-woocommerce/pull/239))
+
 ### [v4.15.1 _(Dec 14, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.15.1)
 
 #### 👾 Bug Fixes
 - Allow non Omise payment to send email to merchant once make order with status as oh-hold (PR [#242](https://github.com/omise/omise-woocommerce/pull/242))
 
-# CHANGELOG
 ### [v4.15 _(Oct 26, 2021)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.15)
 
 #### 🚀 Enhancements
