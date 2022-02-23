@@ -1,4 +1,16 @@
 # CHANGELOG
+### [v4.16.3 _(Feb 23, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.2)
+#### 👾 Bug Fixes
+- Fix issue about supporting OCBC Pay Anyone Mobile Banking
+
+### [v4.16.2 _(Feb 22, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.2)
+#### 👾 Bug Fixes
+- Fix authentication issue  
+
+### [v4.16.1 _(Feb 22, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.1)
+#### 👾 Bug Fixes
+- Fix issue where place order button is not working correctly
+
 ### [v4.16 _(Feb 21, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16)
 
 #### 🚀 Enhancements
