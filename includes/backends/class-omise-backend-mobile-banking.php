@@ -19,6 +19,10 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 				'title'              => __( 'Kasikorn Bank', 'omise' ),
 				'logo'				 => 'kplus',
 			),
+			'mobile_banking_scb' => array(
+				'title'              => __( 'Siam Commercial Bank', 'omise' ),
+				'logo'				 => 'scb',
+			),
 		);
 	}
 
