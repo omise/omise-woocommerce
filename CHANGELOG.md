@@ -1,5 +1,9 @@
 # CHANGELOG
-### [v4.16.3 _(Feb 23, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.2)
+### [v4.17 _(Mar 8, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.17)
+
+#### 🚀 Enhancements
+- Add support for KBank Mobile Banking and SCB Mobile Banking (PR [#246](https://github.com/omise/omise-woocommerce/pull/246))
+
 #### 👾 Bug Fixes
 - Fix issue about supporting OCBC Pay Anyone Mobile Banking
 
