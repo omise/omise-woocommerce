@@ -15,6 +15,14 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 				'title'              => __( 'OCBC Pay Anyone', 'omise' ),
 				'logo'				 => 'ocbc_pao',
 			),
+			'mobile_banking_kbank' => array(
+				'title'              => __( 'Kasikorn Bank', 'omise' ),
+				'logo'				 => 'kplus',
+			),
+			'mobile_banking_scb' => array(
+				'title'              => __( 'Siam Commercial Bank', 'omise' ),
+				'logo'				 => 'scb',
+			),
 		);
 	}
 
