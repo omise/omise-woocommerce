@@ -24,7 +24,7 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 				'logo'				 => 'scb',
 			),
 			'mobile_banking_bay' => array(
-				'title'              => __( 'Krungsri', 'omise' ),
+				'title'              => __( 'Bank of Ayudhya', 'omise' ),
 				'logo'				 => 'bay',
 			),
 			'mobile_banking_bbl' => array(
