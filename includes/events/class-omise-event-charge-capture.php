@@ -40,10 +40,12 @@ class Omise_Event_Charge_Capture extends Omise_Event {
 	/**
 	 * This `charge.capture` event is only being used
 	 * to catch a manual-capture action that happens on 'Omise Dashboard'.
-	 * For on-store capture, it will be handled by Omise_Payment_Creditcard::process_capture.
+	 * For on-store capture, it will be handled by Omise_Payment::process_capture.
 	 */
 	public function resolve() {
 		$this->order->add_order_note( __( 'Omise: Received charge.capture webhook event.', 'omise' ) );
+		$this->order->delete_meta_data( 'is_awaiting_capture');
+		$this->order->save();
 
 		switch ( $this->data['status'] ) {
 			case 'failed':

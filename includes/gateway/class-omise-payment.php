@@ -240,6 +240,53 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	abstract public function result( $order_id, $order, $charge );
 
 	/**
+	 * Capture an authorized charge.
+	 *
+	 * @param  WC_Order $order WooCommerce's order object
+	 *
+	 * @return void
+	 *
+	 * @see    WC_Meta_Box_Order_Actions::save( $post_id, $post )
+	 * @see    woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-actions.php
+	 */
+	public function process_capture( $order ) {
+		$this->load_order( $order );
+
+		try {
+			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
+			$charge->capture();
+
+			if ( ! OmisePluginHelperCharge::isPaid( $charge ) ) {
+				throw new Exception( Omise()->translate( $charge['failure_message'] ) );
+			}
+
+			$this->order()->add_order_note(
+				sprintf(
+					wp_kses(
+						__( 'Omise: Payment successful (manual capture).<br/>An amount of %1$s %2$s has been paid', 'omise' ),
+						array( 'br' => array() )
+					),
+
+					$this->order()->get_total(),
+					$this->order()->get_currency()
+				)
+			);
+			$this->order()->delete_meta_data( 'is_awaiting_capture');
+			$this->order()->payment_complete();
+			$this->order()->save();
+		} catch ( Exception $e ) {
+			$this->order()->add_order_note(
+				sprintf(
+					wp_kses( __( 'Omise: Payment failed (manual capture).<br/>%s', 'omise' ), array( 'br' => array() ) ),
+					$e->getMessage()
+				)
+			);
+			$this->order()->delete_meta_data( 'is_awaiting_capture');
+			$this->order()->update_status( 'failed' );
+		}
+	}
+
+	/**
 	 * Process refund.
 	 *
 	 * @param  int    $order_id

@@ -124,6 +124,7 @@ class Omise_Callback {
 			// Remove cart
 			WC()->cart->empty_cart();
 			$this->order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
+			$this->order->update_meta_data( 'is_awaiting_capture', 'yes' );
 			$this->order->save();
 
 			wp_redirect( $this->order->get_checkout_order_received_url() );

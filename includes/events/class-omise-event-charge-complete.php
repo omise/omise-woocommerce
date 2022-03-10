@@ -118,7 +118,9 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 
 				// Credit Card 3-D Secure with 'authorize only' payment action case.
 				if ( $this->data['authorized'] ) {
+					$this->order->update_meta_data( 'is_awaiting_capture', 'yes' );
 					$this->order->update_status( 'processing' );
+					$this->order->save();
 				}
 				break;
 		}

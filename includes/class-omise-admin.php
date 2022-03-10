@@ -78,7 +78,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			/** backward compatible with WooCommerce v2.x series **/
 			$payment_method = version_compare( WC()->version, '3.0.0', '>=' ) ? $theorder->get_payment_method() : $theorder->payment_method;
 
-			if ( 'omise' === $payment_method ) {
+			if ( $theorder->get_meta( 'is_awaiting_capture' ) === 'yes' ) {
 				$order_actions[ $payment_method . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
 			}
 
