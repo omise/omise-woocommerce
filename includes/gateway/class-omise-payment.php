@@ -271,9 +271,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					$this->order()->get_currency()
 				)
 			);
-			$this->order()->delete_meta_data( 'is_awaiting_capture');
+			$this->delete_capture_metadata();
 			$this->order()->payment_complete();
-			$this->order()->save();
 		} catch ( Exception $e ) {
 			$this->order()->add_order_note(
 				sprintf(
@@ -281,7 +280,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					$e->getMessage()
 				)
 			);
-			$this->order()->delete_meta_data( 'is_awaiting_capture');
+			$this->delete_capture_metadata();
 			$this->order()->update_status( 'failed' );
 		}
 	}
@@ -336,6 +335,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				);
 			}
 
+			$this->delete_capture_metadata();
 			$order->add_order_note( $message );
 			return true;
 		} catch (Exception $e) {
@@ -371,6 +371,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
 			switch ( $charge['status'] ) {
 				case self::STATUS_SUCCESSFUL:
+					$this->delete_capture_metadata();
+
 					// Omise API 2017-11-02 uses `refunded`, Omise API 2019-05-29 uses `refunded_amount`.
 					$refunded_amount = isset( $charge['refunded_amount'] ) ? $charge['refunded_amount'] : $charge['refunded'];
 					if ( $charge['funding_amount'] == $refunded_amount ) {
@@ -397,6 +399,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					break;
 
 				case self::STATUS_FAILED:
+					$this->delete_capture_metadata();
+
 					$message = wp_kses(
 						__( 'Omise: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
 						array( 'br' => array() )
@@ -419,6 +423,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					break;
 
 				case self::STATUS_EXPIRED:
+					$this->delete_capture_metadata();
+
 					$message = wp_kses( __( 'Omise: Payment expired. (manual sync).', 'omise' ), array( 'br' => array() ) );
 					$this->order()->add_order_note( $message );
 
@@ -428,6 +434,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					break;
 
 				case self::STATUS_REVERSED:
+					$this->delete_capture_metadata();
+
 					$message = wp_kses( __( 'Omise: Payment reversed. (manual sync).', 'omise' ), array( 'br' => array() ) );
 					$this->order()->add_order_note( $message );
 
@@ -585,5 +593,10 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	public function is_enabled_processing_notification(): bool {
         return $this->enabled_processing_notification;
+	}
+
+	private function delete_capture_metadata() {
+		$this->order()->delete_meta_data( 'is_awaiting_capture');
+		$this->order()->save();
 	}
 }
