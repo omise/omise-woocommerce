@@ -52,8 +52,15 @@ class Omise_Capabilities {
 	 *
 	 * @return string
 	 */
-	public function getBackends() {
-		return $this->capabilities->getBackends();
+	public function getBackends( $currency = '') {
+
+		$params   = array();
+
+		if ( $currency ) {
+			$params[] = $this->capabilities->backendFilter['currency']( $currency );
+		}
+
+		return $this->capabilities->getBackends( $params );
 	}
 
 	/**
