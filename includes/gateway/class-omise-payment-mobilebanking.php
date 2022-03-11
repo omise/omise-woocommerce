@@ -67,7 +67,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 
 		Omise_Util::render_view( 'templates/payment/form-mobilebanking.php', 
 		array(
-			'mobile_banking_backends' => $this->backend->get_available_providers($currency),
+			'mobile_banking_backends' => $this->backend->get_available_providers( $currency ),
 		) );
 	}
 
