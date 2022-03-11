@@ -57,7 +57,7 @@ class Omise_Capabilities {
 		if ( $currency ) {
 			$params[] = $this->capabilities->backendFilter['currency']( $currency );
 		}
-		
+
 		return $this->capabilities->getBackends( $params );
 	}
 
