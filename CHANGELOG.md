@@ -1,4 +1,22 @@
 # CHANGELOG
+### [v4.17 _(Mar 8, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.17)
+
+#### 🚀 Enhancements
+- Add support for KBank Mobile Banking and SCB Mobile Banking (PR [#246](https://github.com/omise/omise-woocommerce/pull/246))
+- Add support for Rabbit LINE Pay (PR [#248](https://github.com/omise/omise-woocommerce/pull/248))
+
+#### 👾 Bug Fixes
+- Fix issue where capture button is still showing after payment is already captured
+- Fix issue where mobile banking payment options is display when checkout currency not supported (PR [#249](https://github.com/omise/omise-woocommerce/pull/249))
+
+### [v4.16.2 _(Feb 22, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.2)
+#### 👾 Bug Fixes
+- Fix authentication issue  
+
+### [v4.16.1 _(Feb 22, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16.1)
+#### 👾 Bug Fixes
+- Fix issue where place order button is not working correctly
+
 ### [v4.16 _(Feb 21, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.16)
 
 #### 🚀 Enhancements
