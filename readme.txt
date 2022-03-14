@@ -41,6 +41,7 @@ From there:
 
 #### 👾 Bug Fixes
 - Fix issue where capture button is still showing after payment is already captured
+- Fix issue where mobile banking payment options is display when checkout currency not supported (PR [#249](https://github.com/omise/omise-woocommerce/pull/249))
 
 = 4.16.2 =
 
