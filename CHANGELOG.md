@@ -1,4 +1,9 @@
 # CHANGELOG
+### [v4.17.1 _(Mar 14, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.17)
+
+#### 👾 Bug Fixes
+- Fix issue Mobile Banking and Rabbit LINE Pay not showing.
+
 ### [v4.17 _(Mar 8, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.17)
 
 #### 🚀 Enhancements
