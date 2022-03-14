@@ -30,6 +30,7 @@ class Omise_Payment_Factory {
 		'Omise_Payment_Gcash',
 		'Omise_Payment_Kakaopay',
 		'Omise_Payment_TouchNGo',
+		'Omise_Payment_RabbitLinePay',
 	);
 
 	/**
