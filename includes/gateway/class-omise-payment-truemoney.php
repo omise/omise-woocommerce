@@ -62,6 +62,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 	 * @inheritdoc
 	 */
 	public function payment_fields() {
+		parent::payment_fields();
 		Omise_Util::render_view( 'templates/payment/form-truemoney.php', array() );
 	}
 
