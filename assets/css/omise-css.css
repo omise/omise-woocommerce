@@ -405,23 +405,20 @@ ul.omise-banks-list {
 
 /** SCB **/
 .mobile-banking-logo.scb {
-	background: url('../images/scb.svg') #4e2e7f;
+	background: url('../images/scb-easy.png');
 	background-size: cover;
-	border: 4px solid #4e2e7f;
 }
 
 /** BAY **/
 .mobile-banking-logo.bay {
-	background: url('../images/bay.svg') #fec43b;
-	border-color: #fec43b;
-	border: 4px solid #fec43b;
+	background: url('../images/kma.png');
+	background-size: cover;
 }
 
 /** BBL **/
 .mobile-banking-logo.bbl {
-	background: url('../images/bbl.svg') #1e4598;
-	border-color: #1e4598;
-	border: 4px solid #1e4598;
+	background: url('../images/bbl-m.png');
+	background-size: cover;
 }
 
 

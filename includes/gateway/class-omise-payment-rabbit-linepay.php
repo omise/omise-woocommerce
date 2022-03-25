@@ -73,7 +73,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 					'desc_tip'    => true
 				),
 			),
-		);
+		)
 	}
 
 	/**
