@@ -79,13 +79,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 			apply_filters( 'omise_charge_params_metadata', array(), $order ),
 			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
 		);
-		$return_uri = add_query_arg(
-			array(
-				'wc-api'   => 'omise_mobilebanking_callback',
-				'order_id' => $order_id
-			),
-			home_url()
-		);
+		$return_uri = add_query_arg('order_id', $order_id, home_url('wc-api/omise_mobilebanking_callback'));
 
 		return OmiseCharge::create( array(
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
