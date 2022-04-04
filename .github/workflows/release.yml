@@ -1,8 +1,9 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -33,6 +34,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Get release version
+      id: release-version
+      run: echo ::set-output name=tag::$(echo $GITHUB_REF | cut -c 12-)
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
@@ -40,3 +44,4 @@ jobs:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SLUG: omise # https://plugins.svn.wordpress.org/omise/
+        VERSION: ${{ steps.release-version.outputs.tag }}
