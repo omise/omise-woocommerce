@@ -2,10 +2,10 @@
 ### [v4.19 _(Apr 4, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19)
 
 #### 🚀 Enhancements
-- Update assets for mobile banking logos (PR [#252](https://github.com/omise/omise-woocommerce/pull/257))
+- Update assets for mobile banking logos (PR [#257](https://github.com/omise/omise-woocommerce/pull/257))
 
 #### 👾 Bug Fixes
-- Fix issue with Rabbit LINE Pay being incompabible with older PHP versions (PR [#252](https://github.com/omise/omise-woocommerce/pull/256))
+- Fix issue with Rabbit LINE Pay being incompabible with older PHP versions (PR [#256](https://github.com/omise/omise-woocommerce/pull/256))
 
 ### [v4.18 _(Mar 23, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.18)
 
