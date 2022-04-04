@@ -12,19 +12,19 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 	public function initiate() {
 		self::$providers = array(
 			'mobile_banking_kbank' => array(
-				'title'              => __( 'Kasikorn Bank', 'omise' ),
+				'title'              => __( 'K PLUS', 'omise' ),
 				'logo'				 => 'kplus',
 			),
 			'mobile_banking_scb' => array(
-				'title'              => __( 'Siam Commercial Bank', 'omise' ),
+				'title'              => __( 'SCB EASY', 'omise' ),
 				'logo'				 => 'scb',
 			),
 			'mobile_banking_bay' => array(
-				'title'              => __( 'Bank of Ayudhya', 'omise' ),
+				'title'              => __( 'KMA', 'omise' ),
 				'logo'				 => 'bay',
 			),
 			'mobile_banking_bbl' => array(
-				'title'              => __( 'Bangkok Bank', 'omise' ),
+				'title'              => __( 'Bualuang mBanking', 'omise' ),
 				'logo'				 => 'bbl',
 			)
 		);
