@@ -12,7 +12,7 @@
 #### 🚀 Enhancements
 - Add support for BBL Mobile Banking and BAY Mobile Banking (PR [#252](https://github.com/omise/omise-woocommerce/pull/252))
 
-### [v4.17.1 _(Mar 14, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.17)
+### [v4.17.1 _(Mar 14, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.17.1)
 
 #### 👾 Bug Fixes
 - Fix issue Mobile Banking and Rabbit LINE Pay not showing.
