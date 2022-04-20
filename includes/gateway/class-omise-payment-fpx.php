@@ -61,6 +61,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 	 * @inheritdoc
 	 */
 	public function payment_fields() {
+		parent::payment_fields();
 		$currency   = get_woocommerce_currency();
 		$cart_total = WC()->cart->total;
 

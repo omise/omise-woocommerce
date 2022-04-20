@@ -62,6 +62,7 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 	 * @inheritdoc
 	 */
 	public function payment_fields() {
+		parent::payment_fields();
 		Omise_Util::render_view( 'templates/payment/form-konbini.php', array() );
 	}
 
