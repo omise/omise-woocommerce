@@ -1,4 +1,10 @@
 # CHANGELOG
+
+### [v4.19.1 _(Apr 20, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19.1)
+
+#### 🚀 Bug Fixes
+- Fixed the issue of description set for Installment and TrueMoney wallet not displayed in the checkout page. (PR [#260](https://github.com/omise/omise-woocommerce/pull/260))
+
 ### [v4.19 _(Apr 4, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19)
 
 #### 🚀 Enhancements
