@@ -71,8 +71,8 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 						self::PAYMENT_ACTION_MANUAL_CAPTURE => __( 'Manual Capture', 'omise' )
 					),
 					'desc_tip'    => true
-				),
-			),
+				)
+			)
 		);
 	}
 
