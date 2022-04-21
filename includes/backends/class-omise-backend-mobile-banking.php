@@ -11,6 +11,10 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 
 	public function initiate() {
 		self::$providers = array(
+			'mobile_banking_ocbc_pao' => array(
+				'title'              => __( 'OCBC Pay Anyone', 'omise' ),
+				'logo'				 => 'ocbc_pao',
+			),
 			'mobile_banking_kbank' => array(
 				'title'              => __( 'K PLUS', 'omise' ),
 				'logo'				 => 'kplus',

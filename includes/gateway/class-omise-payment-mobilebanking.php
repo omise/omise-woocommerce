@@ -20,7 +20,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
-		$this->restricted_countries = array( 'TH' );
+		$this->restricted_countries = array( 'SG', 'TH');
 
 		$this->backend     = new Omise_Backend_Mobile_Banking;
 
@@ -79,20 +79,21 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 			apply_filters( 'omise_charge_params_metadata', array(), $order ),
 			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
 		);
-		$return_uri = add_query_arg(
-			array(
-				'wc-api'   => 'omise_mobilebanking_callback',
-				'order_id' => $order_id
-			),
-			home_url()
-		);
+
+		$source_type = sanitize_text_field( $_POST['omise-offsite']);
+
+		$return_uri = add_query_arg('order_id', $order_id, home_url('wc-api/omise_mobilebanking_callback'));
+		if ($source_type == 'mobile_banking_ocbc_pao') {
+			//Cannot use query parameters for OCBC PAO return URI.
+			$return_uri = home_url('wp-json/omise/mobile-banking-callback/' . $order_id);
+		}
 
 		return OmiseCharge::create( array(
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
 			'source'      => array(
-				'type' => sanitize_text_field( $_POST['omise-offsite']),
+				'type' => $source_type,
 				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
 			),
 			'return_uri'  => $return_uri,
