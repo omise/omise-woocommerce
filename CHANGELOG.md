@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.19.2 _(Apr 21, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19.2)
+
+#### 👾 Bug Fixes
+- Fixed the issue of cannot go to order confimation page after pay with OCBC Pay Anyone. (PR [#262](https://github.com/omise/omise-woocommerce/pull/262))
+
 ### [v4.19.1 _(Apr 20, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19.1)
 
 #### 🚀 Bug Fixes

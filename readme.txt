@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.9.0
-Stable tag: 4.19.1
+Stable tag: 4.19.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,24 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.19.2 =
+
+#### 👾 Bug Fixes
+- Fixed the issue of cannot go to order confimation page after pay with OCBC Pay Anyone. (PR [#262](https://github.com/omise/omise-woocommerce/pull/262))
+
+= 4.19.1 =
+
+#### 🚀 Bug Fixes
+- Fixed the issue of description set for Installment and TrueMoney wallet not displayed in the checkout page. (PR [#260](https://github.com/omise/omise-woocommerce/pull/260))
+
+= 4.19 =
+
+#### 🚀 Enhancements
+- Update assets for mobile banking logos (PR [#257](https://github.com/omise/omise-woocommerce/pull/257))
+
+#### 👾 Bug Fixes
+- Fix issue with Rabbit LINE Pay being incompabible with older PHP versions (PR [#256](https://github.com/omise/omise-woocommerce/pull/256))
 
 = 4.18 =
 
