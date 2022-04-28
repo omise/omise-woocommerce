@@ -87,7 +87,11 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		$svg_file_new = substr($svg_file, $position);
 
 		if($id) {
-			$svg_file_new = substr($svg_file_new, 0, 4) . " id='{$id}' " . substr($svg_file_new, 4);
+			$svgTagLength = 4; // length of tag <svg
+
+			// adding the id after <svg
+			// e.g: <svg id="id" remainging-text>
+			$svg_file_new = substr($svg_file_new, 0, $svgTagLength) . " id='{$id}' " . substr($svg_file_new, $svgTagLength);
 		}
 		
 		echo "<div class='omise-qr-image'>" . $svg_file_new . "</div>";
