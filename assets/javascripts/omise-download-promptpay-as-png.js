@@ -4,7 +4,7 @@
     $('a#omise-download-promptpay-qr').click(function(e) {
         if (isCanvasSupported()) {
             e.preventDefault();
-            var svg = document.querySelector('svg');
+            var svg = document.getElementById('omise-promptpay-qrcode-svg');
 
             /*
             Because of a Webkit (Safari) bug, where it won't fetch images from the SVG in time the first time around,
@@ -28,17 +28,17 @@
         for (var cd = 0; cd < destinationNode.childNodes.length; cd++) {
             var child = destinationNode.childNodes[cd];
             if (containerElements.indexOf(child.tagName) != -1) {
-                 copyStylesInline(child, sourceNode.childNodes[cd]);
-                 continue;
+                copyStylesInline(child, sourceNode.childNodes[cd]);
+                continue;
             }
             var style = sourceNode.childNodes[cd].currentStyle;
             if (style == "undefined" || style == null) continue;
             for (var st = 0; st < style.length; st++){
-                 child.style.setProperty(style[st], style.getPropertyValue(style[st]));
+                child.style.setProperty(style[st], style.getPropertyValue(style[st]));
             }
         }
     }
-     
+
     function triggerDownload (imgURI, fileName) {
         var evt = new MouseEvent("click", {
             view: window,
@@ -67,13 +67,12 @@
             canvas.height = bbox.height;
             var ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, bbox.width, bbox.height);
-
             ctx.drawImage(img, 0, 0);
+
             if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
                 var blob = canvas.msToBlob();         
                 navigator.msSaveOrOpenBlob(blob, fileName);
-            } 
-            else {
+            } else {
                 var imgURI = canvas
                     .toDataURL("image/png")
                     .replace("image/png", "image/octet-stream");

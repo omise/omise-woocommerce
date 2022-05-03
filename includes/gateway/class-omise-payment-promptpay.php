@@ -75,21 +75,30 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	}
 
 	/**
-	 * @param string $url	url for the QR SVG image
+	 * @param string $url URL for the QR SVG image
+	 * @param string $id Value to be added in the id attribute of the svg element
 	 */
-	private function load_qr_svg_to_DOM($url) {
+	private function load_qr_svg_to_DOM($url, $id = null) {
 		$svg_file = file_get_contents($url);
 
 		$find_string   = '<svg';
 		$position = strpos($svg_file, $find_string);
 		
 		$svg_file_new = substr($svg_file, $position);
+
+		if($id) {
+			$svgTagLength = 4; // length of tag <svg
+
+			// adding the id after <svg
+			// e.g: <svg id="id" remainging-text>
+			$svg_file_new = substr($svg_file_new, 0, $svgTagLength) . " id='{$id}' " . substr($svg_file_new, $svgTagLength);
+		}
 		
 		echo "<div class='omise-qr-image'>" . $svg_file_new . "</div>";
 	}
 
 	/**
-	 * @param WC_Order $order
+	 * @param WC_Order $order,
 	 *
 	 * @see   woocommerce/templates/emails/email-order-details.php
 	 * @see   woocommerce/templates/emails/plain/email-order-details.php
@@ -125,7 +134,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 			<div id="omise-offline-additional-details" class="omise omise-additional-payment-details-box omise-promptpay-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
 				<div class="omise omise-promptpay-qrcode" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
-					<?php $this->load_qr_svg_to_DOM($qrcode) ?>
+					<?php $this->load_qr_svg_to_DOM($qrcode, 'omise-promptpay-qrcode-svg') ?>
 				</div>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>
 				<div>
