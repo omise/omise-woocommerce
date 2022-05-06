@@ -26,7 +26,7 @@ class Omise_Rest_Webhooks_Controller {
 	/**
 	 * @var string
 	 */
-	const MOBILE_BANKING_CALLBACK_ENDPOINT = 'mobile-banking-callback';
+	const OCBC_PAO_CALLBACK_ENDPOINT = 'ocpc-pao-callback';
 
 	/**
 	 * Register the routes for webhooks.
@@ -54,10 +54,10 @@ class Omise_Rest_Webhooks_Controller {
 
 		register_rest_route(
 			self::ENDPOINT_NAMESPACE,
-			'/' . self::MOBILE_BANKING_CALLBACK_ENDPOINT . '/(?P<order_id>\d+)',
+			'/' . self::OCBC_PAO_CALLBACK_ENDPOINT . '/(?P<order_id>\d+)',
 			array(
 				'methods' => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'callback_mobile_banking_callback' ),
+				'callback' => array( $this, 'callback_ocbc_pao_callback' ),
 				'permission_callback' => '__return_true'
 			)
 		);
@@ -107,9 +107,9 @@ class Omise_Rest_Webhooks_Controller {
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function callback_mobile_banking_callback($request) {
+	public function callback_ocbc_pao_callback($request) {
 		$order_id = $request->get_param('order_id');
-		$url = add_query_arg('order_id', $order_id, home_url('wc-api/omise_mobilebanking_callback'));
+		$url = add_query_arg('order_id', $order_id, home_url('wc-api/omise_ocbc_pao_callback'));
 		wp_redirect($url);
 		exit();
 	}

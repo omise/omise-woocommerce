@@ -397,12 +397,6 @@ ul.omise-banks-list {
  * mobile banking logo
  */
 
-/** OCBC PAO **/
-.mobile-banking-logo.ocbc_pao {
-	background: url('../images/ocbc-pao.png');
-	background-size: cover;
-}
-
 /** KPLUS **/
 .mobile-banking-logo.kplus {
 	background: url('../images/kplus.png');
