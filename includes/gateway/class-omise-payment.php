@@ -603,6 +603,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * Generating metadata to be sent to the OMISE
 	 *
+	 * @param $order_id
 	 * @param $order
 	 */
 	protected function getOrderMetadata($order_id, $order)
