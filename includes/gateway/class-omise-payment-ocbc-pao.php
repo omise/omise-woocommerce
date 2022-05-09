@@ -61,7 +61,7 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 		);
 
 		//Cannot use query parameters for OCBC PAO return URI.
-		$return_uri = home_url('wp-json/omise/ocpc-pao-callback/' . $order_id);
+		$return_uri = home_url('wp-json/omise/ocbc-pao-callback/' . $order_id);
 
 		return OmiseCharge::create( array(
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),

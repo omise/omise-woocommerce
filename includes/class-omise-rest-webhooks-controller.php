@@ -26,7 +26,7 @@ class Omise_Rest_Webhooks_Controller {
 	/**
 	 * @var string
 	 */
-	const OCBC_PAO_CALLBACK_ENDPOINT = 'ocpc-pao-callback';
+	const OCBC_PAO_CALLBACK_ENDPOINT = 'ocbc-pao-callback';
 
 	/**
 	 * Register the routes for webhooks.
