@@ -83,10 +83,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 	public function charge( $order_id, $order ) {
 		$source_type       = isset( $_POST['source']['type'] ) ? $_POST['source']['type'] : '';
 		$installment_terms = isset( $_POST[ $source_type . '_installment_terms'] ) ? $_POST[ $source_type . '_installment_terms'] : '';
-		$metadata          = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
+
 		$return_uri = add_query_arg(
 			array(
 				'wc-api'   => 'omise_installment_callback',
@@ -104,7 +101,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 				'installment_terms' => sanitize_text_field( $installment_terms )
 			),
 			'return_uri'        => $return_uri,
-			'metadata'          => $metadata
+			'metadata'    => $this->getOrderMetadata($order_id, $order)
 		) );
 	}
 }

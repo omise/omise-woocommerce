@@ -251,13 +251,8 @@ class Omise_Payment_Creditcard extends Omise_Payment {
 		} else if ( self::PAYMENT_ACTION_AUTHORIZE === $this->payment_action ) {
 			$data['capture'] = false;
 		}
-		$metadata = apply_filters( 'omise_charge_params_metadata', array(), $order );
 
-		$data['metadata'] = array_merge( $metadata, array(
-			/** override order_id as a reference for webhook handlers **/
-			/** backward compatible with WooCommerce v2.x series **/
-			'order_id' => version_compare( WC()->version, '3.0.0', '>=' ) ? $order->get_id() : $order->id
-		) );
+		$data['metadata'] = $this->getOrderMetadata($order_id, $order);
 
 		return OmiseCharge::create( $data );
 	}

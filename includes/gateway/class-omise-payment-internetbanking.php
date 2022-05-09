@@ -69,10 +69,6 @@ class Omise_Payment_Internetbanking extends Omise_Payment_Offsite {
 	 * @inheritdoc
 	 */
 	public function charge( $order_id, $order ) {
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
 		$return_uri = add_query_arg(
 			array(
 				'wc-api'   => 'omise_internetbanking_callback',
@@ -87,7 +83,7 @@ class Omise_Payment_Internetbanking extends Omise_Payment_Offsite {
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
 			'source'      => array( 'type' => sanitize_text_field( $_POST['omise-offsite'] ) ),
 			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
+			'metadata'    => $this->getOrderMetadata($order_id, $order)
 		) );
 	}
 }

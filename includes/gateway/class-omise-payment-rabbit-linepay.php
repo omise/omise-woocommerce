@@ -80,10 +80,6 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 	 * @inheritdoc
 	 */
 	public function charge( $order_id, $order ) {
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
 		$return_uri = add_query_arg(
 			array(
 				'wc-api'   => 'omise_rabbit_linepay_callback',
@@ -98,7 +94,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'source'      => array( 'type' => 'rabbit_linepay' ),
 			'return_uri'  => $return_uri,
-			'metadata'    => $metadata,
+			'metadata'    => $this->getOrderMetadata($order_id, $order),
 			'capture'     => $this->payment_action === self::PAYMENT_ACTION_AUTO_CAPTURE
 		) );
 	}

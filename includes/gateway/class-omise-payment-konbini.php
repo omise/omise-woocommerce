@@ -76,17 +76,13 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 
 		$total         = $order->get_total();
 		$currency      = $order->get_order_currency();
-		$metadata      = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
 
 		return OmiseCharge::create( array(
 			'amount'      => Omise_Money::to_subunit( $total, $currency ),
 			'currency'    => $currency,
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'source'      => array( 'type' => 'econtext', 'name' => $konbini_name, 'email' => $konbini_email, 'phone_number' => $konbini_phone ),
-			'metadata'    => $metadata
+			'metadata'    => $this->getOrderMetadata($order_id, $order)
 		) );
 	}
 

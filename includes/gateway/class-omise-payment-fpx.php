@@ -24,10 +24,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
-  }
-  
- 
-
+	}
 
 	/**
 	 * @see WC_Settings_API::init_form_fields()
@@ -79,10 +76,6 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 	public function charge( $order_id, $order ) {
 		$source_bank	= isset( $_POST['source']['bank'] ) ? $_POST['source']['bank'] : '';
 
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
 		$return_uri = add_query_arg(
 			array(
 				'wc-api'   => 'omise_fpx_callback',
@@ -101,7 +94,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 				'bank' => sanitize_text_field( $source_bank ),
 			),
 			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
+			'metadata'    => $this->getOrderMetadata($order_id, $order)
 		) );
 	}
 }

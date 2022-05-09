@@ -75,11 +75,6 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 	 * @inheritdoc
 	 */
 	public function charge( $order_id, $order ) {
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
-
 		$source_type = sanitize_text_field( $_POST['omise-offsite']);
 
 		$return_uri = add_query_arg('order_id', $order_id, home_url('wc-api/omise_mobilebanking_callback'));
@@ -97,7 +92,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
 			),
 			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
+			'metadata'    => $this->getOrderMetadata($order_id, $order)
 		) );
 	}
 }

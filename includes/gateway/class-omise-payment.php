@@ -599,4 +599,22 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$this->order()->delete_meta_data( 'is_awaiting_capture');
 		$this->order()->save();
 	}
+
+	/**
+	 * Generating metadata to be sent to the OMISE
+	 *
+	 * @param $order
+	 */
+	protected function getOrderMetadata($order_id, $order)
+	{
+		$customerName = $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name();
+
+		return array_merge(
+			apply_filters( 'omise_charge_params_metadata', array(), $order ),
+			array(
+				'order_id' => $order_id,
+				'customer_name' => $customerName
+			)
+		);
+	}
 }

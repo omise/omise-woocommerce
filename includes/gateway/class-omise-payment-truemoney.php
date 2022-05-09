@@ -76,10 +76,6 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 		$return_uri   = add_query_arg(
 			array( 'wc-api' => 'omise_truemoney_callback', 'order_id' => $order_id ), home_url()
 		);
-		$metadata     = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
 
 		return OmiseCharge::create( array(
 			'amount'      => Omise_Money::to_subunit( $total, $currency ),
@@ -87,7 +83,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'source'      => array( 'type' => 'truemoney', 'phone_number' => $phone_number ),
 			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
+			'metadata'    => $this->getOrderMetadata($order_id, $order)
 		) );
 	}
 }
