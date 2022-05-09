@@ -67,7 +67,10 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source'      => array( 'type' => 'mobile_banking_ocbc_pao' ),
+			'source'      => array(
+				'type' => 'mobile_banking_ocbc_pao',
+				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
+			),
 			'return_uri'  => $return_uri,
 			'metadata'    => $metadata
 		) );
