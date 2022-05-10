@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.19.3 _(May 10, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19.3)
+
+#### 🚀 Enhancements
+- Move OCBC Pay Anyone out of Mobile Banking (PR [#265](https://github.com/omise/omise-woocommerce/pull/265))
+
 ### [v4.19.2 _(Apr 21, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19.2)
 
 #### 👾 Bug Fixes
