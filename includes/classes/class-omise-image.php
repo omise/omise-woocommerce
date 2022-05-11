@@ -10,7 +10,7 @@ if ( ! class_exists( 'Omise_Image' ) ) {
 		 * @param string $alternate_text Alternate text for the image
 		 * @return string HTML &lt;img&gt; element
 		 */
-		public function get_image( $file, $alternate_text ) {
+		public static function get_image( $file, $alternate_text ) {
 			$url = WC_HTTPS::force_https_url( plugin_dir_url( '' ) . 'omise/assets/images/' );
 			return "<img src='$url/$file' class='Omise-Image' style='width: 30px; max-height: 30px;' alt='$alternate_text' />";
 		}
