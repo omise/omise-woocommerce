@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.20 _(May 11, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.20)
+
+#### 🚀 Enhancements
+- Added GrabPay payment method (PR [#270](https://github.com/omise/omise-woocommerce/pull/270))
+
 ### [v4.19.3 _(May 10, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.19.3)
 
 #### 🚀 Enhancements
