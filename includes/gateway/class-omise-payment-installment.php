@@ -101,7 +101,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 				'installment_terms' => sanitize_text_field( $installment_terms )
 			),
 			'return_uri'        => $return_uri,
-			'metadata'    => $this->getOrderMetadata($order_id, $order)
+			'metadata'    		=> $this->getOrderMetadata($order_id, $order)
 		) );
 	}
 }
