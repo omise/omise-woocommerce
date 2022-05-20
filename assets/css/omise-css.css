@@ -457,6 +457,10 @@ fpx bank logos
 	background: url('../images/fpx-bsn.svg');
 }
 
+.fpx-bank-logo.bocm {
+	background: url('../images/fpx-bocm.svg');
+}
+
 .fpx-bank-logo.cimb {
 	background: url('../images/fpx-cimb.svg');
 }
