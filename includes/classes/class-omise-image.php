@@ -12,7 +12,7 @@ if ( ! class_exists( 'Omise_Image' ) ) {
 		 * @param int $height Max-height size for image with default value at 30
 		 * @return string HTML &lt;img&gt; element
 		 */
-		public static function get_image( $file, $alternate_text, $width = 30, $height =30 ) {
+		public static function get_image( $file, $alternate_text, $width = 30, $height = 30 ) {
 			$url = WC_HTTPS::force_https_url( plugin_dir_url( '' ) . 'omise/assets/images' );
 			return "<img src='$url/$file' class='Omise-Image' style='width: {$width}px; max-height: {$height}px;' alt='$alternate_text' />";
 		}
