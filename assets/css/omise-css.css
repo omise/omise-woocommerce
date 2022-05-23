@@ -423,86 +423,115 @@ ul.omise-banks-list {
 
 
 /**
-fpx bank logos
+fpx select & bank logos
 **/
-.fpx-bank-logo.affin_test,.fpx-bank-logo.affin {
-	background: url('../images/fpx-affin.svg');
+.select-list-box {
+    position: relative;
 }
 
-.fpx-bank-logo.agro {
-	background: url('../images/fpx-agronet.svg');
+.select-list-box:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    content: "";
+    pointer-events: none;
+    background: transparent;
+    background-repeat: no-repeat;
+    background-position-y: 5px;
 }
 
-.fpx-bank-logo.alliance {
-	background: url('../images/fpx-alliance.svg');
+
+.select-list-box > select {
+    padding-left: 0;
+    padding: 10px 50px;
+	width: 100%;
+    background-image:url(../images/fpx-unknown.svg);
+    background-repeat: no-repeat;
+    background-position-y: 50%;
+    background-position-x: 10px;
+    background-size: 25px;
+    cursor: pointer;
 }
 
-.fpx-bank-logo.ambank {
-	background: url('../images/fpx-ambank.svg');
+.select-list-box > select.default {
+    background: none;
 }
 
-.fpx-bank-logo.islam {
-	background: url('../images/fpx-islam.svg');
+.select-list-box > select.affin, select.affin_test {
+    background-image:url(../images/fpx-affin.svg);
 }
 
-.fpx-bank-logo.muamalat {
-	background: url('../images/fpx-muamalat.svg');
+.select-list-box > select.agro {
+    background-image:url(../images/fpx-agronet.svg);
 }
 
-.fpx-bank-logo.rakyat {
-	background: url('../images/fpx-rakyat.svg');
+.select-list-box > select.alliance {
+    background-image:url(../images/fpx-alliance.svg);
 }
 
-.fpx-bank-logo.bsn {
-	background: url('../images/fpx-bsn.svg');
+.select-list-box > select.ambank {
+    background-image:url(../images/fpx-ambank.svg);
 }
 
-.fpx-bank-logo.cimb {
-	background: url('../images/fpx-cimb.svg');
+.select-list-box > select.bsn {
+    background-image:url(../images/fpx-bsn.svg);
 }
 
-.fpx-bank-logo.citi {
-	background: url('../images/fpx-citi.svg');
+.select-list-box > select.cimb {
+    background-image:url(../images/fpx-cimb.svg);
 }
 
-.fpx-bank-logo.hongleong {
-	background: url('../images/fpx-hongleong.svg');
+.select-list-box > select.citi {
+    background-image:url(../images/fpx-citi.svg);
 }
 
-.fpx-bank-logo.hsbc {
-	background: url('../images/fpx-hsbc.svg');
+.select-list-box > select.hongleong {
+    background-image:url(../images/fpx-hongleong.svg);
 }
 
-.fpx-bank-logo.public {
-	background: url('../images/fpx-publicbank.svg');
+.select-list-box > select.hsbc {
+    background-image:url(../images/fpx-hsbc.svg);
 }
 
-.fpx-bank-logo.rhb {
-	background: url('../images/fpx-rhb.svg');
+.select-list-box > select.islam {
+    background-image:url(../images/fpx-islam.svg);
 }
 
-.fpx-bank-logo.sbc_a,.fpx-bank-logo.sbc_b,.fpx-bank-logo.sbc_c {
-	background: url('../images/fpx-unknown.svg');
+.select-list-box > select.kfh {
+    background-image:url(../images/fpx-kfh.svg);
 }
 
-.fpx-bank-logo.sc {
-	background: url('../images/fpx-sc.svg');
+.select-list-box > select.maybank2e, select.maybank2u{
+    background-image:url(../images/fpx-maybank.svg);
 }
 
-.fpx-bank-logo.uob {
-	background: url('../images/fpx-uob.svg');
+.select-list-box > select.muamalat {
+    background-image:url(../images/fpx-muamalat.svg);
 }
 
-.fpx-bank-logo.ocbc {
-	background: url('../images/fpx-ocbc.svg');
+.select-list-box > select.ocbc {
+    background-image:url(../images/fpx-ocbc.svg);
 }
 
-.fpx-bank-logo.kfh {
-	background: url('../images/fpx-kfh.svg');
+.select-list-box > select.public {
+    background-image:url(../images/fpx-publicbank.svg);
 }
 
-.fpx-bank-logo.maybank2e,.fpx-bank-logo.maybank2u {
-	background: url('../images/fpx-maybank.svg');
+.select-list-box > select.rakyat {
+    background-image:url(../images/fpx-rakyat.svg);
+}
+
+.select-list-box > select.rhb {
+    background-image:url(../images/fpx-rhb.svg);
+}
+
+.select-list-box > select.sc {
+    background-image:url(../images/fpx-sc.svg);
+}
+
+.select-list-box > select.uob {
+    background-image:url(../images/fpx-uob.svg);
 }
 
 .omise-offline {
@@ -520,3 +549,6 @@ line-height: 2;
 	margin-bottom:0px !important;
 }
 
+.terms-and-conditions-block {
+	margin-top: 10px;
+}
