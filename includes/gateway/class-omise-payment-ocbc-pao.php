@@ -82,7 +82,7 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 	 * @see WC_Payment_Gateway::get_icon()
 	 */
 	public function get_icon() {
-		$icon .=  Omise_Image::get_image( 'ocbc-pao.png', 'OCBC Pay Anyone' );
+		$icon =  Omise_Image::get_image( 'ocbc-pao.png', 'OCBC Pay Anyone' );
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 }
