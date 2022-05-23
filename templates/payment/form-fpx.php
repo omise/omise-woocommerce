@@ -3,7 +3,7 @@
 		<div class="select-list-box">
 			<label for="fpx-select-bank">Select Bank</label>			  
 			<select class="default" id="fpx-select-bank" name="source[bank]">
-				<option value="" disabled selected>Select your option</option>
+				<option value="" disabled selected>-- Select your option --</option>
 				<?php foreach ($viewData['fpx_banklist'] as $bank) : ?>
 					<option	
 						class="<?php echo $bank["code"];?>" 

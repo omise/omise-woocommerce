@@ -456,6 +456,7 @@ fpx select & bank logos
 
 .select-list-box > select.default {
     background: none;
+	padding-left: 10px;
 }
 
 .select-list-box > select.affin, select.affin_test {
