@@ -111,7 +111,12 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 	 * @see WC_Payment_Gateway::get_icon()
 	 */
 	public function get_icon() {
-		$icon =  Omise_Image::get_image( 'fpx.svg', 'FPX', 60, 60 );
+		$icon = Omise_Image::get_image( array(
+			    'file' => 'fpx.svg',
+			    'alternate_text' => 'FPX',
+			    'width' => 60,
+			    'height' => 60,
+		));
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 
