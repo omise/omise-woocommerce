@@ -11,7 +11,7 @@ if ( ! class_exists( 'Omise_Image' ) ) {
 		public static function get_image(array $image) {
 
 			$file			= isset( $image['file'] ) ? $image['file'] : '';
-			$alternate_text = isset( $image['alternate_text'] ) ? $image['alternate_text'] : '';
+			$alternate_text         = isset( $image['alternate_text'] ) ? $image['alternate_text'] : '';
 			$width			= isset( $image['width'] ) ? $image['width'] : 30;
 			$height			= isset( $image['height'] ) ? $image['height'] : 30;
 			
