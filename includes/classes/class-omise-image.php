@@ -10,10 +10,10 @@ if ( ! class_exists( 'Omise_Image' ) ) {
 		 */
 		public static function get_image(array $image) {
 
-			$file 			= isset( $image['file'] ) ? $image['file'] : '';
-			$alternate_text	= isset( $image['alternate_text'] ) ? $image['alternate_text'] : '';
-			$width 			= isset( $image['width'] ) ? $image['width'] : 30;
-			$height 		= isset( $image['height'] ) ? $image['height'] : 30;
+			$file			= isset( $image['file'] ) ? $image['file'] : '';
+			$alternate_text = isset( $image['alternate_text'] ) ? $image['alternate_text'] : '';
+			$width			= isset( $image['width'] ) ? $image['width'] : 30;
+			$height			= isset( $image['height'] ) ? $image['height'] : 30;
 			
 			$url = WC_HTTPS::force_https_url( plugin_dir_url( '' ) . 'omise/assets/images' );
 			return "<img src='$url/$file' class='Omise-Image' style='width: {$width}px; max-height: {$height}px;' alt='$alternate_text' />";
