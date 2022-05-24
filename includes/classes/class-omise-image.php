@@ -6,13 +6,17 @@ if ( ! class_exists( 'Omise_Image' ) ) {
 		/**
 		 * Compose the given parameters into the string of HTML &lt;img&gt; element
 		 *
-		 * @param string $file Image file name with extension such as image.jpg
-		 * @param string $alternate_text Alternate text for the image
-		 * @return string HTML &lt;img&gt; element
+		 * @param array $image array that contain image data => file name, alternate text, width, height
 		 */
-		public static function get_image( $file, $alternate_text ) {
-			$url = WC_HTTPS::force_https_url( plugin_dir_url( '' ) . 'omise/assets/images/' );
-			return "<img src='$url/$file' class='Omise-Image' style='width: 30px; max-height: 30px;' alt='$alternate_text' />";
+		public static function get_image($image) {
+
+			$file 			= isset( $image['file'] ) ? $image['file'] : '';
+			$alternate_text = isset( $image['alternate_text'] ) ? $image['alternate_text'] : '';
+			$width 			= isset( $image['width'] ) ? $image['width'] : 30;
+			$height 		= isset( $image['height'] ) ? $image['height'] : 30;
+			
+			$url = WC_HTTPS::force_https_url( plugin_dir_url( '' ) . 'omise/assets/images' );
+			return "<img src='$url/$file' class='Omise-Image' style='width: {$width}px; max-height: {$height}px;' alt='$alternate_text' />";
 		}
 	}
 }
