@@ -487,6 +487,10 @@ fpx select & bank logos
     background-image:url(../images/fpx-citi.svg);
 }
 
+.select-list-box > select.bocm {
+    background-image:url(../images/fpx-bocm.svg);
+}
+
 .select-list-box > select.hongleong {
     background-image:url(../images/fpx-hongleong.svg);
 }
