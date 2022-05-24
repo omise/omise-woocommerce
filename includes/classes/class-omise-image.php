@@ -8,7 +8,7 @@ if ( ! class_exists( 'Omise_Image' ) ) {
 		 *
 		 * @param array $image array that contain image data => file name, alternate text, width, height
 		 */
-		public static function get_image($image) {
+		public static function get_image(array $image) {
 
 			$file 			= isset( $image['file'] ) ? $image['file'] : '';
 			$alternate_text = isset( $image['alternate_text'] ) ? $image['alternate_text'] : '';
