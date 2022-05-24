@@ -1,8 +1,8 @@
 <?php if (!empty($viewData['fpx_banklist'])) : ?>
 	<fieldset id="omise-form-installment">
-		<div class="select-list-box">
+		<div class="fpx-select-bank">
 			<label for="fpx-select-bank">Select Bank</label>			  
-			<select class="default" id="fpx-select-bank" name="source[bank]">
+			<select class="fpx-bank-logo default" id="fpx-select-bank" name="source[bank]">
 				<option value="" disabled selected>-- Select your option --</option>
 				<?php foreach ($viewData['fpx_banklist'] as $bank) : ?>
 					<option	
@@ -16,7 +16,7 @@
 			 	<?php endforeach; ?>
 			</select>
 		</div>
-		<div class="terms-and-conditions-block">
+		<div class="fpx-terms-and-conditions-block">
 			<span>By clicking on the <b>"Place Order"</b> button, you agree to FPX's 
 				<a href="https://www.mepsfpx.com.my/FPXMain/termsAndConditions.jsp" target="_blank">
 					Terms and Conditions
