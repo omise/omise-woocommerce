@@ -108,10 +108,9 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 
 		<div class="omise omise-konbini-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 			<p>
-				<?php echo __( 'Your payment code has been sent to your email', 'omise' ); ?>
+				<?= __( 'Your payment code has been sent to your email', 'omise' ); ?>
 				<br/>
-				<?php
-				echo sprintf(
+				<?= sprintf(
 					wp_kses(
 						__( 'Please find the payment instruction there or click on the link below and complete the payment by <br/><strong>%s %s</strong>.', 'omise' ),
 						array( 'br' => array(), 'strong' => array() )
@@ -121,10 +120,9 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 				);
 				?>
 				<br/>
-				<?php
-				echo sprintf(
+				<?= sprintf(
 					wp_kses(
-						__( '<a href="%s" target="_blank">Payment Link</a>', 'omise' ),
+						'<a href="%s" target="_blank">' . __( 'Payment Link', 'omise' ) . '</a>' ,
 						array( 'a' => array( 'href' => array(), 'target' => array() ) )
 					),
 					$payment_link

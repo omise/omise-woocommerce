@@ -494,17 +494,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @param string $reason
 	 */
 	protected function payment_failed( $reason ) {
-		$message = wp_kses( __(
-			'It seems we\'ve been unable to process your payment properly:<br/>%s',
-			'omise'
-		), array( 'br' => array() ) );
+		$message = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
 
 		if ( $this->order() ) {
 			$this->order()->add_order_note( sprintf( __( 'Omise: Payment failed, %s', 'omise' ), $reason ) );
 			$this->order()->update_status( 'failed' );
 		}
 
-		wc_add_notice( sprintf( $message, $reason ), 'error' );
+		wc_add_notice( sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ), 'error' );
 	}
 
 	/**
