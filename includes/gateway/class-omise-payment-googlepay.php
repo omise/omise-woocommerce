@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') or die('No direct script access allowed.');
 
-class Omise_Payment_GooglePay extends Omise_Payment
+class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
 {
     public function __construct()
     {
@@ -44,6 +44,26 @@ class Omise_Payment_GooglePay extends Omise_Payment
                 'default' => 'no'
             ),
 
+            'merchant_id' => array(
+                'title' => __('Google Pay Merchant ID', 'omise'),
+                'type' => 'text',
+                'description' => __('The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>.', 'omise')
+            ),
+
+            'request_billing_address' => array(
+                'title' => __('Google Pay Request Billing Address', 'omise'),
+                'type' => 'checkbox',
+                'description' => __('Request customer\'s name and billing address from their Google Account upon checkout.', 'omise'),
+                'default' => 'no'
+            ),
+
+            'request_phone_number' => array(
+                'title' => __('Google Pay Request Phone Number', 'omise'),
+                'type' => 'checkbox',
+                'description' => __('Request customer\'s phone number from their Google Account upon checkout when billing address is requested.', 'omise'),
+                'default' => 'no'
+            ),
+
             'title' => array(
                 'title' => __('Title', 'omise'),
                 'type' => 'text',
@@ -71,44 +91,84 @@ class Omise_Payment_GooglePay extends Omise_Payment
             WC_VERSION,
             true
         );
-
-        wp_enqueue_script(
-            'omise-googlepay-button-handler',
-            plugins_url('../assets/javascripts/omise-googlepay-button-handler.js', dirname(__FILE__)),
-            array(),
-            WC_VERSION,
-            true
-        );
-
-        $params = array(
-            'key' => $this->public_key(),
-        );
-
-        wp_localize_script('omise-googlepay-button-handler', 'params', $params);
     }
 
     /**
      * @inheritdoc
      */
-    public function payment_fields()
+    public
+    function payment_fields()
     {
         parent::payment_fields();
-        Omise_Util::render_view('templates/payment/form-googlepay.php', array());
+        Omise_Util::render_view('templates/payment/form-googlepay.php',
+            array('config' => $this->google_pay_button_scripts()));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function result($order_id, $order, $charge)
+    private
+    function google_pay_button_scripts()
     {
-        return;
-    }
+        wp_enqueue_script('omise-js', 'https://cdn.staging-omise.co/omise.js', array('jquery'), WC_VERSION, true);
 
-    /**
-     * @inheritdoc
-     */
-    public function charge($order_id, $order)
-    {
-        return;
+        return array("script" =>
+            "<script type='module'>
+                 const button = document.createElement('google-pay-button')
+                 button.setAttribute('environment', 'TEST')
+                 button.setAttribute('button-type', 'pay')
+                 button.setAttribute('button-color', 'black')
+                 button.paymentRequest = {
+                     apiVersion: 2,
+                     apiVersionMinor: 0,
+                     allowedPaymentMethods: [
+                         {
+                             type: 'CARD',
+                             parameters: {
+                                 allowedAuthMethods: ['PAN_ONLY'],
+                                 allowedCardNetworks: ['VISA', 'MASTERCARD', 'AMEX'],
+                                 billingAddressRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
+                                 billingAddressParameters: {
+                                     format: 'FULL',
+                                     phoneNumberRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
+                                 },
+                             },
+                             tokenizationSpecification: {
+                                 type: 'PAYMENT_GATEWAY',
+                                 parameters: {
+                                     gateway: 'omise',
+                                     gatewayMerchantId: '" . $this->public_key() . "',
+                                 },
+                             },
+                         },
+                     ],
+                     merchantInfo: {
+                         merchantId: '" . $this->get_option('merchant_id') . "',
+                     },
+                     transactionInfo: {
+                         totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+                         currencyCode: 'THB',
+                     },
+                 }
+
+                 const div = document.querySelector('#googlepay-button-container')                 
+                 div.appendChild(button)                 
+
+                 button.addEventListener('loadpaymentdata', event => {              
+                    const params = {
+                        method: 'googlepay',
+                        data: JSON.stringify(JSON.parse(event.detail.paymentMethodData.tokenizationData.token))
+                    }					
+                    Omise.setPublicKey('" . $this->public_key() . "')
+					Omise.createToken('tokenization', params, (statusCode, response) => {
+                        if (statusCode == 200) {
+                            const form = document.querySelector('form.checkout')
+                            const input = document.createElement('input')           
+                            input.setAttribute('type', 'hidden' )
+                            input.setAttribute('class', 'omise_token' )
+                            input.setAttribute('name', 'omise_token' )
+                            input.setAttribute('value', response.id)
+                            form.appendChild(input) 
+                        }
+                    })
+                 })
+            </script>");
     }
 }
