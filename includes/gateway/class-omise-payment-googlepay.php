@@ -23,7 +23,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
 
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
-        $this->restricted_countries = array('TH');
+		$this->restricted_countries = array( 'TH', 'JP', 'SG', 'MY' );
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
         add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
@@ -47,7 +47,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
             'merchant_id' => array(
                 'title' => __('Google Pay Merchant ID', 'omise'),
                 'type' => 'text',
-                'description' => __('The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>.', 'omise')
+                'description' => __('The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>. (Not needed for test mode)', 'omise')
             ),
 
             'request_billing_address' => array(
@@ -107,12 +107,12 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
     private
     function google_pay_button_scripts()
     {
-        wp_enqueue_script('omise-js', 'https://cdn.staging-omise.co/omise.js', array('jquery'), WC_VERSION, true);
+        wp_enqueue_script('omise-js', 'https://cdn.omise.co/omise.js', array('jquery'), WC_VERSION, true);
 
         return array("script" =>
             "<script type='module'>
                  const button = document.createElement('google-pay-button')
-                 button.setAttribute('environment', 'TEST')
+                 button.setAttribute('environment', '" . ($this->is_test() ? 'TEST' : 'LIVE') . "')
                  button.setAttribute('button-type', 'pay')
                  button.setAttribute('button-color', 'black')
                  button.paymentRequest = {
@@ -127,7 +127,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                                  billingAddressRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
                                  billingAddressParameters: {
                                      format: 'FULL',
-                                     phoneNumberRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
+                                     phoneNumberRequired: " . ($this->get_option('request_phone_number') == 'yes' ? 'true' : 'false') . ",
                                  },
                              },
                              tokenizationSpecification: {
