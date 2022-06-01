@@ -25,9 +25,11 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
         $this->description = $this->get_option('description');
 		$this->restricted_countries = array( 'TH', 'JP', 'SG', 'MY' );
 
-        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
-        add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
-        add_action('woocommerce_order_action_' . $this->id . '_sync_payment', array($this, 'sync_payment'));
+		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
+		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'omise_scripts' ) );
+		add_action( 'woocommerce_order_action_' . $this->id . '_charge_capture', array( $this, 'process_capture' ) );
+		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
     }
 
     /**
@@ -151,11 +153,24 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                  const div = document.querySelector('#googlepay-button-container')                 
                  div.appendChild(button)                 
 
-                 button.addEventListener('loadpaymentdata', event => {              
+                 button.addEventListener('loadpaymentdata', event => {
                     const params = {
                         method: 'googlepay',
                         data: JSON.stringify(JSON.parse(event.detail.paymentMethodData.tokenizationData.token))
-                    }					
+                    }
+                    const billingAddress = (event.detail.paymentMethodData.info?.billingAddress);
+                    if (billingAddress) {
+                        Object.assign(params, {
+                            billing_name: billingAddress.name,
+                            billing_city: billingAddress.locality,
+                            billing_country: billingAddress.countryCode,
+                            billing_postal_code: billingAddress.postalCode,
+                            billing_state: billingAddress.administrativeArea,
+                            billing_street1: billingAddress.address1,
+                            billing_street2: [billingAddress.address2, billingAddress.address3].filter(s => s).join(' '),
+                            billing_phone_number: billingAddress.phoneNumber,
+                        });
+                    }
                     Omise.setPublicKey('" . $this->public_key() . "')
 					Omise.createToken('tokenization', params, (statusCode, response) => {
                         if (statusCode == 200) {
