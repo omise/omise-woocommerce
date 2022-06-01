@@ -150,7 +150,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                      },
                  }
 
-                 const div = document.querySelector('#googlepay-button-container')                 
+                 const div = document.getElementById('googlepay-button-container')                 
                  div.appendChild(button)                 
 
                  button.addEventListener('loadpaymentdata', event => {
@@ -174,6 +174,10 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                     Omise.setPublicKey('" . $this->public_key() . "')
 					Omise.createToken('tokenization', params, (statusCode, response) => {
                         if (statusCode == 200) {
+                            document.getElementById('googlepay-button-container').style.display = 'none';
+                            document.getElementById('googlepay-text').innerHTML = 'Card is successfully selected. please proceed to \'Place order\'.'
+                            document.getElementById('googlepay-text').classList.add('googlepay-selected')
+
                             const form = document.querySelector('form.checkout')
                             const input = document.createElement('input')           
                             input.setAttribute('type', 'hidden' )
