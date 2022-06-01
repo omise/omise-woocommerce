@@ -63,7 +63,7 @@ msgstr "入力内容は、購入者が決済を行う際に表示します。"
 msgid "We cannot process your payment.<br/>Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to "
 msgstr "決済処理が正しく完了しませんでした。<br/>ストアのシステムエラーの可能性がございます。<br/><br/>誠に恐れ入りますが、もう一度始めから試し"
 
-msgid"try submit your order again or report our support team that you have found this problem (Your temporary order id is '%s')"
+msgid "try submit your order again or report our support team that you have found this problem (Your temporary order id is '%s')"
 msgstr "ていただくか、サポートチームまでご報告ください。（お問い合わせの際は注文ID '%s') をご提示ください。）"
 
 #: includes/gateway/class-omise-payment-alipay.php:88
@@ -346,6 +346,58 @@ msgstr "年"
 msgid "Security code"
 msgstr "セキュリティコード"
 
+#: includes/gateway/class-omise-payment-konbini.php:115
+msgid "Please find the payment instruction there or click on the link below and complete the payment by <br/><strong>%s %s</strong>."
+msgstr "そちらの案内から決済方法をご確認いただくか、下記のリンクをクリックして<br/><strong>%s %s</strong>までに決済を完了してください。"
+
+#: includes/gateway/class-omis-payment-konbini.php:125
+msgid "Payment Link"
+msgstr "決済リンク"
+
+#: templates/payment/form-konhini.php:4
+msgid "Name"
+msgstr "名前"
+
+#: templates/payment/form-konhini.php:8
+msgid "Email"
+msgstr "Eメール"
+
+#: templates/payment/form-konhini.php:13
+msgid "Phone"
+msgstr "電話"
+
+#: includes/class-omise-callback.php:155
+msgid "It seems we've been unable to process your payment properly:<br/>%s"
+msgstr "お客様の決済を完了することができませんでした。<br/>%s"
+
+#: includes/class-omise-callback.php:156
+msgid "name cannot be blank, email is in invalid format, and phone_number must contain 10-11 digit characters"
+msgstr "名前欄が空白でないこと、メールアドレスが無効な形式でないこと、電話番号が10～11文字で入力されていることを確認してください。"
+
+#: includes/class-omise-callback.php:156
+msgid "email is in invalid format and phone_number must contain 10-11 digit characters"
+msgstr "メールアドレスが無効な形式でないこと、電話番号が10～11文字で入力されていることを確認してください。"
+
+#: includes/class-omise-callback.php:156
+msgid "name cannot be blank and phone_number must contain 10-11 digit characters"
+msgstr "名前欄が空白でないこと、電話番号が10～11文字で入力されていることを確認してください。"
+
+#: includes/class-omise-callback.php:156
+msgid "name cannot be blank and email is in invalid format"
+msgstr "名前欄が空白でないこと、メールアドレスが無効な形式でないこと、されていることを確認してください。"
+
+#: includes/class-omise-callback.php:156
+msgid "name cannot be blank"
+msgstr "名前欄が空白でないこと ていることを確認してください。"
+
+#: includes/class-omise-callback.php:156
+msgid "email is in invalid format"
+msgstr "メールアドレスが無効な形式でないこといることを確認してください。"
+
+#: includes/class-omise-callback.php:156
+msgid "phone_number must contain 10-11 digit characters"
+msgstr "電話番号が10～11文字で入力されていることを確認してください。"
+
 #: templates/payment/form-internetbanking.php:11
 msgid "Siam Commercial Bank"
 msgstr "サイアム商業銀行"
@@ -409,31 +461,3 @@ msgstr "https://www.omise.co/ja/japan"
 #: includes/gateway/class-omise-payment-konbini.php:111
 msgid "Your payment code has been sent to your email"
 msgstr "お客様のメールに決済コードが送信されました。"
-
-#: includes/gateway/class-omise-payment-konbini.php:115
-msgid "Please find the payment instruction there or click on the link below and complete the payment by <br/><strong>%s %s</strong>."
-msgstr "そちらの案内から決済方法をご確認いただくか、下記のリンクをクリックして<br/><strong>%s %s</strong>までに決済を完了してください。"
-
-#: includes/gateway/class-omis-payment-konbini.php:125
-msgid "Payment Link"
-msgstr "決済リンク"
-
-#: templates/payment/form-konhini.php:4
-msgid "Name"
-msgstr "名前"
-
-#: templates/payment/form-konhini.php:8
-msgid "Email"
-msgstr "Eメール"
-
-#: templates/payment/form-konhini.php:13
-msgid "Phone"
-msgstr "電話"
-
-#: includes/class-omise-callback.php:155
-msgid "It seems we've been unable to process your payment properly:<br/>%s"
-msgstr "お客様の決済を完了することができませんでした。<br/>%s"
-
-#: includes/class-omise-callback.php:156
-msgid "name cannot be blank, email is in invalid format, and phone_number must contain 10-11 digit characters"
-msgstr "名前欄が空白でないこと、メールアドレスが無効な形式でないこと、電話番号が10～11文字で入力されていることを確認してください。"

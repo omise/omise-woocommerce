@@ -70,15 +70,6 @@ class Omise_Localization {
 
 			'type is currently not supported'
 				=> __( 'type is currently not supported', 'omise' ),
-
-			'Your payment code has been sent to your email'
-				=> __('Your payment code has been sent to your email'),
-
-			'Please find the payment instruction there or click on the link below and complete the payment by <br/><strong>%s %s</strong>.'
-				=> __('Please find the payment instruction there or click on the link below and complete the payment by <br/><strong>%s %s</strong>.'),
-
-			"<a href='%s' target='_blank'>Payment Link</a>"
-				=> __("<a href='%s' target='_blank'>Payment Link</a>")
 		);
 
 		return isset( $known_messages[ $message ] ) ? $known_messages[ $message ] : $message;
