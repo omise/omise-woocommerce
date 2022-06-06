@@ -47,7 +47,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
             ),
 
             'merchant_id' => array(
-                'title' => __('Google Pay Merchant ID', 'omise'),
+                'title' => __('Merchant ID', 'omise'),
                 'type' => 'text',
                 'description' => __('The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>. (Not needed for test mode)', 'omise')
             ),
@@ -60,7 +60,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
             ),
 
             'request_phone_number' => array(
-                'title' => __('Google Pay Request Phone Number', 'omise'),
+                'title' => __('Request Phone Number', 'omise'),
                 'type' => 'checkbox',
                 'description' => __('Request customer\'s phone number from their Google Account upon checkout when billing address is requested.', 'omise'),
                 'default' => 'no'
