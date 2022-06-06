@@ -376,27 +376,27 @@ msgstr "名前欄が空白でないこと、メールアドレスが無効な形
 
 #: includes/class-omise-callback.php:156
 msgid "email is in invalid format and phone_number must contain 10-11 digit characters"
-msgstr "メールアドレスが無効な形式でないこと、電話番号が10～11文字で入力されていることを確認してください。"
+msgstr ""電子メールの形式が無効です。電話_番号には10-11桁の数字を入力してください"。"
 
 #: includes/class-omise-callback.php:156
 msgid "name cannot be blank and phone_number must contain 10-11 digit characters"
-msgstr "名前欄が空白でないこと、電話番号が10～11文字で入力されていることを確認してください。"
+msgstr "氏名欄は空白にできません。電話_番号には10-11桁の数字を入力してください。"
 
 #: includes/class-omise-callback.php:156
-msgid "name cannot be blank and email is in invalid format"
-msgstr "名前欄が空白でないこと、メールアドレスが無効な形式でないこと、されていることを確認してください。"
+msgid "name cannot be blank and email is invalid format"
+msgstr "氏名欄は空白にできません。電子メールの形式が無効です。"
 
 #: includes/class-omise-callback.php:156
 msgid "name cannot be blank"
-msgstr "名前欄が空白でないこと ていることを確認してください。"
+msgstr "氏名欄は空白にできません。"
 
 #: includes/class-omise-callback.php:156
 msgid "email is in invalid format"
-msgstr "メールアドレスが無効な形式でないこといることを確認してください。"
+msgstr "電子メールの形式が無効です。"
 
 #: includes/class-omise-callback.php:156
 msgid "phone_number must contain 10-11 digit characters"
-msgstr "電話番号が10～11文字で入力されていることを確認してください。"
+msgstr "電話_番号には10-11桁の数字を入力してください。"
 
 #: templates/payment/form-internetbanking.php:11
 msgid "Siam Commercial Bank"
