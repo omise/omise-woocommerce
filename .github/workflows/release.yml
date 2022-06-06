@@ -2,12 +2,10 @@ name: Release
 
 on:
   push:
-    branches:
-      - master
-#     tags:
-#       - 'v[0-9]+.[0-9]+.[0-9]+'
-#       - 'v[0-9]+.[0-9]+'
-#       - 'v[0-9]+'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+'
+      - 'v[0-9]+'
 
 jobs:
   build:
@@ -32,19 +30,19 @@ jobs:
     - name: Run test suite
       run: vendor/bin/phpunit
 
-#   validate:
-#     name: Validate
-#     runs-on: ubuntu-latest
-#     outputs:
-#       tag: ${{ steps.release-version.outputs.tag }}
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
-#     - name: Get release version
-#       id: release-version
-#       run: echo ::set-output name=tag::$(echo $GITHUB_REF | cut -c 12-)
-#     - name: Validate versioning
-#       run: find omise-woocommerce.php -type f | xargs grep -n "version = '${{ steps.release-version.outputs.tag }}'"
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.release-version.outputs.tag }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Get release version
+      id: release-version
+      run: echo ::set-output name=tag::$(echo $GITHUB_REF | cut -c 12-)
+    - name: Validate versioning
+      run: find omise-woocommerce.php -type f | xargs grep -n "version = '${{ steps.release-version.outputs.tag }}'"
 
   release:
     name: Release
@@ -60,4 +58,4 @@ jobs:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SLUG: omise # https://plugins.svn.wordpress.org/omise/
-        VERSION: '4.20.1' # ${{ needs.validate.outputs.tag }}
+        VERSION: ${{ needs.validate.outputs.tag }}
