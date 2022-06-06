@@ -8,7 +8,7 @@
             <?php _e('You will be prompted to select a credit card stored in your Google Account.', 'omise'); ?>
         </p>
     </fieldset>
-<?php else: ?>
+<?php else : ?>
     <p>
         <?php echo __('Google Pay is currently not available.', 'omise'); ?>
     </p>
