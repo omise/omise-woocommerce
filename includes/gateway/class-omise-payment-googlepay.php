@@ -23,13 +23,13 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
 
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
-		$this->restricted_countries = array( 'TH', 'JP', 'SG', 'MY' );
+        $this->restricted_countries = array('TH', 'JP', 'SG', 'MY');
 
-		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
-		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'omise_scripts' ) );
-		add_action( 'woocommerce_order_action_' . $this->id . '_charge_capture', array( $this, 'process_capture' ) );
-		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
+        add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+        add_action('wp_enqueue_scripts', array($this, 'omise_scripts'));
+        add_action('woocommerce_order_action_' . $this->id . '_charge_capture', array($this, 'process_capture'));
+        add_action('woocommerce_order_action_' . $this->id . '_sync_payment', array($this, 'sync_payment'));
     }
 
     /**
@@ -78,6 +78,36 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                 'type' => 'textarea',
                 'description' => __('This controls the description the user sees during checkout.', 'omise')
             ),
+
+            'accept_visa' => array(
+                'title'       => __('Supported card networks', 'omise'),
+                'type'        => 'checkbox',
+                'label'       => Omise_Card_Image::get_visa_image(),
+                'css'         => Omise_Card_Image::get_css(),
+                'default'     => Omise_Card_Image::get_visa_default_display()
+            ),
+            'accept_mastercard' => array(
+                'type'        => 'checkbox',
+                'label'       => Omise_Card_Image::get_mastercard_image(),
+                'css'         => Omise_Card_Image::get_css(),
+                'default'     => Omise_Card_Image::get_mastercard_default_display()
+            ),
+            'accept_jcb' => array(
+                'type'        => 'checkbox',
+                'label'       => Omise_Card_Image::get_jcb_image(),
+                'css'         => Omise_Card_Image::get_css(),
+                'default'     => Omise_Card_Image::get_jcb_default_display()
+            ),
+            'accept_amex' => array(
+                'type'        => 'checkbox',
+                'label'       => Omise_Card_Image::get_amex_image(),
+                'css'         => Omise_Card_Image::get_css(),
+                'default'     => Omise_Card_Image::get_amex_default_display(),
+                'description' => wp_kses(
+                    __('This only controls the allowed card networks GooglePay will allow the customer to select.<br />It is not related to card processing on Omise payment gateway.', 'omise'),
+                    array('br' => array())
+                )
+            )
         );
     }
 
@@ -95,6 +125,11 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
         );
     }
 
+    public function get_icon()
+    {
+        return null;
+    }
+
     /**
      * @inheritdoc
      */
@@ -102,8 +137,10 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
     function payment_fields()
     {
         parent::payment_fields();
-        Omise_Util::render_view('templates/payment/form-googlepay.php',
-            array('config' => $this->google_pay_button_scripts()));
+        Omise_Util::render_view(
+            'templates/payment/form-googlepay.php',
+            array('config' => $this->google_pay_button_scripts())
+        );
     }
 
     private
@@ -111,47 +148,54 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
     {
         wp_enqueue_script('omise-js', 'https://cdn.omise.co/omise.js', array('jquery'), WC_VERSION, true);
 
+        $cardNetworks = [];
+        $this->get_option('accept_amex') == 'yes' ? array_push($cardNetworks, "AMEX") : null;
+        $this->get_option('accept_jcb') == 'yes' ? array_push($cardNetworks, "JCB") : null;
+        $this->get_option('accept_mastercard') == 'yes' ? array_push($cardNetworks, "MASTERCARD") : null;
+        $this->get_option('accept_visa') == 'yes' ? array_push($cardNetworks, "VISA") : null;
+        $allowedCardNetworks = json_encode($cardNetworks);
+
         return array("script" =>
-            "<script type='module'>
+        "<script type='module'>
                  const button = document.createElement('google-pay-button')
                  button.setAttribute('environment', '" . ($this->is_test() ? 'TEST' : 'LIVE') . "')
                  button.setAttribute('button-type', 'pay')
                  button.setAttribute('button-color', 'black')
                  button.paymentRequest = {
-                     apiVersion: 2,
-                     apiVersionMinor: 0,
-                     allowedPaymentMethods: [
-                         {
-                             type: 'CARD',
-                             parameters: {
-                                 allowedAuthMethods: ['PAN_ONLY'],
-                                 allowedCardNetworks: ['VISA', 'MASTERCARD', 'AMEX'],
-                                 billingAddressRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
-                                 billingAddressParameters: {
-                                     format: 'FULL',
-                                     phoneNumberRequired: " . ($this->get_option('request_phone_number') == 'yes' ? 'true' : 'false') . ",
-                                 },
-                             },
-                             tokenizationSpecification: {
-                                 type: 'PAYMENT_GATEWAY',
-                                 parameters: {
-                                     gateway: 'omise',
-                                     gatewayMerchantId: '" . $this->public_key() . "',
-                                 },
-                             },
-                         },
-                     ],
-                     merchantInfo: {
-                         merchantId: '" . $this->get_option('merchant_id') . "',
-                     },
-                     transactionInfo: {
-                         totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-                         currencyCode: 'THB',
-                     },
-                 }
+                    apiVersion: 2,
+                    apiVersionMinor: 0,
+                    allowedPaymentMethods: [
+                        {
+                            type: 'CARD',
+                            parameters: {
+                                allowedAuthMethods: ['PAN_ONLY'],
+                                allowedCardNetworks: " . $allowedCardNetworks . ",
+                                billingAddressRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
+                                billingAddressParameters: {
+                                    format: 'FULL',
+                                    phoneNumberRequired: " . ($this->get_option('request_phone_number') == 'yes' ? 'true' : 'false') . ",
+                                },
+                            },
+                            tokenizationSpecification: {
+                                type: 'PAYMENT_GATEWAY',
+                                parameters: {
+                                    gateway: 'omise',
+                                    gatewayMerchantId: '" . $this->public_key() . "',
+                                },
+                            },
+                        },
+                    ],
+                    merchantInfo: {
+                        merchantId: '" . $this->get_option('merchant_id') . "',
+                    },
+                    transactionInfo: {
+                        totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+                        currencyCode: 'THB',
+                    },
+                }
 
-                 const div = document.getElementById('googlepay-button-container')                 
-                 div.appendChild(button)                 
+                const div = document.getElementById('googlepay-button-container')                 
+                div.appendChild(button)                 
 
                  button.addEventListener('loadpaymentdata', event => {
                     const params = {
@@ -175,7 +219,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
 					Omise.createToken('tokenization', params, (statusCode, response) => {
                         if (statusCode == 200) {
                             document.getElementById('googlepay-button-container').style.display = 'none';
-                            document.getElementById('googlepay-text').innerHTML = 'Card is successfully selected. please proceed to \'Place order\'.'
+                            document.getElementById('googlepay-text').innerHTML = 'Card is successfully selected. Please proceed to \'Place order\'.'
                             document.getElementById('googlepay-text').classList.add('googlepay-selected')
 
                             const form = document.querySelector('form.checkout')
@@ -187,7 +231,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                             form.appendChild(input) 
                         }
                     })
-                 })
+                })
             </script>");
     }
 }
