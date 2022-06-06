@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### [v4.20.1 _(Jun 6, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.20.1)
+
+#### 🚀 Enhancements
+- Update FPX logo, banklist and terms & condition (PR [#275](https://github.com/omise/omise-woocommerce/pull/275))
+- Update assets Bank of China Logo for FPX (PR [#274](https://github.com/omise/omise-woocommerce/pull/274))
+
 ### [v4.20 _(May 11, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.20)
 
 #### 🚀 Enhancements
