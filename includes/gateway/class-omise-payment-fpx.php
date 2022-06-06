@@ -19,7 +19,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'MY' );
-		$this->backend     					= new Omise_Backend_FPX;
+		$this->backend              = new Omise_Backend_FPX;
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -57,7 +57,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		);
   }
   
-  /**
+    /**
 	 * @inheritdoc
 	 */
 	public function payment_fields() {
@@ -104,4 +104,20 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 			'metadata'    => $metadata
 		) );
 	}
+
+	/**
+	 * Get icons
+	 *
+	 * @see WC_Payment_Gateway::get_icon()
+	 */
+	public function get_icon() {
+		$icon = Omise_Image::get_image( array(
+			    'file' => 'fpx.svg',
+			    'alternate_text' => 'FPX',
+			    'width' => 60,
+			    'height' => 60,
+		));
+		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+	}
+
 }

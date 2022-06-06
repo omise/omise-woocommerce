@@ -428,86 +428,120 @@ ul.omise-banks-list {
 
 
 /**
-fpx bank logos
+fpx select & bank logos
 **/
-.fpx-bank-logo.affin_test,.fpx-bank-logo.affin {
-	background: url('../images/fpx-affin.svg');
+.fpx-select-bank {
+    position: relative;
 }
 
-.fpx-bank-logo.agro {
-	background: url('../images/fpx-agronet.svg');
+.fpx-select-bank:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    content: "";
+    pointer-events: none;
+    background: transparent;
+    background-repeat: no-repeat;
+    background-position-y: 5px;
 }
 
-.fpx-bank-logo.alliance {
-	background: url('../images/fpx-alliance.svg');
+
+.fpx-select-bank > select {
+    padding-left: 0;
+    padding: 10px 50px;
+	width: 100%;
+    background-image:url(../images/fpx-unknown.svg);
+    background-repeat: no-repeat;
+    background-position-y: 50%;
+    background-position-x: 10px;
+    background-size: 25px;
+    cursor: pointer;
 }
 
-.fpx-bank-logo.ambank {
-	background: url('../images/fpx-ambank.svg');
+.fpx-select-bank > select.default {
+    background: none;
+	padding-left: 10px;
 }
 
-.fpx-bank-logo.islam {
-	background: url('../images/fpx-islam.svg');
+.fpx-select-bank > select.affin, select.affin_test {
+    background-image:url(../images/fpx-affin.svg);
 }
 
-.fpx-bank-logo.muamalat {
-	background: url('../images/fpx-muamalat.svg');
+.fpx-select-bank > select.agro {
+    background-image:url(../images/fpx-agronet.svg);
 }
 
-.fpx-bank-logo.rakyat {
-	background: url('../images/fpx-rakyat.svg');
+.fpx-select-bank > select.alliance {
+    background-image:url(../images/fpx-alliance.svg);
 }
 
-.fpx-bank-logo.bsn {
-	background: url('../images/fpx-bsn.svg');
+.fpx-select-bank > select.ambank {
+    background-image:url(../images/fpx-ambank.svg);
 }
 
-.fpx-bank-logo.cimb {
-	background: url('../images/fpx-cimb.svg');
+.fpx-select-bank > select.bsn {
+    background-image:url(../images/fpx-bsn.svg);
 }
 
-.fpx-bank-logo.citi {
-	background: url('../images/fpx-citi.svg');
+.fpx-select-bank > select.cimb {
+    background-image:url(../images/fpx-cimb.svg);
 }
 
-.fpx-bank-logo.hongleong {
-	background: url('../images/fpx-hongleong.svg');
+.fpx-select-bank > select.citi {
+    background-image:url(../images/fpx-citi.svg);
 }
 
-.fpx-bank-logo.hsbc {
-	background: url('../images/fpx-hsbc.svg');
+.fpx-select-bank > select.bocm {
+    background-image:url(../images/fpx-bocm.svg);
 }
 
-.fpx-bank-logo.public {
-	background: url('../images/fpx-publicbank.svg');
+.fpx-select-bank > select.hongleong {
+    background-image:url(../images/fpx-hongleong.svg);
 }
 
-.fpx-bank-logo.rhb {
-	background: url('../images/fpx-rhb.svg');
+.fpx-select-bank > select.hsbc {
+    background-image:url(../images/fpx-hsbc.svg);
 }
 
-.fpx-bank-logo.sbc_a,.fpx-bank-logo.sbc_b,.fpx-bank-logo.sbc_c {
-	background: url('../images/fpx-unknown.svg');
+.fpx-select-bank > select.islam {
+    background-image:url(../images/fpx-islam.svg);
 }
 
-.fpx-bank-logo.sc {
-	background: url('../images/fpx-sc.svg');
+.fpx-select-bank > select.kfh {
+    background-image:url(../images/fpx-kfh.svg);
 }
 
-.fpx-bank-logo.uob {
-	background: url('../images/fpx-uob.svg');
+.fpx-select-bank > select.maybank2e, select.maybank2u{
+    background-image:url(../images/fpx-maybank.svg);
 }
 
-.fpx-bank-logo.ocbc {
-	background: url('../images/fpx-ocbc.svg');
+.fpx-select-bank > select.muamalat {
+    background-image:url(../images/fpx-muamalat.svg);
 }
 
-.fpx-bank-logo.kfh {
-	background: url('../images/fpx-kfh.svg');
+.fpx-select-bank > select.ocbc {
+    background-image:url(../images/fpx-ocbc.svg);
 }
 
-.fpx-bank-logo.maybank2e,.fpx-bank-logo.maybank2u {
-	background: url('../images/fpx-maybank.svg');
+.fpx-select-bank > select.public {
+    background-image:url(../images/fpx-publicbank.svg);
+}
+
+.fpx-select-bank > select.rakyat {
+    background-image:url(../images/fpx-rakyat.svg);
+}
+
+.fpx-select-bank > select.rhb {
+    background-image:url(../images/fpx-rhb.svg);
+}
+
+.fpx-select-bank > select.sc {
+    background-image:url(../images/fpx-sc.svg);
+}
+
+.fpx-select-bank > select.uob {
+    background-image:url(../images/fpx-uob.svg);
 }
 
 .omise-offline {
@@ -525,6 +559,11 @@ line-height: 2;
 	margin-bottom:0px !important;
 }
 
+.fpx-terms-and-conditions-block {
+	margin-top: 10px;
+}
+
+
 .gpay-button {
     background-origin: content-box;
     background-position: center center;
@@ -538,5 +577,5 @@ line-height: 2;
     min-height: 40px;
     padding: 11px 24px;
     width: 100%;
-	margin-bottom: 1rem; 
+	margin-bottom: 1rem;
 }
