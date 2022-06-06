@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.9.0
-Stable tag: 4.20
+Stable tag: 4.20.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,12 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.20.1 =
+
+#### 🚀 Enhancements
+- Update FPX logo, banklist and terms & condition (PR [#275](https://github.com/omise/omise-woocommerce/pull/275))
+- Update assets Bank of China Logo for FPX (PR [#274](https://github.com/omise/omise-woocommerce/pull/274))
 
 = 4.20 =
 
