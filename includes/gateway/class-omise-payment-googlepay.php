@@ -53,7 +53,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
             ),
 
             'request_billing_address' => array(
-                'title' => __('Google Pay Request Billing Address', 'omise'),
+                'title' => __('Request Billing Address', 'omise'),
                 'type' => 'checkbox',
                 'description' => __('Request customer\'s name and billing address from their Google Account upon checkout.', 'omise'),
                 'default' => 'no'
