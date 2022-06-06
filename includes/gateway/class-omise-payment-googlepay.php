@@ -23,6 +23,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
 
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
+        $this->payment_action       = $this->get_option('payment_action');
         $this->restricted_countries = array('TH', 'JP', 'SG', 'MY');
 
         add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
@@ -38,74 +39,95 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
      */
     public function init_form_fields()
     {
-        $this->form_fields = array(
-            'enabled' => array(
-                'title' => __('Enable/Disable', 'omise'),
-                'type' => 'checkbox',
-                'label' => __('Enable Omise Google Pay Payment', 'omise'),
-                'default' => 'no'
-            ),
+        $this->form_fields = array_merge(
+            array(
+                'enabled' => array(
+                    'title' => __('Enable/Disable', 'omise'),
+                    'type' => 'checkbox',
+                    'label' => __('Enable Omise Google Pay Payment', 'omise'),
+                    'default' => 'no'
+                ),
 
-            'merchant_id' => array(
-                'title' => __('Merchant ID', 'omise'),
-                'type' => 'text',
-                'description' => __('The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>. (Not needed for test mode)', 'omise')
-            ),
+                'merchant_id' => array(
+                    'title' => __('Merchant ID', 'omise'),
+                    'type' => 'text',
+                    'description' => __('The merchant ID will be available after registering with the <a href="https://pay.google.com/business/console">Google Pay Business Console</a>. (Not needed for test mode)', 'omise')
+                ),
 
-            'request_billing_address' => array(
-                'title' => __('Request Billing Address', 'omise'),
-                'type' => 'checkbox',
-                'description' => __('Request customer\'s name and billing address from their Google Account upon checkout.', 'omise'),
-                'default' => 'no'
-            ),
+                'request_billing_address' => array(
+                    'title' => __('Request Billing Address', 'omise'),
+                    'type' => 'checkbox',
+                    'description' => __('Request customer\'s name and billing address from their Google Account upon checkout.', 'omise'),
+                    'default' => 'no'
+                ),
 
-            'request_phone_number' => array(
-                'title' => __('Request Phone Number', 'omise'),
-                'type' => 'checkbox',
-                'description' => __('Request customer\'s phone number from their Google Account upon checkout when billing address is requested.', 'omise'),
-                'default' => 'no'
-            ),
+                'request_phone_number' => array(
+                    'title' => __('Request Phone Number', 'omise'),
+                    'type' => 'checkbox',
+                    'description' => __('Request customer\'s phone number from their Google Account upon checkout when billing address is requested.', 'omise'),
+                    'default' => 'no'
+                ),
 
-            'title' => array(
-                'title' => __('Title', 'omise'),
-                'type' => 'text',
-                'description' => __('This controls the title the user sees during checkout.', 'omise'),
-                'default' => __('Google Pay', 'omise'),
-            ),
+                'title' => array(
+                    'title' => __('Title', 'omise'),
+                    'type' => 'text',
+                    'description' => __('This controls the title the user sees during checkout.', 'omise'),
+                    'default' => __('Google Pay', 'omise'),
+                ),
 
-            'description' => array(
-                'title' => __('Description', 'omise'),
-                'type' => 'textarea',
-                'description' => __('This controls the description the user sees during checkout.', 'omise')
+                'description' => array(
+                    'title' => __('Description', 'omise'),
+                    'type' => 'textarea',
+                    'description' => __('This controls the description the user sees during checkout.', 'omise')
+                ),
             ),
-
-            'accept_visa' => array(
-                'title'       => __('Supported card networks', 'omise'),
-                'type'        => 'checkbox',
-                'label'       => Omise_Card_Image::get_visa_image(),
-                'css'         => Omise_Card_Image::get_css(),
-                'default'     => Omise_Card_Image::get_visa_default_display()
-            ),
-            'accept_mastercard' => array(
-                'type'        => 'checkbox',
-                'label'       => Omise_Card_Image::get_mastercard_image(),
-                'css'         => Omise_Card_Image::get_css(),
-                'default'     => Omise_Card_Image::get_mastercard_default_display()
-            ),
-            'accept_jcb' => array(
-                'type'        => 'checkbox',
-                'label'       => Omise_Card_Image::get_jcb_image(),
-                'css'         => Omise_Card_Image::get_css(),
-                'default'     => Omise_Card_Image::get_jcb_default_display()
-            ),
-            'accept_amex' => array(
-                'type'        => 'checkbox',
-                'label'       => Omise_Card_Image::get_amex_image(),
-                'css'         => Omise_Card_Image::get_css(),
-                'default'     => Omise_Card_Image::get_amex_default_display(),
-                'description' => wp_kses(
-                    __('This only controls the allowed card networks GooglePay will allow the customer to select.<br />It is not related to card processing on Omise payment gateway.', 'omise'),
-                    array('br' => array())
+            array(
+                'advanced' => array(
+                    'title'       => __('Advance Settings', 'omise'),
+                    'type'        => 'title'
+                ),
+                'payment_action' => array(
+                    'title'       => __('Payment action', 'omise'),
+                    'type'        => 'select',
+                    'description' => __('Capture automatically during the checkout process or manually after order has been placed', 'omise'),
+                    'default'     => self::PAYMENT_ACTION_AUTHORIZE_CAPTURE,
+                    'class'       => 'wc-enhanced-select',
+                    'options'     => array(
+                        self::PAYMENT_ACTION_AUTHORIZE_CAPTURE => __('Auto Capture', 'omise'),
+                        self::PAYMENT_ACTION_AUTHORIZE         => __('Manual Capture', 'omise')
+                    ),
+                    'desc_tip'    => true
+                ),
+                'accept_visa' => array(
+                    'title'       => __('Supported card networks', 'omise'),
+                    'type'        => 'checkbox',
+                    'label'       => Omise_Card_Image::get_visa_image(),
+                    'css'         => Omise_Card_Image::get_css(),
+                    'default'     => Omise_Card_Image::get_visa_default_display()
+                ),
+                'accept_mastercard' => array(
+                    'type'        => 'checkbox',
+                    'label'       => Omise_Card_Image::get_mastercard_image(),
+                    'css'         => Omise_Card_Image::get_css(),
+                    'default'     => Omise_Card_Image::get_mastercard_default_display()
+                ),
+                'accept_jcb' => array(
+                    'type'        => 'checkbox',
+                    'label'       => Omise_Card_Image::get_jcb_image(),
+                    'css'         => Omise_Card_Image::get_css(),
+                    'default'     => Omise_Card_Image::get_jcb_default_display()
+                ),
+                'accept_amex' => array(
+                    'type'        => 'checkbox',
+                    'label'       => Omise_Card_Image::get_amex_image(),
+                    'css'         => Omise_Card_Image::get_css(),
+                    'default'     => Omise_Card_Image::get_amex_default_display(),
+                    'description' => wp_kses(
+                        __('This only controls the allowed card networks GooglePay will allow the customer to select.
+                        <br />It is not related to card processing on Omise payment gateway.
+                        <br />Note: This payment method will not be available on the checkout page if no card network is selected.', 'omise'),
+                        array('br' => array())
+                    )
                 )
             )
         );
@@ -195,9 +217,10 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                 }
 
                 const div = document.getElementById('googlepay-button-container')                 
-                div.appendChild(button)                 
+                div.appendChild(button)
 
-                 button.addEventListener('loadpaymentdata', event => {
+                button.addEventListener('loadpaymentdata', event => {
+                    document.getElementById('place_order').style.display = 'inline-block'
                     const params = {
                         method: 'googlepay',
                         data: JSON.stringify(JSON.parse(event.detail.paymentMethodData.tokenizationData.token))
@@ -218,7 +241,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                     Omise.setPublicKey('" . $this->public_key() . "')
 					Omise.createToken('tokenization', params, (statusCode, response) => {
                         if (statusCode == 200) {
-                            document.getElementById('googlepay-button-container').style.display = 'none';
+                            document.getElementById('googlepay-button-container').style.display = 'none'
                             document.getElementById('googlepay-text').innerHTML = 'Card is successfully selected. Please proceed to \'Place order\'.'
                             document.getElementById('googlepay-text').classList.add('googlepay-selected')
 
@@ -231,6 +254,23 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                             form.appendChild(input) 
                         }
                     })
+                })
+
+                function toggleOrderButton() {
+                    const placeOrderButton = document.getElementById('place_order')
+                    const paymentBox = document.getElementById('payment_method_omise_googlepay')
+            
+                    if (paymentBox.checked) {
+                        placeOrderButton.style.display = 'none'
+                    } else {
+                        placeOrderButton.style.display = 'inline-block'
+                    }
+            
+                }
+            
+                const paymentMethods = document.getElementsByClassName('input-radio')
+                Array.from(paymentMethods).forEach((el) => {
+                    el.addEventListener('click', toggleOrderButton)
                 })
             </script>");
     }
