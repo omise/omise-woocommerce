@@ -335,7 +335,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				);
 			}
 
-			$this->delete_capture_metadata();
 			$order->add_order_note( $message );
 			return true;
 		} catch (Exception $e) {
