@@ -158,7 +158,6 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
     public
     function payment_fields()
     {
-        parent::payment_fields();
         Omise_Util::render_view(
             'templates/payment/form-googlepay.php',
             array('config' => $this->google_pay_button_scripts())
@@ -260,14 +259,12 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
                     const placeOrderButton = document.getElementById('place_order')
                     const paymentBox = document.getElementById('payment_method_omise_googlepay')
             
-                    if (paymentBox.checked) {
-                        placeOrderButton.style.display = 'none'
-                    } else {
-                        placeOrderButton.style.display = 'inline-block'
+                    if (document.getElementsByClassName('omise-secondary-text googlepay-selected').length < 1) {
+                        placeOrderButton.style.display = paymentBox.checked ? 'none' : 'inline-block'
                     }
-            
                 }
             
+                toggleOrderButton()
                 const paymentMethods = document.getElementsByClassName('input-radio')
                 Array.from(paymentMethods).forEach((el) => {
                     el.addEventListener('click', toggleOrderButton)
