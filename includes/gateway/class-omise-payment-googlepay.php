@@ -5,6 +5,8 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
 {
     public function __construct()
     {
+        parent::__construct();
+
         $this->id = 'omise_googlepay';
         $this->has_fields = true;
         $this->method_title = __('Omise Google Pay', 'omise');
@@ -24,7 +26,6 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
         $this->payment_action       = $this->get_option('payment_action');
         $this->restricted_countries = array('TH', 'JP', 'SG', 'MY');
 
-        add_action( 'wp_enqueue_scripts', array( $this, 'omise_scripts' ) );
         add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
         add_action('wp_enqueue_scripts', array($this, 'omise_scripts'));
