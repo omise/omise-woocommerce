@@ -1,11 +1,9 @@
 <?php
 defined('ABSPATH') or die('No direct script access allowed.');
 
-class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
-{
-    public function __construct()
-    {
-        parent::__construct();
+class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
+    public function __construct() {
+        Omise_Payment::__construct();
 
         $this->id = 'omise_googlepay';
         $this->has_fields = true;
@@ -37,8 +35,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
      * @see WC_Settings_API::init_form_fields()
      * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
      */
-    public function init_form_fields()
-    {
+    public function init_form_fields() {
         $this->form_fields = array_merge(
             array(
                 'enabled' => array(
@@ -147,26 +144,17 @@ class Omise_Payment_GooglePay extends Omise_Payment_Creditcard
         );
     }
 
-    public function get_icon()
-    {
-        return null;
-    }
-
     /**
      * @inheritdoc
      */
-    public
-    function payment_fields()
-    {
+    public function payment_fields() {
         Omise_Util::render_view(
             'templates/payment/form-googlepay.php',
             array('config' => $this->google_pay_button_scripts())
         );
     }
 
-    private
-    function google_pay_button_scripts()
-    {
+    private function google_pay_button_scripts() {
         $cardNetworks = [];
         $this->get_option('accept_amex') == 'yes' ? array_push($cardNetworks, "AMEX") : null;
         $this->get_option('accept_jcb') == 'yes' ? array_push($cardNetworks, "JCB") : null;
