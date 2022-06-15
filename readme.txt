@@ -36,7 +36,7 @@ From there:
 = 4.21 =
 
 #### 🚀 Enhancements
-- Added GooglePay payment method(PR [#278](https://github.com/omise/omise-woocommerce/pull/278))
+- Added GooglePay payment method (PR [#278](https://github.com/omise/omise-woocommerce/pull/278))
 
 = 4.20.1 =
 
