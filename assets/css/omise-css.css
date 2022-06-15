@@ -157,6 +157,11 @@ fieldset.card-exists {
 	font-size: 80%;
 }
 
+.omise-secondary-text.googlepay-selected {
+	color: #000;
+	font-size: 125%;
+}
+
 /**
  * 2.2). Components
  */
@@ -556,4 +561,21 @@ line-height: 2;
 
 .fpx-terms-and-conditions-block {
 	margin-top: 10px;
+}
+
+
+.gpay-button {
+    background-origin: content-box;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 0px;
+    border-radius: 4px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 1px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    cursor: pointer;
+    height: 40px;
+    min-height: 40px;
+    padding: 11px 24px;
+    width: 100%;
+	margin-bottom: 1rem;
 }
