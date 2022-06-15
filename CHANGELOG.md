@@ -3,7 +3,7 @@
 ### [v4.21 _(Jun 15, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.21)
 
 #### 🚀 Enhancements
-- Added GooglePay payment method(PR [#278](https://github.com/omise/omise-woocommerce/pull/278))
+- Added GooglePay payment method (PR [#278](https://github.com/omise/omise-woocommerce/pull/278))
 
 ### [v4.20.1 _(Jun 6, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.20.1)
 
