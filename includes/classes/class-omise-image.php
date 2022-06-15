@@ -15,7 +15,7 @@ if ( ! class_exists( 'Omise_Image' ) ) {
 			$width			= isset( $image['width'] ) ? $image['width'] : 30;
 			$height			= isset( $image['height'] ) ? $image['height'] : 30;
 			
-			$url = WC_HTTPS::force_https_url( plugin_dir_url( '' ) . 'omise/assets/images' );
+			$url = plugins_url( '../assets/images', dirname( __FILE__ ));
 			return "<img src='$url/$file' class='Omise-Image' style='width: {$width}px; max-height: {$height}px;' alt='$alternate_text' />";
 		}
 	}
