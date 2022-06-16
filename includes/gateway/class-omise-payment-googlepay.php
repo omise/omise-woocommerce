@@ -196,6 +196,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                         merchantId: '" . $this->get_option('merchant_id') . "',
                     },
                     transactionInfo: {
+                        totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
                         currencyCode: '" . get_woocommerce_currency(). "',
                     },
                 }
