@@ -165,58 +165,58 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
         return array("script" =>
             "<script type='module'>
                 const button = document.createElement('google-pay-button')
-                button.setAttribute('environment', '" . ($this->is_test() ? 'TEST' : 'LIVE') . "')
+                button.setAttribute('environment', '" . ($this->is_test() ? 'TEST' : 'PRODUCTION') . "')
                 button.setAttribute('button-type', 'pay')
                 button.setAttribute('button-color', 'black')
                 button.paymentRequest = {
-                apiVersion: 2,
-                apiVersionMinor: 0,
-                allowedPaymentMethods: [
-                    {
-                        type: 'CARD',
-                        parameters: {
-                            allowedAuthMethods: ['PAN_ONLY'],
-                            allowedCardNetworks: " . $allowedCardNetworks . ",
-                            billingAddressRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
-                            billingAddressParameters: {
-                                format: 'FULL',
-                                phoneNumberRequired: " . ($this->get_option('request_phone_number') == 'yes' ? 'true' : 'false') . ",
-                            },
-                        },
-                        tokenizationSpecification: {
-                            type: 'PAYMENT_GATEWAY',
+                    apiVersion: 2,
+                    apiVersionMinor: 0,
+                    allowedPaymentMethods: [
+                        {
+                            type: 'CARD',
                             parameters: {
-                                gateway: 'omise',
-                                gatewayMerchantId: '" . $this->public_key() . "',
+                                allowedAuthMethods: ['PAN_ONLY'],
+                                allowedCardNetworks: " . $allowedCardNetworks . ",
+                                billingAddressRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
+                                billingAddressParameters: {
+                                    format: 'FULL',
+                                    phoneNumberRequired: " . ($this->get_option('request_phone_number') == 'yes' ? 'true' : 'false') . ",
+                                },
+                            },
+                            tokenizationSpecification: {
+                                type: 'PAYMENT_GATEWAY',
+                                parameters: {
+                                    gateway: 'omise',
+                                    gatewayMerchantId: '" . $this->public_key() . "',
+                                },
                             },
                         },
+                    ],
+                    merchantInfo: {
+                        merchantId: '" . $this->get_option('merchant_id') . "',
                     },
-                ],
-                merchantInfo: {
-                    merchantId: '" . $this->get_option('merchant_id') . "',
-                },
-                transactionInfo: {
-                    totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-                    currencyCode: 'THB',
-                },
+                    transactionInfo: {
+                        totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+                        currencyCode: '" . get_woocommerce_currency(). "',
+                    },
                 }
                 
                 const div = document.getElementById('googlepay-button-container')                 
                 div.appendChild(button)
                 
                 function toggleOrderButton() {
-                const placeOrderButton = document.getElementById('place_order')
-                const paymentBox = document.getElementById('payment_method_omise_googlepay')
-                
-                if (document.getElementsByClassName('omise-secondary-text googlepay-selected').length < 1) {
-                    placeOrderButton.style.display = paymentBox.checked ? 'none' : 'inline-block'
-                }
+                    const placeOrderButton = document.getElementById('place_order')
+                    const paymentBox = document.getElementById('payment_method_omise_googlepay')
+
+                    if (document.getElementsByClassName('omise-secondary-text googlepay-selected').length < 1) {
+                        placeOrderButton.style.display = paymentBox.checked ? 'none' : 'inline-block'
+                    }
                 }
                 
                 toggleOrderButton()
                 const paymentMethods = document.getElementsByClassName('input-radio')
                 Array.from(paymentMethods).forEach((el) => {
-                el.addEventListener('click', toggleOrderButton)
+                    el.addEventListener('click', toggleOrderButton)
                 })
             </script>"
         );
