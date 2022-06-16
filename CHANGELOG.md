@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.21.1 _(Jun 16, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.21.1)
+
+#### 👾 Bug Fixes
+- Fixed the issue of creating GooglePay live mode payments (PR [#280](https://github.com/omise/omise-woocommerce/pull/280)
+
 ### [v4.21.0 _(Jun 15, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.21.0)
 
 #### 🚀 Enhancements

@@ -165,7 +165,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
         return array("script" =>
             "<script type='module'>
                 const button = document.createElement('google-pay-button')
-                button.setAttribute('environment', '" . ($this->is_test() ? 'TEST' : 'LIVE') . "')
+                button.setAttribute('environment', '" . ($this->is_test() ? 'TEST' : 'PRODUCTION') . "')
                 button.setAttribute('button-type', 'pay')
                 button.setAttribute('button-color', 'black')
                 button.paymentRequest = {
