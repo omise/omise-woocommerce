@@ -23,6 +23,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	const STATUS_REVERSED   = 'reversed';
 
 	/**
+	 *  Error codes returned from the API
+	 */
+	const ERROR_CODES = [
+		'FAILED_CAPTURE' => 'failed_capture',
+		'EXPIRED_CHARGE' => 'expired_charge',
+	];
+
+	/**
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 *
 	 * @var string
@@ -274,14 +282,22 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$this->delete_capture_metadata();
 			$this->order()->payment_complete();
 		} catch ( Exception $e ) {
+			$omiseError = $e->getOmiseError();
 			$this->order()->add_order_note(
 				sprintf(
 					wp_kses( __( 'Omise: Payment failed (manual capture).<br/>%s', 'omise' ), array( 'br' => array() ) ),
 					$e->getMessage()
 				)
 			);
-			$this->delete_capture_metadata();
-			$this->order()->update_status( 'failed' );
+
+			// we don't want to delete the capture metadata for other errors like 401, 403, and 500
+			if ( static::ERROR_CODES['FAILED_CAPTURE'] === $omiseError['code'] || static::ERROR_CODES['EXPIRED_CHARGE'] === $omiseError['code'] ) {
+				$this->delete_capture_metadata();
+			}
+
+			if ( static::ERROR_CODES['EXPIRED_CHARGE'] === $omiseError['code'] ) {
+				$this->order()->update_status( 'failed' );
+			}
 		}
 	}
 
