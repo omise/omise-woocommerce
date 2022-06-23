@@ -285,7 +285,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$omiseError = $e->getOmiseError();
 			$this->order()->add_order_note(
 				sprintf(
-					wp_kses( __( 'Omise: Payment failed (manual capture).<br/>%s', 'omise' ), array( 'br' => array() ) ),
+					wp_kses( __( 'Omise: Capture failed (manual capture).<br/>%s', 'omise' ), array( 'br' => array() ) ),
 					$e->getMessage()
 				)
 			);
