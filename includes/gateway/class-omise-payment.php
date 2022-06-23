@@ -21,6 +21,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	const STATUS_PENDING    = 'pending';
 	const STATUS_EXPIRED    = 'expired';
 	const STATUS_REVERSED   = 'reversed';
+	const STATUS_CANCELLED  = 'cancelled';
+	const STATUS_REFUNDED   = 'refunded';
 
 	/**
 	 *  Error codes returned from the API
@@ -296,7 +298,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			}
 
 			if ( self::ERROR_CODES['EXPIRED_CHARGE'] === $omiseError['code'] ) {
-				$this->order()->update_status( 'failed' );
+				$this->order()->update_status( self::STATUS_CANCELLED );
 			}
 		}
 	}
@@ -391,8 +393,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					// Omise API 2017-11-02 uses `refunded`, Omise API 2019-05-29 uses `refunded_amount`.
 					$refunded_amount = isset( $charge['refunded_amount'] ) ? $charge['refunded_amount'] : $charge['refunded'];
 					if ( $charge['funding_amount'] == $refunded_amount ) {
-						if ( ! $this->order()->has_status( 'refunded' ) ) {
-							$this->order()->update_status( 'refunded' );
+						if ( ! $this->order()->has_status( self::STATUS_REFUNDED ) ) {
+							$this->order()->update_status( self::STATUS_REFUNDED );
 						}
 
 						$message = wp_kses( __(
@@ -422,16 +424,16 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					);
 					$this->order()->add_order_note( sprintf( $message, Omise()->translate( $charge['failure_message'] ), $charge['failure_code'] ) );
 
-					if ( ! $this->order()->has_status( 'failed' ) ) {
-						$this->order()->update_status( 'failed' );
+					if ( ! $this->order()->has_status( self::STATUS_FAILED ) ) {
+						$this->order()->update_status( self::STATUS_FAILED );
 					}
 					break;
 
 				case self::STATUS_PENDING:
 					$message = wp_kses( __(
 						'Omise: Payment is still in progress.<br/>
-						 You might wait for a moment before click sync the status again or contact Omise support team at support@omise.co if you have any questions (manual sync).',
-						 'omise'
+						You might wait for a moment before click sync the status again or contact Omise support team at support@omise.co if you have any questions (manual sync).',
+						'omise'
 					), array( 'br' => array() ) );
 
 					$this->order()->add_order_note( $message );
@@ -443,8 +445,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					$message = wp_kses( __( 'Omise: Payment expired. (manual sync).', 'omise' ), array( 'br' => array() ) );
 					$this->order()->add_order_note( $message );
 
-					if ( ! $this->order()->has_status( 'cancelled' ) ) {
-						$this->order()->update_status( 'cancelled' );
+					if ( ! $this->order()->has_status( self::STATUS_CANCELLED ) ) {
+						$this->order()->update_status( self::STATUS_CANCELLED );
 					}
 					break;
 
@@ -454,8 +456,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					$message = wp_kses( __( 'Omise: Payment reversed. (manual sync).', 'omise' ), array( 'br' => array() ) );
 					$this->order()->add_order_note( $message );
 
-					if ( ! $this->order()->has_status( 'cancelled' ) ) {
-						$this->order()->update_status( 'cancelled' );
+					if ( ! $this->order()->has_status( self::STATUS_CANCELLED ) ) {
+						$this->order()->update_status( self::STATUS_CANCELLED );
 					}
 					break;
 
