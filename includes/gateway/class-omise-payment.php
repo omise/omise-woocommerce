@@ -291,11 +291,11 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			);
 
 			// we don't want to delete the capture metadata for other errors like 401, 403, and 500
-			if ( static::ERROR_CODES['FAILED_CAPTURE'] === $omiseError['code'] || static::ERROR_CODES['EXPIRED_CHARGE'] === $omiseError['code'] ) {
+			if ( self::ERROR_CODES['FAILED_CAPTURE'] === $omiseError['code'] || self::ERROR_CODES['EXPIRED_CHARGE'] === $omiseError['code'] ) {
 				$this->delete_capture_metadata();
 			}
 
-			if ( static::ERROR_CODES['EXPIRED_CHARGE'] === $omiseError['code'] ) {
+			if ( self::ERROR_CODES['EXPIRED_CHARGE'] === $omiseError['code'] ) {
 				$this->order()->update_status( 'failed' );
 			}
 		}
