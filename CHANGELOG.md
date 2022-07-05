@@ -1,5 +1,11 @@
 # CHANGELOG
 
+
+### [v4.22.0 _(Jul 5, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.22.0)
+- Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured. (PR [#281](https://github.com/omise/omise-woocommerce/pull/281)
+- Allow GrabPay payment in Thailand (PR [#282](https://github.com/omise/omise-woocommerce/pull/282)
+
+
 ### [v4.21.1 _(Jun 16, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.21.1)
 
 #### 👾 Bug Fixes

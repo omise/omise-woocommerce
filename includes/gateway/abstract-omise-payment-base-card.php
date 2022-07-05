@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 require_once dirname( __FILE__ ) . '/class-omise-payment.php';
 
 /**
- * @since 4.21.0
+ * @since 4.22.0
  */
 abstract class Omise_Payment_Base_Card extends Omise_Payment {
 	const PAYMENT_ACTION_AUTHORIZE         = 'manual_capture';
