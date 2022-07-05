@@ -376,7 +376,7 @@ msgstr "名前欄が空白でないこと、メールアドレスが無効な形
 
 #: includes/class-omise-callback.php:156
 msgid "email is in invalid format and phone_number must contain 10-11 digit characters"
-msgstr ""電子メールの形式が無効です。電話_番号には10-11桁の数字を入力してください"。"
+msgstr "電子メールの形式が無効です。電話_番号には10-11桁の数字を入力してください。"
 
 #: includes/class-omise-callback.php:156
 msgid "name cannot be blank and phone_number must contain 10-11 digit characters"
@@ -461,3 +461,27 @@ msgstr "https://www.omise.co/ja/japan"
 #: includes/gateway/class-omise-payment-konbini.php:111
 msgid "Your payment code has been sent to your email"
 msgstr "お客様のメールに決済コードが送信されました。"
+
+#: templates/myaccount/my-card.php
+msgid "Cards"
+msgstr "カード"
+
+#: templates/myaccount/my-card.php
+msgid "Number"
+msgstr "番号"
+
+#: templates/myaccount/my-card.php
+msgid "Created date"
+msgstr "作成日"
+
+#: templates/myaccount/my-card.php
+msgid "Action"
+msgstr "アクション"
+
+#: templates/myaccount/my-card.php
+msgid "Add new card"
+msgstr "新しいカードを追加する"
+
+#: templates/myaccount/my-card.php
+msgid "Save card"
+msgstr "カードを保存"

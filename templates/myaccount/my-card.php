@@ -1,12 +1,11 @@
-<h2>Omise settings</h2>
-<h3>Cards</h3>
+<h3><?php _e( 'Cards', 'omise' ); ?></h3>
 <div id="omise_card_panel">
 	<table>
 		<tr>
-			<th>Name</th>
-			<th>Number</th>
-			<th>Created date</th>
-			<th>Action</th>
+			<th><?php _e( 'Name', 'omise' ); ?></th>
+			<th><?php _e( 'Number', 'omise' ); ?></th>
+			<th><?php _e( 'Created date', 'omise' ); ?></th>
+			<th><?php _e( 'Action', 'omise' ); ?></th>
 		</tr>
 		<tbody>
 			<?php if ( isset( $viewData['existingCards']['data'] ) ): ?>
@@ -23,7 +22,7 @@
 		</tbody>
 	</table>
 
-	<h4>Add new card</h4>
+	<h4><?php _e( 'Add new card', 'omise' ); ?></h4>
 	<form name="omise_cc_form" id="omise_cc_form">
 		<?php wp_nonce_field('omise_add_card','omise_add_card_nonce'); ?>
 		<fieldset>
@@ -31,5 +30,5 @@
 			<div class="clear"></div>
 		</fieldset>
 	</form>
-	<button id="omise_add_new_card" class="button">Save card</button>
+	<button id="omise_add_new_card" class="button"><?php _e( 'Save card', 'omise' ); ?></button>
 </div>
