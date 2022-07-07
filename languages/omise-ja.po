@@ -356,7 +356,7 @@ msgstr "決済リンク"
 
 #: templates/payment/form-konhini.php:4
 msgid "Name"
-msgstr "名前"
+msgstr "カード名義"
 
 #: templates/payment/form-konhini.php:8
 msgid "Email"
@@ -468,11 +468,11 @@ msgstr "カード"
 
 #: templates/myaccount/my-card.php
 msgid "Number"
-msgstr "番号"
+msgstr "カード番号"
 
 #: templates/myaccount/my-card.php
 msgid "Created date"
-msgstr "作成日"
+msgstr "カード作成日"
 
 #: templates/myaccount/my-card.php
 msgid "Action"
@@ -484,4 +484,4 @@ msgstr "新しいカードを追加する"
 
 #: templates/myaccount/my-card.php
 msgid "Save card"
-msgstr "カードを保存"
+msgstr "カードを保存する"
