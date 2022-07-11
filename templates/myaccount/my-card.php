@@ -15,7 +15,7 @@
 					echo "<tr><td>{$card['name']}</td><td>XXXX XXXX XXXX {$card['last_digits']}</td>";
 					$created_date = date_i18n( get_option( 'date_format' ), strtotime($card['created']));
 					echo "<td>{$created_date}</td>";
-					echo "<td><button class='button delete_card' data-card-id='{$card['id']}' data-delete-card-nonce='{$nonce}'>Delete</button></td></tr>";
+					echo "<td><button class='button delete_card' data-card-id='{$card['id']}' data-delete-card-nonce='{$nonce}'>" . _e( 'Delete', 'omise' ) . "</button></td></tr>";
 					?>
 				<?php endforeach; ?>
 			<?php endif; ?>

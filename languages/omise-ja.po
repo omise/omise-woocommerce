@@ -485,3 +485,7 @@ msgstr "新しいカードを追加する"
 #: templates/myaccount/my-card.php
 msgid "Save card"
 msgstr "カードを保存する"
+
+#: templates/myaccount/my-card.php
+msgid "Delete"
+msgstr "デリート"
