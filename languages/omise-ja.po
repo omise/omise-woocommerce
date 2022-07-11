@@ -488,4 +488,4 @@ msgstr "カードを保存する"
 
 #: templates/myaccount/my-card.php
 msgid "Delete"
-msgstr "デリート"
+msgstr "削除する"

@@ -11,12 +11,23 @@
 			<?php if ( isset( $viewData['existingCards']['data'] ) ): ?>
 				<?php foreach( $viewData['existingCards']['data'] as $card ): ?>
 					<?php
-					$nonce = wp_create_nonce( 'omise_delete_card_' . $card['id'] );
-					echo "<tr><td>{$card['name']}</td><td>XXXX XXXX XXXX {$card['last_digits']}</td>";
-					$created_date = date_i18n( get_option( 'date_format' ), strtotime($card['created']));
-					echo "<td>{$created_date}</td>";
-					echo "<td><button class='button delete_card' data-card-id='{$card['id']}' data-delete-card-nonce='{$nonce}'>" . _e( 'Delete', 'omise' ) . "</button></td></tr>";
+						$nonce = wp_create_nonce( 'omise_delete_card_' . $card['id'] );
+						$created_date = date_i18n( get_option( 'date_format' ), strtotime($card['created']));
 					?>
+					<tr>
+						<td><?= $card['name'] ?></td>
+						<td>XXXX XXXX XXXX <?= $card['last_digits'] ?></td>
+						<td><?= $created_date ?></td>
+						<td>
+							<button
+								class='button delete_card'
+								data-card-id=<?= $card['id'] ?>
+								data-delete-card-nonce=<?= $nonce ?>
+							>
+								<?php _e( 'Delete', 'omise' ); ?>
+							</button>
+						</td>
+					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</tbody>
