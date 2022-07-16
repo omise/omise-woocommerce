@@ -33,7 +33,12 @@ class Omise_Payment_Factory {
 		'Omise_Payment_RabbitLinePay',
 		'Omise_Payment_OCBC_PAO',
 		'Omise_Payment_GrabPay',
-		'Omise_Payment_GooglePay'
+		'Omise_Payment_GooglePay',
+		'Omise_Payment_Boost',
+		'Omise_Payment_ShopeePay',
+		'Omise_Payment_Maybank_QR',
+		'Omise_Payment_DuitNow_QR',
+		'Omise_Payment_DuitNow_OBW'
 	);
 
 	/**
