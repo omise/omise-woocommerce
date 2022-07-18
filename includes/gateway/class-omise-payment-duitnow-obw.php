@@ -171,4 +171,17 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite {
 			'metadata'    => $metadata
 		) );
 	}
+
+	/**
+	 * Get icons
+	 *
+	 * @see WC_Payment_Gateway::get_icon()
+	 */
+	public function get_icon() {
+		$icon = Omise_Image::get_image( array(
+			    'file' => 'duitnow-obw.png',
+			    'alternate_text' => 'DuitNow Online Banking/Wallets',
+		));
+		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+	}
 }

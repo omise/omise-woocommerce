@@ -96,4 +96,17 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 			'metadata'    => $metadata
 		) );
 	}
+
+	/**
+	 * Get icons
+	 *
+	 * @see WC_Payment_Gateway::get_icon()
+	 */
+	public function get_icon() {
+		$icon = Omise_Image::get_image( array(
+			    'file' => 'touch-n-go.png',
+			    'alternate_text' => 'Touch \'n Go',
+		));
+		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+	}
 }
