@@ -65,9 +65,8 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 		if ($this->backend->get_provider() === 'Alipay_plus') {
 			return 'TNG eWallet';
 		}
-		else {
-			return 'Touch \'n Go';
-		}
+		
+		return 'Touch \'n Go';
 	}
 
 	/**

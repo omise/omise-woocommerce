@@ -4,11 +4,11 @@
 		<select class="fpx-bank-logo default" id="duitnow-obw-select-bank" name="source[bank]">
 			<option value="" disabled selected>-- Select your option --</option>
 			<?php foreach ($viewData['duitnow_obw_banklist'] as $bank) : ?>
-				<option	
-					class="<?php echo $bank["code"];?>" 
-					value="<?php echo $bank["code"]; ?>"
+				<option
+					class="<?= $bank['code'] ?>" 
+					value="<?= $bank['code'] ?>"
 				>
-						<?php echo $bank["name"]; ?>
+					<?= $bank['name'] ?>
 				</option>
 			<?php endforeach; ?>
 		</select>
