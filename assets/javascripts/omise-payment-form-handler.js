@@ -22,9 +22,7 @@
 		}
 		
 		$form.prepend( $ulError );
-		$("html, body").animate({
-			 scrollTop:0
-			 },"slow");
+		$("html, body").animate({ scrollTop:0 },"slow");
 	}
 	
 	function omiseFormHandler(){		
@@ -70,19 +68,30 @@
 					}
 				});
 
-				let errors                  = [],
-					omise_card              = {},
+				let errors = [],
+					omise_card = {},
 					omise_card_number_field = 'number',
-					omise_card_fields       = {
-						'name'             : $( '#omise_card_name' ),
-						'number'           : $( '#omise_card_number' ),
+					omise_card_state_field = 'state',
+					omise_card_fields = {
+						'name' : $( '#omise_card_name' ),
+						'number' : $( '#omise_card_number' ),
 						'expiration_month' : $( '#omise_card_expiration_month' ),
-						'expiration_year'  : $( '#omise_card_expiration_year' ),
-						'security_code'    : $( '#omise_card_security_code' )
+						'expiration_year' : $( '#omise_card_expiration_year' ),
+						'security_code' : $( '#omise_card_security_code' ),
+						'city' : $( '#billing_city' ),
+						'state'	: $( '#billing_state' ),
+						'country' : $( '#billing_country' ),
+						'postal_code' : $( '#billing_postcode' ),
+						'street1' : $( '#billing_address_1' )
 					};
 
 				$.each( omise_card_fields, function( index, field ) {
-					omise_card[ index ] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
+					if (index === omise_card_state_field) {
+						omise_card[ index ] = field.find(":selected").text();
+					} else {
+						omise_card[ index ] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
+					}
+
 					if ( "" === omise_card[ index ] ) {
 						errors.push( omise_params[ 'required_card_' + index ] );
 					}
@@ -101,7 +110,10 @@
 					Omise.createToken("card", omise_card, function (statusCode, response) {
 						if (statusCode == 200) {
 							$.each( omise_card_fields, function( index, field ) {
-								field.val( '' );
+								const sensitiveDataIndex = ['name', 'number', 'expiration_year', 'expiration_month', 'security_code'];
+								if (sensitiveDataIndex.includes(index)) {
+									field.val( '' );
+								}
 							} );
 							$form.append( '<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>' );
 							$form.submit();
@@ -109,7 +121,7 @@
 							handleTokensApiError(response);
 						};
 					});
-				}else{
+				} else {
 					showError( omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection );
 					$form.unblock();
 				}
