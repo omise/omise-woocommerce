@@ -86,9 +86,7 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 	public function get_icon() {
 		$icon = Omise_Image::get_image( array(
 			    'file' => 'maybank-qr.png',
-			    'alternate_text' => 'Maybank QRPay',
-			    'width' => 50,
-			    'height' => 50,
+			    'alternate_text' => 'Maybank QRPAY',
 		));
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
