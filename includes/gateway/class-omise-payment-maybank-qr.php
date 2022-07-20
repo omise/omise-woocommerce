@@ -7,8 +7,8 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_maybank_qr';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise Maybank QRPAY', 'omise' );
-		$this->method_description = __( 'Accept payment through <strong>Maybank QRPAY</strong> via Omise payment gateway.', 'omise' );
+		$this->method_title       = __( 'Omise Maybank QRPay', 'omise' );
+		$this->method_description = __( 'Accept payment through <strong>Maybank QRPay</strong> via Omise payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
 		$this->init_form_fields();
@@ -32,7 +32,7 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise Maybank QRPAY Payment', 'omise' ),
+				'label'   => __( 'Enable Omise Maybank QRPay Payment', 'omise' ),
 				'default' => 'no'
 			),
 
@@ -40,7 +40,7 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 				'title'       => __( 'Title', 'omise' ),
 				'type'        => 'text',
 				'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
-				'default'     => __( 'Maybank QRPAY', 'omise' ),
+				'default'     => __( 'Maybank QRPay', 'omise' ),
 			),
 
 			'description' => array(
@@ -86,7 +86,7 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 	public function get_icon() {
 		$icon = Omise_Image::get_image( array(
 			    'file' => 'maybank-qr.png',
-			    'alternate_text' => 'Maybank QRPAY',
+			    'alternate_text' => 'Maybank QRPay',
 		));
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
