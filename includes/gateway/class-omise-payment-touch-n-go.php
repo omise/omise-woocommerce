@@ -30,8 +30,8 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 */
 	public function init_form_fields() {
-		$method_title = 'Touch \'n Go';
-		$default_title = 'Touch \'n Go';
+		$method_title = 'Touch \'n Go eWallet';
+		$default_title = 'Touch \'n Go eWallet';
 
 		if ($this->backend->get_provider() === 'Alipay_plus') {
 			$method_title = 'TNG eWallet';
@@ -66,7 +66,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 			return 'TNG eWallet';
 		}
 		
-		return 'Touch \'n Go';
+		return 'Touch \'n Go eWallet';
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 	public function get_icon() {
 		$icon = Omise_Image::get_image( array(
 			    'file' => 'touch-n-go.png',
-			    'alternate_text' => 'Touch \'n Go',
+			    'alternate_text' => 'Touch \'n Go eWallet',
 		));
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
