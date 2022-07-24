@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### [v4.23.0 _(Jul 25, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.0)
+#### 🚀 Enhancements
+- Added Boost, DuitNow QR, DuitNow Online Banking/Wallets, Maybank QRPay and ShopeePay payment methods. Update Touch 'n Go to support non Alipay+. (PR [#287](https://github.com/omise/omise-woocommerce/pull/287))
 
 ### [v4.22.0 _(Jul 5, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.22.0)
 - Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured. (PR [#281](https://github.com/omise/omise-woocommerce/pull/281)
