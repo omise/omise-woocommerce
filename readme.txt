@@ -41,8 +41,10 @@ From there:
 = 4.22.0 = 
 
 #### 🚀 Enhancements
-- Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured.
-- Allow GrabPay payment in Thailand
+- Allow GrabPay payment in Thailand (PR [#282](https://github.com/omise/omise-woocommerce/pull/282))
+
+#### 👾 Bug Fixes
+- Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured. (PR [#281](https://github.com/omise/omise-woocommerce/pull/281))
 
 = 4.21.1 =
 

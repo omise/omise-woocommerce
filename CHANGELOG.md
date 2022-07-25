@@ -1,18 +1,22 @@
 # CHANGELOG
 
 ### [v4.23.0 _(Jul 25, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.0)
+
 #### 🚀 Enhancements
 - Added Boost, DuitNow QR, DuitNow Online Banking/Wallets, Maybank QRPay and ShopeePay payment methods. Update Touch 'n Go to support non Alipay+. (PR [#287](https://github.com/omise/omise-woocommerce/pull/287))
 
 ### [v4.22.0 _(Jul 5, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.22.0)
-- Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured. (PR [#281](https://github.com/omise/omise-woocommerce/pull/281)
-- Allow GrabPay payment in Thailand (PR [#282](https://github.com/omise/omise-woocommerce/pull/282)
 
+#### 🚀 Enhancements
+- Allow GrabPay payment in Thailand (PR [#282](https://github.com/omise/omise-woocommerce/pull/282))
+
+#### 👾 Bug Fixes
+- Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured. (PR [#281](https://github.com/omise/omise-woocommerce/pull/281))
 
 ### [v4.21.1 _(Jun 16, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.21.1)
 
 #### 👾 Bug Fixes
-- Fixed the issue of creating GooglePay live mode payments (PR [#280](https://github.com/omise/omise-woocommerce/pull/280)
+- Fixed the issue of creating GooglePay live mode payments (PR [#280](https://github.com/omise/omise-woocommerce/pull/280))
 
 ### [v4.21.0 _(Jun 15, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.21.0)
 
