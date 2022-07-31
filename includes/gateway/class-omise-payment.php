@@ -68,6 +68,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public $restricted_countries = array();
 
 	/**
+	 * A string of Omise Source's type
+	 * (e.g. paynow or bill_payment_tesco_lotus).
+	 *
+	 * @var string
+	 */
+	public $source_type = '';
+
+	/**
 	 * @var array
 	 */
 	private $currency_subunits = array(
@@ -191,6 +199,26 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		}
 
 		return false;
+	}
+
+	public function is_available(){
+		//TODO 
+		error_log( print_r( $this->payment_settings,true) );
+		
+		if(parent::is_available()&& $this->is_country_support( $this->payment_settings['account_country'])){
+			return $this->is_capability_support($this->payment_settings['available_payment_methods']);
+		}
+		return false;
+	}
+
+	/**
+	 * @param  string $country_code
+	 *
+	 * @return bool
+	 */
+	public function is_capability_support( $available_payment_methods ) {
+		return in_array($this->source_type,$available_payment_methods);
+		// return true;
 	}
 
 	/**

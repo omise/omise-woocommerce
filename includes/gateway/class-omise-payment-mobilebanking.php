@@ -95,4 +95,13 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 			'metadata'    => $metadata
 		) );
 	}
+	/**
+	 * @param  string $country_code
+	 *
+	 * @return array|false
+	 */
+	public function is_capability_support( $available_payment_methods ) {
+		//filter ocbc pao out bc is no longer mobile banking payments
+		return preg_grep('/^mobile_banking_(?!ocbc_pao)/', $available_payment_methods);
+	}
 }
