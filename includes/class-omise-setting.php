@@ -115,7 +115,6 @@ class Omise_Setting {
 	 * @since  3.1
 	 */
 	public function update_settings( $data ) {
-		// error_log( print_r($data,true));
 		$data            = array_intersect_key( $data, $this->get_default_settings() );
 		$data['sandbox'] = isset( $data['sandbox'] ) && ! is_null( $data['sandbox'] ) ? 'yes' : 'no';
 

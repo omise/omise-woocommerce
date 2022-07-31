@@ -18,10 +18,10 @@ class Omise_Capabilities {
 	/**
 	 * @return self  The instance of Omise_Capabilities
 	 */
-	public static function retrieve() {
+	public static function retrieve( $publickey = null, $secretkey = null ) {
 		if ( ! self::$the_instance ) {
 			self::$the_instance = new self();
-			self::$the_instance->capabilities = OmiseCapabilities::retrieve();
+			self::$the_instance->capabilities = OmiseCapabilities::retrieve( $publickey , $secretkey );
 		}
 
 		return self::$the_instance;

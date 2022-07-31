@@ -5,8 +5,8 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 	public function __construct() {
 		parent::__construct();
 
-		$this->backend     = new Omise_Backend_TouchNGo;
-
+		$this->source_type		  = 'touch_n_go';
+		$this->provider			  = $this->get_provider();
 		$this->id                 = 'omise_touch_n_go';
 		$this->has_fields         = false;
 		$this->method_title       = __( 'Omise ' . $this->GetMethodTitle(), 'omise' );
@@ -33,7 +33,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 		$method_title = 'Touch \'n Go eWallet';
 		$default_title = 'Touch \'n Go eWallet';
 
-		if ($this->backend->get_provider() === 'Alipay_plus') {
+		if ($this->provider === 'Alipay_plus') {
 			$method_title = 'TNG eWallet';
 			$default_title = 'TNG eWallet (Alipay+™ Partner)';
 		}
@@ -62,7 +62,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 	}
 		
 	public function GetMethodTitle() {
-		if ($this->backend->get_provider() === 'Alipay_plus') {
+		if ($this->provider === 'Alipay_plus') {
 			return 'TNG eWallet';
 		}
 		
@@ -90,7 +90,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => 'touch_n_go' ),
+			'source'      => array( 'type' => $this->source_type ),
 			'return_uri'  => $return_uri,
 			'metadata'    => $metadata
 		) );
@@ -107,5 +107,26 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 			    'alternate_text' => 'Touch \'n Go eWallet',
 		));
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+	}
+
+	/**
+	 * @see omise/includes/class-omise-setting.php
+	 * 
+	 * @return string|null of touch n go provider
+	 */
+	public function get_provider() {
+		$payment_settings = Omise()->settings()->get_settings();
+		$provider = null;
+		$backends = $payment_settings['backends'];
+		if(isset($backends)){
+			$index = array_search($this->source_type, array_column($backends, '_id'));
+			if($index){
+				$tng_backend = $payment_settings['backends'][$index];
+				if(property_exists($tng_backend,'provider')){
+					 $provider = $tng_backend->provider;
+				}
+			}
+		}
+		return  $provider;
 	}
 }

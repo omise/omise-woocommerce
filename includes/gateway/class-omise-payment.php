@@ -201,10 +201,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		return false;
 	}
 
-	public function is_available(){
-		//TODO 
-		error_log( print_r( $this->payment_settings,true) );
-		
+	public function is_available(){		
 		if(parent::is_available()&& $this->is_country_support( $this->payment_settings['account_country'])){
 			return $this->is_capability_support($this->payment_settings['available_payment_methods']);
 		}
