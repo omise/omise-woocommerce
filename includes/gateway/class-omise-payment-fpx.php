@@ -19,6 +19,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'MY' );
+		$this->source_type          = 'fpx';
 		$this->backend              = new Omise_Backend_FPX;
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
@@ -95,7 +96,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => 'fpx' ),
+			'source'      => array( 'type' => $this->source_type ),
 			'source'      => array(
 				'type'      => 'fpx',
 				'bank' => sanitize_text_field( $source_bank ),

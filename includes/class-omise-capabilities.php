@@ -74,6 +74,16 @@ class Omise_Capabilities {
 	}
 
 	/**
+     * Retrieves list of tokenization methods
+     *
+     * @return array
+     */
+    public function getTokenizationMethods()
+    {
+        return $this->capabilities ? $this->capabilities['tokenization_methods'] : null;
+    }
+
+	/**
 	 * @return bool  True if merchant absorbs the interest or else, false.
 	 */
 	public function is_zero_interest() {

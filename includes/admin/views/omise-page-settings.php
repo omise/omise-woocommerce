@@ -172,8 +172,7 @@
 									<?php
 									foreach ( Omise()->payment_methods() as $gateway ) :
 										$gateway = new $gateway;
-										if ( $gateway->is_country_support( $settings['account_country'] ) ) :
-
+										if ( $gateway->is_country_support( $settings['account_country'] ) && $gateway->is_capability_support( $settings['available_payment_methods'] ) ) :
 											echo '<tr>';
 
 											foreach ( $columns as $key => $column ) :

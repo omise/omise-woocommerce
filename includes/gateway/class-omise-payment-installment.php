@@ -107,4 +107,13 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 			'metadata'          => $metadata
 		) );
 	}
+
+	/**
+	 * @param  string $country_code
+	 *
+	 * @return array|false
+	 */
+	public function is_capability_support( $available_payment_methods ) {
+		return preg_grep('/^installment_/', $available_payment_methods);
+	}
 }
