@@ -202,7 +202,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Check if the gateway is available for use.
+	 * Check if the gateway is available for customer on checkout page.
 	 * 
 	 * @see    WC_Payment_Gateway::is_available()
 	 * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
@@ -648,7 +648,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$this->order()->delete_meta_data( 'is_awaiting_capture');
 		$this->order()->save();
 	}
-	
+
 	/**
 	 * @see omise/includes/class-omise-setting.php
 	 * 

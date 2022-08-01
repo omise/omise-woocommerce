@@ -110,7 +110,9 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 	}
 
 	/**
-	 * @param  string $country_code
+	 * check if payment method is support by omise capability api version 2017
+	 * 
+	 * @param  array of backends source_type 
 	 *
 	 * @return array|false
 	 */

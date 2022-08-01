@@ -136,6 +136,8 @@
 
 		<h3><?php _e( 'Payment Methods', 'omise' ); ?></h3>
 		<?php if ($settings['account_country']) : ?>
+			<!--  // if account_country is exist that mean key is valid -->
+			<?php  $available_payment_methods = Omise_Capabilities::retrieve()->get_available_payment_methods();  ?>
 			<p><?php _e( 'The table below is a list of available payment methods for this omise account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
 			<table class="form-table">
 				<tbody>
@@ -172,7 +174,7 @@
 									<?php
 									foreach ( Omise()->payment_methods() as $gateway ) :
 										$gateway = new $gateway;
-										if ( $gateway->is_country_support( $settings['account_country'] ) && $gateway->is_available() ) :
+										if ( $gateway->is_country_support( $settings['account_country'] ) && $gateway->is_capability_support( $available_payment_methods) ) :
 											echo '<tr>';
 
 											foreach ( $columns as $key => $column ) :
