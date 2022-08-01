@@ -61,7 +61,6 @@ class Omise_Setting {
 			'live_public_key'  => '',
 			'live_private_key' => '',
 			'backends' => null,
-			'available_payment_methods'	=> array()
 		);
 	}
 

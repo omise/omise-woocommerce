@@ -60,7 +60,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 			),
 		);
 	}
-		
+
 	public function GetMethodTitle() {
 		if ($this->provider === 'Alipay_plus') {
 			return 'TNG eWallet';
@@ -109,24 +109,4 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 
-	/**
-	 * @see omise/includes/class-omise-setting.php
-	 * 
-	 * @return string|null of touch n go provider
-	 */
-	public function get_provider() {
-		$payment_settings = Omise()->settings()->get_settings();
-		$provider = null;
-		$backends = $payment_settings['backends'];
-		if(isset($backends)){
-			$index = array_search($this->source_type, array_column($backends, '_id'));
-			if($index){
-				$tng_backend = $payment_settings['backends'][$index];
-				if(property_exists($tng_backend,'provider')){
-					 $provider = $tng_backend->provider;
-				}
-			}
-		}
-		return  $provider;
-	}
 }

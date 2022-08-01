@@ -101,4 +101,13 @@ class Omise_Capabilities {
 	public function is_zero_interest() {
 		return $this->capabilities['zero_interest_installments'];
 	}
+
+	/**
+	 * @return array list of omise backends sourc_type.
+	 */
+	public function get_available_payment_methods() {
+		$backends = $this->getBackends();
+		$token_methods = $this->getTokenizationMethods();
+		return array_merge(array_column($backends, '_id'),$token_methods);
+	}
 }

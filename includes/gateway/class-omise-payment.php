@@ -201,21 +201,31 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		return false;
 	}
 
-	public function is_available(){		
-		if(parent::is_available()&& $this->is_country_support( $this->payment_settings['account_country'])){
-			return $this->is_capability_support($this->payment_settings['available_payment_methods']);
+	/**
+	 * Check if the gateway is available for use.
+	 * 
+	 * @see    WC_Payment_Gateway::is_available()
+	 * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
+	 *
+	 * @return bool
+	 */
+	public function is_available(){	
+		if( parent::is_available() && $this->is_country_support( $this->payment_settings['account_country']) ){
+			// if account_country is exist that mean key is valid
+			return $this->is_capability_support(Omise_Capabilities::retrieve()->get_available_payment_methods());
 		}
 		return false;
 	}
 
 	/**
-	 * @param  string $country_code
+	 * check if payment method is support by omise capability api version 2017
+	 * 
+	 * @param  array of backends source_type 
 	 *
 	 * @return bool
 	 */
 	public function is_capability_support( $available_payment_methods ) {
 		return in_array($this->source_type,$available_payment_methods);
-		// return true;
 	}
 
 	/**
@@ -637,5 +647,24 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	private function delete_capture_metadata() {
 		$this->order()->delete_meta_data( 'is_awaiting_capture');
 		$this->order()->save();
+	}
+	
+	/**
+	 * @see omise/includes/class-omise-setting.php
+	 * 
+	 * @return string|null of backend provider
+	 */
+	public function get_provider() {
+		$provider = null;
+		if(isset($this->payment_settings['backends'])){
+			$index = array_search($this->source_type, array_column($this->payment_settings['backends'], '_id'));
+			if($index){
+				$backend = $this->payment_settings['backends'][$index];
+				if(property_exists($backend,'provider')){
+					 $provider = $backend->provider;
+				}
+			}
+		}
+		return  $provider;
 	}
 }

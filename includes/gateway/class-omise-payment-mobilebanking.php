@@ -22,6 +22,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'TH' );
 
+		//TODO: currently this wil cause excpetion when is can't fetch capability 
 		$this->backend     = new Omise_Backend_Mobile_Banking;
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );

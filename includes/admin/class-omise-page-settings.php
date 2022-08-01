@@ -29,12 +29,8 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 
 			$capabilities = Omise_Capabilities::retrieve( $public_key, $secret_key );
 			$backends = $capabilities->getBackends();
-			$token_methods = $capabilities->getTokenizationMethods();
-			//fetch only key for using to check is available or not 
-			$available_payment_methods = array_merge(array_column($backends, '_id'),$token_methods);
 			$data['backends'] = $backends;
-			$data['available_payment_methods'] = $available_payment_methods;
-			
+
 			$this->update_settings( $data );
 			$this->add_message(
 				'message',
