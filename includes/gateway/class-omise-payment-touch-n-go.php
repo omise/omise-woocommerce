@@ -5,8 +5,8 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 	public function __construct() {
 		parent::__construct();
 
-		$this->source_type		  = 'touch_n_go';
-		$this->provider			  = $this->get_provider();
+		$this->source_type        = 'touch_n_go';
+		$this->provider           = $this->get_provider();
 		$this->id                 = 'omise_touch_n_go';
 		$this->has_fields         = false;
 		$this->method_title       = __( 'Omise ' . $this->GetMethodTitle(), 'omise' );

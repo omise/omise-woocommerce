@@ -21,7 +21,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 		$this->description          = $this->get_option( 'description' );
 		$this->payment_action       = $this->get_option( 'payment_action' );
 		$this->restricted_countries = array( 'TH' );
-		$this->source_type 			= 'rabbit_linepay';
+		$this->source_type          = 'rabbit_linepay';
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
