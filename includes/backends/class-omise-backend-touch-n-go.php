@@ -18,6 +18,9 @@ class Omise_Backend_TouchNGo extends Omise_Backend {
 	 * @return string of touch n go provider
 	 */
 	public function get_provider() {
+		if (!$this->capabilities){
+			return null;
+		}
 		$tng = $this->capabilities()->getTouchNGoBackends();
 		$first_value = reset($tng);
 		
