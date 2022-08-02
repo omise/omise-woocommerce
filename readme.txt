@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 5.9.0
-Stable tag: 4.22.0
+Stable tag: 4.23.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,11 +33,18 @@ From there:
 
 == Changelog ==
 
+= 4.23.0 = 
+
+#### 🚀 Enhancements
+- Added Boost, DuitNow QR, DuitNow Online Banking/Wallets, Maybank QRPay and ShopeePay payment methods. Update Touch 'n Go to support non Alipay+. (PR [#287](https://github.com/omise/omise-woocommerce/pull/287))
+
 = 4.22.0 = 
 
 #### 🚀 Enhancements
-- Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured.
-- Allow GrabPay payment in Thailand
+- Allow GrabPay payment in Thailand (PR [#282](https://github.com/omise/omise-woocommerce/pull/282))
+
+#### 👾 Bug Fixes
+- Fix the issue of order status changing to failed when user tries to capture a charge that's already been captured. (PR [#281](https://github.com/omise/omise-woocommerce/pull/281))
 
 = 4.21.1 =
 
