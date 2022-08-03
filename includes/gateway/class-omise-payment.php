@@ -659,9 +659,9 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		if(isset($this->payment_settings['backends'])){
 			$index = array_search($this->source_type, array_column($this->payment_settings['backends'], '_id'));
 			if($index){
-				$backend = $this->payment_settings['backends'][$index];
-				if(property_exists($backend,'provider')){
-					 $provider = $backend->provider;
+				$payment = $this->payment_settings['backends'][$index];
+				if(property_exists($payment,'provider')){
+					 $provider = $payment->provider;
 				}
 			}
 		}
