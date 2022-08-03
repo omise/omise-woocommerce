@@ -211,7 +211,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	public function is_available(){	
 		if( parent::is_available() && $this->is_country_support( $this->payment_settings['account_country']) ){
-			// if account_country is exist that mean key is valid
+			// account_country exists when API key is valid
 			return $this->is_capability_support(Omise_Capabilities::retrieve()->get_available_payment_methods());
 		}
 		return false;
