@@ -62,18 +62,6 @@ class Omise_Capabilities {
 	}
 
 	/**
-	 * Retrieves details of Touch n Go payment backends from capabilities.
-	 *
-	 * @return string
-	 */
-	public function getTouchNGoBackends() {
-		$params   = array();
-		$params[] = $this->capabilities->backendFilter['type']('touch_n_go');
-	
-		return $this->capabilities->getBackends( $params );
-	}
-
-	/**
 	 * Retrieves details of fpx bank list from capabilities.
 	 *
 	 * @return string
