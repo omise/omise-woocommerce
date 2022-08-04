@@ -18,12 +18,12 @@ class Omise_Backend_TouchNGo extends Omise_Backend {
 	 * @return string of touch n go provider
 	 */
 	public function get_provider() {
-		if (!$this->capabilities()){
+		if (!$this->capabilities){
 			return null;
 		}
 		$tng = $this->capabilities()->getTouchNGoBackends();
 		$first_value = reset($tng);
-
+		
 		// Preventing the following error:
 		// Uncaught TypeError: property_exists(): Argument #1 must be of type object|string, bool given
 		$typeofFirstValue = gettype($first_value);
