@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.23.1 _(Aug 4, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.1)
+
+#### 👾 Bug Fixes
+- Fixed issue of page broken when activate plugin version 4.23.0 (PR [#293](https://github.com/omise/omise-woocommerce/pull/293))
+
 ### [v4.23.0 _(Jul 25, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.0)
 
 #### 🚀 Enhancements
