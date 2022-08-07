@@ -147,12 +147,3 @@ class Omise_Payment_Kakaopay extends Omise_Payment_Alipayplus {
 		parent::__construct( $source, $title, $countries );
 	}
 }
-
-class Omise_Payment_TouchNGo extends Omise_Payment_Alipayplus {
-	public function __construct() {
-		$source = 'touch_n_go';
-		$title = 'TNG eWallet';
-		$countries = array( 'SG' );
-		parent::__construct( $source, $title, $countries );
-	}
-}
