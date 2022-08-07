@@ -25,6 +25,10 @@ class Omise_Callback {
 	}
 
 	public static function execute() {
+		if(RequestHelper::isUserOriginated()) {
+			return wp_redirect( wc_get_checkout_url() );
+		}
+
 		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
 
 		$callback = new self( wc_get_order( $order_id ) );
@@ -67,8 +71,8 @@ class Omise_Callback {
 	protected function invalid_result() {
 		$message = __(
 			'<strong>We cannot validate your payment result:</strong><br/>
-			 Note that your payment may have already been processed.<br/>
-			 Please contact our support team if you have any questions.',
+			Note that your payment may have already been processed.<br/>
+			Please contact our support team if you have any questions.',
 			'omise'
 		);
 
@@ -108,7 +112,7 @@ class Omise_Callback {
 			// Card authorized case.
 			$message = __(
 				'Omise: The payment is being processed.<br/>
-				 An amount %1$s %2$s has been authorized.',
+				An amount %1$s %2$s has been authorized.',
 				'omise'
 			);
 
@@ -134,8 +138,8 @@ class Omise_Callback {
 		// Offsite case.
 		$message = __(
 			'Omise: The payment is being processed.<br/>
-			 Depending on the payment provider, this may take some time to process.<br/>
-			 Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
+			Depending on the payment provider, this may take some time to process.<br/>
+			Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
 			'omise'
 		);
 
@@ -152,7 +156,7 @@ class Omise_Callback {
 	 * Resolving a case of charge status: failed.
 	 */
 	protected function payment_failed() {
-		$message         = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
+		$message = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
 		$failure_message = Omise()->translate( $this->charge['failure_message'] ) . ' (code: ' . $this->charge['failure_code'] . ')';
 
 		$this->order->add_order_note( sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
