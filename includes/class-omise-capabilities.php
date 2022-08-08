@@ -20,10 +20,17 @@ class Omise_Capabilities {
 	 */
 	public static function retrieve( $publickey = null, $secretkey = null ) {
 		if ( ! self::$the_instance ) {
+			try {
+				$capabilities = OmiseCapabilities::retrieve( $publickey , $secretkey );
+			} catch(\Exception $e) {
+				// suppressing error on the admin dashboard
+				return null;
+			}
+	
 			self::$the_instance = new self();
-			self::$the_instance->capabilities = OmiseCapabilities::retrieve( $publickey , $secretkey );
+			self::$the_instance->capabilities = $capabilities;
 		}
-
+	
 		return self::$the_instance;
 	}
 	

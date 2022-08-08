@@ -73,7 +73,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 			'templates/payment/form-installment.php',
 			array(
 				'installment_backends' => $this->backend->get_available_providers( $currency, $cart_total ),
-				'is_zero_interest'     => $this->backend->capabilities()->is_zero_interest()
+				'is_zero_interest'     => $this->backend->capabilities() ? $this->backend->capabilities()->is_zero_interest() : false
 			)
 		);
 	}
