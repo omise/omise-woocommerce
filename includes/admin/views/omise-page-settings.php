@@ -137,7 +137,6 @@
 		<h3><?php _e( 'Payment Methods', 'omise' ); ?></h3>
 		<?php if ($settings['account_country']) : ?>
 			<!--  account_country exists when API key is valid -->
-			<?php  $available_payment_methods = Omise_Capabilities::retrieve()->get_available_payment_methods();  ?>
 			<p><?php _e( 'The table below is a list of available payment methods for this omise account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
 			<table class="form-table">
 				<tbody>

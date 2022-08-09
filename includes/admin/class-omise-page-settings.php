@@ -55,7 +55,13 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 		}
 
 		$settings = $page->get_settings();
-
+		
+		$available_payment_methods = array();
+		$capabilities = Omise_Capabilities::retrieve();
+		
+		if ( $capabilities ){
+			$available_payment_methods = $capabilities->get_available_payment_methods();
+		}
 		/**
 		 * Added later at Omise-WooCommerce v3.11.
 		 * To migrate all the users that haven been using Omise-WooCommerce
