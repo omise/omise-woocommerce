@@ -210,14 +210,17 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_available(){	
-		if( parent::is_available() ){
-			$capabilities = Omise_Capabilities::retrieve();
-			if ( !$capabilities ){
-				return false;
-			}
-			return $this->is_capability_support($capabilities->get_available_payment_methods());
+		if ( !parent::is_available() ) {
+			return false;			
 		}
-		return false;
+
+		$capabilities = Omise_Capabilities::retrieve();
+
+		if ( !$capabilities ) {
+			return false;
+		}
+
+		return $this->is_capability_support($capabilities->get_available_payment_methods());
 	}
 
 	/**
