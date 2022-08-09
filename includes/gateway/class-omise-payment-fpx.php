@@ -20,7 +20,6 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'MY' );
 		$this->source_type          = 'fpx';
-		//TODO: currently this will cause excpetion when is can't fetch capability
 		$this->backend              = new Omise_Backend_FPX;
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );

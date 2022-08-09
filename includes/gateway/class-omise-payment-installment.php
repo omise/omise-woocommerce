@@ -24,7 +24,6 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'TH', 'MY' );
 		
-		//TODO: currently this will cause excpetion when is can't fetch capability
 		$this->backend     = new Omise_Backend_Installment;
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
