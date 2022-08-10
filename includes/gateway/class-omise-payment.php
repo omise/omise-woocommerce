@@ -655,26 +655,28 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$this->order()->save();
 	}
 
-    /**
-     *
-     * @see omise/includes/class-omise-setting.php
-     *
-     * @return string|null of backend provider
-     */
-    public function get_provider()
-    {
-        if (! isset($this->payment_settings['backends'])) {
-            $index = array_search($this->source_type, array_column($this->payment_settings['backends'], '_id'));
-
-            if ($index) {
-
-                $payment = $this->payment_settings['backends'][$index];
-
-                if (property_exists($payment, 'provider')) {
-                    return $payment->provider;
-                }
-            }
+	/**
+	 * @see omise/includes/class-omise-setting.php
+	 * 
+	 * @return string|null of backend provider
+	 */
+	public function get_provider() {
+        if(!isset($this->payment_settings['backends'])) {
+            return null;
         }
-        return null;
-    }
+
+        $index = array_search($this->source_type, array_column($this->payment_settings['backends'], '_id'));
+
+        if(!$index) {
+            return null;
+        }
+
+        $payment = $this->payment_settings['backends'][$index];
+        
+        if(!property_exists($payment, 'provider')) {
+            return null;
+        }
+
+        return $payment->provider;
+	}
 }
