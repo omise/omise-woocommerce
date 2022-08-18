@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### [v4.23.2 _(Aug 8, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.2)
+### [v4.23.2 _(Aug 18, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.2)
 
 #### 👾 Bug Fixes
 - Handle capabilities failed. (PR [#294](https://github.com/omise/omise-woocommerce/pull/294))
