@@ -32,7 +32,9 @@
 
 <script type="text/javascript">
 	var selectElem = document.getElementById("fpx-select-bank");
-	selectElem.addEventListener('change', function(e) {
-	     selectElem.setAttribute("class", e.target.value);
-    })
+	if(selectElem) {
+		selectElem.addEventListener('change', function(e) {
+			selectElem.setAttribute("class", e.target.value);
+		})
+	}
 </script>

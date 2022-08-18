@@ -2,38 +2,40 @@
 /**
  *
  * @method public initiate
- * @method public get_available_banks
+ * @method public get_provider
  */
-class Omise_Backend_FPX extends Omise_Backend {
+class Omise_Backend_TouchNGo extends Omise_Backend {
 	/**
-	 * @var array  of known installment providers.
+	 * @var array  of known providers.
 	 */
 	protected static $providers = array();
-
+	
 	public function initiate() {
 		self::$providers = array();
 	}
-
+	
 	/**
-	 * @return array  of an available banks
+	 * @return string of touch n go provider
 	 */
-	public function get_available_banks() {
+	public function get_provider() {
 		$capabilities = $this->capabilities();
 
 		if ( !$capabilities ){
 			return null;
 		}
 
-		$providers = $capabilities->getFPXBanks();
-		$first_value = reset($providers);
-
+		$tng = $capabilities->getTouchNGoBackends();
+		$first_value = reset($tng);
+		
 		// Preventing the following error:
 		// Uncaught TypeError: property_exists(): Argument #1 must be of type object|string, bool given
 		$typeofFirstValue = gettype($first_value);
 		$isObjectOrString = 'object' === $typeofFirstValue || 'string' === $typeofFirstValue;
-
-		if ($isObjectOrString && property_exists($first_value, 'banks')) {
-			return $first_value->banks;
+		
+		$provider = null;
+		if ($isObjectOrString && property_exists($first_value, 'provider')) {
+			$provider = $first_value->provider;
 		}
+		return $provider;
 	}
 }
