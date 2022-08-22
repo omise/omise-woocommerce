@@ -8,12 +8,12 @@
 					<option	
 						class="<?php echo $bank["code"];?>" 
 						value="<?php echo $bank["code"]; ?>"
-						<?php if (!$bank['active']) echo disabled ; ?>
+						<?= !$bank['active'] ? "disabled" : "" ; ?>
 					>
 							<?php echo $bank["name"]; ?> 
 							<?php if (!$bank['active']) echo " (offline)" ; ?>
 					</option>
-			 	<?php endforeach; ?>
+			<?php endforeach; ?>
 			</select>
 		</div>
 		<div class="fpx-terms-and-conditions-block">

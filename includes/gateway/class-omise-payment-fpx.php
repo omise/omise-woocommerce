@@ -2,7 +2,6 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 class Omise_Payment_FPX extends Omise_Payment_Offsite {
- 
 
 	public function __construct() {
 		parent::__construct();
@@ -24,9 +23,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
-  }
-  
- 
+	}
 
 
 	/**
