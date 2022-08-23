@@ -8,7 +8,7 @@
 					<option	
 						class="<?php echo $bank["code"];?>" 
 						value="<?php echo $bank["code"]; ?>"
-						<?= !$bank['active'] ? "disabled" : "" ; ?>
+						<?= $bank['active'] ?: "disabled" ?>
 					>
 							<?php echo $bank["name"]; ?> 
 							<?php if (!$bank['active']) echo " (offline)" ; ?>
