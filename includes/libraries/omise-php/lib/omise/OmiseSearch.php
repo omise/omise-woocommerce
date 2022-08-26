@@ -24,7 +24,7 @@ class OmiseSearch extends OmiseApiResource
     const ENDPOINT = 'search';
 
     private $dirty = true;
-    private $attributes = array();
+    private $attributes = [];
 
     /**
      * Create an instance of `OmiseSearch` with the given scope.
@@ -37,22 +37,10 @@ class OmiseSearch extends OmiseApiResource
      */
     public static function scope($scope, $publickey = null, $secretkey = null)
     {
-        return new OmiseSearch($scope, $publickey, $secretkey);
-    }
+        $resouce = self::getInstance($publickey = null, $secretkey = null);
+        $resouce->mergeAttributes('scope', $scope);
 
-    /**
-     * Create an instance of `OmiseSearch` with the given scope.
-     *
-     * This constructor is `protected` thus not intended to be used directly.
-     *
-     * @param string $scope  See supported scope at [Search API](https://www.omise.co/search-api) page.
-     * @param string $publickey
-     * @param string $secretkey
-     */
-    protected function __construct($scope, $publickey, $secretkey)
-    {
-        parent::__construct($publickey, $secretkey);
-        $this->mergeAttributes('scope', $scope);
+        return $resouce;
     }
 
     /**
@@ -74,13 +62,14 @@ class OmiseSearch extends OmiseApiResource
      *
      * @return OmiseSearch  This instance.
      */
-    public function filter(array $filters = array())
+    public function filter(array $filters = [])
     {
         foreach ($filters as $k => $v) {
             if (is_bool($v)) {
                 $filters[$k] = $v ? 'true' : 'false';
             }
         }
+
         return $this->mergeAttributes('filters', $filters);
     }
 
@@ -186,52 +175,59 @@ class OmiseSearch extends OmiseApiResource
     private function getUrl()
     {
         $querystring = http_build_query($this->attributes);
-        return OMISE_API_URL.self::ENDPOINT.'/?'.$querystring;
+
+        return OMISE_API_URL . self::ENDPOINT . '/?' . $querystring;
     }
 
     // Override methods of ArrayAccess
 
-    /*
+    /**
      * (non-PHPdoc)
      *
      * @see OmiseObject::offsetSet()
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($key, $value)
     {
         $this->reloadIfDirty();
-        return parent::offsetSet($key, $value);
+        parent::offsetSet($key, $value);
     }
 
-    /*
+    /**
      * (non-PHPdoc)
      *
      * @see OmiseObject::offsetExists()
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($key)
     {
         $this->reloadIfDirty();
+
         return parent::offsetExists($key);
     }
 
-    /*
+    /**
      * (non-PHPdoc)
      *
      * @see OmiseObject::offsetUnset()
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($key)
     {
         $this->reloadIfDirty();
-        return parent::offsetUnset($key);
+        parent::offsetUnset($key);
     }
 
-    /*
+    /**
      * (non-PHPdoc)
      *
      * @see OmiseObject::offsetGet()
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($key)
     {
         $this->reloadIfDirty();
+
         return parent::offsetGet($key);
     }
 }

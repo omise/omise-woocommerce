@@ -15,7 +15,7 @@ class OmiseLink extends OmiseApiResource
      */
     public static function retrieve($id = '', $publickey = null, $secretkey = null)
     {
-        return parent::g_retrieve(get_class(), self::getUrl($id), $publickey, $secretkey);
+        return parent::g_retrieve(self::getUrl($id), $publickey, $secretkey);
     }
 
     /**
@@ -57,7 +57,7 @@ class OmiseLink extends OmiseApiResource
      */
     public static function create($params, $publickey = null, $secretkey = null)
     {
-        return parent::g_create(get_class(), self::getUrl(), $params, $publickey, $secretkey);
+        return parent::g_create(self::getUrl(), $params, $publickey, $secretkey);
     }
 
     /**
@@ -75,7 +75,7 @@ class OmiseLink extends OmiseApiResource
      *
      * @see OmiseApiResource::isDestroyed()
      */
-    public function isDestroyed()
+    public static function isDestroyed()
     {
         return parent::isDestroyed();
     }
@@ -87,6 +87,6 @@ class OmiseLink extends OmiseApiResource
      */
     private static function getUrl($id = '')
     {
-        return OMISE_API_URL.self::ENDPOINT.'/'.$id;
+        return OMISE_API_URL . self::ENDPOINT . '/' . $id;
     }
 }

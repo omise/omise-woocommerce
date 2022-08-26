@@ -5,6 +5,22 @@ class OmiseDispute extends OmiseApiResource
     const ENDPOINT = 'disputes';
 
     /**
+     * Creates a new dispute.
+     *
+     * @param  array  $params
+     * @param  string $publickey
+     * @param  string $secretkey
+     *
+     * @return OmiseDispute
+     */
+    public static function create($charge, $params, $publickey = null, $secretkey = null)
+    {
+        $url = OMISE_API_URL . 'charges/' . $charge['id'] . '/' . self::ENDPOINT;
+
+        return parent::g_create($url, $params, $publickey, $secretkey);
+    }
+
+    /**
      * Retrieves a dispute.
      *
      * @param  string $id
@@ -15,7 +31,7 @@ class OmiseDispute extends OmiseApiResource
      */
     public static function retrieve($id = '', $publickey = null, $secretkey = null)
     {
-        return parent::g_retrieve(get_class(), self::getUrl($id), $publickey, $secretkey);
+        return parent::g_retrieve(self::getUrl($id), $publickey, $secretkey);
     }
 
     /**
@@ -75,6 +91,6 @@ class OmiseDispute extends OmiseApiResource
      */
     private static function getUrl($id = '')
     {
-        return OMISE_API_URL.self::ENDPOINT.'/'.$id;
+        return OMISE_API_URL . self::ENDPOINT . '/' . $id;
     }
 }

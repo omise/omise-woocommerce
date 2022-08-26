@@ -14,7 +14,7 @@ class OmiseBalance extends OmiseApiResource
      */
     public static function retrieve($publickey = null, $secretkey = null)
     {
-        return parent::g_retrieve(get_class(), self::getUrl(), $publickey, $secretkey);
+        return parent::g_retrieve(self::getUrl(), $publickey, $secretkey);
     }
 
     /**
@@ -34,6 +34,6 @@ class OmiseBalance extends OmiseApiResource
      */
     private static function getUrl($id = '')
     {
-        return OMISE_API_URL.self::ENDPOINT.'/'.$id;
+        return OMISE_API_URL . self::ENDPOINT . '/' . $id;
     }
 }

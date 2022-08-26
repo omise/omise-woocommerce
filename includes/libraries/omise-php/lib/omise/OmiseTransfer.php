@@ -15,7 +15,7 @@ class OmiseTransfer extends OmiseApiResource
      */
     public static function retrieve($id = '', $publickey = null, $secretkey = null)
     {
-        return parent::g_retrieve(get_class(), self::getUrl($id), $publickey, $secretkey);
+        return parent::g_retrieve(self::getUrl($id), $publickey, $secretkey);
     }
 
     /**
@@ -57,7 +57,7 @@ class OmiseTransfer extends OmiseApiResource
      */
     public static function create($params, $publickey = null, $secretkey = null)
     {
-        return parent::g_create(get_class(), self::getUrl(), $params, $publickey, $secretkey);
+        return parent::g_create(self::getUrl(), $params, $publickey, $secretkey);
     }
 
     /**
@@ -79,7 +79,7 @@ class OmiseTransfer extends OmiseApiResource
      */
     public function save()
     {
-        $this->update(array('amount' => $this['amount']));
+        $this->update(['amount' => $this['amount']]);
     }
 
     /**
@@ -101,13 +101,13 @@ class OmiseTransfer extends OmiseApiResource
      *
      * @return OmiseScheduleList
      */
-    public static function schedules($options = array(), $publickey = null, $secretkey = null)
+    public static function schedules($options = [], $publickey = null, $secretkey = null)
     {
         if (is_array($options)) {
             $options = '?' . http_build_query($options);
         }
 
-        return parent::g_retrieve('OmiseScheduleList', self::getUrl('schedules' . $options), $publickey, $secretkey);
+        return OmiseScheduleList::g_retrieve(self::getUrl('schedules' . $options), $publickey, $secretkey);
     }
 
     /**
@@ -125,7 +125,7 @@ class OmiseTransfer extends OmiseApiResource
      *
      * @see OmiseApiResource::isDestroyed()
      */
-    public function isDestroyed()
+    public static function isDestroyed()
     {
         return parent::isDestroyed();
     }
@@ -137,6 +137,6 @@ class OmiseTransfer extends OmiseApiResource
      */
     private static function getUrl($id = '')
     {
-        return OMISE_API_URL.self::ENDPOINT.'/'.$id;
+        return OMISE_API_URL . self::ENDPOINT . '/' . $id;
     }
 }
