@@ -23,6 +23,7 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'JP' );
+		$this->source_type          = 'econtext';
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
@@ -85,7 +86,7 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 			'amount'      => Omise_Money::to_subunit( $total, $currency ),
 			'currency'    => $currency,
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => 'econtext', 'name' => $konbini_name, 'email' => $konbini_email, 'phone_number' => $konbini_phone ),
+			'source'      => array( 'type' => $this->source_type, 'name' => $konbini_name, 'email' => $konbini_email, 'phone_number' => $konbini_phone ),
 			'metadata'    => $metadata
 		) );
 	}
