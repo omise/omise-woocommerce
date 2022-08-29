@@ -68,14 +68,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	public $restricted_countries = array();
 
 	/**
-	 * A string of Omise Source's type
-	 * (e.g. paynow or bill_payment_tesco_lotus).
-	 *
-	 * @var string
-	 */
-	public $source_type = '';
-
-	/**
 	 * @var array
 	 */
 	private $currency_subunits = array(
@@ -199,39 +191,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Check if the gateway is available for customer on checkout page.
-	 * 
-	 * @see    WC_Payment_Gateway::is_available()
-	 * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
-	 *
-	 * @return bool
-	 */
-	public function is_available(){	
-		if ( !parent::is_available() ) {
-			return false;			
-		}
-
-		$capabilities = Omise_Capabilities::retrieve();
-
-		if ( !$capabilities ) {
-			return false;
-		}
-
-		return $this->is_capability_support($capabilities->get_available_payment_methods());
-	}
-
-	/**
-	 * check if payment method is support by omise capability api version 2017
-	 * 
-	 * @param  array of backends source_type 
-	 *
-	 * @return bool
-	 */
-	public function is_capability_support( $available_payment_methods ) {
-		return in_array($this->source_type,$available_payment_methods);
 	}
 
 	/**
@@ -654,31 +613,4 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$this->order()->delete_meta_data( 'is_awaiting_capture');
 		$this->order()->save();
 	}
-
-    /**
-     *
-     * @see omise/includes/class-omise-setting.php
-     *
-     * @return string|null of backend provider
-     */
-    public function get_provider()
-    {
-        if (! isset($this->payment_settings['backends'])) {
-            return null;
-        }
-
-        $index = array_search($this->source_type, array_column($this->payment_settings['backends'], '_id'));
-
-        if (! $index) {
-            return null;
-        }
-
-        $payment = $this->payment_settings['backends'][$index];
-
-        if (! property_exists($payment, 'provider')) {
-            return null;
-        }
-
-        return $payment->provider;
-    }
 }

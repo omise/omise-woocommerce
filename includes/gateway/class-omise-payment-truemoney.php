@@ -24,7 +24,6 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'TH' );
-		$this->source_type          = 'truemoney';
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
@@ -86,7 +85,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $total, $currency ),
 			'currency'    => $currency,
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => $this->source_type, 'phone_number' => $phone_number ),
+			'source'      => array( 'type' => 'truemoney', 'phone_number' => $phone_number ),
 			'return_uri'  => $return_uri,
 			'metadata'    => $metadata
 		) );
