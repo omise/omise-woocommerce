@@ -17,7 +17,6 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'MY' );
-		$this->source_type          = 'duitnow_obw';
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -165,7 +164,7 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite {
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'source'      => array(
-				'type' => $this->source_type,
+				'type' => 'duitnow_obw',
 				'bank' => sanitize_text_field( $source_bank ),
 			),
 			'return_uri'  => $return_uri,
