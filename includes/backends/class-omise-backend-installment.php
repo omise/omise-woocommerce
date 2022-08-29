@@ -97,15 +97,12 @@ class Omise_Backend_Installment extends Omise_Backend {
 	 * @return array  of an available installment providers
 	 */
 	public function get_available_providers( $currency, $purchase_amount ) {
-		$capabilities = $this->capabilities();
-
-		if ( !$capabilities ){
+		if ( !$this->capabilities() ){
 			return null;
 		}
-
 		// Note: As installment payment at the moment only supports THB and MYR currency, the 
 		//       $purchase_amount is multiplied with 100 to convert the amount into subunit (satang and sen).
-		$providers = $capabilities->getInstallmentBackends( $currency, ( $purchase_amount * 100 ) );
+		$providers = $this->capabilities()->getInstallmentBackends( $currency, ( $purchase_amount * 100 ) );
 
 		foreach ( $providers as &$provider ) {
 			$provider_detail = self::$providers[ $provider->_id ];

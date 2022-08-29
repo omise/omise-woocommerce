@@ -18,13 +18,10 @@ class Omise_Backend_FPX extends Omise_Backend {
 	 * @return array  of an available banks
 	 */
 	public function get_available_banks() {
-		$capabilities = $this->capabilities();
-
-		if ( !$capabilities ){
+		if ( !$this->capabilities() ){
 			return null;
 		}
-
-		$providers = $capabilities->getFPXBanks();
+		$providers = $this->capabilities()->getFPXBanks();
 		$first_value = reset($providers);
 
 		// Preventing the following error:
