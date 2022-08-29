@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v4.24.0 _(Aug 29, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.24.0)
+
+#### 🚀 Enhancements
+- Enhancements display payment options. (PR [#290](https://github.com/omise/omise-woocommerce/pull/290))
+
+#### 👾 Bug Fixes
+- [ENGA3-290]: Issue of displaying an error as an option of Online banking. (PR [#296](https://github.com/omise/omise-woocommerce/pull/296))
+
 ### [v4.23.2 _(Aug 18, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.2)
 
 #### 👾 Bug Fixes
