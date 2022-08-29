@@ -44,7 +44,6 @@ class Omise {
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'check_dependencies' ) );
 		add_action( 'init', array( $this, 'init' ) );
-
 		do_action( 'omise_initiated' );
 	}
 
@@ -71,9 +70,9 @@ class Omise {
 			return;
 		}
 
+		$this->load_plugin_textdomain();
 		$this->include_classes();
 		$this->define_constants();
-		$this->load_plugin_textdomain();
 		$this->register_post_types();
 		$this->init_admin();
 		$this->init_route();

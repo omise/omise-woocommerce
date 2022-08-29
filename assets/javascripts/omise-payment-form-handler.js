@@ -168,8 +168,7 @@
 					input.setAttribute('name', 'omise_token');
 					input.setAttribute('value', response.id);
 					form.appendChild(input);
-				}
-				else {
+				} else {
 					handleTokensApiError(response)
 				}
 			});
@@ -178,17 +177,28 @@
 
 	function handleTokensApiError(response) {
 		if (response.object && 'error' === response.object && 'invalid_card' === response.code) {
-			showError(omise_params.invalid_card + "<br/>" + response.message);
+			showError(omise_params.invalid_card + "<br/>" + mapApiResponseToTranslatedTest(response.message));
 		} else if (response.message) {
-			showError(omise_params.cannot_create_token + "<br/>" + response.message);
+			showError(omise_params.cannot_create_token + "<br/>" + mapApiResponseToTranslatedTest(response.message));
 		} else if (response.responseJSON && response.responseJSON.message) {
-			showError(omise_params.cannot_create_token + "<br/>" + response.responseJSON.message);
+			showError(omise_params.cannot_create_token + "<br/>" + mapApiResponseToTranslatedTest(response.responseJSON.message));
 		} else if (response.status == 0) {
 			showError(omise_params.cannot_create_token + "<br/>" + omise_params.cannot_connect_api + omise_params.retry_checkout);
 		} else {
 			showError(omise_params.cannot_create_token + "<br/>" + omise_params.retry_checkout);
 		}
 		$form.unblock();
+	}
+
+	/**
+	 * Return a translated localized text if found else return the same text.
+	 *
+	 * @param {string} message
+	 * @returns string
+	 */
+	function mapApiResponseToTranslatedTest(message)
+	{
+		return omise_params[message] ? omise_params[message] : message;
 	}
 
 	$(function () {

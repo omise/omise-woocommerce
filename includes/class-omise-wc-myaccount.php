@@ -69,11 +69,23 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				true
 			);
 
-			$omise_params = array(
+			wp_localize_script(
+				'omise-myaccount-card-handler',
+				'omise_params',
+				$this->getParamsForJS()
+			);
+		}
+
+		/**
+		 * Parameters to be passed directly to the JavaScript file.
+		 */
+		public function	getParamsForJS()
+		{
+			return [
 				'key'                            => Omise()->settings()->public_key(),
 				'ajax_url'                       => admin_url( 'admin-ajax.php' ),
 				'ajax_loader_url'                => plugins_url( '/assets/images/ajax-loader@2x.gif', dirname( __FILE__ ) ),
-				'required_card_name'             => __( 'Cardholder\'s name is a required field', 'omise' ),
+				'required_card_name'             => __( "Cardholder's name is a required field", 'omise' ),
 				'required_card_number'           => __( 'Card number is a required field', 'omise' ),
 				'required_card_expiration_month' => __( 'Card expiry month is a required field', 'omise' ),
 				'required_card_expiration_year'  => __( 'Card expiry year is a required field', 'omise' ),
@@ -83,13 +95,16 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
 				'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
 				'retry_or_contact_support'       => wp_kses(
-					__( 'This incident could occur either from the use of an invalid card, or the payment provider server is undergoing maintenance.<br/>
-					    You may retry again in a couple of seconds, or contact our support team if you have any questions.', 'omise' ),
-					array( 'br' => array() )
-				)
-			);
-
-			wp_localize_script( 'omise-myaccount-card-handler', 'omise_params', $omise_params );
+					__( 'This incident could occur either from the use of an invalid card, or the payment provider server is undergoing maintenance.<br/>You may retry again in a couple of seconds, or contact our support team if you have any questions.', 'omise' ),
+					[ 'br' => [] ]
+				),
+				'expiration date cannot be in the past' => __( 'expiration date cannot be in the past', 'omise' ),
+				'expiration date cannot be in the past and number is invalid' => __( 'expiration date cannot be in the past and number is invalid', 'omise' ),
+				'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
+				'number is invalid and brand not supported (unknown)' => __( 'number is invalid and brand not supported (unknown)', 'omise' ),
+				'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
+				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __('expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)', 'omise')
+			];
 		}
 
 		/**

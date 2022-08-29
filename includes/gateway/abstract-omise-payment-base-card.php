@@ -214,26 +214,55 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment {
 	 */
 	public function omise_scripts() {
 		if ( is_checkout() && $this->is_available() ) {
-			wp_enqueue_script( 'omise-js', 'https://cdn.omise.co/omise.js', array( 'jquery' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
-			wp_enqueue_script( 'omise-payment-form-handler', plugins_url( '../../assets/javascripts/omise-payment-form-handler.js', __FILE__ ), array( 'omise-js' ), OMISE_WOOCOMMERCE_PLUGIN_VERSION, true );
-
-			$omise_params = array(
-				'key'                            => $this->public_key(),
-				'required_card_name'             => __( 'Cardholder\'s name is a required field', 'omise' ),
-				'required_card_number'           => __( 'Card number is a required field', 'omise' ),
-				'required_card_expiration_month' => __( 'Card expiry month is a required field', 'omise' ),
-				'required_card_expiration_year'  => __( 'Card expiry year is a required field', 'omise' ),
-				'required_card_security_code'    => __( 'Card security code is a required field', 'omise' ),
-				'invalid_card'                   => __( 'Invalid card.', 'omise' ),
-				'no_card_selected'               => __( 'Please select a card or enter a new one.', 'omise' ),
-				'cannot_create_token'            => __( 'Unable to proceed to the payment.', 'omise' ),
-				'cannot_connect_api'             => __( 'Currently, the payment provider server is undergoing maintenance.', 'omise' ),
-				'retry_checkout'                 => __( 'Please place your order again in a couple of seconds.', 'omise' ),
-				'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
-				'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
+			wp_enqueue_script(
+				'omise-js',
+				'https://cdn.omise.co/omise.js',
+				[ 'jquery' ],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				true
 			);
 
-			wp_localize_script( 'omise-payment-form-handler', 'omise_params', $omise_params );
+			wp_enqueue_script(
+				'omise-payment-form-handler',
+				plugins_url( '../../assets/javascripts/omise-payment-form-handler.js', __FILE__ ),
+				[ 'omise-js' ],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				true
+			);
+
+			wp_localize_script(
+				'omise-payment-form-handler',
+				'omise_params',
+				$this->getParamsForJS()
+			);
 		}
+	}
+
+	/**
+	 * Parameters to be passed directly to the JavaScript file.
+	 */
+	public function getParamsForJS()
+	{
+		return [
+			'key'                            => $this->public_key(),
+			'required_card_name'             => __( "Cardholder's name is a required field", 'omise' ),
+			'required_card_number'           => __( 'Card number is a required field', 'omise' ),
+			'required_card_expiration_month' => __( 'Card expiry month is a required field', 'omise' ),
+			'required_card_expiration_year'  => __( 'Card expiry year is a required field', 'omise' ),
+			'required_card_security_code'    => __( 'Card security code is a required field', 'omise' ),
+			'invalid_card'                   => __( 'Invalid card.', 'omise' ),
+			'no_card_selected'               => __( 'Please select a card or enter a new one.', 'omise' ),
+			'cannot_create_token'            => __( 'Unable to proceed to the payment.', 'omise' ),
+			'cannot_connect_api'             => __( 'Currently, the payment provider server is undergoing maintenance.', 'omise' ),
+			'retry_checkout'                 => __( 'Please place your order again in a couple of seconds.', 'omise' ),
+			'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
+			'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
+			'expiration date cannot be in the past' => __( 'expiration date cannot be in the past', 'omise' ),
+			'expiration date cannot be in the past and number is invalid' => __( 'expiration date cannot be in the past and number is invalid', 'omise' ),
+			'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
+			'number is invalid and brand not supported (unknown)' => __( 'number is invalid and brand not supported (unknown)', 'omise' ),
+			'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
+			'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __('expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)', 'omise')
+		];
 	}
 }

@@ -489,3 +489,86 @@ msgstr "カードを保存する"
 #: templates/myaccount/my-card.php
 msgid "Delete"
 msgstr "削除する"
+
+#: includes/class-omise-wc-myaccount.php:76
+#: includes/gateway/abstract-omise-payment-base-card.php:222
+msgid "Cardholder's name is a required field"
+msgstr "カード所有者の名前は必須フィールドです"
+
+#: includes/class-omise-wc-myaccount.php:77
+#: includes/gateway/abstract-omise-payment-base-card.php:223
+msgid "Card number is a required field"
+msgstr "カード番号は必須フィールドです"
+
+#: includes/class-omise-wc-myaccount.php:78
+#: includes/gateway/abstract-omise-payment-base-card.php:224
+msgid "Card expiry month is a required field"
+msgstr "カードの有効期限は必須フィールドです"
+
+#: includes/class-omise-wc-myaccount.php:79
+#: includes/gateway/abstract-omise-payment-base-card.php:225
+msgid "Card expiry year is a required field"
+msgstr "カードの有効期限は必須フィールドです"
+
+#: includes/class-omise-wc-myaccount.php:80
+#: includes/gateway/abstract-omise-payment-base-card.php:226
+msgid "Card security code is a required field"
+msgstr "カードのセキュリティ コードは必須フィールドです"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:227
+msgid "Invalid card."
+msgstr "無効なカード."
+
+#: includes/gateway/abstract-omise-payment-base-card.php:234
+#: includes/class-omise-wc-myaccount.php:101
+msgid "expiration date cannot be in the past"
+msgstr "過去の日付を有効期限に設定することはできません"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:235
+#: includes/class-omise-wc-myaccount.php:102
+msgid "expiration date cannot be in the past and number is invalid"
+msgstr "有効期限の日付が過去に設定されている、およびカード番号が無効"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:237
+#: includes/class-omise-wc-myaccount.php:104
+msgid "number is invalid and brand not supported (unknown)"
+msgstr "カード番号が無効、カードブランドがサポートされていない（不明）"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:236
+#: includes/class-omise-wc-myaccount.php:103
+msgid "expiration date cannot be in the past, number is invalid, and brand not supported (unknown)"
+msgstr "過去の日付が有効期限に使用されている、カード番号が無効、カードブランドがサポートされていない（不明）"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:238
+#: includes/class-omise-wc-myaccount.php:105
+msgid "expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)"
+msgstr "有効期限が無効、過去の日付が有効期限に使用されている、カード番号が無効、カードブランドがサポートされていない(不明)"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:265
+#: includes/class-omise-wc-myaccount.php:106
+msgid "expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)"
+msgstr "有効期限の月が1～12の数字で設定されていない、有効期限が無効、カード番号が無効、ブランドがサポートしていない（不明）"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:256
+msgid "Currently, the payment provider server is undergoing maintenance"
+msgstr "現在、決済プロバイダーのサーバーがメンテナンス中です。"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:255
+msgid "Unable to proceed to the payment."
+msgstr "決済に進むことができません。"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:258
+msgid "Cannot connect to the payment provider."
+msgstr "決済プロバイダーに接続できません。"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:259
+msgid "Please make sure that your internet connection is stable."
+msgstr "インターネット回線が正常に接続されているかご確認ください。"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:254
+msgid "Please select a card or enter a new one."
+msgstr "カードを選択するか、新しいカードを登録してください。"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:257
+msgid "Please place your order again in a couple of seconds."
+msgstr "数秒後に再度ご注文をお願いします。"
