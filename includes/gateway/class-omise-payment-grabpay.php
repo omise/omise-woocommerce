@@ -76,17 +76,4 @@ class Omise_Payment_GrabPay extends Omise_Payment_Offsite {
 			'metadata'    => $metadata
 		) );
 	}
-
-	/**
-	 * Get icons
-	 *
-	 * @see WC_Payment_Gateway::get_icon()
-	 */
-	public function get_icon() {
-		$icon = Omise_Image::get_image( array(
-			    'file' => 'grabpay.png',
-			    'alternate_text' => 'GrabPay',
-		));
-		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
-	}
 }
