@@ -90,15 +90,4 @@ class Omise_Payment_Internetbanking extends Omise_Payment_Offsite {
 			'metadata'    => $metadata
 		) );
 	}
-
-	/**
-	 * check if payment method is support by omise capability api version 2017
-	 * 
-	 * @param  array of backends source_type 
-	 *
-	 * @return array|false
-	 */
-	public function is_capability_support( $available_payment_methods ) {
-		return preg_grep('/^internet_banking_/', $available_payment_methods);
-	}
 }

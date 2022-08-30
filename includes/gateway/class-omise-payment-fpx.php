@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 class Omise_Payment_FPX extends Omise_Payment_Offsite {
+ 
 
 	public function __construct() {
 		parent::__construct();
@@ -18,13 +19,14 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'MY' );
-		$this->source_type          = 'fpx';
 		$this->backend              = new Omise_Backend_FPX;
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_action_' . $this->id . '_sync_payment', array( $this, 'sync_payment' ) );
-	}
+  }
+  
+ 
 
 
 	/**
@@ -93,7 +95,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => $this->source_type ),
+			'source'      => array( 'type' => 'fpx' ),
 			'source'      => array(
 				'type'      => 'fpx',
 				'bank' => sanitize_text_field( $source_bank ),

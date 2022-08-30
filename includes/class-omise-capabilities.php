@@ -18,19 +18,12 @@ class Omise_Capabilities {
 	/**
 	 * @return self  The instance of Omise_Capabilities
 	 */
-	public static function retrieve( $publickey = null, $secretkey = null ) {
+	public static function retrieve() {
 		if ( ! self::$the_instance ) {
-			try {
-				$capabilities = OmiseCapabilities::retrieve( $publickey , $secretkey );
-			} catch(\Exception $e) {
-				// suppressing error on the admin dashboard
-				return null;
-			}
-	
 			self::$the_instance = new self();
-			self::$the_instance->capabilities = $capabilities;
+			self::$the_instance->capabilities = OmiseCapabilities::retrieve();
 		}
-	
+
 		return self::$the_instance;
 	}
 	
@@ -69,18 +62,6 @@ class Omise_Capabilities {
 	}
 
 	/**
-	 * Retrieves details of Touch n Go payment backends from capabilities.
-	 *
-	 * @return string
-	 */
-	public function getTouchNGoBackends() {
-		$params   = array();
-		$params[] = $this->capabilities->backendFilter['type']('touch_n_go');
-	
-		return $this->capabilities->getBackends( $params );
-	}
-
-	/**
 	 * Retrieves details of fpx bank list from capabilities.
 	 *
 	 * @return string
@@ -93,28 +74,9 @@ class Omise_Capabilities {
 	}
 
 	/**
-     * Retrieves list of tokenization methods
-     *
-     * @return array
-     */
-    public function getTokenizationMethods()
-    {
-        return $this->capabilities ? $this->capabilities['tokenization_methods'] : null;
-    }
-
-	/**
 	 * @return bool  True if merchant absorbs the interest or else, false.
 	 */
 	public function is_zero_interest() {
 		return $this->capabilities['zero_interest_installments'];
-	}
-
-	/**
-	 * @return array list of omise backends sourc_type.
-	 */
-	public function get_available_payment_methods() {
-		$backends = $this->getBackends();
-		$token_methods = $this->getTokenizationMethods();
-		return array_merge(array_column($backends, '_id'),$token_methods);
 	}
 }

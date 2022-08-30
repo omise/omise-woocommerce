@@ -27,10 +27,6 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 			$data['account_email']   = $account['email'];
 			$data['account_country'] = $account['country'];
 
-			$capabilities = Omise_Capabilities::retrieve( $public_key, $secret_key );
-			$backends = $capabilities->getBackends();
-			$data['backends'] = $backends;
-
 			$this->update_settings( $data );
 			$this->add_message(
 				'message',
@@ -55,13 +51,7 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 		}
 
 		$settings = $page->get_settings();
-		
-		$available_payment_methods = array();
-		$capabilities = Omise_Capabilities::retrieve();
-		
-		if ( $capabilities ){
-			$available_payment_methods = $capabilities->get_available_payment_methods();
-		}
+
 		/**
 		 * Added later at Omise-WooCommerce v3.11.
 		 * To migrate all the users that haven been using Omise-WooCommerce

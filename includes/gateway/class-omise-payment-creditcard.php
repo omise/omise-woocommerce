@@ -6,9 +6,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 		parent::__construct();
 
 		$this->id                 = 'omise';
-		// for card payment bc we using credit_card at key for capability api 
-		// version 2017-2014
-		$this->source_type        = 'credit_card';
 		$this->has_fields         = true;
 		$this->method_title       = __( 'Omise Credit / Debit Card', 'omise' );
 		$this->method_description = wp_kses(
