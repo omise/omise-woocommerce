@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### [v4.23.3 _(Aug 30, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.3)
+#### 👾 Bug Fixes
+- Fixing the issue of card payment by reverting v4.23.2. (PR [#299](https://github.com/omise/omise-woocommerce/pull/299))
+
 ### [v4.23.2 _(Aug 18, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.2)
 
 #### 👾 Bug Fixes

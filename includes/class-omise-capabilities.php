@@ -20,17 +20,10 @@ class Omise_Capabilities {
 	 */
 	public static function retrieve() {
 		if ( ! self::$the_instance ) {
-			try {
-				$capabilities = OmiseCapabilities::retrieve();
-			} catch(\Exception $e) {
-				// suppressing error on the admin dashboard
-				return null;
-			}
-	
 			self::$the_instance = new self();
-			self::$the_instance->capabilities = $capabilities;
+			self::$the_instance->capabilities = OmiseCapabilities::retrieve();
 		}
-	
+
 		return self::$the_instance;
 	}
 	
@@ -65,18 +58,6 @@ class Omise_Capabilities {
 			$params[] = $this->capabilities->backendFilter['currency']( $currency );
 		}
 
-		return $this->capabilities->getBackends( $params );
-	}
-
-	/**
-	 * Retrieves details of Touch n Go payment backends from capabilities.
-	 *
-	 * @return string
-	 */
-	public function getTouchNGoBackends() {
-		$params   = array();
-		$params[] = $this->capabilities->backendFilter['type']('touch_n_go');
-	
 		return $this->capabilities->getBackends( $params );
 	}
 
