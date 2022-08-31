@@ -59,7 +59,8 @@ class Omise_Setting {
 			'test_public_key'  => '',
 			'test_private_key' => '',
 			'live_public_key'  => '',
-			'live_private_key' => ''
+			'live_private_key' => '',
+			'backends' => null,
 		);
 	}
 
@@ -117,7 +118,7 @@ class Omise_Setting {
 		$data['sandbox'] = isset( $data['sandbox'] ) && ! is_null( $data['sandbox'] ) ? 'yes' : 'no';
 
 		array_walk( $data, function( &$input, $key ) {
-			$input = esc_html( sanitize_text_field( $input ) );
+			$input = is_string($input)?esc_html( sanitize_text_field( $input ) ):$input ;
 		} );
 
 		$this->settings = array_merge(
