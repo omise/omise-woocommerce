@@ -2,11 +2,6 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
-	/**
-	 * Holds a private string
-	 * @var string
-	 */
-	private $wallet_source = '';
 
 	/**
 	 * Holds a private string
@@ -23,7 +18,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 	public function __construct( $wallet_source, $wallet_title, $wallet_countries ) {
 		parent::__construct();
 
-		$this->wallet_source = $wallet_source;
+		$this->source_type = $wallet_source;
 		$this->wallet_title = $wallet_title;
 		$this->wallet_countries = $wallet_countries;
 
@@ -86,7 +81,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 		);
 		$return_uri = add_query_arg(
 			array(
-				'wc-api'   => 'omise_' . $this->wallet_source . '_callback',
+				'wc-api'   => 'omise_' . $this->source_type . '_callback',
 				'order_id' => $order_id
 			),
 			home_url()
@@ -96,7 +91,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => $this->wallet_source, 'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) ),
+			'source'      => array( 'type' => $this->source_type, 'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) ),
 			'return_uri'  => $return_uri,
 			'metadata'    => $metadata
 		) );
@@ -143,15 +138,6 @@ class Omise_Payment_Kakaopay extends Omise_Payment_Alipayplus {
 	public function __construct() {
 		$source = 'kakaopay';
 		$title = 'Kakao Pay';
-		$countries = array( 'SG' );
-		parent::__construct( $source, $title, $countries );
-	}
-}
-
-class Omise_Payment_TouchNGo extends Omise_Payment_Alipayplus {
-	public function __construct() {
-		$source = 'touch_n_go';
-		$title = 'TNG eWallet';
 		$countries = array( 'SG' );
 		parent::__construct( $source, $title, $countries );
 	}
