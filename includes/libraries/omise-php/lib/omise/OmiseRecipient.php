@@ -15,7 +15,7 @@ class OmiseRecipient extends OmiseApiResource
      */
     public static function retrieve($id = '', $publickey = null, $secretkey = null)
     {
-        return parent::g_retrieve(get_class(), self::getUrl($id), $publickey, $secretkey);
+        return parent::g_retrieve(self::getUrl($id), $publickey, $secretkey);
     }
 
     /**
@@ -43,7 +43,7 @@ class OmiseRecipient extends OmiseApiResource
      */
     public static function create($params, $publickey = null, $secretkey = null)
     {
-        return parent::g_create(get_class(), self::getUrl(), $params, $publickey, $secretkey);
+        return parent::g_create(self::getUrl(), $params, $publickey, $secretkey);
     }
 
     /**
@@ -71,7 +71,7 @@ class OmiseRecipient extends OmiseApiResource
      *
      * @see OmiseApiResource::isDestroyed()
      */
-    public function isDestroyed()
+    public static function isDestroyed()
     {
         return parent::isDestroyed();
     }
@@ -95,16 +95,16 @@ class OmiseRecipient extends OmiseApiResource
      *
      * @param  array|string $options
      *
-     * @return OmiseScheduleList
+     * @return OmiseScheduleList|null
      */
-    public function schedules($options = array())
+    public function schedules($options = [])
     {
         if ($this['object'] === 'recipient') {
             if (is_array($options)) {
                 $options = '?' . http_build_query($options);
             }
 
-            return parent::g_retrieve('OmiseScheduleList', self::getUrl($this['id'] . '/schedules' . $options), $this->_publickey, $this->_secretkey);
+            return OmiseScheduleList::g_retrieve(self::getUrl($this['id'] . '/schedules' . $options), $this->_publickey, $this->_secretkey);
         }
     }
 
@@ -115,6 +115,6 @@ class OmiseRecipient extends OmiseApiResource
      */
     private static function getUrl($id = '')
     {
-        return OMISE_API_URL.self::ENDPOINT.'/'.$id;
+        return OMISE_API_URL . self::ENDPOINT . '/' . $id;
     }
 }

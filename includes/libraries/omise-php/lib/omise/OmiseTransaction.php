@@ -15,7 +15,7 @@ class OmiseTransaction extends OmiseApiResource
      */
     public static function retrieve($id = '', $publickey = null, $secretkey = null)
     {
-        return parent::g_retrieve(get_class(), self::getUrl($id), $publickey, $secretkey);
+        return parent::g_retrieve(self::getUrl($id), $publickey, $secretkey);
     }
 
     /**
@@ -26,7 +26,7 @@ class OmiseTransaction extends OmiseApiResource
     public function reload()
     {
         if ($this['object'] === 'transaction') {
-            parent::reload(self::getUrl($this['id']));
+            parent::g_reload(self::getUrl($this['id']));
         } else {
             parent::g_reload(self::getUrl());
         }
@@ -39,6 +39,6 @@ class OmiseTransaction extends OmiseApiResource
      */
     private static function getUrl($id = '')
     {
-        return OMISE_API_URL.self::ENDPOINT.'/'.$id;
+        return OMISE_API_URL . self::ENDPOINT . '/' . $id;
     }
 }

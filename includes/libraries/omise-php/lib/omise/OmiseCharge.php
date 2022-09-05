@@ -15,7 +15,7 @@ class OmiseCharge extends OmiseApiResource
      */
     public static function retrieve($id = '', $publickey = null, $secretkey = null)
     {
-        return parent::g_retrieve(get_class(), self::getUrl($id), $publickey, $secretkey);
+        return parent::g_retrieve(self::getUrl($id), $publickey, $secretkey);
     }
 
     /**
@@ -71,7 +71,7 @@ class OmiseCharge extends OmiseApiResource
      */
     public static function create($params, $publickey = null, $secretkey = null)
     {
-        return parent::g_create(get_class(), self::getUrl(), $params, $publickey, $secretkey);
+        return parent::g_create(self::getUrl(), $params, $publickey, $secretkey);
     }
 
     /**
@@ -101,7 +101,7 @@ class OmiseCharge extends OmiseApiResource
      */
     public function capture()
     {
-        $result = parent::execute(self::getUrl($this['id']).'/capture', parent::REQUEST_POST, parent::getResourceKey());
+        $result = parent::execute(self::getUrl($this['id']) . '/capture', parent::REQUEST_POST, parent::getResourceKey());
         $this->refresh($result);
 
         return $this;
@@ -115,6 +115,7 @@ class OmiseCharge extends OmiseApiResource
     public function refund($params)
     {
         $result = parent::execute(self::getUrl($this['id']) . '/refunds', parent::REQUEST_POST, parent::getResourceKey(), $params);
+
         return new OmiseRefund($result, $this->_publickey, $this->_secretkey);
     }
 
@@ -125,7 +126,7 @@ class OmiseCharge extends OmiseApiResource
      */
     public function reverse()
     {
-        $result = parent::execute(self::getUrl($this['id']).'/reverse', parent::REQUEST_POST, parent::getResourceKey());
+        $result = parent::execute(self::getUrl($this['id']) . '/reverse', parent::REQUEST_POST, parent::getResourceKey());
         $this->refresh($result);
 
         return $this;
@@ -136,7 +137,7 @@ class OmiseCharge extends OmiseApiResource
      *
      * @return OmiseRefundList
      */
-    public function refunds($options = array())
+    public function refunds($options = [])
     {
         if (is_array($options) && ! empty($options)) {
             $refunds = parent::execute(self::getUrl($this['id']) . '/refunds?' . http_build_query($options), parent::REQUEST_GET, parent::getResourceKey());
@@ -156,13 +157,13 @@ class OmiseCharge extends OmiseApiResource
      *
      * @return OmiseScheduleList
      */
-    public static function schedules($options = array(), $publickey = null, $secretkey = null)
+    public static function schedules($options = [], $publickey = null, $secretkey = null)
     {
         if (is_array($options)) {
             $options = '?' . http_build_query($options);
         }
 
-        return parent::g_retrieve('OmiseScheduleList', self::getUrl('schedules' . $options), $publickey, $secretkey);
+        return OmiseScheduleList::g_retrieve(self::getUrl('schedules' . $options), $publickey, $secretkey);
     }
 
     /**
@@ -172,6 +173,6 @@ class OmiseCharge extends OmiseApiResource
      */
     private static function getUrl($id = '')
     {
-        return OMISE_API_URL.self::ENDPOINT.'/'.$id;
+        return OMISE_API_URL . self::ENDPOINT . '/' . $id;
     }
 }

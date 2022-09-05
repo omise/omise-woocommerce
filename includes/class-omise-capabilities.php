@@ -114,6 +114,7 @@ class Omise_Capabilities {
 	 */
 	public function get_available_payment_methods() {
 		$backends = $this->getBackends();
+		$backends = json_decode(json_encode($backends), true);
 		$token_methods = $this->getTokenizationMethods();
 		return array_merge(array_column($backends, '_id'),$token_methods);
 	}
