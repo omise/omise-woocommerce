@@ -57,7 +57,7 @@ class OmiseCard extends OmiseApiResource
      *
      * @see OmiseApiResource::isDestroyed()
      */
-    public function isDestroyed()
+    public static function isDestroyed()
     {
         return parent::isDestroyed();
     }
@@ -69,6 +69,6 @@ class OmiseCard extends OmiseApiResource
      */
     private function getUrl($cardID = '')
     {
-        return OMISE_API_URL.OmiseCustomer::ENDPOINT.'/'.$this->_customerID.'/'.self::ENDPOINT.'/'.$cardID;
+        return OMISE_API_URL . OmiseCustomer::ENDPOINT . '/' . $this->_customerID . '/' . self::ENDPOINT . '/' . $cardID;
     }
 }

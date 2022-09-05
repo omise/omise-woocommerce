@@ -2,7 +2,7 @@
 	$omise_card_panel = $("#omise_card_panel");
 	$form = $("#omise_cc_form");
 	
-	function showError(message, target){
+	function showError(message, target) {
 		if(target===undefined){
 			target = $omise_card_panel;
 		}
@@ -86,16 +86,16 @@
 			if(Omise){
 				Omise.setPublicKey(omise_params.key);
 				Omise.createToken("card", omise_card, function (statusCode, response) {
-				    if (statusCode == 200) {
+					if (statusCode == 200) {
 						$.each( omise_card_fields, function( index, field ) {
 							field.val( '' );
 						} );
 
-				    	data = {
-								action: "omise_create_card", 
-								omise_token: response.id, 
-								omise_nonce: $("#omise_add_card_nonce").val() 
-							    };
+						data = {
+							action: "omise_create_card",
+							omise_token: response.id,
+							omise_nonce: $("#omise_add_card_nonce").val()
+						};
 						
 						$.post(omise_params.ajax_url, data, 
 							function(wp_response){

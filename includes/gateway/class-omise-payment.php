@@ -646,7 +646,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 *
 	 * @return bool
 	 */
-	public function is_enabled_processing_notification(): bool {
+	public function is_enabled_processing_notification() {
         return $this->enabled_processing_notification;
 	}
 

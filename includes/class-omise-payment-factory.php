@@ -45,7 +45,8 @@ class Omise_Payment_Factory {
 	 * @param string $id  Omise payment method's id.
 	 */
 	public static function get_payment_method( $id ) {
-		$methods = ( WC_Payment_Gateways::instance() )->payment_gateways();
+		$gateway = WC_Payment_Gateways::instance();
+		$methods = $gateway->payment_gateways();
 		return isset( $methods[ $id ] ) ? $methods[ $id ] : null;
 	}
 }
