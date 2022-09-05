@@ -82,7 +82,8 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 
 		$source_type = sanitize_text_field( $_POST['omise-offsite']);
 		$return_uri = add_query_arg(
-			array( 'wc-api' => 'omise_mobilebanking_callback', 'order_id' => $order_id ), home_url()
+			[ 'wc-api' => 'omise_mobilebanking_callback', 'order_id' => $order_id ],
+			home_url()
 		);
 
 		return OmiseCharge::create( array(
