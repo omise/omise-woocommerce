@@ -89,18 +89,48 @@ class OmiseException extends Exception
     }
 }
 
-class OmiseAuthenticationFailureException extends OmiseException { }
-class OmiseBadRequestException extends OmiseException { }
-class OmiseNotFoundException extends OmiseException { }
-class OmiseUsedTokenException extends OmiseException { }
-class OmiseInvalidCardException extends OmiseException { }
-class OmiseInvalidCardTokenException extends OmiseException { }
-class OmiseMissingCardException extends OmiseException { }
-class OmiseInvalidChargeException extends OmiseException { }
-class OmiseFailedCaptureException extends OmiseException { }
-class OmiseFailedFraudCheckException extends OmiseException { }
-class OmiseFailedRefundException extends OmiseException { }
-class OmiseInvalidLinkException extends OmiseException { }
-class OmiseInvalidRecipientException extends OmiseException { }
-class OmiseInvalidBankAccountException extends OmiseException { }
-class OmiseUndefinedException extends OmiseException { }
+class OmiseAuthenticationFailureException extends OmiseException
+{
+}
+class OmiseBadRequestException extends OmiseException
+{
+}
+class OmiseNotFoundException extends OmiseException
+{
+}
+class OmiseUsedTokenException extends OmiseException
+{
+}
+class OmiseInvalidCardException extends OmiseException
+{
+}
+class OmiseInvalidCardTokenException extends OmiseException
+{
+}
+class OmiseMissingCardException extends OmiseException
+{
+}
+class OmiseInvalidChargeException extends OmiseException
+{
+}
+class OmiseFailedCaptureException extends OmiseException
+{
+}
+class OmiseFailedFraudCheckException extends OmiseException
+{
+}
+class OmiseFailedRefundException extends OmiseException
+{
+}
+class OmiseInvalidLinkException extends OmiseException
+{
+}
+class OmiseInvalidRecipientException extends OmiseException
+{
+}
+class OmiseInvalidBankAccountException extends OmiseException
+{
+}
+class OmiseUndefinedException extends OmiseException
+{
+}
