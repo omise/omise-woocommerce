@@ -112,7 +112,7 @@ class Omise_Backend_Installment extends Omise_Backend {
 
 			$provider->provider_code   = str_replace( 'installment_', '', $provider->_id );
 			$provider->provider_name   = isset( $provider_detail ) ? $provider_detail['title'] : strtoupper( $provider->code );
-			$provider->interest_rate   = $this->capabilities()->is_zero_interest() ? 0 : ( $provider_detail['interest_rate'] );
+			$provider->interest_rate   = $capabilities->is_zero_interest() ? 0 : ( $provider_detail['interest_rate'] );
 			$provider->available_plans = $this->get_available_plans(
 				$purchase_amount,
 				$provider->allowed_installment_terms,
