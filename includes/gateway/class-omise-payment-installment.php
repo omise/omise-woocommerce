@@ -67,12 +67,13 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 
 		$currency   = get_woocommerce_currency();
 		$cart_total = WC()->cart->total;
+		$capabilities = $this->backend->capabilities();
 
 		Omise_Util::render_view(
 			'templates/payment/form-installment.php',
 			array(
 				'installment_backends' => $this->backend->get_available_providers( $currency, $cart_total ),
-				'is_zero_interest'     => $this->backend->capabilities() ? $this->backend->capabilities()->is_zero_interest() : false
+				'is_zero_interest'     => $capabilities ? $capabilities->is_zero_interest() : false
 			)
 		);
 	}

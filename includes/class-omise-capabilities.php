@@ -8,7 +8,7 @@ class Omise_Capabilities {
 	/**
 	 * @var self
 	 */
-	protected static $the_instance = null;
+	protected static $instance = null;
 
 	/**
 	 * @var \OmiseCapabilities
@@ -16,22 +16,58 @@ class Omise_Capabilities {
 	protected $capabilities;
 
 	/**
+	 * Stores previously used public key to compare with the newly fetched public key
+	 * @var string
+	 */
+	protected $publicKey = null;
+
+	/**
+	 * Stores previously used secret key to compare with the newly fetched secret key
+	 * @var string
+	 */
+	protected $secretKey = null;
+
+	/**
+	 * @param string|null $pKey
+	 * @param string|null $sKey
+	 *
 	 * @return self  The instance of Omise_Capabilities
 	 */
-	public static function retrieve( $publickey = null, $secretkey = null ) {
-		if ( ! self::$the_instance ) {
-			try {
-				$capabilities = OmiseCapabilities::retrieve( $publickey , $secretkey );
-			} catch(\Exception $e) {
-				// suppressing error on the admin dashboard
-				return null;
-			}
-	
-			self::$the_instance = new self();
-			self::$the_instance->capabilities = $capabilities;
+	public static function retrieve($pKey = null, $sKey = null)
+	{
+		$settings = Omise_Setting::instance();
+		$publicKey = !$pKey ? $settings->public_key() : $pKey;
+		$secretKey = !$sKey ? $settings->secret_key() : $sKey;
+
+		// Do not call capabilities API if keys are not present
+		if(empty($publicKey) || empty($secretKey)) {
+			return null;
 		}
-	
-		return self::$the_instance;
+
+		if(self::$instance) {
+			$keysNotChanged = self::$instance->publicKey === $publicKey && self::$instance->secretKey === $secretKey;
+
+			// if keys are same then we return the previous instance without calling
+			// capabilities API. This will prevent multiple calls that happens on each
+			// page refresh.
+			if($keysNotChanged) {
+				return self::$instance;
+			}
+		}
+
+		try {
+			$capabilities = OmiseCapabilities::retrieve( $publicKey , $secretKey );
+		} catch(\Exception $e) {
+			// logging the error and suppressing error on the admin dashboard
+			error_log(print_r($e, true));
+			return null;
+		}
+
+		self::$instance = new self();
+		self::$instance->capabilities = $capabilities;
+		self::$instance->publicKey = $publicKey;
+		self::$instance->secretKey = $secretKey;
+		return self::$instance;
 	}
 	
 	/**
