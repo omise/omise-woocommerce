@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v4.24.0 _(Sep 7, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.24.0)
+- Added Japanese translation for the error messages. (PR [#301](https://github.com/omise/omise-woocommerce/pull/301))
+* Update latest omise-php by @ajzkk in (PR [#297](https://github.com/omise/omise-woocommerce/pull/297))
+
+#### 👾 Bug Fixes
+* Billing address details are removed from the POST data when creating card token. (PR [#304](https://github.com/omise/omise-woocommerce/pull/304))
+* Updated Omise_Capabilities class to prevent calling capabilities API when the keys are null. (PR [#305](https://github.com/omise/omise-woocommerce/pull/305))
+
 ### [v4.23.3 _(Aug 30, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.3)
 #### 👾 Bug Fixes
 - Fixing the issue of card payment by reverting v4.23.2. (PR [#299](https://github.com/omise/omise-woocommerce/pull/299))
