@@ -40,14 +40,16 @@ class Omise_Capabilities {
 		$secretKey = !$sKey ? $settings->secret_key() : $sKey;
 
 		// Do not call capabilities API if keys are not present
-		if($publicKey === null || $secretKey === null) {
+		if(empty($publicKey) || empty($secretKey)) {
 			return null;
 		}
 
 		if(self::$instance) {
 			$keysNotChanged = self::$instance->publicKey === $publicKey && self::$instance->secretKey === $secretKey;
 
-			// if keys are same then no need to call capabilities API as t
+			// if keys are same then we return the previous instance without calling
+			// capabilities API. This will prevent multiple calls that happens on each
+			// page refresh.
 			if($keysNotChanged) {
 				return self::$instance;
 			}
