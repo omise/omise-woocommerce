@@ -36,7 +36,7 @@ From there:
 = 4.24.0 =
 
 - Added Japanese translation for the error messages. (PR [#301](https://github.com/omise/omise-woocommerce/pull/301))
-- Update latest omise-php by @ajzkk in (PR [#297](https://github.com/omise/omise-woocommerce/pull/297))
+- Update latest omise-php. (PR [#297](https://github.com/omise/omise-woocommerce/pull/297))
 
 #### 👾 Bug Fixes
 - Billing address details are removed from the POST data when creating card token. (PR [#304](https://github.com/omise/omise-woocommerce/pull/304))
