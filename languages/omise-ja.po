@@ -572,3 +572,12 @@ msgstr "カードを選択するか、新しいカードを登録してくださ
 #: includes/gateway/abstract-omise-payment-base-card.php:257
 msgid "Please place your order again in a couple of seconds."
 msgstr "数秒後に再度ご注文をお願いします。"
+
+#: templates/payment/form-installment:49
+msgid "There are no installment plans available for this purchase amount (minimum amount is 2,000 THB)."
+msgstr "この購入金額で分割払いとすることはできません（2,000バーツ以上となります）。"
+
+#: includes/gateway/abstract-omise-payment-base-card.php:266
+#: includes/class-omise-wc-myaccount.php:107
+msgid "expiration month is not between 1 and 12 and expiration date is invalid"
+msgstr "有効期限の月数が1〜12で設定されていないため無効です"
