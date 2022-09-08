@@ -107,7 +107,26 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		add_action( 'wp_enqueue_scripts', array( $this, 'omise_checkout_assets' ) );
 		add_action( 'woocommerce_order_status_processing', 'OmisePluginHelperMailer::processing_admin_notification', 10, 2 );
 		add_filter( 'woocommerce_email_recipient_new_order', 'OmisePluginHelperMailer::disable_merchant_order_on_hold', 10, 2 );
+		add_filter('is_protected_meta', [ $this, 'protectMetadata'], 10, 2);
     }
+
+	/**
+	 * Protect the metadata that is included in the return URI. The token is used to
+	 * validate the session for the order.
+	 *
+	 * @param boolean $protected
+	 * @param array   $metadataKeys
+	 *
+	 * @return boolean
+	 */
+	public function protectMetadata($protected, $metadataKeys)
+	{
+		if ( in_array( $metadataKeys, [ 'session' ] )) {
+			return true;
+		}
+
+		return $protected;
+	}
 
 	/**
 	 * Register all required javascripts
