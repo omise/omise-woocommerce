@@ -7,6 +7,7 @@
 #### 👾 Bug Fixes
 - Billing address details are removed from the POST data when creating card token. (PR [#304](https://github.com/omise/omise-woocommerce/pull/304))
 - Updated Omise_Capabilities class to prevent calling capabilities API when the keys are null. (PR [#305](https://github.com/omise/omise-woocommerce/pull/305))
+- Fix the issue of mobile banking redirect URI not working in Android chrome. (PR [#309](https://github.com/omise/omise-woocommerce/pull/309))
 
 ### [v4.23.3 _(Aug 30, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.23.3)
 #### 👾 Bug Fixes
