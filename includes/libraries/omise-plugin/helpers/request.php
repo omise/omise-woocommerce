@@ -15,6 +15,22 @@ if (! class_exists('RequestHelper')) {
 
             // "none" means the request is a user-originated operation
             return 'none' === $fetchSite;
-        }   
+        }
+
+        /**
+         * @param string|null $orderToken
+         */
+        public function validateRequest($orderToken = null)
+        {
+            $token = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : null;
+
+            // For mobile banking. This will be implemented for all other payment methods later.
+            if ($token) {
+                return $token === $orderToken;
+            }
+
+            // For other payment methods that does not include token in the return URI.
+            return !self::isUserOriginated();
+        }
     }
 }
