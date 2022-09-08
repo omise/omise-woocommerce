@@ -81,7 +81,16 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 		);
 
 		$source_type = sanitize_text_field( $_POST['omise-offsite']);
-		$return_uri = add_query_arg('order_id', $order_id, home_url('wc-api/omise_mobilebanking_callback'));
+		$token = TokenHelper::random();
+		$return_uri = add_query_arg(
+			[
+				'order_id' => $order_id,
+				'token' => $token
+			],
+			home_url('wc-api/omise_mobilebanking_callback')
+		);
+
+		$order->add_meta_data( 'token', $token, true );
 
 		return OmiseCharge::create( array(
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
