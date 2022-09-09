@@ -20,7 +20,7 @@ if (! class_exists('RequestHelper')) {
         /**
          * @param string|null $orderToken
          */
-        public function validateRequest($orderToken = null)
+        public static function validateRequest($orderToken = null)
         {
             $token = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : null;
 
