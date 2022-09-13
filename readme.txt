@@ -2,8 +2,8 @@
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
-Tested up to: 6.0.1
-Stable tag: 4.23.3
+Tested up to: 6.0.2
+Stable tag: 4.24.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,16 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.24.0 =
+
+- Added Japanese translation for the error messages. (PR [#301](https://github.com/omise/omise-woocommerce/pull/301))
+- Update latest omise-php. (PR [#297](https://github.com/omise/omise-woocommerce/pull/297))
+
+#### 👾 Bug Fixes
+- Billing address details are removed from the POST data when creating card token. (PR [#304](https://github.com/omise/omise-woocommerce/pull/304))
+- Updated Omise_Capabilities class to prevent calling capabilities API when the keys are null. (PR [#305](https://github.com/omise/omise-woocommerce/pull/305))
+- Fix the issue of mobile banking redirect URI not working in Android chrome. (PR [#309](https://github.com/omise/omise-woocommerce/pull/309))
 
 = 4.23.3 =
 
