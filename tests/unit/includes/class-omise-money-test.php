@@ -31,10 +31,10 @@ class Omise_Money_Test extends TestCase {
 	 * @test
 	 */
 	public function convert_amount_with_4_decimal_points() {
-		$amount   = 4780.0409;
+		$amount   = 4780.0405;
 		$currency = 'thb';
 
-		$this->assertEquals( 478004.09, Omise_Money::to_subunit( $amount, $currency ) );
+		$this->assertEquals(478004.05, Omise_Money::to_subunit( $amount, $currency ));
 	}
 
 	/**
