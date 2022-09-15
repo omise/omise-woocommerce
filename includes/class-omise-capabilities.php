@@ -105,17 +105,17 @@ class Omise_Capabilities {
 	private static function getUserEnteredKeys()
 	{
 		if (
-				! isset( sanitize_text_field($_POST['omise_setting_page_nonce']) ) ||
-				! wp_verify_nonce( sanitize_text_field($_POST['omise_setting_page_nonce']), 'omise-setting' )
+				! isset( $_POST['omise_setting_page_nonce'] ) ||
+				! wp_verify_nonce( $_POST['omise_setting_page_nonce'], 'omise-setting' )
 		) {
 			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
 		}
 
 		return [
-			'public' => isset( sanitize_text_field($_POST['sandbox']) ) ?
+			'public' => isset( $_POST['sandbox'] ) ?
 				sanitize_text_field($_POST['test_public_key']) :
 				sanitize_text_field($_POST['live_public_key']),
-			'secret' => isset( sanitize_text_field($_POST['sandbox']) ) ?
+			'secret' => isset( $_POST['sandbox'] ) ?
 				sanitize_text_field($_POST['test_private_key']) :
 				sanitize_text_field($_POST['live_private_key'])
 		];
