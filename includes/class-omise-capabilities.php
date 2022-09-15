@@ -81,7 +81,7 @@ class Omise_Capabilities {
 		$settings = Omise_Setting::instance();
 
 		// Check if user has submitted a form
-		if ( ! empty( $_POST ) ) {
+		if ( ! empty( $_POST ) && isset($_POST['sandbox']) && isset($_POST['test_public_key']) ) {
 			return self::getUserEnteredKeys();
 		}
 
