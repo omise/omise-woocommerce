@@ -39,13 +39,15 @@ class Omise_Capabilities {
 		$publicKey = !$pKey ? $settings->public_key() : $pKey;
 		$secretKey = !$sKey ? $settings->secret_key() : $sKey;
 
+		$keys = self::getKeys($pKey, $sKey);
+
 		// Do not call capabilities API if keys are not present
-		if(empty($publicKey) || empty($secretKey)) {
+		if(empty($keys['public']) || empty($keys['secret'])) {
 			return null;
 		}
 
 		if(self::$instance) {
-			$keysNotChanged = self::$instance->publicKey === $publicKey && self::$instance->secretKey === $secretKey;
+			$keysNotChanged = self::$instance->publicKey === $keys['public'] && self::$instance->secretKey === $keys['secret'];
 
 			// if keys are same then we return the previous instance without calling
 			// capabilities API. This will prevent multiple calls that happens on each
@@ -56,7 +58,7 @@ class Omise_Capabilities {
 		}
 
 		try {
-			$capabilities = OmiseCapabilities::retrieve( $publicKey , $secretKey );
+			$capabilities = OmiseCapabilities::retrieve( $keys['public'] , $keys['secret'] );
 		} catch(\Exception $e) {
 			// logging the error and suppressing error on the admin dashboard
 			error_log(print_r($e, true));
@@ -65,9 +67,58 @@ class Omise_Capabilities {
 
 		self::$instance = new self();
 		self::$instance->capabilities = $capabilities;
-		self::$instance->publicKey = $publicKey;
-		self::$instance->secretKey = $secretKey;
+		self::$instance->publicKey = $keys['public'];
+		self::$instance->secretKey = $keys['secret'];
 		return self::$instance;
+	}
+
+	/**
+	 * @param string|null $pKey
+	 * @param string|null $sKey
+	*/
+	private static function getKeys($pKey = null, $sKey = null)
+	{
+		$settings = Omise_Setting::instance();
+
+		// Check if user has submitted a form
+		if ( ! empty( $_POST ) && isset($_POST['sandbox']) && isset($_POST['test_public_key']) ) {
+			return self::getUserEnteredKeys();
+		}
+
+		return [
+			'public' => !$pKey ? $settings->public_key() : $pKey,
+			'secret' => !$sKey ? $settings->secret_key() : $sKey
+		];
+	}
+
+	/**
+	 * We have many classes that calls capabilities API before the user entered keys are saved.
+	 * This means they will use the old saved keys instead of new user entered keys. This will
+	 * cause issues like:
+	 *  - 401 unauthorized access
+	 *  - Expired keys
+	 *  - Others
+	 *
+	 * To avoid such issue we first get the user entered keys from $_POST so that other classes calls the
+	 * capabilities API from the user entered keys.
+	 */
+	private static function getUserEnteredKeys()
+	{
+		if (
+			! isset( $_POST['omise_setting_page_nonce'] ) ||
+			! wp_verify_nonce( $_POST['omise_setting_page_nonce'], 'omise-setting' )
+		) {
+			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
+		}
+
+		return [
+			'public' => isset( $_POST['sandbox'] ) ?
+				sanitize_text_field($_POST['test_public_key']) :
+				sanitize_text_field($_POST['live_public_key']),
+			'secret' => isset( $_POST['sandbox'] ) ?
+				sanitize_text_field($_POST['test_private_key']) :
+				sanitize_text_field($_POST['live_private_key'])
+		];
 	}
 	
 	/**
