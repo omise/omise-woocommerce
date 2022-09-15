@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 4.24.0
+Stable tag: 4.24.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,11 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.24.1 =
+
+#### 👾 Bug Fixes
+- Fix the issue of user unable to set new keys when their old keys are expired. (PR [#311](https://github.com/omise/omise-woocommerce/pull/311))
 
 = 4.24.0 =
 

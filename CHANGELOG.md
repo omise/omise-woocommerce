@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### [v4.24.1 _(Sep 15, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.24.1)
+- Fix the issue of user unable to set new keys when their old keys are expired. (PR [#311](https://github.com/omise/omise-woocommerce/pull/311))
+
 ### [v4.24.0 _(Sep 7, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.24.0)
 - Added Japanese translation for the error messages. (PR [#301](https://github.com/omise/omise-woocommerce/pull/301))
 - Update latest omise-php. (PR [#297](https://github.com/omise/omise-woocommerce/pull/297))
