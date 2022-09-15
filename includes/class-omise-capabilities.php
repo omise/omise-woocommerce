@@ -80,7 +80,7 @@ class Omise_Capabilities {
 	{
 		$settings = Omise_Setting::instance();
 
-		// Uncomment this for development and testing.
+		// Check if user has submitted a form
 		if ( ! empty( $_POST ) ) {
 			return self::getUserEnteredKeys();
 		}
@@ -105,8 +105,8 @@ class Omise_Capabilities {
 	private static function getUserEnteredKeys()
 	{
 		if (
-				! isset( $_POST['omise_setting_page_nonce'] ) ||
-				! wp_verify_nonce( $_POST['omise_setting_page_nonce'], 'omise-setting' )
+			! isset( $_POST['omise_setting_page_nonce'] ) ||
+			! wp_verify_nonce( $_POST['omise_setting_page_nonce'], 'omise-setting' )
 		) {
 			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
 		}
