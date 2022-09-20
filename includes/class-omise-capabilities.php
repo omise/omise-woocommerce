@@ -36,8 +36,6 @@ class Omise_Capabilities {
 	public static function retrieve($pKey = null, $sKey = null)
 	{
 		$settings = Omise_Setting::instance();
-		$publicKey = !$pKey ? $settings->public_key() : $pKey;
-		$secretKey = !$sKey ? $settings->secret_key() : $sKey;
 
 		$keys = self::getKeys($pKey, $sKey);
 
@@ -81,7 +79,7 @@ class Omise_Capabilities {
 		$settings = Omise_Setting::instance();
 
 		// Check if user has submitted a form
-		if ( ! empty( $_POST ) && isset($_POST['sandbox']) && isset($_POST['test_public_key']) ) {
+		if ( ! empty( $_POST ) && isset($_POST['submit']) && $_POST['submit'] === 'Save Settings' ) {
 			return self::getUserEnteredKeys();
 		}
 
