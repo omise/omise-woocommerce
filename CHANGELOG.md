@@ -1,5 +1,9 @@
 # CHANGELOG
 
+
+### [v4.24.2 _(Sep 20, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.24.2)
+- Fix the issue of not being able to add new live keys. (PR [#313](https://github.com/omise/omise-woocommerce/pull/313))
+
 ### [v4.24.1 _(Sep 15, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.24.1)
 - Fix the issue of user unable to set new keys when their old keys are expired. (PR [#311](https://github.com/omise/omise-woocommerce/pull/311))
 
