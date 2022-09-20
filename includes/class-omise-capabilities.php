@@ -35,8 +35,6 @@ class Omise_Capabilities {
 	 */
 	public static function retrieve($pKey = null, $sKey = null)
 	{
-		$settings = Omise_Setting::instance();
-
 		$keys = self::getKeys($pKey, $sKey);
 
 		// Do not call capabilities API if keys are not present
@@ -76,12 +74,12 @@ class Omise_Capabilities {
 	*/
 	private static function getKeys($pKey = null, $sKey = null)
 	{
-		$settings = Omise_Setting::instance();
-
 		// Check if user has submitted a form
 		if ( ! empty( $_POST ) && isset($_POST['submit']) && $_POST['submit'] === 'Save Settings' ) {
 			return self::getUserEnteredKeys();
 		}
+
+		$settings = Omise_Setting::instance();
 
 		return [
 			'public' => !$pKey ? $settings->public_key() : $pKey,
