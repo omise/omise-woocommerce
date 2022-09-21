@@ -1,9 +1,9 @@
 (function ( $, undefined ) {
-	$omise_card_panel = $("#omise_card_panel");
-	$form = $("#omise_cc_form");
+	const $omise_card_panel = $("#omise_card_panel");
+	const $form = $("#omise_cc_form");
 	
 	function showError(message, target) {
-		if(target===undefined){
+		if(target === undefined){
 			target = $omise_card_panel;
 		}
 		
@@ -14,7 +14,7 @@
 		}
 		$(".woocommerce-error, input.omise_token").remove();
 		
-		$ulError = $("<ul>").addClass("woocommerce-error");
+		const $ulError = $("<ul>").addClass("woocommerce-error");
 		
 		if($.isArray(message)){
 			$.each(message, function(i,v){
@@ -32,11 +32,11 @@
 	}
 	
 	function delete_card(card_id, nonce){
-		data = {
-				action: "omise_delete_card", 
-				card_id: card_id, 
-				omise_nonce: nonce
-				};
+		const data = {
+			action: "omise_delete_card",
+			card_id: card_id,
+			omise_nonce: nonce
+		};
 		
 		$.post(omise_params.ajax_url, data, 
 			function(response){
@@ -91,7 +91,7 @@
 							field.val( '' );
 						} );
 
-						data = {
+						const data = {
 							action: "omise_create_card",
 							omise_token: response.id,
 							omise_nonce: $("#omise_add_card_nonce").val()
@@ -116,7 +116,7 @@
 						}else {
 							showError( omise_params.retry_or_contact_support, $form );
 						}
-					};
+					}
 				});
 			}else{
 				showError( omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection, $form );
@@ -126,7 +126,7 @@
 	
 	$(".delete_card").click(function(event){
 		if(confirm('Confirm delete card?')){
-			var $button = $(this);
+			let $button = $(this);
 			$button.block({
 				message: null,
 				overlayCSS: {

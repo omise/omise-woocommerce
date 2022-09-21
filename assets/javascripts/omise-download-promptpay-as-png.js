@@ -4,7 +4,7 @@
     $('a#omise-download-promptpay-qr').click(function(e) {
         if (isCanvasSupported()) {
             e.preventDefault();
-            var svg = document.getElementById('omise-promptpay-qrcode-svg');
+            const svg = document.getElementById('omise-promptpay-qrcode-svg');
 
             /*
             Because of a Webkit (Safari) bug, where it won't fetch images from the SVG in time the first time around,
@@ -19,33 +19,33 @@
     });
 
     function isCanvasSupported() {
-        var elem = document.createElement('canvas');
+        const elem = document.createElement('canvas');
         return !!(elem.getContext && elem.getContext('2d'));
     }
 
     function copyStylesInline(destinationNode, sourceNode) {
-        var containerElements = ["svg","g"];
-        for (var cd = 0; cd < destinationNode.childNodes.length; cd++) {
-            var child = destinationNode.childNodes[cd];
+        let containerElements = ["svg","g"];
+        for (let cd = 0; cd < destinationNode.childNodes.length; cd++) {
+            let child = destinationNode.childNodes[cd];
             if (containerElements.indexOf(child.tagName) != -1) {
                 copyStylesInline(child, sourceNode.childNodes[cd]);
                 continue;
             }
-            var style = sourceNode.childNodes[cd].currentStyle;
+            let style = sourceNode.childNodes[cd].currentStyle;
             if (style == "undefined" || style == null) continue;
-            for (var st = 0; st < style.length; st++){
+            for (let st = 0; st < style.length; st++){
                 child.style.setProperty(style[st], style.getPropertyValue(style[st]));
             }
         }
     }
 
     function triggerDownload (imgURI, fileName) {
-        var evt = new MouseEvent("click", {
+        let evt = new MouseEvent("click", {
             view: window,
             bubbles: false,
             cancelable: true
         });
-        var a = document.createElement("a");
+        let a = document.createElement("a");
         a.setAttribute("download", fileName);
         a.setAttribute("href", imgURI);
         a.setAttribute("target", '_blank');
@@ -53,27 +53,27 @@
     }
     
     function downloadSvg(svg, fileName, toTriggerDownload) {
-        var copy = svg.cloneNode(true);
+        let copy = svg.cloneNode(true);
         copyStylesInline(copy, svg);
-        var data = (new XMLSerializer()).serializeToString(copy);
-        var url = "data:image/svg+xml;utf8," + encodeURIComponent(data);
-        var img = new Image();
+        let data = (new XMLSerializer()).serializeToString(copy);
+        const url = "data:image/svg+xml;utf8," + encodeURIComponent(data);
+        let img = new Image();
         img.src = url;
 
         img.onload = function () {
-            var canvas = document.createElement("canvas");
-            var bbox = svg.getBBox();
+            let canvas = document.createElement("canvas");
+            let bbox = svg.getBBox();
             canvas.width = bbox.width;
             canvas.height = bbox.height;
-            var ctx = canvas.getContext("2d");
+            let ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, bbox.width, bbox.height);
             ctx.drawImage(img, 0, 0);
 
             if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
-                var blob = canvas.msToBlob();         
+                let blob = canvas.msToBlob();
                 navigator.msSaveOrOpenBlob(blob, fileName);
             } else {
-                var imgURI = canvas
+                let imgURI = canvas
                     .toDataURL("image/png")
                     .replace("image/png", "image/octet-stream");
                 if (toTriggerDownload) {
