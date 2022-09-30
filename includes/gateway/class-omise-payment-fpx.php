@@ -29,7 +29,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite {
 	/**
 	 * Add validation to select FPX bank
 	 */
-	function check_bank_selected( $fields, $errors ) {
+	public function check_bank_selected( $fields, $errors ) {
 		$source_bank = isset( $fields['source']['bank'] ) ? $fields['source']['bank'] : '';
 		if(empty($source_bank)) {
 			$errors->add( 'validation', __( 'Please select FPX bank below', 'omise' ) );
