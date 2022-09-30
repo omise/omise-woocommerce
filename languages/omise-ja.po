@@ -581,3 +581,7 @@ msgstr "この購入金額で分割払いとすることはできません（2,0
 #: includes/class-omise-wc-myaccount.php:107
 msgid "expiration month is not between 1 and 12 and expiration date is invalid"
 msgstr "有効期限の月数が1〜12で設定されていないため無効です"
+
+#: includes/gateway/class-omise-payment-fpx.php:35
+msgid "Please select FPX bank below"
+msgstr "以下からFPX銀行をお選びください"
