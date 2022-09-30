@@ -43,7 +43,7 @@ class Omise {
 	 */
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'check_dependencies' ) );
-		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'woocommerce_init', array( $this, 'init' ) );
 		do_action( 'omise_initiated' );
 	}
 
