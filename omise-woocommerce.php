@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Omise Payment Gateway
  * Plugin URI:  https://www.omise.co/woocommerce
@@ -12,9 +13,10 @@
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
  */
-defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
+defined('ABSPATH') or die('No direct script access allowed.');
 
-class Omise {
+class Omise
+{
 	/**
 	 * Omise plugin version number.
 	 *
@@ -41,10 +43,11 @@ class Omise {
 	/**
 	 * @since  3.0
 	 */
-	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'check_dependencies' ) );
-		add_action( 'woocommerce_init', array( $this, 'init' ) );
-		do_action( 'omise_initiated' );
+	public function __construct()
+	{
+		add_action('plugins_loaded', array($this, 'check_dependencies'));
+		add_action('woocommerce_init', array($this, 'init'));
+		do_action('omise_initiated');
 	}
 
 	/**
@@ -53,8 +56,9 @@ class Omise {
 	 *
 	 * @since  3.2
 	 */
-	public function check_dependencies() {
-		if ( ! function_exists( 'WC' ) ) {
+	public function check_dependencies()
+	{
+		if (!function_exists('WC')) {
 			return;
 		}
 
@@ -64,9 +68,10 @@ class Omise {
 	/**
 	 * @since  3.0
 	 */
-	public function init() {
-		if ( ! static::$can_initiate ) {
-			add_action( 'admin_notices', array($this, 'init_error_messages') );
+	public function init()
+	{
+		if (!static::$can_initiate) {
+			add_action('admin_notices', array($this, 'init_error_messages'));
 			return;
 		}
 
@@ -88,12 +93,13 @@ class Omise {
 	 *
 	 * @since  3.2
 	 */
-	public function init_error_messages(){
-		?>
+	public function init_error_messages()
+	{
+?>
 		<div class="error">
-			<p><?php echo __( 'Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise' ); ?></p>
+			<p><?php echo __('Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise'); ?></p>
 		</div>
-		<?php
+<?php
 	}
 
 	/**
@@ -101,21 +107,23 @@ class Omise {
 	 *
 	 * @since 3.3
 	 */
-	private function define_constants() {
+	private function define_constants()
+	{
 		global $wp_version;
 
-		defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version );
-		defined( 'OMISE_PUBLIC_KEY' ) || define( 'OMISE_PUBLIC_KEY', $this->settings()->public_key() );
-		defined( 'OMISE_SECRET_KEY' ) || define( 'OMISE_SECRET_KEY', $this->settings()->secret_key() );
-		defined( 'OMISE_API_VERSION' ) || define( 'OMISE_API_VERSION', '2017-11-02' );
-		defined( 'OMISE_USER_AGENT_SUFFIX' ) || define( 'OMISE_USER_AGENT_SUFFIX', sprintf( 'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version ) );
+		defined('OMISE_WOOCOMMERCE_PLUGIN_VERSION') || define('OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version);
+		defined('OMISE_PUBLIC_KEY') || define('OMISE_PUBLIC_KEY', $this->settings()->public_key());
+		defined('OMISE_SECRET_KEY') || define('OMISE_SECRET_KEY', $this->settings()->secret_key());
+		defined('OMISE_API_VERSION') || define('OMISE_API_VERSION', '2017-11-02');
+		defined('OMISE_USER_AGENT_SUFFIX') || define('OMISE_USER_AGENT_SUFFIX', sprintf('OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', OMISE_WOOCOMMERCE_PLUGIN_VERSION, $wp_version, WC()->version));
 	}
 
 	/**
 	 * @since 3.3
 	 */
-	private function include_classes() {
-		defined( 'OMISE_WOOCOMMERCE_PLUGIN_PATH' ) || define( 'OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__ );
+	private function include_classes()
+	{
+		defined('OMISE_WOOCOMMERCE_PLUGIN_PATH') || define('OMISE_WOOCOMMERCE_PLUGIN_PATH', __DIR__);
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-queue-runner.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-queueable.php';
@@ -174,8 +182,9 @@ class Omise {
 	/**
 	 * @since  3.0
 	 */
-	protected function init_admin() {
-		if ( is_admin() ) {
+	protected function init_admin()
+	{
+		if (is_admin()) {
 			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-admin.php';
 			Omise_Admin::get_instance()->init();
 		}
@@ -184,42 +193,47 @@ class Omise {
 	/**
 	 * @since  3.1
 	 */
-	protected function init_route() {
-		add_action( 'rest_api_init', function () {
+	protected function init_route()
+	{
+		add_action('rest_api_init', function () {
 			$controllers = new Omise_Rest_Webhooks_Controller;
 			$controllers->register_routes();
-		} );
+		});
 	}
 
 	/**
 	 * @since  3.0
 	 */
-	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'omise', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
+	public function load_plugin_textdomain()
+	{
+		load_plugin_textdomain('omise', false, plugin_basename(dirname(__FILE__)) . '/languages/');
 	}
 
 	/**
 	 * @since  3.11
 	 */
-	public function register_payment_methods() {
-		add_filter( 'woocommerce_payment_gateways', function( $methods ) {
-			return array_merge( $methods, $this->payment_methods() );
-		} );
+	public function register_payment_methods()
+	{
+		add_filter('woocommerce_payment_gateways', function ($methods) {
+			return array_merge($methods, $this->payment_methods());
+		});
 	}
 
 	/**
 	 * @since  4.0
 	 */
-	public function register_hooks() {
-		add_action( 'omise_async_webhook_event_handler', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3 );
+	public function register_hooks()
+	{
+		add_action('omise_async_webhook_event_handler', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3);
 	}
 
 	/**
 	 * @since  4.1
 	 */
-	public function register_ajax_actions() {
-		add_action('wp_ajax_nopriv_fetch_order_status', 'Omise_Ajax_Actions::fetch_order_status' );
-		add_action('wp_ajax_fetch_order_status', 'Omise_Ajax_Actions::fetch_order_status' );
+	public function register_ajax_actions()
+	{
+		add_action('wp_ajax_nopriv_fetch_order_status', 'Omise_Ajax_Actions::fetch_order_status');
+		add_action('wp_ajax_fetch_order_status', 'Omise_Ajax_Actions::fetch_order_status');
 	}
 
 	/**
@@ -233,11 +247,12 @@ class Omise {
 	 *                  Omise's charge id as a 'customed-post-meta' in the
 	 *                  WooCommerce's 'order' post-type instead.
 	 */
-	public function register_post_types() {
+	public function register_post_types()
+	{
 		register_post_type(
 			'omise_charge_items',
 			array(
-				'supports' => array('title','custom-fields'),
+				'supports' => array('title', 'custom-fields'),
 				'label'    => 'Omise Charge Items',
 				'labels'   => array(
 					'name'          => 'Omise Charge Items',
@@ -258,8 +273,9 @@ class Omise {
 	 *
 	 * @return \Omise - The instance.
 	 */
-	public static function instance() {
-		if ( is_null( self::$the_instance ) ) {
+	public static function instance()
+	{
+		if (is_null(self::$the_instance)) {
 			self::$the_instance = new self();
 		}
 
@@ -273,7 +289,8 @@ class Omise {
 	 *
 	 * @return Omise_Setting
 	 */
-	public function settings() {
+	public function settings()
+	{
 		return Omise_Setting::instance();
 	}
 
@@ -283,7 +300,8 @@ class Omise {
 	 * @return array of all the available payment methods
 	 *               that Omise WooCommerce supported.
 	 */
-	public function payment_methods() {
+	public function payment_methods()
+	{
 		return Omise_Payment_Factory::$payment_methods;
 	}
 
@@ -294,12 +312,14 @@ class Omise {
 	 *
 	 * @return string
 	 */
-	public function translate( $message ) {
-		return Omise_Localization::translate( $message );
+	public function translate($message)
+	{
+		return Omise_Localization::translate($message);
 	}
 }
 
-function Omise() {
+function Omise()
+{
 	return Omise::instance();
 }
 
