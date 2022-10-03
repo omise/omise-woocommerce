@@ -22,21 +22,11 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 		$this->restricted_countries = array('MY');
 		$this->source_type          = 'fpx';
 		$this->backend              = new Omise_Backend_FPX;
-		add_action('woocommerce_after_checkout_validation', array($this, 'check_bank_selected'), 9999, 2);
+
 		add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
 		add_action('woocommerce_order_action_' . $this->id . '_sync_payment', array($this, 'sync_payment'));
-	}
-
-	/**
-	 * Add validation to select FPX bank
-	 */
-	public function check_bank_selected($fields, $errors)
-	{
-		$source_bank = isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
-		if (empty($source_bank)) {
-			$errors->add('validation', __('Please select FPX bank below', 'omise'));
-		}
+		add_action('woocommerce_after_checkout_validation', array($this, 'check_bank_selected'), null, 2);
 	}
 
 	/**
@@ -90,7 +80,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$source_bank	= isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
+		$source_bank = isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
 
 		$metadata = array_merge(
 			apply_filters('omise_charge_params_metadata', array(), $order),

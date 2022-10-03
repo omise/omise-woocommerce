@@ -583,5 +583,5 @@ msgid "expiration month is not between 1 and 12 and expiration date is invalid"
 msgstr "有効期限の月数が1〜12で設定されていないため無効です"
 
 #: includes/gateway/class-omise-payment-fpx.php:35
-msgid "Please select FPX bank below"
-msgstr "以下からFPX銀行をお選びください"
+msgid "Please select bank below"
+msgstr "以下から銀行をお選びください"
