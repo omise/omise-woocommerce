@@ -57,7 +57,7 @@ class Omise_Capabilities {
 			$capabilities = OmiseCapabilities::retrieve( $keys['public'] , $keys['secret'] );
 		} catch(\Exception $e) {
 			// logging the error and suppressing error on the admin dashboard
-			error_log(print_r($e, true));
+			error_log($e->getMessage());
 			return null;
 		}
 
