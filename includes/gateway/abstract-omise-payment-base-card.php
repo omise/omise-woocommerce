@@ -83,7 +83,9 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	public function saveCard($omiseCustomerId, $token, $orderId, $userId)
 	{
 		if ( empty( $token ) ) {
-			throw new Exception( __( 'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise' ) );
+			throw new Exception(__(
+				'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise'
+			));
 		}
 
 		try {
@@ -204,7 +206,10 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		}
 
 		if ( ! $success ) {
-			return $this->payment_failed( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
+			return $this->payment_failed(__(
+				'Note that your payment may have already been processed. Please contact our support team if you have any questions.',
+				'omise'
+			));
 		}
 
 		// Remove cart
@@ -251,24 +256,78 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	{
 		return [
 			'key'                            => $this->public_key(),
-			'required_card_name'             => __( "Cardholder's name is a required field", 'omise' ),
-			'required_card_number'           => __( 'Card number is a required field', 'omise' ),
-			'required_card_expiration_month' => __( 'Card expiry month is a required field', 'omise' ),
-			'required_card_expiration_year'  => __( 'Card expiry year is a required field', 'omise' ),
-			'required_card_security_code'    => __( 'Card security code is a required field', 'omise' ),
-			'invalid_card'                   => __( 'Invalid card.', 'omise' ),
-			'no_card_selected'               => __( 'Please select a card or enter a new one.', 'omise' ),
-			'cannot_create_token'            => __( 'Unable to proceed to the payment.', 'omise' ),
-			'cannot_connect_api'             => __( 'Currently, the payment provider server is undergoing maintenance.', 'omise' ),
-			'retry_checkout'                 => __( 'Please place your order again in a couple of seconds.', 'omise' ),
-			'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
-			'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
-			'expiration date cannot be in the past' => __( 'expiration date cannot be in the past', 'omise' ),
-			'expiration date cannot be in the past and number is invalid' => __( 'expiration date cannot be in the past and number is invalid', 'omise' ),
-			'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
-			'number is invalid and brand not supported (unknown)' => __( 'number is invalid and brand not supported (unknown)', 'omise' ),
-			'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
-			'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __('expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)', 'omise')
+			'required_card_name'             => __(
+				"Cardholder's name is a required field",
+				'omise'
+			),
+			'required_card_number'           => __(
+				'Card number is a required field',
+				'omise'
+			),
+			'required_card_expiration_month' => __(
+				'Card expiry month is a required field',
+				'omise'
+			),
+			'required_card_expiration_year'  => __(
+				'Card expiry year is a required field',
+				'omise'
+			),
+			'required_card_security_code'    => __(
+				'Card security code is a required field',
+				'omise'
+			),
+			'invalid_card'                   => __(
+				'Invalid card.',
+				'omise'
+			),
+			'no_card_selected'               => __(
+				'Please select a card or enter a new one.',
+				'omise'
+			),
+			'cannot_create_token'            => __(
+				'Unable to proceed to the payment.',
+				'omise'
+			),
+			'cannot_connect_api'             => __(
+				'Currently, the payment provider server is undergoing maintenance.',
+				'omise'
+			),
+			'retry_checkout'                 => __(
+				'Please place your order again in a couple of seconds.',
+				'omise'
+			),
+			'cannot_load_omisejs'            => __(
+				'Cannot connect to the payment provider.',
+				'omise'
+			),
+			'check_internet_connection'      => __(
+				'Please make sure that your internet connection is stable.',
+				'omise'
+			),
+			'expiration date cannot be in the past' => __(
+				'expiration date cannot be in the past',
+				'omise'
+			),
+			'expiration date cannot be in the past and number is invalid' => __(
+				'expiration date cannot be in the past and number is invalid',
+				'omise'
+			),
+			'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __(
+				'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)',
+				'omise'
+			),
+			'number is invalid and brand not supported (unknown)' => __(
+				'number is invalid and brand not supported (unknown)',
+				'omise'
+			),
+			'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __(
+				'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)',
+				'omise'
+			),
+			'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __(
+				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)',
+				'omise'
+			)
 		];
 	}
 }
