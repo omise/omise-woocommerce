@@ -20,7 +20,7 @@ if ( ! class_exists( 'OmiseCustomerCard' ) ) {
             return $customer->cards( array( 'order' => 'reverse_chronological' ) );
         }
 
-        public function delete($customerId, $cardId)
+        public function delete($cardId, $customerId)
         {
             $customer = $this->customer->get($customerId);
 			$card = $customer->cards()->retrieve($cardId);
