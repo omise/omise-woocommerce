@@ -6,7 +6,8 @@ require_once dirname( __FILE__ ) . '/class-omise-payment.php';
 /**
  * @since 4.22.0
  */
-abstract class Omise_Payment_Base_Card extends Omise_Payment {
+abstract class Omise_Payment_Base_Card extends Omise_Payment
+{
 	const PAYMENT_ACTION_AUTHORIZE         = 'manual_capture';
 	const PAYMENT_ACTION_AUTHORIZE_CAPTURE = 'auto_capture';
 
@@ -21,85 +22,31 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment {
 			throw new Exception( __( 'Please select an existing card or enter new card information.', 'omise' ) );
 		}
 
-		$user              = $order->get_user();
+		$user = $order->get_user();
 		$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 
 		// Saving card.
 		if ( isset( $_POST['omise_save_customer_card'] ) && empty( $card_id ) ) {
-			if ( empty( $token ) ) {
-				throw new Exception( __( 'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise' ) );
-			}
-
-			if ( ! empty( $omise_customer_id ) ) {
-				try {
-					// attach a new card to customer
-					$customer = OmiseCustomer::retrieve( $omise_customer_id );
-					$customer->update( array(
-						'card' => $token
-					) );
-
-					$cards = $customer->cards( array(
-						'limit' => 1,
-						'order' => 'reverse_chronological'
-					) );
-
-					$card_id = $cards['data'][0]['id'];
-				} catch (Exception $e) {
-					throw new Exception( $e->getMessage() );
-				}
-			} else {
-				$description   = "WooCommerce customer " . $user->ID;
-				$customer_data = array(
-					"description" => $description,
-					"card"        => $token
-				);
-
-				$omise_customer = OmiseCustomer::create( $customer_data );
-
-				if ( $omise_customer['object'] == "error" ) {
-					throw new Exception( $omise_customer['message'] );
-				}
-
-				$omise_customer_id = $omise_customer['id'];
-				if ( $this->is_test() ) {
-					update_user_meta( $user->ID, 'test_omise_customer_id', $omise_customer_id );
-				} else {
-					update_user_meta( $user->ID, 'live_omise_customer_id', $omise_customer_id );
-				}
-
-				if ( 0 == sizeof( $omise_customer['cards']['data'] ) ) {
-					throw new Exception(
-						sprintf(
-							wp_kses(
-								__( 'Please note that you\'ve done nothing wrong - this is likely an issue with our store.<br/><br/>Feel free to try submitting your order again, or report this problem to our support team (Your temporary order id is \'%s\')', 'omise' ),
-								array(
-									'br' => array()
-								)
-							),
-							$order_id
-						)
-					);
-				}
-
-				$cards   = $omise_customer->cards( array( 'order' => 'reverse_chronological' ) );
-				$card_id = $cards['data'][0]['id']; //use the latest card
-			}
+			$cardDetails = $this->saveCard($omise_customer_id, $token, $order_id, $user->ID);
+			$omise_customer_id = $cardDetails['customerId'];
+			$card_id = $cardDetails['cardId'];
 		}
 
 		$success    = false;
 		$return_uri = add_query_arg(
-			array(
+			[
 				'wc-api'   => 'omise_callback',
 				'order_id' => $order_id
-			),
+			],
 			home_url()
 		);
-		$data    = array(
+
+		$data = [
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'return_uri'  => $return_uri
-		);
+		];
 
 		if ( ! empty( $omise_customer_id ) && ! empty( $card_id ) ) {
 			$data['customer'] = $omise_customer_id;
@@ -123,6 +70,67 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment {
 		) );
 
 		return OmiseCharge::create( $data );
+	}
+
+	/**
+	 * Saving card
+	 * 
+	 * @param string $omiseCustomerId
+	 * @param string $token
+	 * @param string $orderId
+	 * @param string $userId
+	*/
+	public function saveCard($omiseCustomerId, $token, $orderId, $userId)
+	{
+		if ( empty( $token ) ) {
+			throw new Exception(__(
+				'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise'
+			));
+		}
+
+		try {
+			$customer = new Omise_Customer;
+			$customerData = [
+				"description" => "WooCommerce customer " . $userId,
+				"card" => $token
+			];
+
+			if (empty($omiseCustomerId)) {
+				$customerData = $customer->create($userId, $orderId, $customerData);
+
+				return [
+					'customerId' => $customerData['customerId'],
+					'cardId' => $customerData['id']
+				];
+			}
+
+			try {
+				$customer->get($omiseCustomerId);
+				$customerCard = new OmiseCustomerCard;
+				$card = $customerCard->create($customer, $token);
+
+				return [
+					'customerId' => $omiseCustomerId,
+					'cardId' => $card['id']
+				];
+			} catch(\Exception $e) {
+				$errors = $e->getOmiseError();
+
+				if($errors['object'] === 'error' && strtolower($errors['code']) !== 'not_found') {
+					throw $e;
+				}
+
+				// Saved customer ID is not found so we create a new customer and save the customer ID
+				$customerData = $customer->create($userId, $orderId, $customerData);
+				return [
+					'customerId' => $customerData['customerId'],
+					'cardId' => $customerData['cardId']
+				];
+			}
+		} catch (Exception $e) {
+			error_log($e->getMessage());
+			throw new Exception($e->getMessage());
+		}
 	}
 
 	/**
@@ -198,7 +206,10 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment {
 		}
 
 		if ( ! $success ) {
-			return $this->payment_failed( __( 'Note that your payment may have already been processed. Please contact our support team if you have any questions.', 'omise' ) );
+			return $this->payment_failed(__(
+				'Note that your payment may have already been processed. Please contact our support team if you have any questions.',
+				'omise'
+			));
 		}
 
 		// Remove cart
@@ -245,24 +256,78 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment {
 	{
 		return [
 			'key'                            => $this->public_key(),
-			'required_card_name'             => __( "Cardholder's name is a required field", 'omise' ),
-			'required_card_number'           => __( 'Card number is a required field', 'omise' ),
-			'required_card_expiration_month' => __( 'Card expiry month is a required field', 'omise' ),
-			'required_card_expiration_year'  => __( 'Card expiry year is a required field', 'omise' ),
-			'required_card_security_code'    => __( 'Card security code is a required field', 'omise' ),
-			'invalid_card'                   => __( 'Invalid card.', 'omise' ),
-			'no_card_selected'               => __( 'Please select a card or enter a new one.', 'omise' ),
-			'cannot_create_token'            => __( 'Unable to proceed to the payment.', 'omise' ),
-			'cannot_connect_api'             => __( 'Currently, the payment provider server is undergoing maintenance.', 'omise' ),
-			'retry_checkout'                 => __( 'Please place your order again in a couple of seconds.', 'omise' ),
-			'cannot_load_omisejs'            => __( 'Cannot connect to the payment provider.', 'omise' ),
-			'check_internet_connection'      => __( 'Please make sure that your internet connection is stable.', 'omise' ),
-			'expiration date cannot be in the past' => __( 'expiration date cannot be in the past', 'omise' ),
-			'expiration date cannot be in the past and number is invalid' => __( 'expiration date cannot be in the past and number is invalid', 'omise' ),
-			'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
-			'number is invalid and brand not supported (unknown)' => __( 'number is invalid and brand not supported (unknown)', 'omise' ),
-			'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
-			'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __('expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)', 'omise')
+			'required_card_name'             => __(
+				"Cardholder's name is a required field",
+				'omise'
+			),
+			'required_card_number'           => __(
+				'Card number is a required field',
+				'omise'
+			),
+			'required_card_expiration_month' => __(
+				'Card expiry month is a required field',
+				'omise'
+			),
+			'required_card_expiration_year'  => __(
+				'Card expiry year is a required field',
+				'omise'
+			),
+			'required_card_security_code'    => __(
+				'Card security code is a required field',
+				'omise'
+			),
+			'invalid_card'                   => __(
+				'Invalid card.',
+				'omise'
+			),
+			'no_card_selected'               => __(
+				'Please select a card or enter a new one.',
+				'omise'
+			),
+			'cannot_create_token'            => __(
+				'Unable to proceed to the payment.',
+				'omise'
+			),
+			'cannot_connect_api'             => __(
+				'Currently, the payment provider server is undergoing maintenance.',
+				'omise'
+			),
+			'retry_checkout'                 => __(
+				'Please place your order again in a couple of seconds.',
+				'omise'
+			),
+			'cannot_load_omisejs'            => __(
+				'Cannot connect to the payment provider.',
+				'omise'
+			),
+			'check_internet_connection'      => __(
+				'Please make sure that your internet connection is stable.',
+				'omise'
+			),
+			'expiration date cannot be in the past' => __(
+				'expiration date cannot be in the past',
+				'omise'
+			),
+			'expiration date cannot be in the past and number is invalid' => __(
+				'expiration date cannot be in the past and number is invalid',
+				'omise'
+			),
+			'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __(
+				'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)',
+				'omise'
+			),
+			'number is invalid and brand not supported (unknown)' => __(
+				'number is invalid and brand not supported (unknown)',
+				'omise'
+			),
+			'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __(
+				'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)',
+				'omise'
+			),
+			'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __(
+				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)',
+				'omise'
+			)
 		];
 	}
 }

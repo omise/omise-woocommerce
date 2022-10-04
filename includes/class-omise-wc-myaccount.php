@@ -25,6 +25,8 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				$this->omise_customer_id = Omise()->settings()->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
 			}
 
+			$this->customerCard = new OmiseCustomerCard;
+
 			add_action( 'woocommerce_after_my_account', array( $this, 'init_panel' ) );
 			add_action( 'wp_ajax_omise_delete_card', array( $this, 'omise_delete_card' ) );
 			add_action( 'wp_ajax_omise_create_card', array( $this, 'omise_create_card' ) );
@@ -38,8 +40,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function init_panel() {
 			if ( ! empty( $this->omise_customer_id ) ) {
 				try {
-					$customer                  = OmiseCustomer::retrieve( $this->omise_customer_id );
-					$viewData['existingCards'] = $customer->cards();
+					$viewData['existingCards'] = $this->customerCard->get($this->omise_customer_id);
 
 					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
 					$this->register_omise_my_account_scripts();
@@ -110,34 +111,35 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		/**
 		 * Public omise_delete_card ajax hook
 		 */
-		public function omise_delete_card() {
-			$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
-			if ( empty( $card_id ) ) {
+		public function omise_delete_card()
+		{
+			$cardId = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
+
+			if ( empty( $cardId ) ) {
 				Omise_Util::render_json_error( 'card_id is required' );
 				die();
 			}
 
 			$nonce = 'omise_delete_card_' . $_POST['card_id'];
+
 			if ( ! wp_verify_nonce( $_POST['omise_nonce'], $nonce ) ) {
 				Omise_Util::render_json_error( 'Nonce verification failure' );
 				die();
 			}
 
-			$customer = OmiseCustomer::retrieve( $this->omise_customer_id );
-			$card     = $customer->cards()->retrieve( $card_id );
-			$card->destroy();
+			$cardDeleted = $this->customerCard->delete($cardId, $this->omise_customer_id);
 
-			echo json_encode( array(
-				'deleted' => $card->isDestroyed()
-			) );
+			echo json_encode([ 'deleted' => $cardDeleted ]);
 			die();
 		}
 
 		/**
 		 * Public omise_create_card ajax hook
 		 */
-		public function omise_create_card() {
+		public function omise_create_card()
+		{
 			$token = isset ( $_POST['omise_token'] ) ? wc_clean ( $_POST['omise_token'] ) : '';
+
 			if ( empty( $token ) ) {
 				Omise_Util::render_json_error( 'omise_token is required' );
 				die();
@@ -149,17 +151,8 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			}
 
 			try {
-				$customer = OmiseCustomer::retrieve( $this->omise_customer_id );
-				$customer->update( array(
-					'card' => $token
-				) );
-
-				$cards = $customer->cards( array(
-					'limit' => 1,
-					'order' => 'reverse_chronological'
-				) );
-
-				echo json_encode( $cards['data'][0] );
+				$card = $this->customerCard->create($token, $omiseCustomerId);
+				echo json_encode( $card );
 			} catch( Exception $e ) {
 				echo json_encode( array(
 					'object'  => 'error',
@@ -182,4 +175,3 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 function prepare_omise_myaccount_panel() {
 	$omise_myaccount = Omise_MyAccount::get_instance();
 }
-?>
