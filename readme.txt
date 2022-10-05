@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 4.24.2
+Stable tag: 4.25.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -32,6 +32,14 @@ From there:
 3. Omise Payment Gateway Checkout Form
 
 == Changelog ==
+
+= 4.25.0 =
+
+#### 👾 Bug Fixes
+- Fixed the conflict between Omise and other payment gateway (PR [#317](https://github.com/omise/omise-woocommerce/pull/317))
+- Added Validation on FPX and DuitNow checkout to select the bank (PR [#316](https://github.com/omise/omise-woocommerce/pull/316))
+- Fixed customer cannot pay if the omise customer is removed from the API. (PR [#318](https://github.com/omise/omise-woocommerce/pull/318))
+- Fixed Promptpay QR image format error on KPlus Android App (PR [#319](https://github.com/omise/omise-woocommerce/pull/319))
 
 = 4.24.2 =
 
