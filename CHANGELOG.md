@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.25.0 _(Oct 6, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.25.0)
+- Fixed the conflict between Omise and other payment gateway (PR [#317](https://github.com/omise/omise-woocommerce/pull/317))
+- Added Validation on FPX and DuitNow checkout to select the bank (PR [#316](https://github.com/omise/omise-woocommerce/pull/316))
+- Fixed customer cannot pay if the omise customer is removed from the API. (PR [#318](https://github.com/omise/omise-woocommerce/pull/318))
+- Fixed Promptpay QR image format error on KPlus Android App (PR [#319](https://github.com/omise/omise-woocommerce/pull/319))
 
 ### [v4.24.2 _(Sep 20, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.24.2)
 - Fix the issue of not being able to add new live keys. (PR [#313](https://github.com/omise/omise-woocommerce/pull/313))

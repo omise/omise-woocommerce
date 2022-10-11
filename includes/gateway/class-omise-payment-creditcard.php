@@ -132,10 +132,11 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 
 			$current_user      = wp_get_current_user();
 			$omise_customer_id = $this->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
+
 			if ( ! empty( $omise_customer_id ) ) {
 				try {
-					$customer                  = OmiseCustomer::retrieve( $omise_customer_id );
-					$viewData['existingCards'] = $customer->cards( array( 'order' => 'reverse_chronological' ) );
+					$cards = new OmiseCustomerCard;
+					$viewData['existingCards'] = $cards->get($omise_customer_id);
 				} catch (Exception $e) {
 					// nothing
 				}

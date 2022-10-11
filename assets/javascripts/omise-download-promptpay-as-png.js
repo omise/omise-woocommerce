@@ -4,7 +4,7 @@
     $('a#omise-download-promptpay-qr').click(function(e) {
         if (isCanvasSupported()) {
             e.preventDefault();
-            const svg = document.getElementById('omise-promptpay-qrcode-svg');
+            let svg = document.getElementById('omise-promptpay-qrcode-svg');
 
             /*
             Because of a Webkit (Safari) bug, where it won't fetch images from the SVG in time the first time around,
@@ -70,15 +70,16 @@
             ctx.drawImage(img, 0, 0);
 
             if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
-                let blob = canvas.msToBlob();
+                let blob = canvas.msToBlob();         
                 navigator.msSaveOrOpenBlob(blob, fileName);
             } else {
-                let imgURI = canvas
-                    .toDataURL("image/png")
-                    .replace("image/png", "image/octet-stream");
-                if (toTriggerDownload) {
-                    triggerDownload(imgURI, fileName);
-                }
+                let imgURI = canvas.toDataURL();
+                fetch(imgURI).then(res => res.blob()).then((res) => {
+                    imgURI = window.URL.createObjectURL(res)
+                    if (toTriggerDownload) {
+                        triggerDownload(imgURI, fileName);
+                    }
+                })
             }
         };
     }
