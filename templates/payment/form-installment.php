@@ -14,14 +14,14 @@
 									<option value="<?php echo $installment_plan['term_length']; ?>">
 										<?php
 										echo sprintf(
-											__( '%d months', 'omise', 'omise_installment_term_option' ),
+											__( '%d months', 'omise' ),
 											$installment_plan['term_length']
 										);
 										?>
 
 										<?php
 										echo sprintf(
-											__( '( %s / months )', 'omise', 'omise_installment_payment_per_month' ),
+											__( '( %s / months )', 'omise' ),
 											wc_price( $installment_plan['monthly_amount'] )
 										);
 										?>

@@ -1,5 +1,5 @@
-(function ($, undefined) {
-	var $form = $('form.checkout, form#order_review');
+(function ($) {
+	const $form = $('form.checkout, form#order_review');
 
 	function hideError() {
 		$(".woocommerce-error").remove();
@@ -11,7 +11,7 @@
 		}
 
 		$(".woocommerce-error, input.omise_token").remove();
-		$ulError = $("<ul>").addClass("woocommerce-error");
+		let $ulError = $("<ul>").addClass("woocommerce-error");
 
 		if ($.isArray(message)) {
 			$.each(message, function(i,v) {
@@ -27,8 +27,8 @@
 
 	function omiseFormHandler() {
 		function validSelection() {
-			$card_list = $("input[name='card_id']");
-			$selected_card_id = $("input[name='card_id']:checked");
+			const $card_list = $("input[name='card_id']");
+			const $selected_card_id = $("input[name='card_id']:checked");
 			// there is some existing cards but nothing selected then warning
 			if ($card_list.length > 0 && $selected_card_id.length === 0) {
 				return false;
@@ -38,7 +38,7 @@
 		}
 
 		function getSelectedCardId() {
-			$selected_card_id = $("input[name='card_id']:checked");
+			const $selected_card_id = $("input[name='card_id']:checked");
 			if ($selected_card_id.length > 0) {
 				return $selected_card_id.val();
 			}

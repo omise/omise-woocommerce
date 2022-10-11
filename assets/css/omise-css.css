@@ -448,7 +448,6 @@ fpx select & bank logos
 
 
 .fpx-select-bank > select {
-    padding-left: 0;
     padding: 10px 50px;
 	width: 100%;
     background-image:url(../images/fpx-unknown.svg);

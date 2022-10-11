@@ -19,7 +19,7 @@
     });
 
     function isCanvasSupported() {
-        let elem = document.createElement('canvas');
+        const elem = document.createElement('canvas');
         return !!(elem.getContext && elem.getContext('2d'));
     }
 
@@ -56,7 +56,7 @@
         let copy = svg.cloneNode(true);
         copyStylesInline(copy, svg);
         let data = (new XMLSerializer()).serializeToString(copy);
-        let url = "data:image/svg+xml;utf8," + encodeURIComponent(data);
+        const url = "data:image/svg+xml;utf8," + encodeURIComponent(data);
         let img = new Image();
         img.src = url;
 
