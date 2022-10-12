@@ -42,6 +42,11 @@ class Omise_Callback {
 		$this->order->add_order_note( __( 'OMISE: Validating the payment result...', 'omise' ) );
 
 		try {
+			// Sometimes cancelling a transaction does not updates the status on the Omise backend
+			// which causes the status to be pending even thought the transaction was cancelled.
+			// To avoid this random issue of status being 'Pending` when it should have been 'Cancelled',
+			// we are adding a delay of half a second to avoid random
+			usleep(500000);
 			$this->charge = OmiseCharge::retrieve( $this->order->get_transaction_id() );
 
 			switch ( strtolower( $this->charge['status'] ) ) {
