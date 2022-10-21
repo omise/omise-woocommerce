@@ -4,12 +4,22 @@ label.omise-label-inline {
 	display: inline-block;
 }
 
-.omise-remember-card input,
-.omise-remember-card label {
-	display: inline-block;
+.omise-new-card-form {
+	display: flex;
+  	flex-direction: column;
+}
+
+.omise-form-child {
+	margin-top: auto;
+}
+
+.omise-remember-card {
+	margin-top: 0.5em;
+	margin-left: 0.2em;
 }
 
 .omise-customer-card-list {
+	list-style-type: none;
 	padding-bottom: .75em;
 	border-bottom: 1px solid #ddd;
 	box-shadow: 0 1px 1px #fff;
@@ -25,7 +35,7 @@ fieldset.card-exists {
 }
 
 #new_card_info:checked ~ fieldset.card-exists {
-	display: block;
+	display: flex;
 }
 
 /**

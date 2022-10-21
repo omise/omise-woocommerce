@@ -23,19 +23,19 @@
 			</label>
 		<?php endif; ?>
 
-		<fieldset id="new_card_form" class="<?php echo $showExistingCards ? 'card-exists' : ''; ?>">
+		<fieldset class="omise-new-card-form <?php echo $showExistingCards ? 'card-exists' : ''; ?>">
 
 			<?php require_once( 'form-creditcard.php' ); ?>
 
 			<div class="clear"></div>
 
 			<?php if ( $viewData['user_logged_in'] ) : ?>
-				<p class="omise-remember-card">
+				<div class="omise-form-child omise-remember-card">
 					<input type="checkbox" name="omise_save_customer_card" id="omise_save_customer_card" />
 					<label for="omise_save_customer_card" class="inline">
 						<?php _e( 'Remember this card', 'omise' ); ?>
 					</label>
-				</p>
+				</div>
 			<?php endif; ?>
 
 			<div class="clear"></div>
