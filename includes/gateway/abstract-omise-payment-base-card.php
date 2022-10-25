@@ -46,9 +46,10 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	 */
 	private function prepareChargeData($orderId, $order, $omiseCustomerId, $cardId)
 	{
+		$currency = $order->get_currency();
 		$data = [
-			'amount' => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
-			'currency' => $order->get_currency(),
+			'amount' => Omise_Money::to_subunit( $order->get_total(), $currency ),
+			'currency' => $currency,
 			'description' => apply_filters(
 				'omise_charge_params_description',
 				'WooCommerce Order id ' . $orderId,
@@ -230,7 +231,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		if ( is_checkout() && $this->is_available() ) {
 			wp_enqueue_script(
 				'omise-js',
-				'https://cdn.staging-omise.co/omise.js',
+				'https://cdn.omise.co/omise.js',
 				[ 'jquery' ],
 				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true
