@@ -56,7 +56,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function register_omise_my_account_scripts() {
 			wp_enqueue_script(
 				'omise-js',
-				'https://cdn.omise.co/omise.js',
+				'https://cdn.staging-omise.co/omise.js',
 				array( 'jquery' ),
 				WC_VERSION,
 				true

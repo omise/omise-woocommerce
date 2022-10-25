@@ -4,8 +4,10 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 /**
  * @since 3.9
  */
-class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
-	public function __construct() {
+class Omise_Payment_Truemoney extends Omise_Payment_Offsite
+{
+	public function __construct()
+	{
 		parent::__construct();
 
 		$this->id                 = 'omise_truemoney';
@@ -35,7 +37,8 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 	 * @see WC_Settings_API::init_form_fields()
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 */
-	public function init_form_fields() {
+	public function init_form_fields()
+	{
 		$this->form_fields = array(
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
@@ -62,7 +65,8 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 	/**
 	 * @inheritdoc
 	 */
-	public function payment_fields() {
+	public function payment_fields()
+	{
 		parent::payment_fields();
 		Omise_Util::render_view( 'templates/payment/form-truemoney.php', array() );
 	}
@@ -70,25 +74,18 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite {
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order ) {
-		$phone_number = isset( $_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : sanitize_text_field( $_POST['omise_phone_number'] );
-		$total        = $order->get_total();
-		$currency     = $order->get_currency();
-		$return_uri   = add_query_arg(
-			array( 'wc-api' => 'omise_truemoney_callback', 'order_id' => $order_id ), home_url()
-		);
-		$metadata     = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
+	public function charge( $order_id, $order )
+	{
+		$phone_number = isset($_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : sanitize_text_field( $_POST['omise_phone_number'] );
+		$currency = $order->get_currency();
 
-		return OmiseCharge::create( array(
-			'amount'      => Omise_Money::to_subunit( $total, $currency ),
+		return OmiseCharge::create([
+			'amount'      => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency'    => $currency,
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => $this->source_type, 'phone_number' => $phone_number ),
-			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
-		) );
+			'source'      => ['type' => $this->source_type, 'phone_number' => $phone_number],
+			'return_uri'  => $this->getRedirectUrl('omise_truemoney_callback', $order_id, $order),
+			'metadata'    => $this->getMetadata($order_id, $order)
+		]);
 	}
 }

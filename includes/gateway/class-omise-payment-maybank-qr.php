@@ -55,28 +55,16 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order ) {
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
-
-		$return_uri = add_query_arg(
-			array(
-				'wc-api'   => 'omise_maybank_qr_callback',
-				'order_id' => $order_id
-			),
-			home_url()
-		);
-
-		return OmiseCharge::create( array(
+	public function charge( $order_id, $order )
+	{
+		return OmiseCharge::create([
 			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 			'currency'    => $order->get_currency(),
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'source'      => array( 'type' => $this->source_type ),
-			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
-		) );
+			'return_uri'  => $this->getRedirectUrl('omise_maybank_qr_callback', $order_id, $order),
+			'metadata'    => $this->getMetadata($order_id, $order)
+		]);
 	}
 
 	/**
@@ -85,10 +73,10 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 	 * @see WC_Payment_Gateway::get_icon()
 	 */
 	public function get_icon() {
-		$icon = Omise_Image::get_image( array(
-			    'file' => 'maybank-qr.png',
-			    'alternate_text' => 'Maybank QRPay',
-		));
+		$icon = Omise_Image::get_image([
+			'file' => 'maybank-qr.png',
+			'alternate_text' => 'Maybank QRPay',
+		]);
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 }

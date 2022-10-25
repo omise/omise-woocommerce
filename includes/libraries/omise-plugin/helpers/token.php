@@ -1,6 +1,6 @@
 <?php
-if (! class_exists('TokenHelper')) {
-    class TokenHelper
+if (! class_exists('Token')) {
+    class Token
     {
         public static function random($length = 32)
         {
