@@ -72,15 +72,16 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order )
+	public function charge($order_id, $order)
 	{
+		$currency = $order->get_currency();
 		return OmiseCharge::create([
-			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
-			'currency'    => $order->get_currency(),
-			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => ['type' => $this->source_type],
-			'return_uri'  => $this->getRedirectUrl('omise_touch_n_go_callback', $order_id, $order),
-			'metadata'    => $this->getMetadata($order_id, $order)
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
+			'currency' => $currency,
+			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
+			'source' => ['type' => $this->source_type],
+			'return_uri' => $this->getRedirectUrl('omise_touch_n_go_callback', $order_id, $order),
+			'metadata' => $this->getMetadata($order_id, $order)
 		]);
 	}
 
@@ -90,10 +91,10 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 	 * @see WC_Payment_Gateway::get_icon()
 	 */
 	public function get_icon() {
-		$icon = Omise_Image::get_image( array(
+		$icon = Omise_Image::get_image([
 			'file' => 'touch-n-go.png',
 			'alternate_text' => 'Touch \'n Go eWallet',
-		));
+		]);
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 

@@ -74,18 +74,18 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order )
+	public function charge($order_id, $order)
 	{
 		$phone_number = isset($_POST['omise_phone_number_default'] ) && 1 == $_POST['omise_phone_number_default'] ? $order->get_billing_phone() : sanitize_text_field( $_POST['omise_phone_number'] );
 		$currency = $order->get_currency();
 
 		return OmiseCharge::create([
-			'amount'      => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency'    => $currency,
-			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => ['type' => $this->source_type, 'phone_number' => $phone_number],
-			'return_uri'  => $this->getRedirectUrl('omise_truemoney_callback', $order_id, $order),
-			'metadata'    => $this->getMetadata($order_id, $order)
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
+			'currency' => $currency,
+			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
+			'source' => ['type' => $this->source_type, 'phone_number' => $phone_number],
+			'return_uri' => $this->getRedirectUrl('omise_truemoney_callback', $order_id, $order),
+			'metadata' => $this->getMetadata($order_id, $order)
 		]);
 	}
 }

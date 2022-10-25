@@ -4,6 +4,10 @@ if (! class_exists('RedirectUrl')) {
     {
         private static $token;
 
+        /**
+         * @param string $callbackUri
+         * @param string $orderId
+         */
         public static function create($callbackUri, $orderId)
         {
             self::$token = Token::random();
@@ -13,12 +17,19 @@ if (! class_exists('RedirectUrl')) {
                     'order_id' => $orderId,
                     'token' => self::$token
                 ],
-                'https://localhost:8000'// home_url()
+                home_url()
             );
         }
 
+        /**
+         * Get the token created on create. This should be called after create()
+         */
         public static function getToken()
         {
+            if(!self::$token) {
+                throw new \LogicException('Could be called after RedirectUrl::create() method.');
+            }
+
             return self::$token;
         }
     }

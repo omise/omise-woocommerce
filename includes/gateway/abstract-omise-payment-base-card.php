@@ -14,20 +14,20 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
     /**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order )
+	public function charge($order_id, $order)
 	{
-		$token   = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
+		$token = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
 		$cardId = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
 
-		if ( empty( $token ) && empty( $cardId ) ) {
-			throw new Exception( __( 'Please select an existing card or enter new card information.', 'omise' ) );
+		if (empty($token) && empty($cardId)) {
+			throw new Exception(__( 'Please select an existing card or enter new card information.', 'omise'));
 		}
 
 		$user = $order->get_user();
 		$omiseCustomerId = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 
 		// Saving card.
-		if ( isset( $_POST['omise_save_customer_card'] ) && empty( $cardId ) ) {
+		if (isset($_POST['omise_save_customer_card']) && empty($cardId)) {
 			$cardDetails = $this->saveCard($omiseCustomerId, $token, $order_id, $user->ID);
 			$omiseCustomerId = $cardDetails['customerId'];
 			$cardId = $cardDetails['cardId'];
@@ -48,7 +48,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	{
 		$currency = $order->get_currency();
 		$data = [
-			'amount' => Omise_Money::to_subunit( $order->get_total(), $currency ),
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency' => $currency,
 			'description' => apply_filters(
 				'omise_charge_params_description',

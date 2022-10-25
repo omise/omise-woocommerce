@@ -77,18 +77,19 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order )
+	public function charge($order_id, $order)
 	{
+		$currency = $order->get_currency();
 		return OmiseCharge::create([
-			'amount'      => Omise_Money::to_subunit($order->get_total(), $order->get_currency()),
-			'currency'    => $order->get_currency(),
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
+			'currency' => $currency,
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source'      => [
+			'source' => [
 				'type' => $source_type,
 				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
 			],
-			'return_uri'  => $this->getRedirectUrl('omise_mobilebanking_callback', $orderId, $order),
-			'metadata'    => $this->getMetadata($order_id, $order)
+			'return_uri' => $this->getRedirectUrl('omise_mobilebanking_callback', $orderId, $order),
+			'metadata' => $this->getMetadata($order_id, $order)
 		]);
 	}
 

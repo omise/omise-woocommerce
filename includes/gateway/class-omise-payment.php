@@ -699,20 +699,29 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         return $payment->provider;
     }
 
+	/**
+	 * @param string $callbackUrl
+	 * @param string $orderId
+	 * @param object $order
+	 */
 	public function getRedirectUrl($callbackUrl, $orderId, $order)
 	{
 		$redirectUrl = RedirectUrl::create('omise_callback', $orderId);
 
 		// Call after RedirectUrl::create
-		$order->add_meta_data( 'token', RedirectUrl::getToken(), true );
+		$order->add_meta_data('token', RedirectUrl::getToken(), true);
 
 		return $redirectUrl;
 	}
 
+	/**
+	 * @param string $orderId
+	 * @param object $order
+	 */
 	public function getMetadata($orderId, $order)
 	{
 		return array_merge(
-			apply_filters( 'omise_charge_params_metadata', [], $order ),
+			apply_filters('omise_charge_params_metadata', [], $order),
 			['order_id' => $orderId] // override order_id as a reference for webhook handlers.
 		);
 	}
