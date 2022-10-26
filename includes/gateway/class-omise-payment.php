@@ -121,7 +121,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	public function protectMetadata($protected, $metadataKeys)
 	{
-		if ( in_array( $metadataKeys, [ 'token' ] )) {
+		if ( in_array( $metadataKeys, [ 'token', 'is_omise_payment_resolved' ] )) {
 			return true;
 		}
 
