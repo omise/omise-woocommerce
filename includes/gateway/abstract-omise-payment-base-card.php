@@ -33,7 +33,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			$cardId = $cardDetails['cardId'];
 		}
 
-		$data = $this->prepareChargeData($order_id, $order, $omiseCustomerId, $cardId);
+		$data = $this->prepareChargeData($order_id, $order, $omiseCustomerId, $cardId, $token);
 		return OmiseCharge::create($data);
 	}
 
@@ -43,8 +43,9 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	 * @param object $order
 	 * @param string $omiseCustomerId
 	 * @param string $cardId
+	 * @param string $token
 	 */
-	private function prepareChargeData($orderId, $order, $omiseCustomerId, $cardId)
+	private function prepareChargeData($orderId, $order, $omiseCustomerId, $cardId, $token)
 	{
 		$currency = $order->get_currency();
 		$data = [
@@ -104,7 +105,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 
 				return [
 					'customerId' => $customerData['customerId'],
-					'cardId' => $customerData['id']
+					'cardId' => $customerData['cardId']
 				];
 			}
 

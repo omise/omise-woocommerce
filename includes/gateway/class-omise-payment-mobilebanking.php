@@ -85,10 +85,10 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 			'currency' => $currency,
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
 			'source' => [
-				'type' => $source_type,
+				'type' => sanitize_text_field($_POST['omise-offsite']),
 				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
 			],
-			'return_uri' => $this->getRedirectUrl('omise_mobilebanking_callback', $orderId, $order),
+			'return_uri' => $this->getRedirectUrl('omise_mobilebanking_callback', $order_id, $order),
 			'metadata' => $this->getMetadata($order_id, $order)
 		]);
 	}
