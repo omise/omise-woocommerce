@@ -17,35 +17,35 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	public function charge($order_id, $order)
 	{
 		$token = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
-		$cardId = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
+		$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
 
-		if (empty($token) && empty($cardId)) {
+		if (empty($token) && empty($card_id)) {
 			throw new Exception(__( 'Please select an existing card or enter new card information.', 'omise'));
 		}
 
 		$user = $order->get_user();
-		$omiseCustomerId = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
+		$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 
 		// Saving card.
-		if (isset($_POST['omise_save_customer_card']) && empty($cardId)) {
-			$cardDetails = $this->saveCard($omiseCustomerId, $token, $order_id, $user->ID);
-			$omiseCustomerId = $cardDetails['customerId'];
-			$cardId = $cardDetails['cardId'];
+		if (isset($_POST['omise_save_customer_card']) && empty($card_id)) {
+			$cardDetails = $this->saveCard($omise_customer_id, $token, $order_id, $user->ID);
+			$omise_customer_id = $cardDetails['customer_id'];
+			$card_id = $cardDetails['card_id'];
 		}
 
-		$data = $this->prepareChargeData($order_id, $order, $omiseCustomerId, $cardId, $token);
+		$data = $this->prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token);
 		return OmiseCharge::create($data);
 	}
 
 	/**
 	 * Prepare request data to create a charge
-	 * @param string $orderId
+	 * @param string $order_id
 	 * @param object $order
-	 * @param string $omiseCustomerId
-	 * @param string $cardId
+	 * @param string $omise_customer_id
+	 * @param string $card_id
 	 * @param string $token
 	 */
-	private function prepareChargeData($orderId, $order, $omiseCustomerId, $cardId, $token)
+	private function prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token)
 	{
 		$currency = $order->get_currency();
 		$data = [
@@ -53,16 +53,16 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			'currency' => $currency,
 			'description' => apply_filters(
 				'omise_charge_params_description',
-				'WooCommerce Order id ' . $orderId,
+				'WooCommerce Order id ' . $order_id,
 				$order
 			),
-			'return_uri' => $this->getRedirectUrl('omise_callback', $orderId, $order),
-			'metadata' => $this->getMetadata($orderId, $order)
+			'return_uri' => $this->getRedirectUrl('omise_callback', $order_id, $order),
+			'metadata' => $this->getMetadata($order_id, $order)
 		];
 
-		if (!empty( $omiseCustomerId) && ! empty($cardId)) {
-			$data['customer'] = $omiseCustomerId;
-			$data['card'] = $cardId;
+		if (!empty($omise_customer_id) && ! empty($card_id)) {
+			$data['customer'] = $omise_customer_id;
+			$data['card'] = $card_id;
 		} else {
 			$data['card'] = $token;
 		}
@@ -80,14 +80,14 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	/**
 	 * Saving card
 	 * 
-	 * @param string $omiseCustomerId
+	 * @param string $omise_customer_id
 	 * @param string $token
-	 * @param string $orderId
-	 * @param string $userId
+	 * @param string $order_id
+	 * @param string $user_id
 	*/
-	public function saveCard($omiseCustomerId, $token, $orderId, $userId)
+	public function saveCard($omise_customer_id, $token, $order_id, $user_id)
 	{
-		if ( empty( $token ) ) {
+		if (empty($token)) {
 			throw new Exception(__(
 				'Unable to process the card. Please make sure that the information is correct, or contact our support team if you have any questions.', 'omise'
 			));
@@ -95,28 +95,28 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 
 		try {
 			$customer = new Omise_Customer;
-			$customerData = [
-				"description" => "WooCommerce customer " . $userId,
+			$customer_data = [
+				"description" => "WooCommerce customer " . $user_id,
 				"card" => $token
 			];
 
-			if (empty($omiseCustomerId)) {
-				$customerData = $customer->create($userId, $orderId, $customerData);
+			if (empty($omise_customer_id)) {
+				$customer_data = $customer->create($user_id, $order_id, $customer_data);
 
 				return [
-					'customerId' => $customerData['customerId'],
-					'cardId' => $customerData['cardId']
+					'customer_id' => $customer_data['customer_id'],
+					'card_id' => $customer_data['card_id']
 				];
 			}
 
 			try {
-				$customer->get($omiseCustomerId);
+				$customer->get($omise_customer_id);
 				$customerCard = new OmiseCustomerCard;
 				$card = $customerCard->create($customer, $token);
 
 				return [
-					'customerId' => $omiseCustomerId,
-					'cardId' => $card['id']
+					'customer_id' => $omise_customer_id,
+					'card_id' => $card['id']
 				];
 			} catch(\Exception $e) {
 				$errors = $e->getOmiseError();
@@ -126,10 +126,10 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				}
 
 				// Saved customer ID is not found so we create a new customer and save the customer ID
-				$customerData = $customer->create($userId, $orderId, $customerData);
+				$customer_data = $customer->create($user_id, $order_id, $customer_data);
 				return [
-					'customerId' => $customerData['customerId'],
-					'cardId' => $customerData['cardId']
+					'customer_id' => $customer_data['customer_id'],
+					'card_id' => $customer_data['card_id']
 				];
 			}
 		} catch (Exception $e) {

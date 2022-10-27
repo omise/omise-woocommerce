@@ -5,16 +5,16 @@ if (! class_exists('RedirectUrl')) {
         private static $token;
 
         /**
-         * @param string $callbackUri
-         * @param string $orderId
+         * @param string $callback_uri
+         * @param string $order_id
          */
-        public static function create($callbackUri, $orderId)
+        public static function create($callback_uri, $order_id)
         {
             self::$token = Token::random();
             return add_query_arg(
                 [
-                    'wc-api'   => $callbackUri,
-                    'order_id' => $orderId,
+                    'wc-api'   => $callback_uri,
+                    'order_id' => $order_id,
                     'token' => self::$token
                 ],
                 home_url()

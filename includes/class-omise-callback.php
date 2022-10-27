@@ -26,9 +26,9 @@ class Omise_Callback {
 
 	public static function execute()
 	{
-		$orderId = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
+		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
 		$token = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : null;
-		$order = wc_get_order( $orderId );
+		$order = wc_get_order( $order_id );
 
 		if(!RequestHelper::validateRequest($order->get_meta('token'))) {
 			return wp_redirect( wc_get_checkout_url() );
