@@ -78,14 +78,14 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * @var array
 	 */
-	private $currency_subunits = array(
+	private $currency_subunits = [
 		'EUR' => 100,
 		'GBP' => 100,
 		'JPY' => 1,
 		'SGD' => 100,
 		'THB' => 100,
 		'USD' => 100
-	);
+	];
 
 	/**
 	 * @var WC_Order|null
@@ -144,14 +144,11 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 *
 	 * @return WC_Order|null
 	 */
-	public function load_order( $order ) {
-		if ( $order instanceof WC_Order ) {
-			$this->order = $order;
-		} else {
-			$this->order = wc_get_order( $order );
-		}
+	public function load_order( $order )
+	{
+		$this->order = ($order instanceof WC_Order) ? $order : wc_get_order( $order );
 
-		if ( ! $this->order ) {
+		if (!$this->order) {
 			$this->order = null;
 		}
 
@@ -161,7 +158,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * @return WC_Order|null
 	 */
-	public function order() {
+	public function order()
+	{
 		return $this->order;
 	}
 
@@ -682,22 +680,49 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
      */
     public function get_provider()
     {
-        if (! isset($this->payment_settings['backends'])) {
+        if (!isset($this->payment_settings['backends'])) {
             return null;
         }
 
         $index = array_search($this->source_type, array_column($this->payment_settings['backends'], '_id'));
 
-        if (! $index) {
+        if (!$index) {
             return null;
         }
 
         $payment = $this->payment_settings['backends'][$index];
 
-        if (! property_exists($payment, 'provider')) {
+        if (!property_exists($payment, 'provider')) {
             return null;
         }
 
         return $payment->provider;
     }
+
+	/**
+	 * @param string $callback_url
+	 * @param string $order_id
+	 * @param object $order
+	 */
+	public function getRedirectUrl($callback_url, $order_id, $order)
+	{
+		$redirectUrl = RedirectUrl::create($callback_url, $order_id);
+
+		// Call after RedirectUrl::create
+		$order->add_meta_data('token', RedirectUrl::getToken(), true);
+
+		return $redirectUrl;
+	}
+
+	/**
+	 * @param string $order_id
+	 * @param object $order
+	 */
+	public function getMetadata($order_id, $order)
+	{
+		return array_merge(
+			apply_filters('omise_charge_params_metadata', [], $order),
+			['order_id' => $order_id] // override order_id as a reference for webhook handlers.
+		);
+	}
 }

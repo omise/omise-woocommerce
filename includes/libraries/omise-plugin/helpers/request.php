@@ -11,25 +11,25 @@ if (! class_exists('RequestHelper')) {
          */
         public static function isUserOriginated()
         {
-            $fetchSite = sanitize_text_field($_SERVER['HTTP_SEC_FETCH_SITE']);
+            $fetch_site = sanitize_text_field($_SERVER['HTTP_SEC_FETCH_SITE']);
 
             // "none" means the request is a user-originated operation
-            return 'none' === $fetchSite;
+            return 'none' === $fetch_site;
         }
 
         /**
-         * @param string|null $orderToken
+         * @param string|null $order_token
          */
-        public static function validateRequest($orderToken = null)
+        public static function validateRequest($order_token = null)
         {
             $token = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : null;
 
-            // For mobile banking. This will be implemented for all other payment methods later.
+            // For all payment except offline and OCBC PAO.
             if ($token) {
-                return $token === $orderToken;
+                return $token === $order_token;
             }
 
-            // For other payment methods that does not include token in the return URI.
+            // For offline payment methods and OCBC PAO that does not include token in the return URI.
             return !self::isUserOriginated();
         }
     }

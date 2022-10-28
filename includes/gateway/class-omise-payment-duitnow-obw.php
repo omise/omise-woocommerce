@@ -151,32 +151,19 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$source_bank	= isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
-
-		$metadata = array_merge(
-			apply_filters('omise_charge_params_metadata', array(), $order),
-			array('order_id' => $order_id) // override order_id as a reference for webhook handlers.
-		);
-
-		$return_uri = add_query_arg(
-			array(
-				'wc-api'   => 'omise_duitnow_obw_callback',
-				'order_id' => $order_id
-			),
-			home_url()
-		);
-
-		return OmiseCharge::create(array(
-			'amount'      => Omise_Money::to_subunit($order->get_total(), $order->get_currency()),
-			'currency'    => $order->get_currency(),
+		$source_bank = isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
+		$currency = $order->get_currency();
+		return OmiseCharge::create([
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
+			'currency' => $currency,
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source'      => array(
+			'source' => [
 				'type' => $this->source_type,
 				'bank' => sanitize_text_field($source_bank),
-			),
-			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
-		));
+			],
+			'return_uri' => $this->getRedirectUrl('omise_duitnow_obw_callback', $order_id, $order),
+			'metadata' => $this->getMetadata($order_id, $order)
+		]);
 	}
 
 	/**
@@ -186,10 +173,10 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 	 */
 	public function get_icon()
 	{
-		$icon = Omise_Image::get_image(array(
+		$icon = Omise_Image::get_image([
 			'file' => 'duitnow-obw.png',
 			'alternate_text' => 'DuitNow Online Banking/Wallets',
-		));
+		]);
 		return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
 	}
 }

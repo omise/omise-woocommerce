@@ -67,8 +67,8 @@ if ( ! class_exists( 'Omise_Customer' ) ) {
             $cards = $this->customer->cards( array( 'order' => 'reverse_chronological' ) );
 
             return [
-                'customerId' => $this->customer['id'],
-                'cardId' => $cards['data'][0]['id'] //use the latest card
+                'customer_id' => $this->customer['id'],
+                'card_id' => $cards['data'][0]['id'] //use the latest card
             ];
         }
 

@@ -55,26 +55,23 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order ) {
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
-
+	public function charge($order_id, $order)
+	{
 		//Cannot use query parameters for OCBC PAO return URI.
 		$return_uri = home_url('wp-json/omise/ocbc-pao-callback/' . $order_id);
+		$currency = $order->get_currency();
 
-		return OmiseCharge::create( array(
-			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
-			'currency'    => $order->get_currency(),
+		return OmiseCharge::create([
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
+			'currency' => $currency,
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source'      => array(
+			'source' => [
 				'type' => $this->source_type,
 				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
-			),
-			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
-		) );
+			],
+			'return_uri' => $return_uri,
+			'metadata' => $this->getMetadata($order_id, $order)
+		]);
 	}
 
 	/**

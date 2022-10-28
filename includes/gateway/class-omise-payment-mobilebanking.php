@@ -1,8 +1,10 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
-class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
-	public function __construct() {
+class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
+{
+	public function __construct()
+	{
 		parent::__construct();
 
 		$this->id                 = 'omise_mobilebanking';
@@ -33,7 +35,8 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 	 * @see WC_Settings_API::init_form_fields()
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 */
-	public function init_form_fields() {
+	public function init_form_fields()
+	{
 		$this->form_fields = array(
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
@@ -74,35 +77,20 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order ) {
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
-
-		$source_type = sanitize_text_field( $_POST['omise-offsite']);
-		$token = TokenHelper::random();
-		$return_uri = add_query_arg(
-			[
-				'order_id' => $order_id,
-				'token' => $token
-			],
-			home_url('wc-api/omise_mobilebanking_callback')
-		);
-
-		$order->add_meta_data( 'token', $token, true );
-
-		return OmiseCharge::create( array(
-			'amount'      => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
-			'currency'    => $order->get_currency(),
+	public function charge($order_id, $order)
+	{
+		$currency = $order->get_currency();
+		return OmiseCharge::create([
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
+			'currency' => $currency,
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source'      => array(
-				'type' => $source_type,
+			'source' => [
+				'type' => sanitize_text_field($_POST['omise-offsite']),
 				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
-			),
-			'return_uri'  => $return_uri,
-			'metadata'    => $metadata
-		) );
+			],
+			'return_uri' => $this->getRedirectUrl('omise_mobilebanking_callback', $order_id, $order),
+			'metadata' => $this->getMetadata($order_id, $order)
+		]);
 	}
 
 	/**

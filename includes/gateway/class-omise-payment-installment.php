@@ -81,32 +81,23 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order ) {
-		$source_type       = isset( $_POST['source']['type'] ) ? $_POST['source']['type'] : '';
+	public function charge($order_id, $order)
+	{
+		$source_type = isset($_POST['source']['type']) ? $_POST['source']['type'] : '';
 		$installment_terms = isset( $_POST[ $source_type . '_installment_terms'] ) ? $_POST[ $source_type . '_installment_terms'] : '';
-		$metadata          = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
-		);
-		$return_uri = add_query_arg(
-			array(
-				'wc-api'   => 'omise_installment_callback',
-				'order_id' => $order_id
-			),
-			home_url()
-		);
+		$currency = $order->get_currency();
 
-		return OmiseCharge::create( array(
-			'amount'            => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
-			'currency'          => $order->get_currency(),
-			'description'       => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'            => array(
-				'type'              => sanitize_text_field( $source_type ),
-				'installment_terms' => sanitize_text_field( $installment_terms )
-			),
-			'return_uri'        => $return_uri,
-			'metadata'          => $metadata
-		) );
+		return OmiseCharge::create([
+			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
+			'currency' => $currency,
+			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
+			'source' => [
+				'type' => sanitize_text_field($source_type),
+				'installment_terms' => sanitize_text_field($installment_terms)
+			],
+			'return_uri' => $this->getRedirectUrl('omise_installment_callback', $order_id, $order),
+			'metadata' => $this->getMetadata($order_id, $order)
+		]);
 	}
 
 	/**
