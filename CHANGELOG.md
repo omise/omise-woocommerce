@@ -1,10 +1,11 @@
 # CHANGELOG
 
-### [v4.26.0 _(Nov 1, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.26.0)
+### [v4.26.0 _(Nov 2, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.26.0)
 - Metadata keys is_omise_payment_resolved added as protected metadata. (PR [#324](https://github.com/omise/omise-woocommerce/pull/324))
 - Fix the issue of customer getting back to checkout page from OTP page. (PR [#323](https://github.com/omise/omise-woocommerce/pull/323))
 - Fixed the credit card form's UI issue with default theme. (PR [#322](https://github.com/omise/omise-woocommerce/pull/322))
 - Added a delay of 0.5 seconds before calling the charge API in callback class so that we can fetch correct charge status. (PR [#321](https://github.com/omise/omise-woocommerce/pull/321))
+- Increased the delay to 2 seconds and added a check for OCBC PAO redirect URL. (PR [#327](https://github.com/omise/omise-woocommerce/pull/327))
 
 ### [v4.25.0 _(Oct 6, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.25.0)
 - Fixed the conflict between Omise and other payment gateway (PR [#317](https://github.com/omise/omise-woocommerce/pull/317))
