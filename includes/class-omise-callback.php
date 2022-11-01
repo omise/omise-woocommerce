@@ -46,7 +46,7 @@ class Omise_Callback {
 			// which causes the status to be pending even thought the transaction was cancelled.
 			// To avoid this random issue of status being 'Pending` when it should have been 'Cancelled',
 			// we are adding a delay of half a second to avoid random
-			usleep(500000);
+			usleep(2000000);
 			$this->charge = OmiseCharge::retrieve( $this->order->get_transaction_id() );
 
 			switch ( strtolower( $this->charge['status'] ) ) {
