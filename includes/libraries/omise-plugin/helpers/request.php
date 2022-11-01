@@ -29,7 +29,7 @@ if (! class_exists('RequestHelper')) {
                 return $token === $order_token;
             }
 
-            // For offline payment methods and OCBC PAO that does not include token in the return URI.
+            // For offline payment methods does not include token in the return URI.
             return !self::isUserOriginated();
         }
     }
