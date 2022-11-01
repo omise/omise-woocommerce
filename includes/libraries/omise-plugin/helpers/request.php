@@ -29,24 +29,8 @@ if (! class_exists('RequestHelper')) {
                 return $token === $order_token;
             }
 
-            // For OCBC PAO as it does not include token in the return URI.
-            if(self::isCallbackOcbcPao()) {
-                return true;
-            }
-
             // For offline payment methods does not include token in the return URI.
             return !self::isUserOriginated();
-        }
-
-        /**
-         * Since OCBC PAO do not suppor query params, we can't add token to it. Plus, HTTP_SEC_FETCH_SITE
-         * is not so reliable. So, we will return true if the callback is of OCBC PAO
-         */
-        private static function isCallbackOcbcPao()
-        {
-            $callback = basename($_SERVER['REQUEST_URI']);
-            $part = explode('?', $callback);
-            return 'omise_ocbc_pao_callback' === $part[0];
         }
     }
 }
