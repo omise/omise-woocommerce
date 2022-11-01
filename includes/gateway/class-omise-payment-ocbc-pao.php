@@ -57,8 +57,6 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
-		//Cannot use query parameters for OCBC PAO return URI.
-		$return_uri = home_url('wp-json/omise/ocbc-pao-callback/' . $order_id);
 		$currency = $order->get_currency();
 
 		return OmiseCharge::create([
@@ -69,7 +67,7 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 				'type' => $this->source_type,
 				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
 			],
-			'return_uri' => $return_uri,
+			'return_uri' => $this->getRedirectUrl('omise_ocbc_pao_callback', $order_id, $order),
 			'metadata' => $this->getMetadata($order_id, $order)
 		]);
 	}
@@ -80,10 +78,10 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 	 * @see WC_Payment_Gateway::get_icon()
 	 */
 	public function get_icon() {
-		$icon = Omise_Image::get_image( array(
-			    'file' => 'ocbc-pao.png',
-			    'alternate_text' => 'OCBC Pay Anyone',
-		));
+		$icon = Omise_Image::get_image([
+			'file' => 'ocbc-pao.png',
+			'alternate_text' => 'OCBC Pay Anyone',
+		]);
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 }
