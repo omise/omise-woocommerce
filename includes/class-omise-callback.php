@@ -39,16 +39,20 @@ class Omise_Callback {
 	}
 
 
-	// Sometimes cancelling a transaction does not updates the status on the Omise backend
-	// which causes the status to be pending even thought the transaction was cancelled.
-	// To avoid this random issue of status being 'Pending` when it should have been 'Cancelled',
-	// we are adding a delay of half a second to avoid random
+	/**
+	 * Sometimes cancelling a transaction does not updates the status on the Omise backend
+	 * which causes the status to be pending even thought the transaction was cancelled.
+	 * To avoid this random issue of status being 'Pending` when it should have been 'Cancelled',
+	 * we are adding a delay of half a second to avoid random
+	 *
+	 * @param string $transactionId
+	 */
 	private function fetchCharge($transactionId)
 	{
 		$retryNo = 1;
 		$maxRetry = 5;
 
-		if ($retryNo <= $maxRetry) {
+		do {
 			$charge = OmiseCharge::retrieve($transactionId);
 
 			if('pending' !== $charge['status']) {
@@ -57,7 +61,7 @@ class Omise_Callback {
 
 			$retryNo++;
 			usleep(500000);
-		}
+		} while($retryNo <= $maxRetry);
 
 		return $charge;
 	}
