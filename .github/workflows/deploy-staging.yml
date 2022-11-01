@@ -1,0 +1,14 @@
+name: Deploy to Staging
+on:
+  push:
+    branches: [ 'master' ]
+
+jobs:
+  static:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Trigger Buildkite Pipeline & Deploy On Staging
+        run: sh .github/workflows/trigger-buildkite-pipeline.sh ${{ secrets.BUILDKITE_API_ACCESS_TOKEN }}
