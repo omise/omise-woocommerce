@@ -12,9 +12,9 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 
 		$this->id                 = 'omise_truemoney';
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Omise TrueMoney Wallet', 'omise' );
+		$this->method_title       = __( 'Opn TrueMoney Wallet', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>TrueMoney Wallet</strong> via Omise payment gateway (only available in Thailand).', 'omise' ),
+			__( 'Accept payments through <strong>TrueMoney Wallet</strong> via Opn payment gateway (only available in Thailand).', 'omise' ),
 			array( 'strong' => array() )
 		);
 
@@ -43,7 +43,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise TrueMoney Wallet Payment', 'omise' ),
+				'label'   => __( 'Enable Opn  TrueMoney Wallet Payment', 'omise' ),
 				'default' => 'no'
 			),
 

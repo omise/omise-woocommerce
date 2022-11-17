@@ -11,9 +11,9 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 
 		$this->id                 = 'omise_promptpay';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise PromptPay', 'omise' );
+		$this->method_title       = __( 'Opn PromptPay', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>PromptPay</strong> via Omise payment gateway.', 'omise' ),
+			__( 'Accept payments through <strong>PromptPay</strong> via Opn payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
 
@@ -55,7 +55,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise PromptPay Payment', 'omise' ),
+				'label'   => __( 'Enable Opn  PromptPay Payment', 'omise' ),
 				'default' => 'no'
 			),
 
@@ -133,7 +133,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		if ( 'view' === $context ) : ?>
 			<div id="omise-offline-additional-details" class="omise omise-additional-payment-details-box omise-promptpay-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
-				<div class="omise omise-promptpay-qrcode" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
+				<div class="omise omise-promptpay-qrcode" alt="Opn QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
 					<?php $this->load_qr_svg_to_DOM($qrcode, 'omise-promptpay-qrcode-svg') ?>
 				</div>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>

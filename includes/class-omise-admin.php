@@ -44,9 +44,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 * Register Omise's custom menu to WordPress admin menus.
 		 */
 		public function wordpress_hook_admin_menu() {
-			add_menu_page( 'Omise', 'Omise', 'manage_options', 'omise', array( $this, 'page_settings') );
-
-			add_submenu_page( 'omise', __( 'Omise Settings', 'omise' ), __( 'Settings', 'omise' ), 'manage_options', 'omise-settings', array( $this, 'page_settings') );
+			add_menu_page( __( 'Opn Settings', 'omise' ), 'Opn', 'manage_options', 'omise', array( $this, 'page_settings') );
 		}
 
 		/**
@@ -79,10 +77,10 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 			$payment_method = version_compare( WC()->version, '3.0.0', '>=' ) ? $theorder->get_payment_method() : $theorder->payment_method;
 
 			if ( $theorder->get_meta( 'is_awaiting_capture' ) === 'yes' ) {
-				$order_actions[ $payment_method . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
+				$order_actions[ $payment_method . '_charge_capture'] = __( 'Opn: Capture this order', 'omise' );
 			}
 
-			$order_actions[ $payment_method . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
+			$order_actions[ $payment_method . '_sync_payment'] = __( 'Opn: Manual sync payment status', 'omise' );
 
 			return $order_actions;
 		}

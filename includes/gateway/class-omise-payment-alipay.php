@@ -7,7 +7,7 @@ class Omise_Payment_Alipay extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_alipay';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise Alipay', 'omise' );
+		$this->method_title       = __( 'Opn Alipay', 'omise' );
 		$this->method_description = __( 'Accept payment through Alipay', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
@@ -33,7 +33,7 @@ class Omise_Payment_Alipay extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise Alipay Payment', 'omise' ),
+				'label'   => __( 'Enable Opn  Alipay Payment', 'omise' ),
 				'default' => 'no'
 			),
 

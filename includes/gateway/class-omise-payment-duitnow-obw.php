@@ -9,8 +9,8 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 
 		$this->id                 = 'omise_duitnow_obw';
 		$this->has_fields         = true;
-		$this->method_title       = __('Omise DuitNow Online Banking/Wallets', 'omise');
-		$this->method_description = __('Accept payment through <strong>DuitNow Online Banking/Wallets</strong> via Omise payment gateway.', 'omise');
+		$this->method_title       = __('Opn DuitNow Online Banking/Wallets', 'omise');
+		$this->method_description = __('Accept payment through <strong>DuitNow Online Banking/Wallets</strong> via Opn payment gateway.', 'omise');
 		$this->supports           = array('products', 'refunds');
 
 		$this->init_form_fields();
@@ -37,7 +37,7 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __('Enable/Disable', 'omise'),
 				'type'    => 'checkbox',
-				'label'   => __('Enable Omise DuitNow Online Banking/Wallets Payment', 'omise'),
+				'label'   => __('Enable Opn  DuitNow Online Banking/Wallets Payment', 'omise'),
 				'default' => 'no'
 			),
 

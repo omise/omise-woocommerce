@@ -9,9 +9,9 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 
 		$this->id                 = 'omise_mobilebanking';
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Omise Mobile Banking', 'omise' );
+		$this->method_title       = __( 'Opn Mobile Banking', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payment through <strong>Mobile Banking</strong> via Omise payment gateway.', 'omise' ),
+			__( 'Accept payment through <strong>Mobile Banking</strong> via Opn payment gateway.', 'omise' ),
 			array(
 				'strong' => array()
 			)
@@ -41,7 +41,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise Mobile Banking Payment', 'omise' ),
+				'label'   => __( 'Enable Opn  Mobile Banking Payment', 'omise' ),
 				'default' => 'no'
 			),
 

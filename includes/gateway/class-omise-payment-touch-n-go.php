@@ -9,8 +9,8 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 		$this->provider           = $this->get_provider();
 		$this->id                 = 'omise_touch_n_go';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise ' . $this->GetMethodTitle(), 'omise' );
-		$this->method_description = __( 'Accept payment through <strong>' . $this->GetMethodTitle() . '</strong> via Omise payment gateway.', 'omise' );
+		$this->method_title       = __( 'Opn ' . $this->GetMethodTitle(), 'omise' );
+		$this->method_description = __( 'Accept payment through <strong>' . $this->GetMethodTitle() . '</strong> via Opn payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
 		$this->init_form_fields();
@@ -42,7 +42,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise ' . $method_title . ' Payment', 'omise' ),
+				'label'   => __( 'Enable Opn  ' . $method_title . ' Payment', 'omise' ),
 				'default' => 'no'
 			),
 

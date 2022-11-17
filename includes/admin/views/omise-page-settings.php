@@ -23,7 +23,7 @@
 		<?php
 		echo sprintf(
 			wp_kses(
-				__( 'All of your keys can be found at your Omise dashboard, check the following links.<br/><a href="%s">Test keys</a> or <a href="%s">Live keys</a> (login required)', 'omise' ),
+				__( 'All of your keys can be found at your Opn dashboard, check the following links.<br/><a href="%s">Test keys</a> or <a href="%s">Live keys</a> (login required)', 'omise' ),
 				array(
 					'br' => array(),
 					'a'  => array( 'href' => array() )
@@ -62,7 +62,7 @@
 						<fieldset>
 							<label for="sandbox">
 								<input name="sandbox" type="checkbox" id="sandbox" value="1" <?php echo 'yes' === $settings['sandbox'] ? 'checked="checked"' : ''; ?>>
-								<?php _e( 'Enabling test mode means that all your transactions will be performed under the Omise test account.', 'omise' ); ?>
+								<?php _e( 'Enabling test mode means that all your transactions will be performed under the Opn test account.', 'omise' ); ?>
 							</label>
 						</fieldset>
 					</td>

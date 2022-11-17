@@ -75,7 +75,7 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 	public function resolve() {
 		if ( ! $this->is_resolvable() ) return;
 
-		$this->order->add_order_note( __( 'Omise: Received charge.complete webhook event.', 'omise' ) );
+		$this->order->add_order_note( __( 'Opn: Received charge.complete webhook event.', 'omise' ) );
 
 		switch ( $this->data['status'] ) {
 			case 'failed':
@@ -83,7 +83,7 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 					return;
 				}
 
-				$message         = __( 'Omise: Payment failed.<br/>%s', 'omise' );
+				$message         = __( 'Opn: Payment failed.<br/>%s', 'omise' );
 				$failure_message = Omise()->translate( $this->data['failure_message'] ) . ' (code: ' . $this->data['failure_code'] . ')';
 				$this->order->add_order_note(
 					sprintf(
@@ -99,7 +99,7 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 					return;
 				}
 
-				$message = __( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' );
+				$message = __( 'Opn: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' );
 
 				$this->order->add_order_note(
 					sprintf(

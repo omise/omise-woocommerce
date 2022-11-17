@@ -40,7 +40,7 @@ abstract class Omise_Payment_Offline extends Omise_Payment {
 		}
 
 		if ( self::STATUS_PENDING === $charge['status'] ) {
-			$order->update_status( 'on-hold', sprintf( __( 'Omise: Awaiting %s to be paid.', 'omise' ), $this->title ) );
+			$order->update_status( 'on-hold', sprintf( __( 'Opn: Awaiting %s to be paid.', 'omise' ), $this->title ) );
 			$order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
 			$order->save();
 

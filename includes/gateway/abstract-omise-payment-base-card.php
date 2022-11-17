@@ -150,7 +150,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		if ( self::STATUS_PENDING === $charge['status'] && ! $charge['authorized'] && ! $charge['paid'] && ! empty( $charge['authorize_uri'] ) ) {
 			$order->add_order_note(
 				sprintf(
-					__( 'Omise: Processing a 3-D Secure payment, redirecting buyer to %s', 'omise' ),
+					__( 'Opn: Processing a 3-D Secure payment, redirecting buyer to %s', 'omise' ),
 					esc_url( $charge['authorize_uri'] )
 				)
 			);
@@ -168,7 +168,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 					$order->add_order_note(
 						sprintf(
 							wp_kses(
-								__( 'Omise: Payment processing.<br/>An amount of %1$s %2$s has been authorized', 'omise' ),
+								__( 'Opn: Payment processing.<br/>An amount of %1$s %2$s has been authorized', 'omise' ),
 								array( 'br' => array() )
 							),
 							$order->get_total(),
@@ -187,7 +187,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 					$order->add_order_note(
 						sprintf(
 							wp_kses(
-								__( 'Omise: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ),
+								__( 'Opn: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ),
 								array( 'br' => array() )
 							),
 							$order->get_total(),

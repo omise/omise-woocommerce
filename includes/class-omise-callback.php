@@ -81,7 +81,7 @@ class Omise_Callback {
 					break;
 
 				default:
-					throw new Exception( __( 'Unrecognized Omise Charge status.', 'omise' ) );
+					throw new Exception( __( 'Unrecognized Opn Charge status.', 'omise' ) );
 					break;
 			}
 		} catch ( Exception $e ) {
@@ -142,7 +142,7 @@ class Omise_Callback {
 		if ( ! $this->charge['capture'] && $this->charge['authorized'] ) {
 			// Card authorized case.
 			$message = __(
-				'Omise: The payment is being processed.<br/>
+				'Opn: The payment is being processed.<br/>
 				An amount %1$s %2$s has been authorized.',
 				'omise'
 			);
@@ -168,9 +168,9 @@ class Omise_Callback {
 
 		// Offsite case.
 		$message = __(
-			'Omise: The payment is being processed.<br/>
+			'Opn: The payment is being processed.<br/>
 			Depending on the payment provider, this may take some time to process.<br/>
-			Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Omise Dashboard later.',
+			Please do a manual \'Sync Payment Status\' action from the <strong>Order Actions</strong> panel, or check the payment status directly at the Opn Dashboard later.',
 			'omise'
 		);
 
