@@ -10,9 +10,9 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 
 		$this->id                 = 'omise_paynow';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn PayNow', 'omise' );
+		$this->method_title       = __( 'Opn Payments PayNow', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>PayNow</strong> via Opn payment gateway.', 'omise' ),
+			__( 'Accept payments through <strong>PayNow</strong> via Opn Payments payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
 		$this->supports           = array( 'products', 'refunds' );
@@ -39,7 +39,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn  PayNow Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments  PayNow Payment', 'omise' ),
 				'default' => 'no'
 			),
 
@@ -100,7 +100,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 					<?php echo __( 'Scan the QR code to pay', 'omise' ); ?>
 				</p>
 				<div class="omise omise-paynow-qrcode">
-					<img src="<?php echo $qrcode; ?>" alt="Opn QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
+					<img src="<?php echo $qrcode; ?>" alt="Opn Payments QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
 				</div>
 				<div class="omise-paynow-payment-status">
 					<div class="pending">

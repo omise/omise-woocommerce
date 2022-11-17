@@ -10,9 +10,9 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 		// version 2017-2014
 		$this->source_type        = 'credit_card';
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Opn Credit / Debit Card', 'omise' );
+		$this->method_title       = __( 'Opn Payments Credit / Debit Card', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payment through <strong>Credit / Debit Card</strong> via Opn payment gateway.', 'omise' ),
+			__( 'Accept payment through <strong>Credit / Debit Card</strong> via Opn Payments payment gateway.', 'omise' ),
 			array(
 				'strong' => array()
 			)
@@ -47,7 +47,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 				'enabled' => array(
 					'title'   => __( 'Enable/Disable', 'omise' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable Opn  Credit / Debit Card Payment', 'omise' ),
+					'label'   => __( 'Enable Opn Payments  Credit / Debit Card Payment', 'omise' ),
 					'default' => 'no'
 				),
 

@@ -99,7 +99,7 @@ class Omise
 	{
 ?>
 		<div class="error">
-			<p><?php echo __('Opn WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise'); ?></p>
+			<p><?php echo __('Opn Payments WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise'); ?></p>
 		</div>
 <?php
 	}
@@ -265,10 +265,10 @@ class Omise
 			'omise_charge_items',
 			array(
 				'supports' => array('title', 'custom-fields'),
-				'label'    => 'Opn Charge Items',
+				'label'    => 'Opn Payments Charge Items',
 				'labels'   => array(
-					'name'          => 'Opn Charge Items',
-					'singular_name' => 'Opn Charge Item'
+					'name'          => 'Opn Payments Charge Items',
+					'singular_name' => 'Opn Payments Charge Item'
 				)
 			)
 		);

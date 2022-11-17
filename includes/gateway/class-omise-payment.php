@@ -266,7 +266,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			return $this->invalid_order( $order_id );
 		}
 
-		$this->order->add_order_note( sprintf( __( 'Opn: Processing a payment with %s', 'omise' ), $this->method_title ) );
+		$this->order->add_order_note( sprintf( __( 'Opn Payments: Processing a payment with %s', 'omise' ), $this->method_title ) );
 		$this->order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
 		$this->order->save();
 
@@ -276,7 +276,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			return $this->payment_failed( $e->getMessage() );
 		}
 
-		$this->order->add_order_note( sprintf( __( 'Opn: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
+		$this->order->add_order_note( sprintf( __( 'Opn Payments: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
 		$this->set_order_transaction_id( $charge['id'] );
 
 		return $this->result( $order_id, $this->order, $charge );
@@ -331,7 +331,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$this->order()->add_order_note(
 				sprintf(
 					wp_kses(
-						__( 'Opn: Payment successful (manual capture).<br/>An amount of %1$s %2$s has been paid', 'omise' ),
+						__( 'Opn Payments: Payment successful (manual capture).<br/>An amount of %1$s %2$s has been paid', 'omise' ),
 						array( 'br' => array() )
 					),
 
@@ -345,7 +345,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			$omiseError = $e->getOmiseError();
 			$this->order()->add_order_note(
 				sprintf(
-					wp_kses( __( 'Opn: Capture failed (manual capture).<br/>%s', 'omise' ), array( 'br' => array() ) ),
+					wp_kses( __( 'Opn Payments: Capture failed (manual capture).<br/>%s', 'omise' ), array( 'br' => array() ) ),
 					$e->getMessage()
 				)
 			);
@@ -392,7 +392,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			if ( $refund['voided'] ) {
 				$message = sprintf(
 					wp_kses(
-						__( 'Opn: Voided an amount of %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+						__( 'Opn Payments: Voided an amount of %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
 						array( 'br' => array() )
 					),
 					$amount,
@@ -402,7 +402,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 			} else {
 				$message = sprintf(
 					wp_kses(
-						__( 'Opn: Refunded an amount of %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
+						__( 'Opn Payments: Refunded an amount of %1$s %2$s.<br/>Refund id is %3$s', 'omise' ),
 						array( 'br' => array() )
 					),
 					$amount,
@@ -456,13 +456,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 						}
 
 						$message = wp_kses( __(
-							'Opn: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).', 'omise' ),
+							'Opn Payments: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).', 'omise' ),
 							array( 'br' => array() )
 						);
 						$this->order()->add_order_note( sprintf( $message, $this->order()->get_total(), $this->order()->get_currency() ) );
 					} else {
 						$message = wp_kses( __(
-							'Opn: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
+							'Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
 							array( 'br' => array() )
 						);
 						$this->order()->add_order_note( sprintf( $message, $this->order()->get_total(), $this->order()->get_currency() ) );
@@ -477,7 +477,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 					$this->delete_capture_metadata();
 
 					$message = wp_kses(
-						__( 'Opn: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
+						__( 'Opn Payments: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
 						array( 'br' => array() )
 					);
 					$this->order()->add_order_note( sprintf( $message, Omise()->translate( $charge['failure_message'] ), $charge['failure_code'] ) );
@@ -489,8 +489,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
 				case self::STATUS_PENDING:
 					$message = wp_kses( __(
-						'Opn: Payment is still in progress.<br/>
-						You might wait for a moment before click sync the status again or contact Opn support team at support@omise.co if you have any questions (manual sync).',
+						'Opn Payments: Payment is still in progress.<br/>
+						You might wait for a moment before click sync the status again or contact Opn Payments support team at support@omise.co if you have any questions (manual sync).',
 						'omise'
 					), array( 'br' => array() ) );
 
@@ -500,7 +500,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				case self::STATUS_EXPIRED:
 					$this->delete_capture_metadata();
 
-					$message = wp_kses( __( 'Opn: Payment expired. (manual sync).', 'omise' ), array( 'br' => array() ) );
+					$message = wp_kses( __( 'Opn Payments: Payment expired. (manual sync).', 'omise' ), array( 'br' => array() ) );
 					$this->order()->add_order_note( $message );
 
 					if ( ! $this->order()->has_status( self::STATUS_CANCELLED ) ) {
@@ -511,7 +511,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 				case self::STATUS_REVERSED:
 					$this->delete_capture_metadata();
 
-					$message = wp_kses( __( 'Opn: Payment reversed. (manual sync).', 'omise' ), array( 'br' => array() ) );
+					$message = wp_kses( __( 'Opn Payments: Payment reversed. (manual sync).', 'omise' ), array( 'br' => array() ) );
 					$this->order()->add_order_note( $message );
 
 					if ( ! $this->order()->has_status( self::STATUS_CANCELLED ) ) {
@@ -521,13 +521,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
 				default:
 					throw new Exception(
-						__( 'Cannot read the payment status. Please try sync again or contact Opn support team at support@omise.co if you have any questions.', 'omise' )
+						__( 'Cannot read the payment status. Please try sync again or contact Opn Payments support team at support@omise.co if you have any questions.', 'omise' )
 					);
 					break;
 			}
 		} catch ( Exception $e ) {
 			$message = wp_kses(
-				__( 'Opn: Sync failed (manual sync).<br/>%s.', 'omise' ),
+				__( 'Opn Payments: Sync failed (manual sync).<br/>%s.', 'omise' ),
 				array( 'br' => array() )
 			);
 
@@ -572,7 +572,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		$message = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
 
 		if ( $this->order() ) {
-			$this->order()->add_order_note( sprintf( __( 'Opn: Payment failed, %s', 'omise' ), $reason ) );
+			$this->order()->add_order_note( sprintf( __( 'Opn Payments: Payment failed, %s', 'omise' ), $reason ) );
 			$this->order()->update_status( 'failed' );
 		}
 

@@ -7,8 +7,8 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_ocbc_pao';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn OCBC Pay Anyone', 'omise' );
-		$this->method_description = __( 'Accept payment through <strong>OCBC Pay Anyone</strong> via Opn payment gateway.', 'omise' );
+		$this->method_title       = __( 'Opn Payments OCBC Pay Anyone', 'omise' );
+		$this->method_description = __( 'Accept payment through <strong>OCBC Pay Anyone</strong> via Opn Payments payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
 		$this->init_form_fields();
@@ -33,7 +33,7 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn  OCBC Pay Anyone Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments  OCBC Pay Anyone Payment', 'omise' ),
 				'default' => 'no'
 			),
 

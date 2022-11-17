@@ -7,9 +7,9 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
 
         $this->id = 'omise_googlepay';
         $this->has_fields = true;
-        $this->method_title = __('Opn Google Pay', 'omise');
+        $this->method_title = __('Opn Payments Google Pay', 'omise');
         $this->method_description = wp_kses(
-            __('Accept payments through <strong>Google Pay</strong> via Opn payment gateway.', 'omise'),
+            __('Accept payments through <strong>Google Pay</strong> via Opn Payments payment gateway.', 'omise'),
             array('strong' => array())
         );
 
@@ -42,7 +42,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                 'enabled' => array(
                     'title' => __('Enable/Disable', 'omise'),
                     'type' => 'checkbox',
-                    'label' => __('Enable Opn Google Pay Payment', 'omise'),
+                    'label' => __('Enable Opn Payments Google Pay Payment', 'omise'),
                     'default' => 'no'
                 ),
 
@@ -122,7 +122,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                     'default'     => Omise_Card_Image::get_amex_default_display(),
                     'description' => wp_kses(
                         __('This only controls the allowed card networks GooglePay will allow the customer to select.
-                        <br />It is not related to card processing on Opn payment gateway.
+                        <br />It is not related to card processing on Opn Payments payment gateway.
                         <br />Note: This payment method will not be available on the checkout page if no card network is selected.', 'omise'),
                         array('br' => array())
                     )

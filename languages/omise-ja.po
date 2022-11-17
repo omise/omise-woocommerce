@@ -1,4 +1,4 @@
-# This file is distributed under the same license as the Opn package.
+# This file is distributed under the same license as the Opn Payments package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Omise Payment Gateway v3.2\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Language: ja\n"
 
 #: includes/gateway/class-omise-payment-alipay.php:21
-msgid "Opn Alipay"
-msgstr "Opn アリペイ"
+msgid "Opn Payments Alipay"
+msgstr "Opn Payments アリペイ"
 
 #: includes/gateway/class-omise-payment-alipay.php:22
 msgid "Accept payment through Alipay"
-msgstr "Opnを通してアリペイ決済を提供します。"
+msgstr "Opn Paymentsを通してアリペイ決済を提供します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:42 includes/gateway/class-omise-payment-creditcard.php:56
 #: includes/gateway/class-omise-payment-internetbanking.php:48
@@ -31,8 +31,8 @@ msgid "Enable/Disable"
 msgstr "有効/無効"
 
 #: includes/gateway/class-omise-payment-alipay.php:44
-msgid "Enable Opn  Alipay Payment"
-msgstr "Opnのアリペイ決済を有効化します。"
+msgid "Enable Opn Payments  Alipay Payment"
+msgstr "Opn Paymentsのアリペイ決済を有効化します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:49 includes/gateway/class-omise-payment-creditcard.php:63
 #: includes/gateway/class-omise-payment-internetbanking.php:55
@@ -67,17 +67,17 @@ msgid "try submit your order again or report our support team that you have foun
 msgstr "ていただくか、サポートチームまでご報告ください。（お問い合わせの際は注文ID '%s') をご提示ください。）"
 
 #: includes/gateway/class-omise-payment-alipay.php:88
-msgid "Opn: Processing a payment with Alipay solution."
-msgstr "Opn: アリペイソリューションで決済処理."
+msgid "Opn Payments: Processing a payment with Alipay solution."
+msgstr "Opn Payments: アリペイソリューションで決済処理."
 
 #: includes/gateway/class-omise-payment-alipay.php:99 includes/gateway/class-omise-payment-creditcard.php:289
 #: includes/gateway/class-omise-payment-internetbanking.php:115
-msgid "Opn: Charge (ID: %s) has been created"
-msgstr "Opn: 課金（ID：%s）が作成されました。"
+msgid "Opn Payments: Charge (ID: %s) has been created"
+msgstr "Opn Payments: 課金（ID：%s）が作成されました。"
 
 #: includes/gateway/class-omise-payment-alipay.php:106 includes/gateway/class-omise-payment-internetbanking.php:122
-msgid "Opn: Redirecting buyer out to %s"
-msgstr "Opn: 購入者を %s にリダイレクトします。"
+msgid "Opn Payments: Redirecting buyer out to %s"
+msgstr "Opn Payments: 購入者を %s にリダイレクトします。"
 
 #: includes/gateway/class-omise-payment-alipay.php:122 includes/gateway/class-omise-payment-internetbanking.php:138
 msgid "Please feel free to try submit your order again or contact our support team if you have any questions (Your temporary order id is '%s')"
@@ -91,8 +91,8 @@ msgstr "お客様の決済を完了できませんでした。<br/>%s"
 
 #: includes/gateway/class-omise-payment-alipay.php:142 includes/gateway/class-omise-payment-creditcard.php:385
 #: includes/gateway/class-omise-payment-internetbanking.php:158
-msgid "Opn: Payment failed, %s"
-msgstr "Opn: 決済が完了できませんでした。%s"
+msgid "Opn Payments: Payment failed, %s"
+msgstr "Opn Payments: 決済が完了できませんでした。%s"
 
 #: includes/gateway/class-omise-payment-alipay.php:158 includes/gateway/class-omise-payment-creditcard.php:492
 #: includes/gateway/class-omise-payment-internetbanking.php:174
@@ -101,38 +101,38 @@ msgstr "お客様の決済結果を確認できませんでした。<br/>すで�
 
 #: includes/gateway/class-omise-payment-alipay.php:168 includes/gateway/class-omise-payment-creditcard.php:502
 #: includes/gateway/class-omise-payment-internetbanking.php:184
-msgid "Opn: Validating the payment result.."
-msgstr "Opn: 決済処理の結果を返します。"
+msgid "Opn Payments: Validating the payment result.."
+msgstr "Opn Payments: 決済処理の結果を返します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:180
-msgid "Opn: The payment has been processing.<br/>Due to the Alipay process, this might takes a few seconds or an hour. Please do a manual 'Sync Payment Status' action from the Order Actions panel or check the payment status directly at Opn dashboard again later"
-msgstr "Opn: 決済処理中です。<br/>アリペイ側の決済処理により、反映には数秒から1時間程かかる場合がございます。Order Actionsパネルから手動で「決済スータスを同期する」を実行いただくか、またはOpnダッシュボードにてご確認ください。"
+msgid "Opn Payments: The payment has been processing.<br/>Due to the Alipay process, this might takes a few seconds or an hour. Please do a manual 'Sync Payment Status' action from the Order Actions panel or check the payment status directly at Opn Payments dashboard again later"
+msgstr "Opn Payments: 決済処理中です。<br/>アリペイ側の決済処理により、反映には数秒から1時間程かかる場合がございます。Order Actionsパネルから手動で「決済スータスを同期する」を実行いただくか、またはOpn Paymentsダッシュボードにてご確認ください。"
 
 #: includes/gateway/class-omise-payment-alipay.php:196 includes/gateway/class-omise-payment-creditcard.php:338
 #: includes/gateway/class-omise-payment-creditcard.php:532 includes/gateway/class-omise-payment-internetbanking.php:212
-msgid "Opn: Payment successful.<br/>An amount %1$s %2$s has been paid"
-msgstr "Opn: 決済が完了しました。<br/>%1$s %2$sが支払われました。"
+msgid "Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid"
+msgstr "Opn Payments: 決済が完了しました。<br/>%1$s %2$sが支払われました。"
 
 #: includes/gateway/class-omise-payment-alipay.php:212 includes/gateway/class-omise-payment-creditcard.php:361
 msgid "Note that your payment might already has been processed. Please contact our support team if you have any questions."
-msgstr "決済処理中の可能性がありますのでご注意ください。ご不明な点がございましたら、Opnサポートチームまでお問い合わせください。"
+msgstr "決済処理中の可能性がありますのでご注意ください。ご不明な点がございましたら、Opn Paymentsサポートチームまでお問い合わせください。"
 
 #: includes/gateway/class-omise-payment-alipay.php:228 includes/gateway/class-omise-payment-creditcard.php:577
 #: includes/gateway/class-omise-payment-internetbanking.php:244
-msgid "Opn: Payment failed.<br/>%s"
-msgstr "Opn: 決済を完了できませんでした。<br/>%s"
+msgid "Opn Payments: Payment failed.<br/>%s"
+msgstr "Opn Payments: 決済を完了できませんでした。<br/>%s"
 
 #: includes/gateway/class-omise-payment-creditcard.php:21
-msgid "Opn Credit / Debit Card"
-msgstr "Opn クレジットカード ／ デビットカード"
+msgid "Opn Payments Credit / Debit Card"
+msgstr "Opn Payments クレジットカード ／ デビットカード"
 
 #: includes/gateway/class-omise-payment-creditcard.php:23
-msgid "Accept payment through <strong>Credit / Debit Card</strong> via Opn payment gateway."
-msgstr "Opn決済ゲートウェイを経由して<strong>クレジットカード／デビットカード</strong>決済を受け付けます。"
+msgid "Accept payment through <strong>Credit / Debit Card</strong> via Opn Payments payment gateway."
+msgstr "Opn Payments決済ゲートウェイを経由して<strong>クレジットカード／デビットカード</strong>決済を受け付けます。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:58
-msgid "Enable Opn  Credit / Debit Card Payment"
-msgstr "Opnのクレジットカード／デビットカード決済システムを有効化します。"
+msgid "Enable Opn Payments  Credit / Debit Card Payment"
+msgstr "Opn Paymentsのクレジットカード／デビットカード決済システムを有効化します。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:66
 msgid "Credit / Debit Card"
@@ -167,20 +167,20 @@ msgid "Enabling 3-D Secure payment means that buyer will be redirected to the 3-
 msgstr "3-Dセキュア決済を有効にすると、購入者は決済処理中に3-Dセキュアの認証ページにリダイレクトされます。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:98
-msgid "Please be informed that you must contact Opn support team (support@omise.co) before enable or disable this option.<br/> (Japan-based accounts are not eligible for the service.)"
-msgstr "本オプションのご利用を希望される方は、Opnサポートチーム(support@omise.co)までご連絡ください。<br/>なお、誠に恐れ入りますが、日本国内の加盟店は現在ご利用いただけません。"
+msgid "Please be informed that you must contact Opn Payments support team (support@omise.co) before enable or disable this option.<br/> (Japan-based accounts are not eligible for the service.)"
+msgstr "本オプションのご利用を希望される方は、Opn Paymentsサポートチーム(support@omise.co)までご連絡ください。<br/>なお、誠に恐れ入りますが、日本国内の加盟店は現在ご利用いただけません。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:104
 msgid "Supported card icons"
 msgstr "ご利用可能ブランド"
 
 #: includes/gateway/class-omise-payment-creditcard.php:134
-msgid "This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Opn payment gateway."
+msgid "This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Opn Payments payment gateway."
 msgstr "ご提供可能なカードブランドのアイコンを決済画面に表示できます。<br/>本項目の選択内容は、カード処理システムには影響いたしません。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:191
-msgid "Opn: Processing a payment with Credit Card solution.."
-msgstr "Opn: クレジットカード決済"
+msgid "Opn Payments: Processing a payment with Credit Card solution.."
+msgstr "Opn Payments: クレジットカード決済"
 
 #: includes/gateway/class-omise-payment-creditcard.php:198
 msgid "Please select an existing card or enter a new card information."
@@ -192,75 +192,75 @@ msgstr "ご使用のカードでは決済処理ができません。カード情
 
 #: includes/gateway/class-omise-payment-creditcard.php:250
 msgid "Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to try submit your order again or report our support team that you have found this problem (Your temporary order id is '%s')"
-msgstr "お客様側ではなく、Opnサイドの問題だと考えられます。お手数ですが、再度ご注文をいただくか、サポートチームまでご報告ください。（お問い合わせの際は注文ID '%s') をご提示ください。）"
+msgstr "お客様側ではなく、Opn Paymentsサイドの問題だと考えられます。お手数ですが、再度ご注文をいただくか、サポートチームまでご報告ください。（お問い合わせの際は注文ID '%s') をご提示ください。）"
 
 #: includes/gateway/class-omise-payment-creditcard.php:303
-msgid "Opn: Processing with a 3-D Secure payment, redirecting buyer out to %s"
-msgstr "Opn: 3Dセキュアによる二要素認証のため、購入者を %s にリダイレクトします。"
+msgid "Opn Payments: Processing with a 3-D Secure payment, redirecting buyer out to %s"
+msgstr "Opn Payments: 3Dセキュアによる二要素認証のため、購入者を %s にリダイレクトします。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:320 includes/gateway/class-omise-payment-creditcard.php:514
-msgid "Opn: Payment processing.<br/>An amount %1$s %2$s has been authorized"
-msgstr "Opn: 決済処理 <br/> %1$s %2$s が認証されました。"
+msgid "Opn Payments: Payment processing.<br/>An amount %1$s %2$s has been authorized"
+msgstr "Opn Payments: 決済処理 <br/> %1$s %2$s が認証されました。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:411
 msgid "We cannot process your refund.<br/>Note that nothing wrong by you, this might be from the store issue.<br/><br/>Please feel try to create a refund again or report our support team that you have found this problem"
-msgstr "返金処理ができません。<br/>お客様側ではなく、Opnサイドの問題だと考えられます。<br/><br/>お手数ですが、再度 返金手続きを行っていただくか、サポートチームまでご報告ください。"
+msgstr "返金処理ができません。<br/>お客様側ではなく、Opn Paymentsサイドの問題だと考えられます。<br/><br/>お手数ですが、再度 返金手続きを行っていただくか、サポートチームまでご報告ください。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:423
-msgid "Opn: Refunding a payment with an amount %1$s %2$s"
-msgstr "Opn: %1$s %2$sを返金します。"
+msgid "Opn Payments: Refunding a payment with an amount %1$s %2$s"
+msgstr "Opn Payments: %1$s %2$sを返金します。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:439
-msgid "Opn: Voided an amount %1$s %2$s.<br/>Refund id is %3$s"
-msgstr "Opn: %1$s %2$sが無効になりました。<br/>返金IDは %3$sです。"
+msgid "Opn Payments: Voided an amount %1$s %2$s.<br/>Refund id is %3$s"
+msgstr "Opn Payments: %1$s %2$sが無効になりました。<br/>返金IDは %3$sです。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:451
-msgid "Opn: Refunded an amount %1$s %2$s.<br/>Refund id is %3$s"
-msgstr "Opn: %1$s %2$sが返金済です。<br/>返金IDは %3$sです。"
+msgid "Opn Payments: Refunded an amount %1$s %2$s.<br/>Refund id is %3$s"
+msgstr "Opn Payments: %1$s %2$sが返金済です。<br/>返金IDは %3$sです。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:466 includes/gateway/class-omise-payment-creditcard.php:477
-msgid "Opn: Refund failed.<br/>%s"
-msgstr "Opn: 返金が完了できませんでした。"
+msgid "Opn Payments: Refund failed.<br/>%s"
+msgstr "Opn Payments: 返金が完了できませんでした。"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:21
-msgid "Opn Internet Banking"
-msgstr "Opn インターネットバンキング"
+msgid "Opn Payments Internet Banking"
+msgstr "Opn Payments インターネットバンキング"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:23
-msgid "Accept payment through <strong>Internet Banking</strong> via Opn payment gateway (only available in Thailand)."
-msgstr "Opn決済ゲートウェイを通して<strong>インターネットバンキング<strong>をご提供します（現在、タイ契約加盟店様のみご利用可能です）"
+msgid "Accept payment through <strong>Internet Banking</strong> via Opn Payments payment gateway (only available in Thailand)."
+msgstr "Opn Payments決済ゲートウェイを通して<strong>インターネットバンキング<strong>をご提供します（現在、タイ契約加盟店様のみご利用可能です）"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:50
-msgid "Enable Opn  Internet Banking Payment"
-msgstr "Opnのインターネットバンキングを有効化にします。"
+msgid "Enable Opn Payments  Internet Banking Payment"
+msgstr "Opn Paymentsのインターネットバンキングを有効化にします。"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:58
 msgid "Internet Banking"
 msgstr "インターネットバンキング"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:104
-msgid "Opn: Processing a payment with Internet Banking solution.."
-msgstr "Opn: インターネットバンキングで決済を行います。"
+msgid "Opn Payments: Processing a payment with Internet Banking solution.."
+msgstr "Opn Payments: インターネットバンキングで決済を行います。"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:196
-msgid "Opn: The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or an hour. Please do a manual 'Sync Payment Status' action from the Order Actions panel or check the payment status directly at Opn dashboard again later"
-msgstr "Opn: 決済処理中です。<br/>銀行側の決済処理により、反映には数秒から1時間程度かかる場合がございます。Order Actionsバネルから手動で「決済ステータスを同期する」を実行いただくか、またはOpnダッシュボードにてご確認ください。"
+msgid "Opn Payments: The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or an hour. Please do a manual 'Sync Payment Status' action from the Order Actions panel or check the payment status directly at Opn Payments dashboard again later"
+msgstr "Opn Payments: 決済処理中です。<br/>銀行側の決済処理により、反映には数秒から1時間程度かかる場合がございます。Order Actionsバネルから手動で「決済ステータスを同期する」を実行いただくか、またはOpn Paymentsダッシュボードにてご確認ください。"
 
 #: includes/gateway/class-omise-payment.php:57
 msgid "Payment Settings"
 msgstr "設定"
 
 #: includes/gateway/class-omise-payment.php:61
-msgid "All of your keys can be found at your Opn dashboard, check the following links.<br/><a href=\"%s\">Test keys</a> or <a href=\"%s" "\">Live keys</a> (login required)"
-msgstr "加盟店毎に付与されるAPIキーはOpnダッシュボードから取得できます<br/><a href=\"%s\">テストキー</a> or <a href=\"%s" "\">ライブキー</a>（アカウントログイン必須）"
+msgid "All of your keys can be found at your Opn Payments dashboard, check the following links.<br/><a href=\"%s\">Test keys</a> or <a href=\"%s" "\">Live keys</a> (login required)"
+msgstr "加盟店毎に付与されるAPIキーはOpn Paymentsダッシュボードから取得できます<br/><a href=\"%s\">テストキー</a> or <a href=\"%s" "\">ライブキー</a>（アカウントログイン必須）"
 
 #: includes/gateway/class-omise-payment.php:73
 msgid "Test mode"
 msgstr "テストモード"
 
 #: includes/gateway/class-omise-payment.php:75
-msgid "Enabling test mode means that all your transactions will be performed under the Opn test account."
-msgstr "テストモードを有効化すると、全取引がOpnテストアカウント下で実行されます。"
+msgid "Enabling test mode means that all your transactions will be performed under the Opn Payments test account."
+msgstr "テストモードを有効化すると、全取引がOpn Paymentsテストアカウント下で実行されます。"
 
 #: includes/gateway/class-omise-payment.php:80
 msgid "Public key for test"
@@ -279,40 +279,40 @@ msgid "Secret key for live"
 msgstr "ライブモード用シークレットキー"
 
 #: includes/gateway/class-omise-payment.php:261
-msgid "Opn: Payment successful (manual capture).<br/>An amount %1$s %2$s has been paid"
-msgstr "Opn: 決済が完了しました（マニュアルキャプチャ）。<br/> %1$s %2$s の決済を行いました。"
+msgid "Opn Payments: Payment successful (manual capture).<br/>An amount %1$s %2$s has been paid"
+msgstr "Opn Payments: 決済が完了しました（マニュアルキャプチャ）。<br/> %1$s %2$s の決済を行いました。"
 
 #: includes/gateway/class-omise-payment.php:273
-msgid "Opn: Payment failed (manual capture).<br/>%s"
-msgstr "Opn: 決済が完了できませんでした。（マニュアルキャプチャ）<br/>%s"
+msgid "Opn Payments: Payment failed (manual capture).<br/>%s"
+msgstr "Opn Payments: 決済が完了できませんでした。（マニュアルキャプチャ）<br/>%s"
 
 #: includes/gateway/class-omise-payment.php:312
-msgid "Opn: Payment failed.<br/>%s (code: %s) (manual sync)."
-msgstr "Opn: 決済が完了できませんでした。<br/>%s (コード: %s) (マニュアル同期)。"
+msgid "Opn Payments: Payment failed.<br/>%s (code: %s) (manual sync)."
+msgstr "Opn Payments: 決済が完了できませんでした。<br/>%s (コード: %s) (マニュアル同期)。"
 
 #: includes/gateway/class-omise-payment.php:326
-msgid "Opn: Payment is still in progress.<br/>You might wait for a moment before click sync the status again or contact Opn support team at support@omise.co if you have any questions (manual sync)."
-msgstr "Opn: 決済処理中です。<br/>しばらく待ってから再度ステータスの同期を行うか、ご不明な点があればOpnサポートチーム（support@omise.co）にお問い合わせください（マニュアル同期）。"
+msgid "Opn Payments: Payment is still in progress.<br/>You might wait for a moment before click sync the status again or contact Opn Payments support team at support@omise.co if you have any questions (manual sync)."
+msgstr "Opn Payments: 決済処理中です。<br/>しばらく待ってから再度ステータスの同期を行うか、ご不明な点があればOpn Paymentsサポートチーム（support@omise.co）にお問い合わせください（マニュアル同期）。"
 
 #: includes/gateway/class-omise-payment.php:337
-msgid "Opn: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync)."
-msgstr "Opn: 決済が完了しました。<br/>%1$s %2$sが支払われました（マニュアル同期）。"
+msgid "Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync)."
+msgstr "Opn Payments: 決済が完了しました。<br/>%1$s %2$sが支払われました（マニュアル同期）。"
 
 #: includes/gateway/class-omise-payment.php:353
-msgid "Cannot read the payment status. Please try sync again or contact Opn support team at support@omise.co if you have any questions."
-msgstr "決済結果を確認できませんでした。再度同期をお試しいただくか、ご不明な点があればOpnサポートチーム（support@omise.co）にお問い合わせください。"
+msgid "Cannot read the payment status. Please try sync again or contact Opn Payments support team at support@omise.co if you have any questions."
+msgstr "決済結果を確認できませんでした。再度同期をお試しいただくか、ご不明な点があればOpn Paymentsサポートチーム（support@omise.co）にお問い合わせください。"
 
 #: includes/gateway/class-omise-payment.php:359
-msgid "Opn: Sync failed (manual sync).<br/>%s (manual sync)."
-msgstr "Opn: 同期に失敗しました（マニュアル同期）。<br/>%s (マニュアル同期)。"
+msgid "Opn Payments: Sync failed (manual sync).<br/>%s (manual sync)."
+msgstr "Opn Payments: 同期に失敗しました（マニュアル同期）。<br/>%s (マニュアル同期)。"
 
 #: omise-woocommerce.php:111
-msgid "Opn: Capture this order"
-msgstr "Opn: 注文のキャプチャ"
+msgid "Opn Payments: Capture this order"
+msgstr "Opn Payments: 注文のキャプチャ"
 
 #: omise-woocommerce.php:114
-msgid "Opn: Manual sync payment status"
-msgstr "Opn: マニュアル同期での決済状況"
+msgid "Opn Payments: Manual sync payment status"
+msgstr "Opn Payments: マニュアル同期での決済状況"
 
 #: templates/payment/form-creditcard.php:2
 msgid "Card number"
@@ -439,20 +439,20 @@ msgid "Remember this card"
 msgstr "カード情報を保存する"
 
 #: Plugin Name of the plugin/theme
-msgid "Opn Payment Gateway"
-msgstr "Opn 決済ゲートウェイ"
+msgid "Opn Payments Payment Gateway"
+msgstr "Opn Payments 決済ゲートウェイ"
 
 #: Plugin URI of the plugin/theme
 msgid "https://www.omise.co/woocommerce"
 msgstr "https://www.omise.co/ja/woocommerce-plugin/japan"
 
 #: Description of the plugin/theme
-msgid "Opn WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payment Gateway payment method to WooCommerce."
-msgstr " Opn WooCommerce ゲートウェイプラグインは、WooCommerce用に特化し設計されたWordPressのプラグインです。このプラグインはOpn 決済ゲートウェイのサポートをWooCommerceに追加します。"
+msgid "Opn Payments WooCommerce Gateway Plugin is a wordpress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway payment method to WooCommerce."
+msgstr " Opn Payments WooCommerce ゲートウェイプラグインは、WooCommerce用に特化し設計されたWordPressのプラグインです。このプラグインはOpn Payments 決済ゲートウェイのサポートをWooCommerceに追加します。"
 
 #: Author of the plugin/theme
-msgid "Opn"
-msgstr "Opn "
+msgid "Opn Payments"
+msgstr "Opn Payments "
 
 #: Author URI of the plugin/theme
 msgid "https://www.omise.co"
