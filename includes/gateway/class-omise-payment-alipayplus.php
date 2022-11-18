@@ -52,7 +52,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  ' . $this->wallet_title . ' Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments ' . $this->wallet_title . ' Payment', 'omise' ),
 				'default' => 'no'
 			),
 

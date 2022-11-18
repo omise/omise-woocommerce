@@ -55,7 +55,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  PromptPay Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments PromptPay Payment', 'omise' ),
 				'default' => 'no'
 			),
 

@@ -33,7 +33,7 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  OCBC Pay Anyone Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments OCBC Pay Anyone Payment', 'omise' ),
 				'default' => 'no'
 			),
 

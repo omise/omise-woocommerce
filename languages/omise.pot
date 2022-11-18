@@ -30,7 +30,7 @@ msgid "Enable/Disable"
 msgstr "有効/無効"
 
 #: includes/gateway/class-omise-payment-alipay.php:44
-msgid "Enable Opn Payments  Alipay Payment"
+msgid "Enable Opn Payments Alipay Payment"
 msgstr "Opn Paymentsのアリペイ決済を有効化します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:49 includes/gateway/class-omise-payment-creditcard.php:63
@@ -130,7 +130,7 @@ msgid "Accept payment through <strong>Credit / Debit Card</strong> via Opn Payme
 msgstr "Opn Payments決済ゲートウェイを経由して<strong>クレジットカード／デビットカード</strong>決済を受け付けます。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:58
-msgid "Enable Opn Payments  Credit / Debit Card Payment"
+msgid "Enable Opn Payments Credit / Debit Card Payment"
 msgstr "Opn Paymentsのクレジットカード／デビットカード決済システムを有効化します。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:66
@@ -230,7 +230,7 @@ msgid "Accept payment through <strong>Internet Banking</strong> via Opn Payments
 msgstr "Opn Payments決済ゲートウェイを通して<strong>インターネットバンキング<strong>をご提供します（現在、タイ契約加盟店様のみご利用可能です）"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:50
-msgid "Enable Opn Payments  Internet Banking Payment"
+msgid "Enable Opn Payments Internet Banking Payment"
 msgstr "Opn Paymentsのインターネットバンキングを有効化にします。"
 
 #: includes/gateway/class-omise-payment-internetbanking.php:58

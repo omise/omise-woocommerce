@@ -37,7 +37,7 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __('Enable/Disable', 'omise'),
 				'type'    => 'checkbox',
-				'label'   => __('Enable Opn Payments  DuitNow Online Banking/Wallets Payment', 'omise'),
+				'label'   => __('Enable Opn Payments DuitNow Online Banking/Wallets Payment', 'omise'),
 				'default' => 'no'
 			),
 

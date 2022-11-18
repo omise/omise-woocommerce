@@ -40,7 +40,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  Installment Payments', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Installment Payments', 'omise' ),
 				'default' => 'no'
 			),
 

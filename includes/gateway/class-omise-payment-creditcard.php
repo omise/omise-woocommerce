@@ -47,7 +47,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 				'enabled' => array(
 					'title'   => __( 'Enable/Disable', 'omise' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable Opn Payments  Credit / Debit Card Payment', 'omise' ),
+					'label'   => __( 'Enable Opn Payments Credit / Debit Card Payment', 'omise' ),
 					'default' => 'no'
 				),
 

@@ -39,7 +39,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __('Enable/Disable', 'omise'),
 				'type'    => 'checkbox',
-				'label'   => __('Enable Opn Payments  FPX Payment', 'omise'),
+				'label'   => __('Enable Opn Payments FPX Payment', 'omise'),
 				'default' => 'no'
 			),
 

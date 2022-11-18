@@ -40,7 +40,7 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  Convenience Store / Pay-easy / Online Banking Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Convenience Store / Pay-easy / Online Banking Payment', 'omise' ),
 				'default' => 'no'
 			),
 

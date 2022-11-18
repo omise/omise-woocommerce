@@ -41,7 +41,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  Mobile Banking Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Mobile Banking Payment', 'omise' ),
 				'default' => 'no'
 			),
 

@@ -43,7 +43,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  TrueMoney Wallet Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments TrueMoney Wallet Payment', 'omise' ),
 				'default' => 'no'
 			),
 

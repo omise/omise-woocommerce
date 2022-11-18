@@ -40,7 +40,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  Tesco Bill Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Tesco Bill Payment', 'omise' ),
 				'default' => 'no'
 			),
 

@@ -39,7 +39,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 				'enabled' => array(
 					'title'   => __( 'Enable/Disable', 'omise' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable Opn Payments  Rabbit LINE Pay Payment', 'omise' ),
+					'label'   => __( 'Enable Opn Payments Rabbit LINE Pay Payment', 'omise' ),
 					'default' => 'no'
 				),
 

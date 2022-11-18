@@ -33,7 +33,7 @@ class Omise_Payment_DuitNow_QR extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  DuitNow QR Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments DuitNow QR Payment', 'omise' ),
 				'default' => 'no'
 			),
 

@@ -33,7 +33,7 @@ class Omise_Payment_GrabPay extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  GrabPay Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments GrabPay Payment', 'omise' ),
 				'default' => 'no'
 			),
 

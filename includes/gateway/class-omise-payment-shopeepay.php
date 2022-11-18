@@ -33,7 +33,7 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  ShopeePay Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments ShopeePay Payment', 'omise' ),
 				'default' => 'no'
 			),
 

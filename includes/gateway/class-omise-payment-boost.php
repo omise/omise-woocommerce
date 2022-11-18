@@ -33,7 +33,7 @@ class Omise_Payment_Boost extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments  Boost Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Boost Payment', 'omise' ),
 				'default' => 'no'
 			),
 
