@@ -7,8 +7,8 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_maybank_qr';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise Maybank QRPay', 'omise' );
-		$this->method_description = __( 'Accept payment through <strong>Maybank QRPay</strong> via Omise payment gateway.', 'omise' );
+		$this->method_title       = __( 'Opn Payments Maybank QRPay', 'omise' );
+		$this->method_description = __( 'Accept payment through <strong>Maybank QRPay</strong> via Opn Payments payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
 		$this->init_form_fields();
@@ -33,7 +33,7 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise Maybank QRPay Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Maybank QRPay Payment', 'omise' ),
 				'default' => 'no'
 			),
 

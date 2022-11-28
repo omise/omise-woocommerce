@@ -24,9 +24,9 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_' . $wallet_source;
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise ' . $wallet_title, 'omise' );
+		$this->method_title       = __( 'Opn Payments ' . $wallet_title, 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>' . $wallet_title . '</strong> via Omise payment gateway.', 'omise' ),
+			__( 'Accept payments through <strong>' . $wallet_title . '</strong> via Opn Payments payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
 		$this->supports           = array( 'products', 'refunds' );
@@ -52,7 +52,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise ' . $this->wallet_title . ' Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments ' . $this->wallet_title . ' Payment', 'omise' ),
 				'default' => 'no'
 			),
 

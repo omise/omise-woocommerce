@@ -7,7 +7,8 @@
 			border-left-width: 4px;
 		}
 	</style>
-	<h1><?php echo $title; ?></h1>
+
+	<h1><?= $title; ?></h1>
 
 	<?php $page->display_messages(); ?>
 
@@ -23,7 +24,7 @@
 		<?php
 		echo sprintf(
 			wp_kses(
-				__( 'All of your keys can be found at your Omise dashboard, check the following links.<br/><a href="%s">Test keys</a> or <a href="%s">Live keys</a> (login required)', 'omise' ),
+				__( 'All of your keys can be found at your Opn Payments dashboard, check the following links.<br/><a href="%s">Test keys</a> or <a href="%s">Live keys</a> (login required)', 'omise' ),
 				array(
 					'br' => array(),
 					'a'  => array( 'href' => array() )
@@ -62,7 +63,7 @@
 						<fieldset>
 							<label for="sandbox">
 								<input name="sandbox" type="checkbox" id="sandbox" value="1" <?php echo 'yes' === $settings['sandbox'] ? 'checked="checked"' : ''; ?>>
-								<?php _e( 'Enabling test mode means that all your transactions will be performed under the Omise test account.', 'omise' ); ?>
+								<?php _e( 'Enabling test mode means that all your transactions will be performed under the Opn Payments test account.', 'omise' ); ?>
 							</label>
 						</fieldset>
 					</td>
@@ -115,7 +116,7 @@
 								<?php
 								echo sprintf(
 									wp_kses(
-										__( 'To enable <a href="%s">WebHooks</a> feature, you must setup an endpoint at <a href="%s"><strong>Omise dashboard</strong></a> by using the above url <em>(HTTPS only)</em>.', 'omise' ),
+										__( 'To enable <a href="%s">WebHooks</a> feature, you must setup an endpoint at <a href="%s"><strong>Opn Payments dashboard</strong></a> by using the above url <em>(HTTPS only)</em>.', 'omise' ),
 										array(
 											'a'       => array( 'href' => array() ),
 											'em'      => array(),
@@ -137,7 +138,7 @@
 		<h3><?php _e( 'Payment Methods', 'omise' ); ?></h3>
 		<?php if ($settings['account_country']) : ?>
 			<!--  account_country exists when API key is valid -->
-			<p><?php _e( 'The table below is a list of available payment methods for this omise account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
+			<p><?php _e( 'The table below is a list of available payment methods for this Opn Payments account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
 			<table class="form-table">
 				<tbody>
 					<tr>

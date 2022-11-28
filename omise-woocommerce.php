@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Plugin Name: Omise Payment Gateway
+ * Plugin Name: Opn Payments
  * Plugin URI:  https://www.omise.co/woocommerce
- * Description: Omise WooCommerce Gateway Plugin is a WordPress plugin 
- * designed specifically for WooCommerce. The plugin adds support for 
- * Omise Payment Gateway payment method to WooCommerce.
+ * Description: Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
  * Version:     4.26.0
- * Author:      Omise and contributors
+ * Author:      Opn Payments and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
  * WC requires at least: 3.3.4
@@ -54,7 +52,7 @@ class Omise
 
 	/**
 	 * Check if all dependencies are loaded
-	 * properly before Omise-WooCommerce.
+	 * properly before Omise WooCommerce.
 	 *
 	 * @since  3.2
 	 */
@@ -99,7 +97,7 @@ class Omise
 	{
 ?>
 		<div class="error">
-			<p><?php echo __('Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise'); ?></p>
+			<p><?php echo __('Opn Payments WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise'); ?></p>
 		</div>
 <?php
 	}
@@ -265,10 +263,10 @@ class Omise
 			'omise_charge_items',
 			array(
 				'supports' => array('title', 'custom-fields'),
-				'label'    => 'Omise Charge Items',
+				'label'    => 'Opn Payments Charge Items',
 				'labels'   => array(
-					'name'          => 'Omise Charge Items',
-					'singular_name' => 'Omise Charge Item'
+					'name'          => 'Opn Payments Charge Items',
+					'singular_name' => 'Opn Payments Charge Item'
 				)
 			)
 		);

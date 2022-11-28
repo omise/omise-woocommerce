@@ -7,9 +7,9 @@ class Omise_Payment_Internetbanking extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_internetbanking';
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Omise Internet Banking', 'omise' );
+		$this->method_title       = __( 'Opn Payments Internet Banking', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payment through <strong>Internet Banking</strong> via Omise payment gateway (only available in Thailand).', 'omise' ),
+			__( 'Accept payment through <strong>Internet Banking</strong> via Opn Payments payment gateway (only available in Thailand).', 'omise' ),
 			array(
 				'strong' => array()
 			)
@@ -36,7 +36,7 @@ class Omise_Payment_Internetbanking extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise Internet Banking Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Internet Banking Payment', 'omise' ),
 				'default' => 'no'
 			),
 

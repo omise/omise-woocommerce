@@ -7,7 +7,7 @@ class Omise_Payment_GrabPay extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_grabpay';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise GrabPay', 'omise' );
+		$this->method_title       = __( 'Opn Payments GrabPay', 'omise' );
 		$this->method_description = __( 'Accept payment through GrabPay', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
@@ -33,7 +33,7 @@ class Omise_Payment_GrabPay extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise GrabPay Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments GrabPay Payment', 'omise' ),
 				'default' => 'no'
 			),
 

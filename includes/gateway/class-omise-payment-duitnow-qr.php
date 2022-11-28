@@ -7,8 +7,8 @@ class Omise_Payment_DuitNow_QR extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_duitnow_qr';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise DuitNow QR', 'omise' );
-		$this->method_description = __( 'Accept payment through <strong>DuitNow QR</strong> via Omise payment gateway.', 'omise' );
+		$this->method_title       = __( 'Opn Payments DuitNow QR', 'omise' );
+		$this->method_description = __( 'Accept payment through <strong>DuitNow QR</strong> via Opn Payments payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
 		$this->init_form_fields();
@@ -33,7 +33,7 @@ class Omise_Payment_DuitNow_QR extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise DuitNow QR Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments DuitNow QR Payment', 'omise' ),
 				'default' => 'no'
 			),
 

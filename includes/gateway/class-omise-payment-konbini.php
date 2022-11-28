@@ -13,7 +13,7 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 		$this->has_fields         = true;
 		$this->method_title       = __( 'Convenience Store / Pay-easy / Online Banking', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>Convenience Store</strong> / <strong>Pay-easy</strong> / <strong>Online Banking</strong> via Omise payment gateway.', 'omise' ),
+			__( 'Accept payments through <strong>Convenience Store</strong> / <strong>Pay-easy</strong> / <strong>Online Banking</strong> via Opn Payments payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
 
@@ -40,7 +40,7 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise Convenience Store / Pay-easy / Online Banking Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Convenience Store / Pay-easy / Online Banking Payment', 'omise' ),
 				'default' => 'no'
 			),
 

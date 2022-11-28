@@ -10,7 +10,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 
 		$this->id                 = 'omise_fpx';
 		$this->has_fields         = true;
-		$this->method_title       = __('Omise FPX', 'omise');
+		$this->method_title       = __('Opn Payments FPX', 'omise');
 		$this->method_description = __('Accept payment through FPX', 'omise');
 		$this->supports           = array('products', 'refunds');
 
@@ -39,7 +39,7 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __('Enable/Disable', 'omise'),
 				'type'    => 'checkbox',
-				'label'   => __('Enable Omise FPX Payment', 'omise'),
+				'label'   => __('Enable Opn Payments FPX Payment', 'omise'),
 				'default' => 'no'
 			),
 

@@ -10,9 +10,9 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 
 		$this->id                 = 'omise_billpayment_tesco';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Omise Bill Payment: Tesco', 'omise' );
+		$this->method_title       = __( 'Opn Payments Bill Payment: Tesco', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>Tesco Bill Payment</strong> via Omise payment gateway.', 'omise' ),
+			__( 'Accept payments through <strong>Tesco Bill Payment</strong> via Opn Payments payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
 
@@ -40,7 +40,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Omise Tesco Bill Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Tesco Bill Payment', 'omise' ),
 				'default' => 'no'
 			),
 

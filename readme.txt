@@ -1,35 +1,36 @@
-=== Omise WooCommerce ===
+=== Opn Payments ===
 Contributors: Omise
-Tags: omise, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
+Tags: omise, opn, opn payments, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
 Stable tag: 4.26.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Omise plugin is is the official payment extension which provides support for Omise payment gateway for store builders working on the WooCommerce platform
+Opn Payments plugin is the official payment extension which provides support for Opn Payments payment gateway for store builders working on the WooCommerce platform
 
 == Description ==
 
-Omise WooCommerce Gateway Plugin is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway payment method to WooCommerce.
+Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
 
 == Installation ==
 
 After getting the source code, either downloading as a zip or git clone, put it in WordPress plugins folder (i.e. mv omise /wp-content/plugins/ or upload a zip via WordPress admin Plugins section, just like the other WordPress plugins).
 
-Then, Omise Gateway WordPress plugin should be appeared in WordPress admin page, under the Plugins menu.
+Then, Opn Payments WordPress plugin should be appeared in WordPress admin page, under the Plugins menu.
 From there:
 1. Activate the plugin
 2. Go to WooCommerce -> Settings
-3. Select the Checkout tab on top.
-4. Select Omise payment gateway at the bottom of the page, under Payment Gateways.
-5. Optionally, if you\'d like to have Omise Payment gateway as a default payment gateway, you can check Default.
-6. Click the Settings button and adjust the options.
+3. Select the Payments tab on top.
+4. Enable the payment methods that starts with Opn Payments.
+5. Click on Set up to if you like to add description.
+6. Optionally, if you\'d like to have Opn Payments as a default payment gateway, you can check Default.
+7. Click the Settings button and adjust the options.
 
 == Screenshots ==
-1. Omise Payment Gateway Dashboard
-2. Omise Payment Gateway Setting Page
-3. Omise Payment Gateway Checkout Form
+1. Opn Payments Dashboard
+2. Opn Payments Setting Page
+3. Opn Payments Checkout Form
 
 == Changelog ==
 
