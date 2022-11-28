@@ -7,7 +7,8 @@
 			border-left-width: 4px;
 		}
 	</style>
-	<h1><?php echo $title; ?></h1>
+
+	<h1><?= $title; ?></h1>
 
 	<?php $page->display_messages(); ?>
 
@@ -137,7 +138,7 @@
 		<h3><?php _e( 'Payment Methods', 'omise' ); ?></h3>
 		<?php if ($settings['account_country']) : ?>
 			<!--  account_country exists when API key is valid -->
-			<p><?php _e( 'The table below is a list of available payment methods for this omise account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
+			<p><?php _e( 'The table below is a list of available payment methods for this Opn Payments account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
 			<table class="form-table">
 				<tbody>
 					<tr>
