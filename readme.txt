@@ -1,6 +1,6 @@
 === Opn Payments ===
-Contributors: Omise
-Tags: omise, opn, opn payments, payment, payment gateway, woocommerce plugin, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
+Contributors: Opn Payments
+Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
 Stable tag: 4.26.0
