@@ -403,7 +403,7 @@ ul.omise-banks-list {
 }
 
 /** MAYBANK **/
-.bank-logo.ezypay {
+.bank-logo.mbb {
 	background: url('../images/maybank.svg') #ffcf00;
 	border-color: #ffcf00;
 }
