@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### [v4.27.0 _(Dec 7, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.27.0)
+- Rebrand Omise to Opn Payments. (PR [#329](https://github.com/omise/omise-woocommerce/pull/329))
+- Update the links from Dashboard v1 to v2. (PR [#330](https://github.com/omise/omise-woocommerce/pull/330))
+- Changed missing text from Omise to Opn Payments. (PR [#331](https://github.com/omise/omise-woocommerce/pull/331))
+
 ### [v4.26.0 _(Nov 2, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.26.0)
 - Metadata keys is_omise_payment_resolved added as protected metadata. (PR [#324](https://github.com/omise/omise-woocommerce/pull/324))
 - Fix the issue of customer getting back to checkout page from OTP page. (PR [#323](https://github.com/omise/omise-woocommerce/pull/323))
