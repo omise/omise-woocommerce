@@ -24,14 +24,12 @@
 		<?php
 		echo sprintf(
 			wp_kses(
-				__( 'All of your keys can be found at your Opn Payments dashboard, check the following links.<br/><a href="%s">Test keys</a> or <a href="%s">Live keys</a> (login required)', 'omise' ),
+				__( 'All of your keys can be found at your Opn Payments dashboard, check <a target="_blank" href="%s">here link</a> for the keys. (login required)', 'omise' ),
 				array(
-					'br' => array(),
-					'a'  => array( 'href' => array() )
+					'a'  => array( 'href' => array(), 'target' => array() )
 				)
 			),
-			esc_url( 'https://dashboard.omise.co/test/keys' ),
-			esc_url( 'https://dashboard.omise.co/live/keys' )
+			esc_url( 'https://dashboard.omise.co/v2/settings/keys' ),
 		);
 		?>
 	</p>
@@ -124,7 +122,7 @@
 										)
 									),
 									esc_url( 'https://www.omise.co/api-webhooks' ),
-									esc_url( 'https://dashboard.omise.co/test/webhooks/edit' )
+									esc_url( 'https://dashboard.omise.co/v2/settings/webhooks' )
 								);
 								?>
 						</fieldset>
