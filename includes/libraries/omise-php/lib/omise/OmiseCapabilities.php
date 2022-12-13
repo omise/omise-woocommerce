@@ -126,7 +126,7 @@ class OmiseCapabilities extends OmiseApiResource
 
         return function ($backend) use ($amount, $defMin, $defMax) {
             // temporary hack for now to correct min value for installments to fixed minimum (different to normal charge minimum)
-            if ($backend->type === 'installment') {
+            if ($backend->type === 'installment' && get_woocommerce_currency() === 'THB') {
                 $min = self::INSTALLMENT_MINIMUM;
             } else {
                 $min = empty($backend->amount['min']) ? $defMin : $backend->amount['min'];

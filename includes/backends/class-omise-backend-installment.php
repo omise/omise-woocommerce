@@ -173,7 +173,7 @@ class Omise_Backend_Installment extends Omise_Backend
 
 			if (isset($provider_detail['terms_min_allowed_amount'])) {
 				$terms_min_allowed_amount = $provider_detail['terms_min_allowed_amount'];
-				$min_allowed_amount = $terms_min_allowed_amount[$term_length];
+				$min_allowed_amount = round($terms_min_allowed_amount[$term_length] / $term_length, 2);
 			}
 
 			if ($monthly_amount < $min_allowed_amount) {
