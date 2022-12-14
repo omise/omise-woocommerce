@@ -46,6 +46,12 @@
 	</fieldset>
 <?php else: ?>
 	<p>
-		<?php echo __( 'There are no installment plans available for this purchase amount (minimum amount is 2,000 THB).', 'omise' ); ?>
+		<?php 
+			if(get_woocommerce_currency() === 'THB') {
+				echo __( 'There are no installment plans available for this purchase amount (minimum amount is 2,000 THB).', 'omise' ); 
+			} else {
+				echo __( 'Purchase Amount is lower than the monthly minimum payment amount.', 'omise' );
+			}
+		?>
 	</p>
 <?php endif; ?>
