@@ -107,10 +107,12 @@ class Omise_Backend_Installment_Test extends TestCase
 
 		$result = $installment_backend->get_available_plans($purchase_amount, $allowed_terms, $interest_rate, $provider);
 
-		$this->assertEquals(2, count($result));
+		$this->assertEquals(4, count($result));
 		$this->assertEquals(array(
 			array('term_length' => 6, 'monthly_amount' => 3493.33),
 			array('term_length' => 12, 'monthly_amount' => 1826.67),
+			array('term_length' => 18, 'monthly_amount' => 1271.11),
+			array('term_length' => 24, 'monthly_amount' => 993.33),
 		), $result);
 	}
 
