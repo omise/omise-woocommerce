@@ -141,8 +141,9 @@ class Omise_Backend_Installment extends Omise_Backend
 					$provider->interest_rate,
 					$provider_detail
 				);
-
-				$supportedProviderList[] = $provider;
+				if (count($provider->available_plans) > 0) {
+					$supportedProviderList[] = $provider;
+				}
 			}
 		}
 
