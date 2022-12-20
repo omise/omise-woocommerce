@@ -10,7 +10,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 
 		$this->id                 = 'omise_billpayment_tesco';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn Payments Bill Payment: Lotus\'s', 'omise' );
+		$this->method_title       = __( 'Opn Payments Lotus\'s Bill Payment', 'omise' );
 		$this->method_description = wp_kses(
 			__( 'Accept payments through <strong>Lotus\'s Bill Payment</strong> via Opn Payments payment gateway.', 'omise' ),
 			array( 'strong' => array() )
