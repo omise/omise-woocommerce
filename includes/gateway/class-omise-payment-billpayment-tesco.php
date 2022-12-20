@@ -10,9 +10,9 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 
 		$this->id                 = 'omise_billpayment_tesco';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn Payments Bill Payment: Tesco', 'omise' );
+		$this->method_title       = __( 'Opn Payments Bill Payment: Lotus\'s', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>Tesco Bill Payment</strong> via Opn Payments payment gateway.', 'omise' ),
+			__( 'Accept payments through <strong>Lotus\'s Bill Payment</strong> via Opn Payments payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
 
@@ -40,7 +40,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments Tesco Bill Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments Lotus\'s Bill Payment', 'omise' ),
 				'default' => 'no'
 			),
 
@@ -48,7 +48,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 				'title'       => __( 'Title', 'omise' ),
 				'type'        => 'text',
 				'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
-				'default'     => __( 'Bill Payment: Tesco', 'omise' ),
+				'default'     => __( 'Lotus\'s Bill Payment', 'omise' ),
 			),
 
 			'description' => array(
@@ -124,7 +124,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 				<?php
 				echo sprintf(
 					wp_kses(
-						__( 'Please bring this barcode to pay at Tesco Lotus by:<br/><strong>%1$s %2$s</strong>.', 'omise' ),
+						__( 'Please bring this barcode to pay at Lotus\'s by:<br/><strong>%1$s %2$s</strong>.', 'omise' ),
 						array( 'br' => array(), 'strong' => array() )
 					),
 					wc_format_datetime( $expires_datetime, wc_date_format() ),
@@ -153,7 +153,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 					echo wp_kses(
 						__(
 							'
-							Tesco Lotus may charge a small fee for the transaction.<br/>
+							Lotus\'s Bill Payment may charge a small fee for the transaction.<br/>
 							If you fail to make payment by the stated time, your order will be automatically canceled.
 							', 'omise'
 						),
@@ -188,7 +188,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 	}
 
 	/**
-	 * Convert a given SVG Bill Payment Tesco's barcode to HTML format.
+	 * Convert a given SVG Bill Payment Lotus's barcode to HTML format.
 	 *
 	 * Note that the SVG barcode contains with the following structure:
 	 *
@@ -210,7 +210,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 	 *
 	 * @param  string $barcode_svg
 	 *
-	 * @return string  of a generated Bill Payment Tesco's barcode in HTML format.
+	 * @return string  of a generated Bill Payment Lotus's barcode in HTML format.
 	 */
 	public function barcode_svg_to_html( $barcode_svg ) {
 		$xml       = new SimpleXMLElement( $barcode_svg );
