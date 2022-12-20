@@ -230,7 +230,14 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 
 			// Set HTML attributes based on <rect> node's attributes.
 			$div_rect = $xhtml->createElement( 'div' );
-			$div_rect->setAttribute( 'style', "float: left; position: relative; height: 50px; border-left: $width solid #000000; width: 0; margin-left: $margin" );
+			$div_rect->setAttribute('style', sprintf(
+				'float: left; position: relative;
+				height: 50px;
+				border-left:  %spx solid #000000;
+				width: 0; margin-left: %s',
+				$width,
+				$margin
+			));
 			$div_wrapper->appendChild( $div_rect );
 
 			$prevX     = $attributes['x'];
