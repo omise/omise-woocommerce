@@ -15,4 +15,13 @@
 			<directory suffix="-test.php">tests/unit</directory>
 		</testsuite>
 	</testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">./*</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">tests</directory>
+            <directory suffix=".php">vendor</directory>
+        </exclude>
+    </coverage>
 </phpunit>
