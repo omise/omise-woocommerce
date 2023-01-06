@@ -35,6 +35,13 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 
 			return null;
 		}
+
+		/**
+		 * Check if current platform is mobile or not
+		 */
+		public static function isMobilePlatform()
+		{
+			return null !== self::get_platform_type(wc_get_user_agent());
+		}
 	}
 }
-?>
