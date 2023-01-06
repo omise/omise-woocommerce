@@ -57,7 +57,7 @@ class Omise_Payment_Alipay extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
-		$currency = $order->getCurrency();
+		$currency = $order->get_currency();
 		return OmiseCharge::create([
 			'amount'      => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency'    => $currency,
