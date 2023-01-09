@@ -156,23 +156,27 @@ class Omise_Capabilities {
 	 *
 	 * @return string
 	 */
-	public function getTouchNGoBackends() {
-		$params   = array();
-		$params[] = $this->capabilities->backendFilter['type']('touch_n_go');
-	
-		return $this->capabilities->getBackends( $params );
+	public function getTouchNGoBackends()
+	{
+		return $this->getBackendByType('touch_n_go');
+	}
+
+	/**
+	 * Retrieves backend by type
+	 */
+	public function getBackendByType($sourceType)
+	{
+		$params = [];
+		$params[] = $this->capabilities->backendFilter['type']($sourceType);
+		return $this->capabilities->getBackends($params);
 	}
 
 	/**
 	 * Retrieves details of fpx bank list from capabilities.
-	 *
-	 * @return string
 	 */
-	public function getFPXBanks() {
-		$params   = array();
-		$params[] = $this->capabilities->backendFilter['type']('fpx');
-	
-		return $this->capabilities->getBackends( $params );
+	public function getFPXBanks()
+	{
+		return $this->getBackendByType('fpx');
 	}
 
 	/**
@@ -188,17 +192,35 @@ class Omise_Capabilities {
 	/**
 	 * @return bool  True if merchant absorbs the interest or else, false.
 	 */
-	public function is_zero_interest() {
+	public function is_zero_interest()
+	{
 		return $this->capabilities['zero_interest_installments'];
 	}
 
 	/**
 	 * @return array list of omise backends sourc_type.
 	 */
-	public function get_available_payment_methods() {
+	public function get_available_payment_methods()
+	{
 		$backends = $this->getBackends();
 		$backends = json_decode(json_encode($backends), true);
 		$token_methods = $this->getTokenizationMethods();
 		return array_merge(array_column($backends, '_id'),$token_methods);
+	}
+
+	/**
+	 * Retrieves details of Shopee Pay from capabilities.
+	 *
+	 * @param string $sourceType
+	 */
+	public function getShopeeBackend($sourceType)
+	{
+		$shopeePaySourceTypes = [Omise_Payment_ShopeePay::ID, Omise_Payment_ShopeePay::JUMPAPP_ID];
+
+		if (!in_array($sourceType, $shopeePaySourceTypes)) {
+			return null;
+		}
+
+		return $this->getBackendByType($sourceType);
 	}
 }
