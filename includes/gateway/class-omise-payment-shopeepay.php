@@ -18,6 +18,7 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 		$this->method_title       = __( 'Opn Payments ShopeePay', 'omise' );
 		$this->method_description = __( 'Accept payment through <strong>ShopeePay</strong> via Opn Payments payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
+		$this->source_type        = self::ID; // default to shopeepay
 
 		$this->init_form_fields();
 		$this->init_settings();
