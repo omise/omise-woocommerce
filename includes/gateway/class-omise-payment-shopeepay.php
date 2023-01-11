@@ -18,7 +18,7 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 		$this->method_title       = __( 'Opn Payments ShopeePay', 'omise' );
 		$this->method_description = __( 'Accept payment through <strong>ShopeePay</strong> via Opn Payments payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
-		$this->source_type        = self::ID; // default to shopeepay
+		$this->source_type        = $this->getSource();
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -70,7 +70,7 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency' => $currency,
 			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source' => ['type' => $this->getSource()],
+			'source' => ['type' => $this->source_type],
 			'return_uri' => $this->getRedirectUrl('omise_shopeepay_callback', $order_id, $order),
 			'metadata' => $this->getMetadata($order_id, $order)
 		]);
@@ -87,7 +87,7 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 		$isShopeepayEnabled = $capabilities->getShopeeBackend(self::ID);
 
 		// If user is in mobile and jump app is enabled then return shopeepay_jumpapp as source
-		if (Omise_Util::isMobilePlatform() && $isShopeepayJumpAppEnabled) {
+		if (Omise_Util::isMobilePlatform() && !empty($isShopeepayJumpAppEnabled)) {
 			return self::JUMPAPP_ID;
 		}
 
@@ -103,7 +103,7 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 		// In both cases we will want to show the shopeepay MPM backend first if MPM is enabled.
 		// If MPM is not enabled then it means jump app is enabled because this code would never
 		// execute if none of the shopee backends were disabled.
-		return $isShopeepayEnabled ? self::ID : self::JUMPAPP_ID;
+		return !empty($isShopeepayEnabled) ? self::ID : self::JUMPAPP_ID;
 	}
 
 	/**
