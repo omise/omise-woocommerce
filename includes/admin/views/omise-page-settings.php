@@ -29,7 +29,7 @@
 					'a'  => array( 'href' => array(), 'target' => array() )
 				)
 			),
-			esc_url( 'https://dashboard.omise.co/v2/settings/keys' ),
+			esc_url( 'https://dashboard.omise.co/v2/settings/keys' )
 		);
 		?>
 	</p>
