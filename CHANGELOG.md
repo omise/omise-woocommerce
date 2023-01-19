@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### [v4.28.0 _(Jan 24, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.0)
+- Added ShopeePay for Thailand and Singapore. (PR [#339](https://github.com/omise/omise-woocommerce/pull/339))
+- Rebrand Lotus's Bill Payment. (PR [#336](https://github.com/omise/omise-woocommerce/pull/336))
+- Replace ezypay with MBB in installments. (PR [#333](https://github.com/omise/omise-woocommerce/pull/333))
+- Fixed the method to get currency to the correct method. (PR [#338](https://github.com/omise/omise-woocommerce/pull/338))
+- Code Coverage Integration with Sonarcloud. (PR [#337](https://github.com/omise/omise-woocommerce/pull/337))
+- Fix the compatible issue with PHP 7.2 and below. (PR [#342](https://github.com/omise/omise-woocommerce/pull/342))
+
 ### [v4.27.0 _(Dec 7, 2022)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.27.0)
 - Rebrand Omise to Opn Payments. (PR [#329](https://github.com/omise/omise-woocommerce/pull/329))
 - Update the links from Dashboard v1 to v2. (PR [#330](https://github.com/omise/omise-woocommerce/pull/330))
