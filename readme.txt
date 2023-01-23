@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 4.27.0
+Stable tag: 4.28.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,15 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 4.28.0 =
+
+- Added ShopeePay for Thailand and Singapore. (PR [#339](https://github.com/omise/omise-woocommerce/pull/339))
+- Rebrand Lotus's Bill Payment. (PR [#336](https://github.com/omise/omise-woocommerce/pull/336))
+- Replace ezypay with MBB in installments. (PR [#333](https://github.com/omise/omise-woocommerce/pull/333))
+- Fixed the method to get currency to the correct method. (PR [#338](https://github.com/omise/omise-woocommerce/pull/338))
+- Code Coverage Integration with Sonarcloud. (PR [#337](https://github.com/omise/omise-woocommerce/pull/337))
+- Fix the compatible issue with PHP 7.2 and below. (PR [#342](https://github.com/omise/omise-woocommerce/pull/342))
 
 = 4.27.0 =
 
