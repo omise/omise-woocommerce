@@ -1,6 +1,9 @@
 # CHANGELOG
 
-### [v4.28.0 _(Jan 24, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.0)
+### [v4.28.0 _(Jan 25, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.1)
+- Fix Uncaught Error: Call to a member function getShopeeBackend() on null. (PR [#344](https://github.com/omise/omise-woocommerce/pull/344))
+
+### [v4.28.0 _(Jan 23, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.0)
 - Added ShopeePay for Thailand and Singapore. (PR [#339](https://github.com/omise/omise-woocommerce/pull/339))
 - Rebrand Lotus's Bill Payment. (PR [#336](https://github.com/omise/omise-woocommerce/pull/336))
 - Replace ezypay with MBB in installments. (PR [#333](https://github.com/omise/omise-woocommerce/pull/333))
