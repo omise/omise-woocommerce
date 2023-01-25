@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### [v4.28.0 _(Jan 25, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.1)
+### [v4.28.1 _(Jan 25, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.1)
 - Fix Uncaught Error: Call to a member function getShopeeBackend() on null. (PR [#344](https://github.com/omise/omise-woocommerce/pull/344))
 
 ### [v4.28.0 _(Jan 23, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.0)
