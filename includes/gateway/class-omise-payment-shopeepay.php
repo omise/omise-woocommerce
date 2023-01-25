@@ -83,6 +83,11 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 	private function getSource()
 	{
 		$capabilities = Omise_Capabilities::retrieve();
+
+		if (!$capabilities) {
+			return self::ID;
+		}
+
 		$isShopeepayJumpAppEnabled = $capabilities->getShopeeBackend(self::JUMPAPP_ID);
 		$isShopeepayEnabled = $capabilities->getShopeeBackend(self::ID);
 
