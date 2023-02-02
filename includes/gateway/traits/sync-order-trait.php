@@ -71,7 +71,7 @@ trait Sync_Order
             : $charge['refunded'];
 
         $fullyRefunded = $refunded_amount == $charge['funding_amount'];
-        $partiallyRefunded = $refunded_amount < $charge['funding_amount'];
+        $partiallyRefunded = $refunded_amount > 0 && $refunded_amount < $charge['funding_amount'];
         $total_amount = $this->order->get_total();
         $currency = $this->order->get_currency();
 
@@ -86,14 +86,14 @@ trait Sync_Order
             sprintf(
                 $this->allow_br('Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).'),
                 $total_amount,
-                $$currency
+                $currency
             )
         );
 
         $this->delete_capture_metadata();
 
-        if (!$order->is_paid()) {
-            $order->payment_complete();
+        if (!$this->order->is_paid()) {
+            $this->order->payment_complete();
         }
     }
 
