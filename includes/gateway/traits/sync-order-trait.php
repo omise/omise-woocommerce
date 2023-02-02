@@ -3,61 +3,64 @@
 trait Sync_Order
 {
     /**
-	 * Retrieve a charge by a given charge id (that attach to an order).
-	 * Find some diff, then merge it back to WooCommerce system.
-	 *
-	 * @param  WC_Order $order WooCommerce's order object
-	 *
-	 * @return void
-	 *
-	 * @see    WC_Meta_Box_Order_Actions::save( $post_id, $post )
-	 * @see    woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-actions.php
-	 */
-	public function sync_payment( $order ) {
-		$this->load_order( $order );
+     * Retrieve a charge by a given charge id (that attach to an order).
+     * Find some diff, then merge it back to WooCommerce system.
+     *
+     * @param  WC_Order $order WooCommerce's order object
+     *
+     * @return void
+     *
+     * @see    WC_Meta_Box_Order_Actions::save( $post_id, $post )
+     * @see    woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-actions.php
+     */
+    public function sync_payment($order)
+    {
+        $this->load_order($order);
 
-		try {
-			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
+        try {
+            $charge = OmiseCharge::retrieve($this->get_charge_id_from_order());
 
-			/**
-			 * Backward compatible with WooCommerce v2.x series
-			 * This case is likely not going to happen anymore as this was provided back then
-			 * when Omise-WooCommerce was introducing of adding charge.id into WC Order transaction id.
-			 **/
-			if ( ! $this->order()->get_transaction_id() ) {
-				$this->set_order_transaction_id( $charge['id'] );
-			}
+            /**
+             * Backward compatible with WooCommerce v2.x series
+             * This case is likely not going to happen anymore as this was provided back then
+             * when Omise-WooCommerce was introducing of adding charge.id into WC Order transaction id.
+             **/
+            if (!$this->order()->get_transaction_id()) {
+                $this->set_order_transaction_id($charge['id']);
+            }
 
-			switch ( $charge['status'] ) {
-				case Omise_Payment::STATUS_SUCCESSFUL:
-					$this->sync_order_handle_charge_successful($charge);
-					break;
-				case Omise_Payment::STATUS_FAILED:
-					$this->sync_order_handle_charge_failed($charge);
-					break;
-				case Omise_Payment::STATUS_PENDING:
-					$this->sync_order_handle_charge_pending();
-					break;
-				case Omise_Payment::STATUS_EXPIRED:
-					$this->sync_order_handle_charge_expired();
-					break;
-				case Omise_Payment::STATUS_REVERSED:
-					$this->sync_order_handle_charge_reversed();
-					break;
-				default:
-					throw new Exception(
-						__( 'Cannot read the payment status. Please try sync again or contact Opn Payments support team at support@omise.co if you have any questions.', 'omise' )
-					);
-					break;
-			}
-		} catch ( Exception $e ) {
-			$message = $this->allow_br('Opn Payments: Sync failed (manual sync).<br/>%s.');
-			$order->add_order_note( sprintf( $message, $e->getMessage() ) );
-		}
-	}
+            switch ($charge['status']) {
+                case Omise_Payment::STATUS_SUCCESSFUL:
+                    $this->sync_order_handle_charge_successful($charge);
+                    break;
+                case Omise_Payment::STATUS_FAILED:
+                    $this->sync_order_handle_charge_failed($charge);
+                    break;
+                case Omise_Payment::STATUS_PENDING:
+                    $this->sync_order_handle_charge_pending();
+                    break;
+                case Omise_Payment::STATUS_EXPIRED:
+                    $this->sync_order_handle_charge_expired();
+                    break;
+                case Omise_Payment::STATUS_REVERSED:
+                    $this->sync_order_handle_charge_reversed();
+                    break;
+                default:
+                    throw new Exception(
+                        __('Cannot read the payment status. Please try sync again or contact Opn Payments support team at support@omise.co if you have any questions.', 'omise')
+                    );
+                    break;
+            }
+        } catch (Exception $e) {
+            $message = $this->allow_br('Opn Payments: Sync failed (manual sync).<br/>%s.');
+            $order->add_order_note(sprintf($message, $e->getMessage()));
+        }
+    }
 
     /**
-     * This function handle successful charge, when sync order action was called
+     * This function handle successful charge, 
+     * and add order not when order is partially or full refunded 
+     * when sync order action was called
      */
     function sync_order_handle_charge_successful($charge)
     {
@@ -69,46 +72,58 @@ trait Sync_Order
 
         $fullyRefunded = $refunded_amount == $charge['funding_amount'];
         $partiallyRefunded = $refunded_amount < $charge['funding_amount'];
-        $total_amount = $this->order()->get_total();
-        $currency = $this->order()->get_currency();
-
-        $this->delete_capture_metadata();
+        $total_amount = $this->order->get_total();
+        $currency = $this->order->get_currency();
 
         if ($fullyRefunded) {
-            if (!$this->order()->has_status(Omise_Payment::STATUS_REFUNDED)) {
-                $this->order()->update_status(Omise_Payment::STATUS_REFUNDED);
-            }
-            $this->order()->add_order_note(
-                sprintf(
-                    $this->allow_br('Opn Payments: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
-                    $total_amount,
-                    $currency
-                )
-            );
-            return;
+            return $this->sync_order_handle_fully_refunded($total_amount, $currency);
+        }
+        if ($partiallyRefunded) {
+            return $this->sync_order_handle_partially_refunded($refunded_amount, $currency);
         }
 
-        if($partiallyRefunded) {
-            $this->order()->add_order_note(
-                sprintf(
-                    $this->allow_br('Opn Payments: Payment partially refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
-                    Omise_Money::to_readable($refunded_amount, $currency),
-                    $currency
-                )
-            );
-            return;
-        }
-
-        $this->order()->add_order_note(
+        $this->order->add_order_note(
             sprintf(
                 $this->allow_br('Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).'),
                 $total_amount,
                 $$currency
             )
         );
-        if (!$this->order()->is_paid()) {
-            $this->order()->payment_complete();
+
+        $this->delete_capture_metadata();
+
+        if (!$order->is_paid()) {
+            $order->payment_complete();
         }
+    }
+
+    /**
+     * This function handle fully refunded charge, when sync order action was called
+     */
+    function sync_order_handle_fully_refunded($amount, $currency)
+    {
+        $this->update_order_status(Omise_Payment::STATUS_REFUNDED);
+        $this->order->add_order_note(
+            sprintf(
+                $this->allow_br('Opn Payments: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
+                $amount,
+                $currency
+            )
+        );
+    }
+
+    /**
+     * This function handle partially refunded charge, when sync order action was called
+     */
+    function sync_order_handle_partially_refunded($amount, $currency)
+    {
+        $this->order->add_order_note(
+            sprintf(
+                $this->allow_br('Opn Payments: Payment partially refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
+                Omise_Money::to_readable($amount, $currency),
+                $currency
+            )
+        );
     }
 
     /**
@@ -124,9 +139,7 @@ trait Sync_Order
                 $charge['failure_code']
             )
         );
-        if (!$this->order()->has_status(Omise_Payment::STATUS_FAILED)) {
-            $this->order()->update_status(Omise_Payment::STATUS_FAILED);
-        }
+        $this->update_order_status(Omise_Payment::STATUS_FAILED);
     }
 
     /**
@@ -150,10 +163,9 @@ trait Sync_Order
     {
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
-            $this->allow_br('Opn Payments: Payment expired. (manual sync).'));
-        if ( ! $this->order()->has_status( Omise_Payment::STATUS_CANCELLED ) ) {
-            $this->order()->update_status( Omise_Payment::STATUS_CANCELLED );
-        }
+            $this->allow_br('Opn Payments: Payment expired. (manual sync).')
+        );
+        $this->update_order_status(Omise_Payment::STATUS_CANCELLED);
     }
 
     /**
@@ -163,9 +175,18 @@ trait Sync_Order
     {
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
-            $this->allow_br('Opn Payments: Payment reversed. (manual sync).'));
-        if ( ! $this->order()->has_status( Omise_Payment::STATUS_CANCELLED ) ) {
-            $this->order()->update_status( Omise_Payment::STATUS_CANCELLED );
+            $this->allow_br('Opn Payments: Payment reversed. (manual sync).')
+        );
+        $this->update_order_status(Omise_Payment::STATUS_CANCELLED);
+    }
+
+    /**
+     * update order status
+     */
+    function update_order_status($status)
+    {
+        if (!$this->order()->has_status($status)) {
+            $this->order()->update_status($status);
         }
     }
 
