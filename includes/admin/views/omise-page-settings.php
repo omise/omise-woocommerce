@@ -195,6 +195,9 @@
 															<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=' . strtolower( $gateway->id ) ) . '">' . __( 'config', 'omise' ) . '</a>
 														</td>';
 														break;
+
+													default:
+														break;
 												}
 											endforeach;
 

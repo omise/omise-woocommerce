@@ -204,9 +204,10 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				$success = Omise_Charge::is_paid( $charge );
 
 				// Then, check is authorized after if the first condition is false.
-				if ( ! $success )
+				if ( ! $success ) {
 					$success = Omise_Charge::is_authorized( $charge );
-
+				}
+					
 				break;
 		}
 
@@ -232,7 +233,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		if ( is_checkout() && $this->is_available() ) {
 			wp_enqueue_script(
 				'omise-js',
-				'https://cdn.omise.co/omise.js',
+				'https://cdn.staging-omise.co/omise.js',
 				[ 'jquery' ],
 				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true

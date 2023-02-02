@@ -29,6 +29,11 @@ class Omise_Rest_Webhooks_Controller {
 	const OCBC_PAO_CALLBACK_ENDPOINT = 'ocbc-pao-callback';
 
 	/**
+	 * @var string
+	 */
+	const RETURN_TRUE = '__return_true';
+
+	/**
 	 * Register the routes for webhooks.
 	 */
 	public function register_routes() {
@@ -38,7 +43,7 @@ class Omise_Rest_Webhooks_Controller {
 			array(
 				'methods' => WP_REST_Server::EDITABLE,
 				'callback' => array( $this, 'callback' ),
-				'permission_callback' => '__return_true'
+				'permission_callback' => self::RETURN_TRUE
 			)
 		);
 
@@ -48,7 +53,7 @@ class Omise_Rest_Webhooks_Controller {
 			array(
 				'methods' => WP_REST_Server::READABLE,
 				'callback' => array( $this, 'callback_paynow_payment_status' ),
-				'permission_callback' => '__return_true'
+				'permission_callback' => self::RETURN_TRUE
 			)
 		);
 
@@ -58,7 +63,7 @@ class Omise_Rest_Webhooks_Controller {
 			array(
 				'methods' => WP_REST_Server::READABLE,
 				'callback' => array( $this, 'callback_ocbc_pao_callback' ),
-				'permission_callback' => '__return_true'
+				'permission_callback' => self::RETURN_TRUE
 			)
 		);
 	}

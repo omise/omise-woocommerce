@@ -29,6 +29,9 @@ class Omise_Admin_Page extends Omise_Setting {
 			case 'message':
 				$this->messages[] = $message;
 				break;
+			default:
+				$this->messages[] = $message;
+				break;
 		}
 	}
 

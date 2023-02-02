@@ -10,6 +10,10 @@ if ( class_exists( 'Omise_Payment' ) ) {
 }
 
 abstract class Omise_Payment extends WC_Payment_Gateway {
+	use Sync_Order;
+
+	const WC_VERSION3 = '3.0.0';
+
 	/** Omise charge id post meta key. */
 	const CHARGE_ID = 'omise_charge_id';
 
@@ -419,130 +423,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Retrieve a charge by a given charge id (that attach to an order).
-	 * Find some diff, then merge it back to WooCommerce system.
-	 *
-	 * @param  WC_Order $order WooCommerce's order object
-	 *
-	 * @return void
-	 *
-	 * @see    WC_Meta_Box_Order_Actions::save( $post_id, $post )
-	 * @see    woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-actions.php
-	 */
-	public function sync_payment( $order ) {
-		$this->load_order( $order );
-
-		try {
-			$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
-
-			/**
-			 * Backward compatible with WooCommerce v2.x series
-			 * This case is likely not going to happen anymore as this was provided back then
-			 * when Omise-WooCommerce was introducing of adding charge.id into WC Order transaction id.
-			 **/
-			if ( ! $this->order()->get_transaction_id() ) {
-				$this->set_order_transaction_id( $charge['id'] );
-			}
-
-			switch ( $charge['status'] ) {
-				case self::STATUS_SUCCESSFUL:
-					$this->delete_capture_metadata();
-
-					// Omise API 2017-11-02 uses `refunded`, Omise API 2019-05-29 uses `refunded_amount`.
-					$refunded_amount = isset( $charge['refunded_amount'] ) ? $charge['refunded_amount'] : $charge['refunded'];
-					if ( $charge['funding_amount'] == $refunded_amount ) {
-						if ( ! $this->order()->has_status( self::STATUS_REFUNDED ) ) {
-							$this->order()->update_status( self::STATUS_REFUNDED );
-						}
-
-						$message = wp_kses( __(
-							'Opn Payments: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).', 'omise' ),
-							array( 'br' => array() )
-						);
-						$this->order()->add_order_note( sprintf( $message, $this->order()->get_total(), $this->order()->get_currency() ) );
-					} else {
-						$message = wp_kses( __(
-							'Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).', 'omise' ),
-							array( 'br' => array() )
-						);
-						$this->order()->add_order_note( sprintf( $message, $this->order()->get_total(), $this->order()->get_currency() ) );
-
-						if ( ! $this->order()->is_paid() ) {
-							$this->order()->payment_complete();
-						}
-					}
-					break;
-
-				case self::STATUS_FAILED:
-					$this->delete_capture_metadata();
-
-					$message = wp_kses(
-						__( 'Opn Payments: Payment failed.<br/>%s (code: %s) (manual sync).', 'omise' ),
-						array( 'br' => array() )
-					);
-					$this->order()->add_order_note( sprintf( $message, Omise()->translate( $charge['failure_message'] ), $charge['failure_code'] ) );
-
-					if ( ! $this->order()->has_status( self::STATUS_FAILED ) ) {
-						$this->order()->update_status( self::STATUS_FAILED );
-					}
-					break;
-
-				case self::STATUS_PENDING:
-					$message = wp_kses( __(
-						'Opn Payments: Payment is still in progress.<br/>
-						You might wait for a moment before click sync the status again or contact Opn Payments support team at support@omise.co if you have any questions (manual sync).',
-						'omise'
-					), array( 'br' => array() ) );
-
-					$this->order()->add_order_note( $message );
-					break;
-
-				case self::STATUS_EXPIRED:
-					$this->delete_capture_metadata();
-
-					$message = wp_kses( __( 'Opn Payments: Payment expired. (manual sync).', 'omise' ), array( 'br' => array() ) );
-					$this->order()->add_order_note( $message );
-
-					if ( ! $this->order()->has_status( self::STATUS_CANCELLED ) ) {
-						$this->order()->update_status( self::STATUS_CANCELLED );
-					}
-					break;
-
-				case self::STATUS_REVERSED:
-					$this->delete_capture_metadata();
-
-					$message = wp_kses( __( 'Opn Payments: Payment reversed. (manual sync).', 'omise' ), array( 'br' => array() ) );
-					$this->order()->add_order_note( $message );
-
-					if ( ! $this->order()->has_status( self::STATUS_CANCELLED ) ) {
-						$this->order()->update_status( self::STATUS_CANCELLED );
-					}
-					break;
-
-				default:
-					throw new Exception(
-						__( 'Cannot read the payment status. Please try sync again or contact Opn Payments support team at support@omise.co if you have any questions.', 'omise' )
-					);
-					break;
-			}
-		} catch ( Exception $e ) {
-			$message = wp_kses(
-				__( 'Opn Payments: Sync failed (manual sync).<br/>%s.', 'omise' ),
-				array( 'br' => array() )
-			);
-
-			$order->add_order_note( sprintf( $message, $e->getMessage() ) );
-		}
-	}
-
-	/**
 	 * Set an order transaction id
 	 *
 	 * @param string $transaction_id  Omise charge id.
 	 */
 	protected function set_order_transaction_id( $transaction_id ) {
 		/** backward compatible with WooCommerce v2.x series **/
-		if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+		if ( version_compare( WC()->version, self::WC_VERSION3, '>=' ) ) {
 			$this->order()->set_transaction_id( $transaction_id );
 			$this->order()->save();
 		} else {
@@ -598,7 +485,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 		 * The following code are for backward compatible only.
 		 */
 		// Backward compatible for Omise v3.0 - v3.3
-		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+		$order_id  = version_compare( WC()->version, self::WC_VERSION3, '>=' ) ? $this->order()->get_id() : $this->order()->id;
 		$charge_id = get_post_meta( $order_id, self::CHARGE_ID, true );
 
 		// Backward compatible for Omise v1.2.3
@@ -631,7 +518,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 */
 	protected function deprecated_get_charge_id_from_post() {
 		/** backward compatible with WooCommerce v2.x series **/
-		$order_id  = version_compare( WC()->version, '3.0.0', '>=' ) ? $this->order()->get_id() : $this->order()->id;
+		$order_id  = version_compare( WC()->version, self::WC_VERSION3, '>=' ) ? $this->order()->get_id() : $this->order()->id;
 
 		$posts = get_posts(
 			array(

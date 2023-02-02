@@ -73,7 +73,9 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 	 * @return void
 	 */
 	public function resolve() {
-		if ( ! $this->is_resolvable() ) return;
+		if ( ! $this->is_resolvable() ) {
+			return;
+		}
 
 		$this->order->add_order_note( __( 'Opn Payments: Received charge.complete webhook event.', 'omise' ) );
 
@@ -122,6 +124,9 @@ class Omise_Event_Charge_Complete extends Omise_Event {
 					$this->order->update_status( 'processing' );
 					$this->order->save();
 				}
+				break;
+
+			default:
 				break;
 		}
 

@@ -22,8 +22,12 @@ if (! class_exists('OmisePluginHelperMailer')) {
          */
         public static function disable_merchant_order_on_hold( $recipient, $order ) {
             $payment_gateway = wc_get_payment_gateway_by_order( $order );
-            if (is_a($order, 'WC_Order') && is_a( $payment_gateway, 'Omise_Payment' ) &&
-                $order->get_status() == 'on-hold' ) $recipient = '';
+            if (is_a($order, 'WC_Order') && 
+                is_a( $payment_gateway, 'Omise_Payment' ) &&
+                $order->get_status() == 'on-hold' 
+            ) {
+                $recipient = '';
+            }
             return $recipient;
         }
     }

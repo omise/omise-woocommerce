@@ -78,7 +78,10 @@ class Omise_Event_Charge_Capture extends Omise_Event {
 				if ( ! $this->order->has_status( 'processing' ) ) {
 					$this->order->update_status( 'processing' );
 				}
-			break;
+				break;
+
+			default:
+				break;
 		}
 
 		return;
