@@ -31,19 +31,19 @@ trait Sync_Order
 
             switch ($charge['status']) {
                 case Omise_Payment::STATUS_SUCCESSFUL:
-                    $this->sync_order_handle_charge_successful($charge);
+                    $this->handle_successful_charge($charge);
                     break;
                 case Omise_Payment::STATUS_FAILED:
-                    $this->sync_order_handle_charge_failed($charge);
+                    $this->handle_failed_charge($charge);
                     break;
                 case Omise_Payment::STATUS_PENDING:
-                    $this->sync_order_handle_charge_pending();
+                    $this->handle_pending_charge();
                     break;
                 case Omise_Payment::STATUS_EXPIRED:
-                    $this->sync_order_handle_charge_expired();
+                    $this->handle_expired_charge();
                     break;
                 case Omise_Payment::STATUS_REVERSED:
-                    $this->sync_order_handle_charge_reversed();
+                    $this->handle_reversed_charge();
                     break;
                 default:
                     throw new Exception(
@@ -62,7 +62,7 @@ trait Sync_Order
      * and add order not when order is partially or full refunded 
      * when sync order action was called
      */
-    function sync_order_handle_charge_successful($charge)
+    private function handle_successful_charge($charge)
     {
         // Omise API 2017-11-02 uses `refunded`, 
         // Omise API 2019-05-29 uses `refunded_amount`.
@@ -76,11 +76,11 @@ trait Sync_Order
         $currency = $this->order->get_currency();
 
         if ($fullyRefunded) {
-            $this->sync_order_handle_fully_refunded($total_amount, $currency);
+            $this->handle_fully_refunded_charge($total_amount, $currency);
             return;
         }
         if ($partiallyRefunded) {
-            $this->sync_order_handle_partially_refunded($refunded_amount, $currency);
+            $this->handle_partially_refunded_charge($refunded_amount, $currency);
             return;
         }
 
@@ -102,7 +102,7 @@ trait Sync_Order
     /**
      * This function handle fully refunded charge, when sync order action was called
      */
-    function sync_order_handle_fully_refunded($amount, $currency)
+    private function handle_fully_refunded_charge($amount, $currency)
     {
         $this->update_order_status(Omise_Payment::STATUS_REFUNDED);
         $this->order->add_order_note(
@@ -117,12 +117,12 @@ trait Sync_Order
     /**
      * This function handle partially refunded charge, when sync order action was called
      */
-    function sync_order_handle_partially_refunded($amount, $currency)
+    private function handle_partially_refunded_charge($amount, $currency)
     {
         $this->order->add_order_note(
             sprintf(
                 $this->allow_br('Opn Payments: Payment partially refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
-                Omise_Money::to_readable($amount, $currency),
+                Omise_Money::convert_currency_unit($amount, $currency),
                 $currency
             )
         );
@@ -131,7 +131,7 @@ trait Sync_Order
     /**
      * This function handle failed charge, when sync order action was called
      */
-    function sync_order_handle_charge_failed($charge)
+    private function handle_failed_charge($charge)
     {
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
@@ -147,7 +147,7 @@ trait Sync_Order
     /**
      * This function handle pending charge, when sync order action was called
      */
-    function sync_order_handle_charge_pending()
+    private function handle_pending_charge()
     {
         $message = $this->allow_br(
             'Opn Payments: Payment is still in progress.<br/>
@@ -161,7 +161,7 @@ trait Sync_Order
     /**
      * This function handle expired charge, when sync order action was called
      */
-    function sync_order_handle_charge_expired()
+    private function handle_expired_charge()
     {
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
@@ -173,7 +173,7 @@ trait Sync_Order
     /**
      * This function handle reversed charge, when sync order action was called
      */
-    function sync_order_handle_charge_reversed()
+    private function handle_reversed_charge()
     {
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
@@ -185,7 +185,7 @@ trait Sync_Order
     /**
      * update order status
      */
-    function update_order_status($status)
+    private function update_order_status($status)
     {
         if (!$this->order()->has_status($status)) {
             $this->order()->update_status($status);
