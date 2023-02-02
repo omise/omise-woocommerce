@@ -76,10 +76,12 @@ trait Sync_Order
         $currency = $this->order->get_currency();
 
         if ($fullyRefunded) {
-            return $this->sync_order_handle_fully_refunded($total_amount, $currency);
+            $this->sync_order_handle_fully_refunded($total_amount, $currency);
+            return;
         }
         if ($partiallyRefunded) {
-            return $this->sync_order_handle_partially_refunded($refunded_amount, $currency);
+            $this->sync_order_handle_partially_refunded($refunded_amount, $currency);
+            return;
         }
 
         $this->order->add_order_note(
