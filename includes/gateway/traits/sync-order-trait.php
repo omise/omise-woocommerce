@@ -195,7 +195,7 @@ trait Sync_Order
     /**
      * allow br from the message.
      */
-    function  allow_br($message)
+    private function  allow_br($message)
     {
         return wp_kses(__($message, 'omise'), ['br' => []]);
     }
