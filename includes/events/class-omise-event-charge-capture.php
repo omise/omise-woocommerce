@@ -81,6 +81,7 @@ class Omise_Event_Charge_Capture extends Omise_Event {
 				break;
 
 			default:
+				throw new Exception('invalid charge status');
 				break;
 		}
 
