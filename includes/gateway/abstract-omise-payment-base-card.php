@@ -204,9 +204,10 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				$success = Omise_Charge::is_paid( $charge );
 
 				// Then, check is authorized after if the first condition is false.
-				if ( ! $success )
+				if ( ! $success ) {
 					$success = Omise_Charge::is_authorized( $charge );
-
+				}
+					
 				break;
 		}
 

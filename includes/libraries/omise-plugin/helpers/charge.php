@@ -8,9 +8,9 @@ if (! class_exists('OmisePluginHelperCharge')) {
          */
         public static function isChargeObject($charge)
         {
-            if (! isset($charge['object']) || $charge['object'] !== 'charge')
+            if (! isset($charge['object']) || $charge['object'] !== 'charge') {
                 return false;
-
+            }
             return true;
         }
 
@@ -38,15 +38,18 @@ if (! class_exists('OmisePluginHelperCharge')) {
          */
         public static function isFailed($charge)
         {
-            if (! self::isChargeObject($charge))
+            if (! self::isChargeObject($charge)) {
                 return true;
-
+            }
+                
             if ((! is_null($charge['failure_code']) && $charge['failure_code'] !== "")
-                || (! is_null($charge['failure_message']) && $charge['failure_message'] !== ""))
+                || (! is_null($charge['failure_message']) && $charge['failure_message'] !== "")) {
                 return true;
+            }
 
-            if (strtoupper($charge['status']) === 'FAILED')
+            if (strtoupper($charge['status']) === 'FAILED') {
                 return true;
+            }
 
             return false;
         }

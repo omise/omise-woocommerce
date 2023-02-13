@@ -21,7 +21,9 @@ class Omise_Callback {
 	 */
 	public function __construct( $order ) {
 		$this->order = $order;
-		if ( ! $this->order || ! $this->order instanceof WC_Abstract_Order ) $this->invalid_result();
+		if ( ! $this->order || ! $this->order instanceof WC_Abstract_Order ) {
+			$this->invalid_result();
+		}
 	}
 
 	public static function execute()

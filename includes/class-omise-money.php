@@ -49,6 +49,20 @@ class Omise_Money {
 	}
 
 	/**
+	 * convert omise amount to human readable amount.
+	 */
+	public static function convert_currency_unit( $amount, $currency ) {
+		$amount   = self::purify_amount( $amount );
+		$currency = strtoupper( $currency );
+
+		if ( ! isset( self::$subunit_multiplier[ $currency ] ) ) {
+			throw new Exception( __( 'We do not support the currency you are using.', 'omise' ) );
+		}
+
+		return $amount / self::$subunit_multiplier[ $currency ];
+	}
+
+	/**
 	 * @param  int|float $amount
 	 *
 	 * @return float

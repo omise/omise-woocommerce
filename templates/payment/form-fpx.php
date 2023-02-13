@@ -8,10 +8,10 @@
 					<option	
 						class="<?php echo $bank["code"];?>" 
 						value="<?php echo $bank["code"]; ?>"
-						<?= $bank['active'] ?: "disabled" ?>
+						<?php $bank['active'] ?: "disabled" ?>
 					>
 							<?php echo $bank["name"]; ?> 
-							<?php if (!$bank['active']) echo " (offline)" ; ?>
+							<?php if (!$bank['active']) { echo " (offline)"; } ?>
 					</option>
 			<?php endforeach; ?>
 			</select>
