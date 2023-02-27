@@ -40,9 +40,11 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function init_panel() {
 			if ( ! empty( $this->omise_customer_id ) ) {
 				try {
+					$omiseCardGateway = new Omise_Payment_Creditcard();
 					$viewData['existingCards'] = $this->customerCard->get($this->omise_customer_id);
-					$viewData['cardFormTheme'] = (new Omise_Payment_Creditcard())->get_option('card_form_theme');
+					$viewData['cardFormTheme'] = $omiseCardGateway->get_option('card_form_theme');
 					$viewData['formDesign'] = (new Omise_Page_Card_From_Customization())->get_design_setting();
+					$viewData['cardIcons'] = $omiseCardGateway->get_card_icons();
 
 					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
 					$this->register_omise_my_account_scripts();

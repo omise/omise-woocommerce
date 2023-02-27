@@ -44,5 +44,6 @@
 <script>
 	window.CARD_FORM_THEME = "<?php echo $viewData['cardFormTheme'] ?>";
 	window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['formDesign']) ?>`);
+	window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($viewData['cardIcons']) ?>`);
 	window.LOCALE = `<?php echo get_locale(); ?>`;
 </script>

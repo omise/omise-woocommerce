@@ -105,6 +105,7 @@
 		locale: LOCALE,
 		theme: CARD_FORM_THEME ?? 'light',
 		design: FORM_DESIGN,
+		brandIcons: CARD_BRAND_ICONS,
 		hideRememberCard: true,
 		onSuccess: saveCard,
 		onError: (error) => {
