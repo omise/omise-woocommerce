@@ -67,6 +67,7 @@ function initOmiseCardForm() {
     publicKey: PUBLIC_KEY, 
     locale: LOCALE,
     theme: customCardFormTheme, 
+    brandIcons: CARD_BRAND_ICONS,
     design: getDesignFormValues()
   })
 }

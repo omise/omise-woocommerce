@@ -1,6 +1,8 @@
 <?php
 $assetUrl = Omise::get_assets_url();
-$cardFormTheme = (new Omise_Payment_Creditcard())->get_option('card_form_theme');
+$omiseCardGateway = new Omise_Payment_Creditcard();
+$cardFormTheme = $omiseCardGateway->get_option('card_form_theme');
+$cardIcons = $omiseCardGateway->get_card_icons();
 $publicKey = Omise()->settings()->public_key();
 ?>
 
@@ -186,6 +188,7 @@ $publicKey = Omise()->settings()->public_key();
   window.PUBLIC_KEY = `<?php echo $publicKey ?>`;
   window.CARD_FORM_THEME = `<?php echo $cardFormTheme;  ?>`;
   window.DEFAULT_FORM_DESIGN = JSON.parse(`<?php echo json_encode($formDesign) ?>`);
+  window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($cardIcons) ?>`);
   window.LOCALE = `<?php echo get_locale(); ?>`;
 </script>
 <script src="<?php echo $assetUrl . '/javascripts/omise-embedded-card.js'; ?>"></script>
