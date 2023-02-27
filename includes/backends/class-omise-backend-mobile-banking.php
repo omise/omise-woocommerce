@@ -26,6 +26,10 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 			'mobile_banking_bbl' => array(
 				'title'              => __( 'Bualuang mBanking', 'omise' ),
 				'logo'				 => 'bbl',
+			),
+			'mobile_banking_ktb' => array(
+				'title'              => __( 'Krungthai NEXT', 'omise' ),
+				'logo'				 => 'ktb',
 			)
 		);
 	}
