@@ -63,7 +63,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 * Render Omise card form customization page.
 		 */
 		public function card_form_customization() {
-			echo Omise_Page_Card_From_Customization::render();
+			Omise_Page_Card_From_Customization::render();
 		}
 
 		/**

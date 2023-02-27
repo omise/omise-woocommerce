@@ -15,7 +15,7 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 	{
 		$theme = (new Omise_Payment_Creditcard())->get_option('card_form_theme');;
 		if(empty($theme)) {
-			$theme == 'light';
+			$theme = 'light';
 		}
 		$design = [
 			'light' => [
