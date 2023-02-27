@@ -51,7 +51,6 @@
 	}
 	
 	function create_card(){
-		hideError();
 		$form.block({
 			message: null,
 			overlayCSS: {
@@ -60,6 +59,7 @@
 				opacity: 0.6
 			}
 		});
+		hideError();
 		OmiseCard.requestCardToken()
 	}
 	
