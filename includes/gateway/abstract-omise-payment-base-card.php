@@ -112,7 +112,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			try {
 				$customer->get($omise_customer_id);
 				$customerCard = new OmiseCustomerCard;
-				$card = $customerCard->create($customer, $token);
+				$card = $customerCard->create($omise_customer_id, $token);
 
 				return [
 					'customer_id' => $omise_customer_id,
@@ -233,8 +233,16 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		if ( is_checkout() && $this->is_available() ) {
 			wp_enqueue_script(
 				'omise-js',
-				'https://cdn.omise.co/omise.js',
+				Omise::OMISE_JS_LINK,
 				[ 'jquery' ],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				true
+			);
+
+			wp_enqueue_script(
+				'embedded-js',
+				plugins_url( '../../assets/javascripts/omise-embedded-card.js', __FILE__ ),
+				[],
 				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true
 			);

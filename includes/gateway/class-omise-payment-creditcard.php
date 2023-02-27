@@ -81,6 +81,20 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					),
 					'desc_tip'    => true
 				),
+				'card_form_theme' => array(
+					'title'       => __( 'Card form theme', 'omise' ),
+					'type'        => 'select',
+					'default'     => 'light',
+					'class'       => 'wc-enhanced-select',
+					'options'     => array(
+						'light' => __( 'Light Theme', 'omise' ),
+						'dark'  => __( 'Dark Theme', 'omise' )
+					),
+					'description' => wp_kses(
+						__( 'Credit/debit card form design on checkout page. <br /> <a href="admin.php?page=omise_card_form_customization">Click here for more card form customization.</a>', 'omise' ),
+						['a' => ['href' => []], 'br' => []]
+					)
+				),
 				'accept_visa' => array(
 					'title'       => __( 'Supported card icons', 'omise' ),
 					'type'        => 'checkbox',
@@ -105,6 +119,12 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					'label'       => Omise_Card_Image::get_diners_image(),
 					'css'         => Omise_Card_Image::get_css(),
 					'default'     => Omise_Card_Image::get_diners_default_display()
+				),
+				'accept_discover' => array(
+					'type'        => 'checkbox',
+					'label'       => Omise_Card_Image::get_discover_image(),
+					'css'         => Omise_Card_Image::get_css(),
+					'default'     => Omise_Card_Image::get_discover_default_display()
 				),
 				'accept_amex' => array(
 					'type'        => 'checkbox',
@@ -145,45 +165,31 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 			$viewData['user_logged_in'] = false;
 		}
 
+		$viewData['card_form_theme'] = $this->get_option('card_form_theme');
+		$viewData['card_icons'] = $this->get_card_icons();
+		$viewData['form_design'] = (new Omise_Page_Card_From_Customization())->get_design_setting();
+
 		Omise_Util::render_view( 'templates/payment/form.php', $viewData );
 	}
 
 	/**
-	 * Get icons of all supported card types
-	 *
-	 * @see WC_Payment_Gateway::get_icon()
+	 * get card icons for credit card form
 	 */
-	public function get_icon() {
-		$icon = '';
-
-		// TODO: Refactor 'Omise_Card_Image' class that we don't need to pass
-		//       these options to check outside this class.
-		$card_icons['accept_amex']       = $this->get_option( 'accept_amex' );
-		$card_icons['accept_diners']     = $this->get_option( 'accept_diners' );
-		$card_icons['accept_jcb']        = $this->get_option( 'accept_jcb' );
-		$card_icons['accept_mastercard'] = $this->get_option( 'accept_mastercard' );
-		$card_icons['accept_visa']       = $this->get_option( 'accept_visa' );
-
-		if ( Omise_Card_Image::is_visa_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_visa_image();
+	public function get_card_icons() {
+		$enable_icons = [];
+		$card_icons = [
+			'amex' => 'accept_amex',
+			'diners' => 'accept_diners',
+			'jcb' => 'accept_jcb',
+			'mastercard' => 'accept_mastercard',
+			'visa' => 'accept_visa',
+			'discover' => 'accept_discover',
+		];
+		foreach($card_icons as $key => $value) {
+			if($this->get_option($value) == "yes") {
+				$enable_icons[] = $key;
+			}
 		}
-
-		if ( Omise_Card_Image::is_mastercard_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_mastercard_image();
-		}
-
-		if ( Omise_Card_Image::is_jcb_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_jcb_image();
-		}
-
-		if ( Omise_Card_Image::is_diners_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_diners_image();
-		}
-
-		if ( Omise_Card_Image::is_amex_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_amex_image();
-		}
-
-		return empty( $icon ) ? '' : apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+		return $enable_icons;
 	}
 }

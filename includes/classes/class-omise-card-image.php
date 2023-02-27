@@ -62,11 +62,29 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		}
 
 		/**
+		 * Return the HTML &lt;img&gt; element of Discover logo
+		 *
+		 * @return string
+		 */
+		public static function get_discover_image() {
+			return self::get_image( 'discover.svg', 'Discover' );
+		}
+
+		/**
 		 * Return the default setting of display the JCB logo
 		 *
 		 * @return string
 		 */
 		public static function get_jcb_default_display() {
+			return 'no';
+		}
+
+		/**
+		 * Return the default setting of display the Discover logo
+		 *
+		 * @return string
+		 */
+		public static function get_discover_default_display() {
 			return 'no';
 		}
 
@@ -126,6 +144,19 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 				return true;
 			}
 
+			return false;
+		}
+
+		/**
+		 * Check whether the setting for Discover logo is configured and it was set to display or not display
+		 *
+		 * @param mixed $setting The array that contains key for checking the flag
+		 * @return boolean
+		 */
+		public static function is_discover_enabled( $setting ) {
+			if ( isset( $setting['accept_discover'] ) && $setting['accept_discover'] == 'yes' ) {
+				return true;
+			}
 			return false;
 		}
 
