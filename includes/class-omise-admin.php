@@ -25,9 +25,6 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 * @since 3.3
 		 */
 		public function init() {
-			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-admin-page.php';
-			require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-settings.php';
-
 			$this->register_admin_menu();
 			$this->register_woocommerce_filters();
 		}
@@ -37,6 +34,7 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		 */
 		public function register_admin_menu() {
 			add_action( 'admin_menu', array( $this, 'wordpress_hook_admin_menu' ) );
+			add_action( 'admin_menu', array( $this, 'wordpress_hook_card_form_customization' ) );
 		}
 
 		/**
@@ -48,10 +46,24 @@ if ( ! class_exists( 'Omise_Admin' ) ) {
 		}
 
 		/**
+		 * Register Omise's card customization page.
+		 */
+		public function wordpress_hook_card_form_customization() {
+			add_submenu_page(null , __( 'Custom card form customization', 'omise' ), Omise_Page_Card_From_Customization::PAGE_NAME, 'manage_options', 'omise_card_form_customization', array( $this, 'card_form_customization') );
+		}
+
+		/**
 		 * Render Omise Setting page.
 		 */
 		public function page_settings() {
 			Omise_Page_Settings::render();
+		}
+
+		/**
+		 * Render Omise card form customization page.
+		 */
+		public function card_form_customization() {
+			Omise_Page_Card_From_Customization::render();
 		}
 
 		/**

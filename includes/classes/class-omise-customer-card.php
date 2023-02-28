@@ -35,9 +35,10 @@ if ( ! class_exists( 'OmiseCustomerCard' ) ) {
          * 
          * @return string
          */
-        public function create($customer, $token)
+        public function create($customerId, $token)
         {
-            $customer->update( ['card' => $token ]);
+            $customer = $this->customer->get($customerId);
+            $customer->update(['card' => $token ]);
 
             $cards = $customer->cards([
                 'limit' => 1,
