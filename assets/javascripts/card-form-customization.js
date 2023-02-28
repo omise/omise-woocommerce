@@ -1,4 +1,4 @@
-function setInitialValues() {
+function setDesignFormValues() {
   Object.keys(DEFAULT_FORM_DESIGN).forEach(function (componentKey) {
     componentValues = DEFAULT_FORM_DESIGN[componentKey];
     Object.keys(componentValues).forEach(function (key) {
@@ -89,5 +89,5 @@ document.getElementById('omise-modal').addEventListener('click', (event) => {
   }
 });
 
-setInitialValues();
+setDesignFormValues();
 handleColorInputChanges();
