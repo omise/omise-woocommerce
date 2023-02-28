@@ -182,7 +182,7 @@
 	function handleCreateOrder(payload) {
 		$form.unblock();
 		if (payload.token) {
-			if(payload.remember) {
+			if (payload.remember) {
 				$('.omise_save_customer_card').val(payload.remember)
 			}
 			$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + payload.token + '"/>');
