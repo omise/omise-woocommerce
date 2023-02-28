@@ -154,10 +154,7 @@ if ( ! class_exists( 'Omise_Card_Image' ) ) {
 		 * @return boolean
 		 */
 		public static function is_discover_enabled( $setting ) {
-			if ( isset( $setting['accept_discover'] ) && $setting['accept_discover'] == 'yes' ) {
-				return true;
-			}
-			return false;
+			return isset( $setting['accept_discover'] ) && $setting['accept_discover'] == 'yes';
 		}
 
 		/**

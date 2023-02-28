@@ -43,7 +43,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 					$omiseCardGateway = new Omise_Payment_Creditcard();
 					$viewData['existingCards'] = $this->customerCard->get($this->omise_customer_id);
 					$viewData['cardFormTheme'] = $omiseCardGateway->get_option('card_form_theme');
-					$viewData['formDesign'] = (new Omise_Page_Card_From_Customization())->get_design_setting();
+					$viewData['formDesign'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
 					$viewData['cardIcons'] = $omiseCardGateway->get_card_icons();
 
 					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );

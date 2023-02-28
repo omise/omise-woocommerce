@@ -8,58 +8,72 @@ if (class_exists('Omise_Page_Settings')) {
 
 class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 {
+	private static $instance;
+
+	public static function get_instance()
+	{
+		if (!isset(self::$instance)) {
+			self::$instance = new self;
+		}
+		return self::$instance;
+	}
 
 	const PAGE_NAME = 'omise_card_form_customization_option';
 
-	protected function get_default_design_setting()
+	private function get_light_theme()
 	{
-		$theme = (new Omise_Payment_Creditcard())->get_option('card_form_theme');;
-		if(empty($theme)) {
-			$theme = 'light';
-		}
-		$design = [
-			'light' => [
-				'font' => [
-					'name' => 'Poppins',
-					'size' => 16,
-				],
-				'input' => [
-					'height' => '44px',
-					'border_radius' => '4px',
-					'border_color' => '#ced3de',
-					'active_border_color' => '#1451cc',
-					'background_color' => '#ffffff',
-					'label_color' => '#212121',
-					'text_color' => '#212121',
-					'placeholder_color' => '#98a1b2',
-				],
-				'checkbox' => [
-					'text_color' => '#1c2433',
-					'theme_color' => '#1451cc',
-				]
+		return [
+			'font' => [
+				'name' => 'Poppins',
+				'size' => 16,
 			],
-			'dark' => [
-				'font' => [
-					'name' => 'Poppins',
-					'size' => 16,
-				],
-				'input' => [
-					'height' => '44px',
-					'border_radius' => '4px',
-					'border_color' => '#475266',
-					'active_border_color' => '#475266',
-					'background_color' => '#131926',
-					'label_color' => '#E6EAF2',
-					'text_color' => '#212121',
-					'placeholder_color' => '#DBDBDB',
-				],
-				'checkbox' => [
-					'text_color' => '#E6EAF2',
-					'theme_color' => '#1451CC',
-				]
+			'input' => [
+				'height' => '44px',
+				'border_radius' => '4px',
+				'border_color' => '#ced3de',
+				'active_border_color' => '#1451cc',
+				'background_color' => '#ffffff',
+				'label_color' => '#212121',
+				'text_color' => '#212121',
+				'placeholder_color' => '#98a1b2',
+			],
+			'checkbox' => [
+				'text_color' => '#1c2433',
+				'theme_color' => '#1451cc',
 			]
 		];
-		return $design[$theme] ?? $design['light'];
+	}
+
+	private function get_dark_theme()
+	{
+		return [
+			'font' => [
+				'name' => 'Poppins',
+				'size' => 16,
+			],
+			'input' => [
+				'height' => '44px',
+				'border_radius' => '4px',
+				'border_color' => '#475266',
+				'active_border_color' => '#475266',
+				'background_color' => '#131926',
+				'label_color' => '#E6EAF2',
+				'text_color' => '#212121',
+				'placeholder_color' => '#DBDBDB',
+			],
+			'checkbox' => [
+				'text_color' => '#E6EAF2',
+				'theme_color' => '#1451CC',
+			]
+		];
+	}
+
+	protected function get_default_design_setting()
+	{
+		$theme = (new Omise_Payment_Creditcard())->get_option('card_form_theme');
+		return (empty($theme) || $theme == 'light')
+			? $this->get_light_theme()
+			: $this->get_dark_theme();
 	}
 
 	/**
@@ -86,6 +100,10 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 		}
 		$options = [];
 		$defaultValues = $this->get_default_design_setting();
+
+		// Sanitize the field POST params
+		// the fist loop get the component name. i.e input, checkout, font
+		// and send loop get the styling key of the component. i.e name, size, border, color
 		foreach ($defaultValues as $componentKey => $componentValue) {
 			foreach ($componentValue as $key => $val) {
 				$options[$componentKey][$key] = sanitize_text_field($data[$componentKey][$key]);
@@ -117,7 +135,7 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 	 */
 	public static function render()
 	{
-		$page = new self;
+		$page = self::get_instance();
 		if (isset($_POST['omise_customization_submit'])) {
 			$page->save($_POST);
 		}

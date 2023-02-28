@@ -18,11 +18,11 @@ function showOmiseEmbeddedCardForm({
   }
   const { input, font, checkbox } = design;
 
-  let iframeElementHight = iframeHeightMatching[input.height]
+  let iframeElementHeight = iframeHeightMatching[input.height]
   if(hideRememberCard) {
-    iframeElementHight = iframeElementHight - 25
+    iframeElementHeight = iframeElementHeight - 25
   }
-  element.style.height = iframeElementHight + 'px'
+  element.style.height = iframeElementHeight + 'px'
 
   const localeMatching = {
     en_US: 'en',

@@ -167,7 +167,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 
 		$viewData['card_form_theme'] = $this->get_option('card_form_theme');
 		$viewData['card_icons'] = $this->get_card_icons();
-		$viewData['form_design'] = (new Omise_Page_Card_From_Customization())->get_design_setting();
+		$viewData['form_design'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
 
 		Omise_Util::render_view( 'templates/payment/form.php', $viewData );
 	}
