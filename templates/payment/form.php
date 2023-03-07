@@ -1,7 +1,4 @@
-<?php 
-$showExistingCards = $viewData['user_logged_in'] && isset($viewData['existingCards']['data']) && sizeof($viewData['existingCards']['data']) > 0;
-$hideRememberCard = $viewData['user_logged_in'] ? 'no' : 'yes';
-?>
+<?php $showExistingCards = $viewData['user_logged_in'] && isset($viewData['existingCards']['data']) && sizeof($viewData['existingCards']['data']) > 0; ?>
 
 <div id="omise_cc_form">
 	<?php if ($showExistingCards) : ?>
@@ -39,5 +36,4 @@ $hideRememberCard = $viewData['user_logged_in'] ? 'no' : 'yes';
 	window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($viewData['card_icons']) ?>`);
 	window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['form_design']) ?>`);
 	window.LOCALE = `<?php echo get_locale(); ?>`;
-	window.HIDE_REMEMBER_CARD = `<?php echo $hideRememberCard ?>` == 'yes' ? true : false;
 </script>
