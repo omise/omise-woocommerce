@@ -58,7 +58,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 			),
 			array(
 				'advanced' => array(
-					'title'       => __( 'Advanced Settings', 'omise' ),
+					'title'       => __( 'Advance Settings', 'omise' ),
 					'type'        => 'title'
 				),
 				'payment_action' => array(
