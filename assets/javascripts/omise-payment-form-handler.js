@@ -182,9 +182,7 @@
 	function handleCreateOrder(payload) {
 		$form.unblock();
 		if (payload.token) {
-			if (payload.remember) {
-				$('.omise_save_customer_card').val(payload.remember)
-			}
+			$('.omise_save_customer_card').val(payload.remember)
 			$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + payload.token + '"/>');
 			$form.submit();
 		}
@@ -194,7 +192,6 @@
 		showOmiseEmbeddedCardForm({
 			element: document.getElementById('omise-card'),
 			publicKey: omise_params.key,
-			hideRememberCard: HIDE_REMEMBER_CARD,
 			locale: LOCALE,
 			theme: CARD_FORM_THEME ?? 'light',
 			design: FORM_DESIGN,
