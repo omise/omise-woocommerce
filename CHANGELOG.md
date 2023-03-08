@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### [v4.29.0 _(Mar 8, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.29.0)
+- Added Krungthai NEXT mobile banking (PR [#347](https://github.com/omise/omise-woocommerce/pull/347))
+
 ### [v4.28.1 _(Jan 25, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.28.1)
 - Fix Uncaught Error: Call to a member function getShopeeBackend() on null. (PR [#344](https://github.com/omise/omise-woocommerce/pull/344))
 

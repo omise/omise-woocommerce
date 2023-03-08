@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 4.28.1
+Stable tag: 4.29.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
