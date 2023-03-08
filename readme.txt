@@ -34,6 +34,10 @@ From there:
 
 == Changelog ==
 
+= 4.29.0 =
+
+- Added Krungthai NEXT mobile banking (PR [#347](https://github.com/omise/omise-woocommerce/pull/347))
+
 = 4.28.1 =
 
 - Fix Uncaught Error: Call to a member function getShopeeBackend() on null. (PR [#344](https://github.com/omise/omise-woocommerce/pull/344))
