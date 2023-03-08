@@ -30,11 +30,11 @@ label.omise-label-inline {
 	display: inline-block;
 }
 
-.omise-new-card-form.card-exists {
+fieldset.card-exists {
 	display: none;
 }
 
-#new_card_info:checked ~ .omise-new-card-form.card-exists {
+#new_card_info:checked ~ fieldset.card-exists {
 	display: flex;
 }
 

@@ -40,8 +40,6 @@ class Omise
 	 */
 	protected static $can_initiate = false;
 
-	CONST OMISE_JS_LINK = 'https://cdn.omise.co/omise.js';
-
 	/**
 	 * @since  3.0
 	 */
@@ -50,13 +48,6 @@ class Omise
 		add_action('plugins_loaded', array($this, 'check_dependencies'));
 		add_action('woocommerce_init', array($this, 'init'));
 		do_action('omise_initiated');
-	}
-
-	/**
-	 * get plugin assess url
-	 */
-	public static function get_assets_url() {
-		return plugins_url('assets' , __FILE__);
 	}
 
 	/**
@@ -197,9 +188,6 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-admin-page.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-settings.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-card-form-customization.php';
 	}
 
 	/**
