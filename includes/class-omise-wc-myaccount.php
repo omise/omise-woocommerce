@@ -40,7 +40,11 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function init_panel() {
 			if ( ! empty( $this->omise_customer_id ) ) {
 				try {
+					$omiseCardGateway = new Omise_Payment_Creditcard();
 					$viewData['existingCards'] = $this->customerCard->get($this->omise_customer_id);
+					$viewData['cardFormTheme'] = $omiseCardGateway->get_option('card_form_theme');
+					$viewData['formDesign'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
+					$viewData['cardIcons'] = $omiseCardGateway->get_card_icons();
 
 					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
 					$this->register_omise_my_account_scripts();
@@ -56,9 +60,17 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function register_omise_my_account_scripts() {
 			wp_enqueue_script(
 				'omise-js',
-				'https://cdn.omise.co/omise.js',
+				Omise::OMISE_JS_LINK,
 				array( 'jquery' ),
 				WC_VERSION,
+				true
+			);
+
+			wp_enqueue_script(
+				'embedded-js',
+				plugins_url( '/assets/javascripts/omise-embedded-card.js', dirname( __FILE__ ) ),
+				[],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true
 			);
 
@@ -151,7 +163,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			}
 
 			try {
-				$card = $this->customerCard->create($token, $omiseCustomerId);
+				$card = $this->customerCard->create($this->omise_customer_id, $token);
 				echo json_encode( $card );
 			} catch( Exception $e ) {
 				echo json_encode( array(

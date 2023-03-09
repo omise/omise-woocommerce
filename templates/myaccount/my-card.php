@@ -36,10 +36,14 @@
 	<h4><?php _e( 'Add new card', 'omise' ); ?></h4>
 	<form name="omise_cc_form" id="omise_cc_form">
 		<?php wp_nonce_field('omise_add_card','omise_add_card_nonce'); ?>
-		<fieldset>
-			<?php require_once( __DIR__ . '/../payment/form-creditcard.php' ); ?>
-			<div class="clear"></div>
-		</fieldset>
+		<div id="omise-card" style="width:100%; max-width: 400px;"></div>
 	</form>
 	<button id="omise_add_new_card" class="button"><?php _e( 'Save card', 'omise' ); ?></button>
 </div>
+
+<script>
+	window.CARD_FORM_THEME = "<?php echo $viewData['cardFormTheme'] ?>";
+	window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['formDesign']) ?>`);
+	window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($viewData['cardIcons']) ?>`);
+	window.LOCALE = `<?php echo get_locale(); ?>`;
+</script>
