@@ -60,6 +60,34 @@
 			}
 		});
 
+		if(Boolean(parseInt(omise_params.embedded_form_enabeld))) {
+			hideError();
+			OmiseCard.requestCardToken()
+		} else {
+			this.saveCardTraditional()
+		}
+	}
+
+	$(".delete_card").click(function(event){
+		if(confirm('Confirm delete card?')){
+			let $button = $(this);
+			$button.block({
+				message: null,
+				overlayCSS: {
+					background: '#fff url(' + omise_params.ajax_loader_url + ') no-repeat center',
+					backgroundSize: '16px 16px',
+					opacity: 0.6
+				}
+			});
+			delete_card($button.data("card-id"), $button.data("delete-card-nonce"));
+		}
+	});
+	
+	$("#omise_add_new_card").click(function(event){
+		create_card();
+	});
+
+	function saveCardTraditional() {
 		let errors                  = [],
 			omise_card              = {},
 			omise_card_number_field = 'number',
@@ -123,24 +151,37 @@
 			}
 		}
 	}
-	
-	$(".delete_card").click(function(event){
-		if(confirm('Confirm delete card?')){
-			let $button = $(this);
-			$button.block({
-				message: null,
-				overlayCSS: {
-					background: '#fff url(' + omise_params.ajax_loader_url + ') no-repeat center',
-					backgroundSize: '16px 16px',
-					opacity: 0.6
+
+	function saveCardEmbedded(payload) {
+		const data = {
+			action: "omise_create_card",
+			omise_token: payload.token,
+			omise_nonce: $("#omise_add_card_nonce").val()
+		};
+		$.post(omise_params.ajax_url, data, 
+			function(wp_response){
+				if(wp_response.id){
+					window.location.reload();
+				}else{
+					showError(wp_response.message, $form);
 				}
-			});
-			delete_card($button.data("card-id"), $button.data("delete-card-nonce"));
+			}, "json"
+		);
+	}
+
+	showOmiseEmbeddedCardForm({
+		element: document.getElementById('omise-card'),
+		publicKey: omise_params.key,
+		locale: LOCALE,
+		theme: CARD_FORM_THEME ?? 'light',
+		design: FORM_DESIGN,
+		brandIcons: CARD_BRAND_ICONS,
+		hideRememberCard: true,
+		onSuccess: saveCardEmbedded,
+		onError: (error) => {
+			showError(error)
+			$form.unblock()
 		}
-	});
-	
-	$("#omise_add_new_card").click(function(event){
-		create_card();
-	});
+	})
 }
 )(jQuery);

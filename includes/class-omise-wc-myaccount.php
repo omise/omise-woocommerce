@@ -2,7 +2,8 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 if ( ! class_exists( 'Omise_MyAccount' ) ) {
-	class Omise_MyAccount {
+	class Omise_MyAccount
+	{
 		private static $instance;
 		private $omise_customer_id;
 
@@ -26,6 +27,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			}
 
 			$this->customerCard = new OmiseCustomerCard;
+			$this->omiseCardGateway = new Omise_Payment_Creditcard();
 
 			add_action( 'woocommerce_after_my_account', array( $this, 'init_panel' ) );
 			add_action( 'wp_ajax_omise_delete_card', array( $this, 'omise_delete_card' ) );
@@ -41,9 +43,13 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			if ( ! empty( $this->omise_customer_id ) ) {
 				try {
 					$viewData['existingCards'] = $this->customerCard->get($this->omise_customer_id);
+					$viewData['cardFormTheme'] = $this->omiseCardGateway->get_option('card_form_theme');
+					$viewData['embedded_form_enabled'] = (boolean)$this->omiseCardGateway->get_option('embedded_form_enabled');
+					$viewData['formDesign'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
+					$viewData['cardIcons'] = $this->omiseCardGateway->get_card_icons();
+					$this->register_omise_my_account_scripts();
 
 					Omise_Util::render_view( 'templates/myaccount/my-card.php', $viewData );
-					$this->register_omise_my_account_scripts();
 				} catch (Exception $e) {
 					// nothing.
 				}
@@ -56,9 +62,17 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function register_omise_my_account_scripts() {
 			wp_enqueue_script(
 				'omise-js',
-				'https://cdn.omise.co/omise.js',
+				Omise::OMISE_JS_LINK,
 				array( 'jquery' ),
 				WC_VERSION,
+				true
+			);
+
+			wp_enqueue_script(
+				'embedded-js',
+				plugins_url( '/assets/javascripts/omise-embedded-card.js', dirname( __FILE__ ) ),
+				[],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true
 			);
 
@@ -104,7 +118,8 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
 				'number is invalid and brand not supported (unknown)' => __( 'number is invalid and brand not supported (unknown)', 'omise' ),
 				'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
-				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __('expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)', 'omise')
+				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __('expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)', 'omise'),
+				'embedded_form_enabled'	=> (boolean)$this->omiseCardGateway->get_option('embedded_form_enabled')
 			];
 		}
 
@@ -151,7 +166,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			}
 
 			try {
-				$card = $this->customerCard->create($token, $omiseCustomerId);
+				$card = $this->customerCard->create($this->omise_customer_id, $token);
 				echo json_encode( $card );
 			} catch( Exception $e ) {
 				echo json_encode( array(
