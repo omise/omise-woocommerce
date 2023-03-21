@@ -89,7 +89,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 				'embedded_form_enabled' => [
 					'title'       => __( 'Secure form', 'omise' ),
 					'type'        => 'select',
-					'description' => __( '<strong><i><span style="color:red">Hello</span> Select whether to have an embedded credit card form or old credit card form</i></strong>', 'omise' ),
+					'description' => __( '<span>Try the new secure form to accept card payments. The new form features additional controls to ensure PCI-DSS compliance.<br /><strong><em>Using this form will be mandatory in a future release</em></strong>.</span>', 'omise' ),
 					'default'     => !self::EMBEDDDED_FORM_ENABLED,
 					'options' => array(
 						!self::EMBEDDDED_FORM_ENABLED => __( 'No', 'omise' ),
@@ -107,7 +107,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 						'dark'  => __( 'Dark', 'omise' )
 					),
 					'description' => wp_kses(
-						__( 'Credit/debit card form design on checkout page. <br /> <a href="admin.php?page=omise_card_form_customization">Click here for more card form customization.</a>', 'omise' ),
+						__( 'Credit / Debit card form design on checkout page. <br /> <a href="admin.php?page=omise_card_form_customization">Click here for more card form customization.</a>', 'omise' ),
 						['a' => ['href' => []], 'br' => []]
 					),
 				],

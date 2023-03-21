@@ -180,7 +180,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <script src="<?php echo Omise::OMISE_JS_LINK ?>"></script>

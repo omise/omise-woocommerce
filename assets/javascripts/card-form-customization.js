@@ -59,7 +59,6 @@ function getDesignFormValues() {
 }
 
 function initOmiseCardForm() {
-  console.log('card-form-customization', showOmiseEmbeddedCardForm());
   const customCardFormTheme = CARD_FORM_THEME ?? 'light';
   document.querySelector('.omise-modal .content').style.background =
     customCardFormTheme == 'light' ? 'white' : '#272934'
@@ -69,7 +68,7 @@ function initOmiseCardForm() {
     locale: LOCALE,
     theme: customCardFormTheme,
     brandIcons: CARD_BRAND_ICONS,
-    design:showOmiseEmbeddedCardForm
+    design: getDesignFormValues()
   })
 }
 
