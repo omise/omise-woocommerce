@@ -136,6 +136,12 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					'css'         => Omise_Card_Image::get_css(),
 					'default'     => Omise_Card_Image::get_diners_default_display()
 				),
+				'accept_discover' => array(
+					'type'        => 'checkbox',
+					'label'       => Omise_Card_Image::get_discover_image(),
+					'css'         => Omise_Card_Image::get_css(),
+					'default'     => Omise_Card_Image::get_discover_default_display()
+				),
 				'accept_amex' => array(
 					'type'        => 'checkbox',
 					'label'       => Omise_Card_Image::get_amex_image(),
