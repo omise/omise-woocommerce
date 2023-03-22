@@ -59,8 +59,8 @@
 
 			if (0 === $('input.omise_token').length) {
 				(Boolean(omise_params.embedded_form_enabled))
-					? traditionalForm()
-					: requestCardToken();
+					? requestCardToken()
+					: traditionalForm();
 				return false;
 			}
 		}
@@ -224,22 +224,24 @@
 		}
 	}
 
-	$(document).on('updated_checkout', function () {
-		showOmiseEmbeddedCardForm({
-			element: document.getElementById('omise-card'),
-			publicKey: omise_params.key,
-			hideRememberCard: HIDE_REMEMBER_CARD,
-			locale: LOCALE,
-			theme: CARD_FORM_THEME ?? 'light',
-			design: FORM_DESIGN,
-			brandIcons: CARD_BRAND_ICONS,
-			onSuccess: handleCreateOrder,
-			onError: (error) => {
-				showError(error)
-				$form.unblock()
-			}
-		})
-	});
+	if(Boolean(omise_params.embedded_form_enabled)) {
+		$(document).on('updated_checkout', function () {
+			showOmiseEmbeddedCardForm({
+				element: document.getElementById('omise-card'),
+				publicKey: omise_params.key,
+				hideRememberCard: HIDE_REMEMBER_CARD,
+				locale: LOCALE,
+				theme: CARD_FORM_THEME ?? 'light',
+				design: FORM_DESIGN,
+				brandIcons: CARD_BRAND_ICONS,
+				onSuccess: handleCreateOrder,
+				onError: (error) => {
+					showError(error)
+					$form.unblock()
+				}
+			})
+		});
+	}
 
 	$(function () {
 		$('body').on('checkout_error', function () {

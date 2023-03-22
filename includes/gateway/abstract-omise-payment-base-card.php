@@ -347,7 +347,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)',
 				'omise'
 			),
-			'embedded_form_enabeld'	=> (boolean)$omiseCardGateway->get_option('embedded_form_enabled')
+			'embedded_form_enabled'	=> (boolean)$omiseCardGateway->get_option('embedded_form_enabled')
 		];
 	}
 }

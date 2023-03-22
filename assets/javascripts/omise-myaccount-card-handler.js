@@ -60,11 +60,11 @@
 			}
 		});
 
-		if(Boolean(parseInt(omise_params.embedded_form_enabeld))) {
+		if(Boolean(parseInt(omise_params.embedded_form_enabled))) {
 			hideError();
 			OmiseCard.requestCardToken()
 		} else {
-			this.saveCardTraditional()
+			saveCardTraditional()
 		}
 	}
 
@@ -169,19 +169,21 @@
 		);
 	}
 
-	showOmiseEmbeddedCardForm({
-		element: document.getElementById('omise-card'),
-		publicKey: omise_params.key,
-		locale: LOCALE,
-		theme: CARD_FORM_THEME ?? 'light',
-		design: FORM_DESIGN,
-		brandIcons: CARD_BRAND_ICONS,
-		hideRememberCard: true,
-		onSuccess: saveCardEmbedded,
-		onError: (error) => {
-			showError(error)
-			$form.unblock()
-		}
-	})
+	if(Boolean(parseInt(omise_params.embedded_form_enabled))) {
+		showOmiseEmbeddedCardForm({
+			element: document.getElementById('omise-card'),
+			publicKey: omise_params.key,
+			locale: LOCALE,
+			theme: CARD_FORM_THEME ?? 'light',
+			design: FORM_DESIGN,
+			brandIcons: CARD_BRAND_ICONS,
+			hideRememberCard: true,
+			onSuccess: saveCardEmbedded,
+			onError: (error) => {
+				showError(error)
+				$form.unblock()
+			}
+		})
+	}
 }
 )(jQuery);
