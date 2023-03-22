@@ -89,7 +89,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 				'embedded_form_enabled' => [
 					'title'       => __( 'Secure form', 'omise' ),
 					'type'        => 'select',
-					'description' => __( '<span>Try the new secure form to accept card payments. The new form features additional controls to ensure PCI-DSS compliance.<br /><strong><em>Using this form will be mandatory in a future release</em></strong>.</span>', 'omise' ),
+					'description' => __( 'Try the new secure form to accept card payments. The new form features additional controls to ensure PCI-DSS compliance.<br /><strong><em>Using this form will be mandatory in a future release</em></strong>.', 'omise' ),
 					'default'     => !self::EMBEDDDED_FORM_ENABLED,
 					'options' => array(
 						!self::EMBEDDDED_FORM_ENABLED => __( 'No', 'omise' ),
@@ -98,7 +98,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 				],
 
 				'card_form_theme' => [
-					'title'       => __( 'Enhanced security form theme', 'omise' ),
+					'title'       => __( 'Secure form theme', 'omise' ),
 					'type'        => 'select',
 					'default'     => 'light',
 					'class'       => 'wc-enhanced-select',
