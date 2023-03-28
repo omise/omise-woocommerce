@@ -56,7 +56,7 @@ class Omise
 	/**
 	 * Notice for users informing about embedded form
 	 */
-	function embedded_form_notice()
+	private function embedded_form_notice()
 	{
 		$this->omiseCardGateway = new Omise_Payment_Creditcard();
 		$embedded_form_enabled = $this->omiseCardGateway->get_option('embedded_form_enabled');
