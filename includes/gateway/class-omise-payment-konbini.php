@@ -141,7 +141,7 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 	 * @see   woocommerce/templates/emails/plain/email-order-details.php
 	 */
 	public function email_link( $order ) {
-		if ( $this->id == $order->get_payment_method() ) {
+		if ( $this->id == $order->get_payment_method() && !$order->get_date_paid() ) {
 			$this->display_link( $order, 'email' );
 		}
 	}
