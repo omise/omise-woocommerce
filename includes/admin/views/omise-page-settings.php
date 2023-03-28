@@ -8,6 +8,10 @@
 		}
 	</style>
 
+	<div style="padding: 20px" class="notice updated">
+		<p><strong><?php echo _e('Update now to use the enhanced secure payment form to securely accept payment information. Note that you must re-customize the credit card checkout form after the upgrade. For more details, please click <a href="https://www.omise.co/magento-plugin">here</a>.', 'omise' ); ?></strong></p>
+	</div>
+
 	<h1><?= $title; ?></h1>
 
 	<?php $page->display_messages(); ?>
