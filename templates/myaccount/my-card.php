@@ -37,7 +37,7 @@
 	<form name="omise_cc_form" id="omise_cc_form">
 		<?php wp_nonce_field('omise_add_card','omise_add_card_nonce'); ?>
 
-		<?php if($viewData['embedded_form_enabled']): ?>
+		<?php if($viewData['secure_form_enabled']): ?>
 			<div id="omise-card" style="width:100%; max-width: 400px;"></div>
 		<?php else: ?>
 			<fieldset>
@@ -50,7 +50,7 @@
 	<button id="omise_add_new_card" class="button"><?php _e( 'Save card', 'omise' ); ?></button>
 </div>
 
-<?php if($viewData['embedded_form_enabled']): ?>
+<?php if($viewData['secure_form_enabled']): ?>
 	<script>
 		window.CARD_FORM_THEME = "<?php echo $viewData['cardFormTheme'] ?>";
 		window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['formDesign']) ?>`);

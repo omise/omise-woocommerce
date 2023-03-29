@@ -44,7 +44,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				try {
 					$viewData['existingCards'] = $this->customerCard->get($this->omise_customer_id);
 					$viewData['cardFormTheme'] = $this->omiseCardGateway->get_option('card_form_theme');
-					$viewData['embedded_form_enabled'] = (boolean)$this->omiseCardGateway->get_option('embedded_form_enabled');
+					$viewData['secure_form_enabled'] = (boolean)$this->omiseCardGateway->get_option('secure_form_enabled');
 					$viewData['formDesign'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
 					$viewData['cardIcons'] = $this->omiseCardGateway->get_card_icons();
 					$this->register_omise_my_account_scripts();
@@ -119,7 +119,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 				'number is invalid and brand not supported (unknown)' => __( 'number is invalid and brand not supported (unknown)', 'omise' ),
 				'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)' => __( 'expiration year is invalid, expiration date cannot be in the past, number is invalid, and brand not supported (unknown)', 'omise' ),
 				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __('expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)', 'omise'),
-				'embedded_form_enabled'	=> (boolean)$this->omiseCardGateway->get_option('embedded_form_enabled')
+				'secure_form_enabled'	=> (boolean)$this->omiseCardGateway->get_option('secure_form_enabled')
 			];
 		}
 
