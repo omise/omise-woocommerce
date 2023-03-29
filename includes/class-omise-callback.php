@@ -29,7 +29,6 @@ class Omise_Callback {
 	public static function execute()
 	{
 		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
-		$token = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : null;
 		$order = wc_get_order( $order_id );
 
 		if(!RequestHelper::validateRequest($order->get_meta('token'))) {
@@ -74,6 +73,12 @@ class Omise_Callback {
 		try {
 			$this->charge = $this->fetchCharge($this->order->get_transaction_id());
 
+			// TODO: Remove this if block once the issue is fixed on the server.
+			if ($this->hasShopeepayFailed()) {
+				$this->payment_failed();
+				return;
+			}
+
 			switch ( strtolower( $this->charge['status'] ) ) {
 				case 'successful':
 				case 'failed':
@@ -96,6 +101,16 @@ class Omise_Callback {
 
 			$this->invalid_result();
 		}
+	}
+
+	/**
+	 * TODO: Remove this if block once the issue is fixed on the server.
+	 */
+	private function hasShopeepayFailed()
+	{
+		$isPaymentMethodShopeepay = 'shopeepay' === $this->charge['source']['type'];
+		$isChargePending = 'pending' === $this->charge['status'];
+		return $isPaymentMethodShopeepay && $isChargePending;
 	}
 
 	/**
@@ -190,7 +205,10 @@ class Omise_Callback {
 	 */
 	protected function payment_failed() {
 		$message = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
-		$failure_message = Omise()->translate( $this->charge['failure_message'] ) . ' (code: ' . $this->charge['failure_code'] . ')';
+		$failure_message = Omise()->translate( $this->charge['failure_message'] );
+		$failure_message .= ($this->charge['failure_code']) ?
+			' (code: ' . $this->charge['failure_code'] . ')'
+			: ' (code: Payment failed)'; // for shopeepay
 
 		$this->order->add_order_note( sprintf( wp_kses( __( 'OMISE: Payment failed.<br/>%s', 'omise' ), array( 'br' => array() ) ), $failure_message ) );
 		$this->order->update_status( 'failed' );
