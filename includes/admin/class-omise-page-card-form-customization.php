@@ -59,7 +59,7 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 				'active_border_color' => '#475266',
 				'background_color' => '#131926',
 				'label_color' => '#E6EAF2',
-				'text_color' => '#212121',
+				'text_color' => '#ffffff',
 				'placeholder_color' => '#DBDBDB',
 			],
 			'checkbox' => [

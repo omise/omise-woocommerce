@@ -58,7 +58,11 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				$order
 			),
 			'return_uri' => $this->getRedirectUrl('omise_callback', $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order)
+			'metadata' => $this->getMetadata(
+				$order_id,
+				$order,
+				[ 'secure_form_enabled' => $this->getSecureFormState()]
+			)
 		];
 
 		if (!empty($omise_customer_id) && ! empty($card_id)) {
@@ -76,6 +80,17 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Returns the the secure form state in yes/not format
+	 */
+	private function getSecureFormState()
+	{
+		// tracking the embedded form adoption
+		$omiseCardGateway = new Omise_Payment_Creditcard();
+		$secureFormEnabled = $omiseCardGateway->get_option('secure_form_enabled');
+		return (boolean)$secureFormEnabled ? 'yes' : 'no';
 	}
 
 	/**
@@ -347,7 +362,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)',
 				'omise'
 			),
-			'embedded_form_enabled'	=> (boolean)$omiseCardGateway->get_option('embedded_form_enabled')
+			'secure_form_enabled'	=> (boolean)$omiseCardGateway->get_option('secure_form_enabled')
 		];
 	}
 }

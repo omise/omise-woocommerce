@@ -58,7 +58,7 @@
 			}
 
 			if (0 === $('input.omise_token').length) {
-				(Boolean(omise_params.embedded_form_enabled))
+				(Boolean(omise_params.secure_form_enabled))
 					? requestCardToken()
 					: traditionalForm();
 				return false;
@@ -224,7 +224,7 @@
 		}
 	}
 
-	if(Boolean(omise_params.embedded_form_enabled)) {
+	if(Boolean(omise_params.secure_form_enabled)) {
 		$(document).on('updated_checkout', function () {
 			showOmiseEmbeddedCardForm({
 				element: document.getElementById('omise-card'),

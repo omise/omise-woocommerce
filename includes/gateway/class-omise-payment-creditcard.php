@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
-	const EMBEDDDED_FORM_ENABLED = true;
+	const SECURE_FORM_ENABLED = true;
 
 	public function __construct()
 	{
@@ -86,14 +86,14 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					),
 					'desc_tip'    => true
 				),
-				'embedded_form_enabled' => [
+				'secure_form_enabled' => [
 					'title'       => __( 'Secure form', 'omise' ),
 					'type'        => 'select',
 					'description' => __( 'Try the new secure form to accept card payments. The new form features additional controls to ensure PCI-DSS compliance.<br /><strong><em>Using this form will be mandatory in a future release</em></strong>.', 'omise' ),
-					'default'     => !self::EMBEDDDED_FORM_ENABLED,
+					'default'     => !self::SECURE_FORM_ENABLED,
 					'options' => array(
-						!self::EMBEDDDED_FORM_ENABLED => __( 'No', 'omise' ),
-						self::EMBEDDDED_FORM_ENABLED => __( 'Yes', 'omise' )
+						!self::SECURE_FORM_ENABLED => __( 'No', 'omise' ),
+						self::SECURE_FORM_ENABLED => __( 'Yes', 'omise' )
 					)
 				],
 
@@ -191,9 +191,9 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 			$viewData['user_logged_in'] = false;
 		}
 
-		$viewData['embedded_form_enabled'] = (boolean)$this->get_option('embedded_form_enabled');
+		$viewData['secure_form_enabled'] = (boolean)$this->get_option('secure_form_enabled');
 
-		if ($viewData['embedded_form_enabled'] === self::EMBEDDDED_FORM_ENABLED) {
+		if ($viewData['secure_form_enabled'] === self::SECURE_FORM_ENABLED) {
 			$viewData['card_form_theme'] = $this->get_option('card_form_theme');
 			$viewData['card_icons'] = $this->get_card_icons();
 			$viewData['form_design'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();

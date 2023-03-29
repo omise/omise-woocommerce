@@ -60,7 +60,7 @@
 			}
 		});
 
-		if(Boolean(parseInt(omise_params.embedded_form_enabled))) {
+		if(Boolean(parseInt(omise_params.secure_form_enabled))) {
 			hideError();
 			OmiseCard.requestCardToken()
 		} else {
@@ -169,7 +169,7 @@
 		);
 	}
 
-	if(Boolean(parseInt(omise_params.embedded_form_enabled))) {
+	if(Boolean(parseInt(omise_params.secure_form_enabled))) {
 		showOmiseEmbeddedCardForm({
 			element: document.getElementById('omise-card'),
 			publicKey: omise_params.key,

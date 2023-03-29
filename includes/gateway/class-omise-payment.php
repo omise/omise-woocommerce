@@ -604,12 +604,16 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	/**
 	 * @param string $order_id
 	 * @param object $order
+	 * @param array $additionalData
 	 */
-	public function getMetadata($order_id, $order)
+	public function getMetadata($order_id, $order, $additionalData = [])
 	{
+		// override order_id as a reference for webhook handlers.
+		$orderId = [ 'order_id' => $order_id ];
+
 		return array_merge(
 			apply_filters('omise_charge_params_metadata', [], $order),
-			['order_id' => $order_id] // override order_id as a reference for webhook handlers.
+			array_merge($orderId, $additionalData)
 		);
 	}
 }

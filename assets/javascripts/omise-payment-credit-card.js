@@ -1,5 +1,5 @@
 (function ($) {
-	const creditCardFormType = $('#woocommerce_omise_embedded_form_enabled');
+	const creditCardFormType = $('#woocommerce_omise_secure_form_enabled');
 	const cardFormTheme = $('#woocommerce_omise_card_form_theme');
 	const cardFormThemeParent = cardFormTheme.closest("tr[valign='top']");
 

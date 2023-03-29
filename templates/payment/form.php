@@ -26,7 +26,7 @@
 			</label>
 		<?php endif; ?>
 
-		<?php if ($viewData['embedded_form_enabled']): ?>
+		<?php if ($viewData['secure_form_enabled']): ?>
 			<div class="omise-new-card-form <?php echo $showExistingCards ? 'card-exists' : ''; ?>">
 				<div id="omise-card" style="width:100%; max-width: 400px;"></div>
 				<input type="hidden" name="omise_save_customer_card" class="omise_save_customer_card" />
@@ -53,7 +53,7 @@
 		<?php endif; ?>
 	</div>
 </div>
-<?php if($viewData['embedded_form_enabled']): ?>
+<?php if($viewData['secure_form_enabled']): ?>
 	<script>
 		window.CARD_FORM_THEME = "<?php echo $viewData['card_form_theme'] ?>";
 		window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($viewData['card_icons']) ?>`);
