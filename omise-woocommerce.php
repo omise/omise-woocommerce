@@ -4,7 +4,7 @@
  * Plugin Name: Opn Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
- * Version:     4.29.0
+ * Version:     5.0.0
  * Author:      Opn Payments and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
@@ -22,7 +22,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '4.29.0';
+	public $version = '5.0.0';
 
 	/**
 	 * The Omise Instance.
@@ -40,6 +40,8 @@ class Omise
 	 */
 	protected static $can_initiate = false;
 
+	CONST OMISE_JS_LINK = 'https://cdn.omise.co/omise.js';
+
 	/**
 	 * @since  3.0
 	 */
@@ -48,6 +50,29 @@ class Omise
 		add_action('plugins_loaded', array($this, 'check_dependencies'));
 		add_action('woocommerce_init', array($this, 'init'));
 		do_action('omise_initiated');
+		add_action('admin_notices', [$this, 'embedded_form_notice']);
+	}
+
+	/**
+	 * Notice for users informing about embedded form
+	 */
+	public function embedded_form_notice()
+	{
+		$this->omiseCardGateway = new Omise_Payment_Creditcard();
+		$embedded_form_enabled = $this->omiseCardGateway->get_option('embedded_form_enabled');
+
+		// hide if user enables the embedded form.
+		if (!(bool)$embedded_form_enabled) {
+			$translation = __('Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. You will need to re-customize the credit card checkout form after the upgrade. <a target="_blank" href="https://www.omise.co/woocommerce-plugin">Learn how to enable Secure Form</a>.', 'omise');
+			echo "<div class='notice notice-warning is-dismissible'><p><strong>Opn Payments:</strong> $translation</p></div>";
+		}
+	}
+
+	/**
+	 * get plugin assess url
+	 */
+	public static function get_assets_url() {
+		return plugins_url('assets' , __FILE__);
 	}
 
 	/**
@@ -188,6 +213,8 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-admin-page.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-card-form-customization.php';
 	}
 
 	/**

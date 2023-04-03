@@ -139,7 +139,7 @@ msgid "Credit / Debit Card"
 msgstr "クレジットカード／デビットカード"
 
 #: includes/gateway/class-omise-payment-creditcard.php:78
-msgid "Advance Settings"
+msgid "Advanced Settings"
 msgstr "詳細設定"
 
 #: includes/gateway/class-omise-payment-creditcard.php:82
@@ -585,3 +585,7 @@ msgstr "有効期限の月数が1〜12で設定されていないため無効で
 #: includes/gateway/class-omise-payment-fpx.php:35
 msgid "Please select bank below"
 msgstr "以下から銀行をお選びください"
+
+#: omise-woocommerce.php:66
+msgid "Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. You will need to re-customize the credit card checkout form after the upgrade. <a target='_blank' href='https://www.omise.co/woocommerce-plugin'>Learn how to enable Secure Form</a>."
+msgstr "プラグインを最新バージョンにアップデートし、顧客情報の安全な管理に必要なSecure Formを有効にしてください。アップデート後、クレジットカードの決済フォームを再度カスタマイズする必要があります。<a target='_blank' href='https://www.omise.co/woocommerce-plugin'>Secure Formを有効にする方法はこちらをご確認ください</a>。"

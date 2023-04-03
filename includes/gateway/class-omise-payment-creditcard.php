@@ -2,7 +2,10 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
-	public function __construct() {
+	const SECURE_FORM_ENABLED = true;
+
+	public function __construct()
+	{
 		parent::__construct();
 
 		$this->id                 = 'omise';
@@ -26,6 +29,8 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 		$this->description          = $this->get_option( 'description' );
 		$this->payment_action       = $this->get_option( 'payment_action' );
 		$this->restricted_countries = array( 'TH', 'JP', 'SG', 'MY' );
+
+		$this->register_omise_credit_card_scripts();
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -66,7 +71,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 			),
 			array(
 				'advanced' => array(
-					'title'       => __( 'Advance Settings', 'omise' ),
+					'title'       => __( 'Advanced Settings', 'omise' ),
 					'type'        => 'title'
 				),
 				'payment_action' => array(
@@ -81,6 +86,31 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					),
 					'desc_tip'    => true
 				),
+				'secure_form_enabled' => [
+					'title'       => __( 'Secure form', 'omise' ),
+					'type'        => 'select',
+					'description' => __( 'Try the new secure form to accept card payments. The new form features additional controls to ensure PCI-DSS compliance.<br /><strong><em>Using this form will be mandatory in a future release</em></strong>.', 'omise' ),
+					'default'     => !self::SECURE_FORM_ENABLED,
+					'options' => array(
+						!self::SECURE_FORM_ENABLED => __( 'No', 'omise' ),
+						self::SECURE_FORM_ENABLED => __( 'Yes', 'omise' )
+					)
+				],
+
+				'card_form_theme' => [
+					'title'       => __( 'Secure form theme', 'omise' ),
+					'type'        => 'select',
+					'default'     => 'light',
+					'class'       => 'wc-enhanced-select',
+					'options'     => array(
+						'light' => __( 'Light', 'omise' ),
+						'dark'  => __( 'Dark', 'omise' )
+					),
+					'description' => wp_kses(
+						__( 'Credit / Debit card form design on checkout page. <br /> <a href="admin.php?page=omise_card_form_customization">Click here for more card form customization.</a>', 'omise' ),
+						['a' => ['href' => []], 'br' => []]
+					),
+				],
 				'accept_visa' => array(
 					'title'       => __( 'Supported card icons', 'omise' ),
 					'type'        => 'checkbox',
@@ -106,6 +136,12 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					'css'         => Omise_Card_Image::get_css(),
 					'default'     => Omise_Card_Image::get_diners_default_display()
 				),
+				'accept_discover' => array(
+					'type'        => 'checkbox',
+					'label'       => Omise_Card_Image::get_discover_image(),
+					'css'         => Omise_Card_Image::get_css(),
+					'default'     => Omise_Card_Image::get_discover_default_display()
+				),
 				'accept_amex' => array(
 					'type'        => 'checkbox',
 					'label'       => Omise_Card_Image::get_amex_image(),
@@ -117,6 +153,16 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					)
 				)
 			)
+		);
+	}
+
+	private function register_omise_credit_card_scripts() {
+		wp_enqueue_script(
+			'omise-credit-card',
+			plugins_url( '../assets/javascripts/omise-payment-credit-card.js', dirname( __FILE__ ) ),
+			array( 'jquery' ),
+			WC_VERSION,
+			true
 		);
 	}
 
@@ -145,45 +191,37 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 			$viewData['user_logged_in'] = false;
 		}
 
+		$viewData['secure_form_enabled'] = (boolean)$this->get_option('secure_form_enabled');
+
+		if ($viewData['secure_form_enabled'] === self::SECURE_FORM_ENABLED) {
+			$viewData['card_form_theme'] = $this->get_option('card_form_theme');
+			$viewData['card_icons'] = $this->get_card_icons();
+			$viewData['form_design'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
+		}
+
 		Omise_Util::render_view( 'templates/payment/form.php', $viewData );
 	}
 
 	/**
-	 * Get icons of all supported card types
-	 *
-	 * @see WC_Payment_Gateway::get_icon()
+	 * Get card icons for credit card form
 	 */
-	public function get_icon() {
-		$icon = '';
+	public function get_card_icons() {
+		$enable_icons = [];
+		$card_icons = [
+			'amex' => 'accept_amex',
+			'diners' => 'accept_diners',
+			'jcb' => 'accept_jcb',
+			'mastercard' => 'accept_mastercard',
+			'visa' => 'accept_visa',
+			'discover' => 'accept_discover',
+		];
 
-		// TODO: Refactor 'Omise_Card_Image' class that we don't need to pass
-		//       these options to check outside this class.
-		$card_icons['accept_amex']       = $this->get_option( 'accept_amex' );
-		$card_icons['accept_diners']     = $this->get_option( 'accept_diners' );
-		$card_icons['accept_jcb']        = $this->get_option( 'accept_jcb' );
-		$card_icons['accept_mastercard'] = $this->get_option( 'accept_mastercard' );
-		$card_icons['accept_visa']       = $this->get_option( 'accept_visa' );
-
-		if ( Omise_Card_Image::is_visa_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_visa_image();
+		foreach($card_icons as $key => $value) {
+			if($this->get_option($value) == "yes") {
+				$enable_icons[] = $key;
+			}
 		}
 
-		if ( Omise_Card_Image::is_mastercard_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_mastercard_image();
-		}
-
-		if ( Omise_Card_Image::is_jcb_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_jcb_image();
-		}
-
-		if ( Omise_Card_Image::is_diners_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_diners_image();
-		}
-
-		if ( Omise_Card_Image::is_amex_enabled( $card_icons ) ) {
-			$icon .= Omise_Card_Image::get_amex_image();
-		}
-
-		return empty( $icon ) ? '' : apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+		return $enable_icons;
 	}
 }

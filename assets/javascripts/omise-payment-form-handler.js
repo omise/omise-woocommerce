@@ -14,7 +14,7 @@
 		let $ulError = $("<ul>").addClass("woocommerce-error");
 
 		if ($.isArray(message)) {
-			$.each(message, function(i,v) {
+			$.each(message, function(i, v) {
 				$ulError.append($("<li>" + v + "</li>"));
 			})
 		} else {
@@ -58,62 +58,67 @@
 			}
 
 			if (0 === $('input.omise_token').length) {
-				$form.block({
-					message: null,
-					overlayCSS: {
-						background: '#fff url(' + wc_checkout_params.ajax_loader_url + ') no-repeat center',
-						backgroundSize: '16px 16px',
-						opacity: 0.6
-					}
-				});
-
-				let errors = [],
-					omise_card = {},
-					omise_card_number_field = 'number',
-					omise_card_fields = {
-						'name' : $('#omise_card_name'),
-						'number' : $('#omise_card_number'),
-						'expiration_month' : $('#omise_card_expiration_month'),
-						'expiration_year' : $('#omise_card_expiration_year'),
-						'security_code' : $('#omise_card_security_code')
-					};
-
-				$.each(omise_card_fields, function(index, field) {
-					omise_card[index] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
-					if ("" === omise_card[index]) {
-						errors.push(omise_params['required_card_' + index]);
-					}
-				});
-
-				if (errors.length > 0) {
-					showError(errors);
-					$form.unblock();
-					return false;
-				}
-
-				hideError();
-
-				if(Omise) {
-					Omise.setPublicKey(omise_params.key);
-					Omise.createToken("card", omise_card, function (statusCode, response) {
-						if (statusCode == 200) {
-							$.each(omise_card_fields, function(index, field) {
-								field.val('');
-							});
-
-							$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>');
-							$form.submit();
-						} else {
-							handleTokensApiError(response);
-						};
-					});
-				} else {
-					showError(omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection);
-					$form.unblock();
-				}
-
+				(Boolean(omise_params.secure_form_enabled))
+					? requestCardToken()
+					: traditionalForm();
 				return false;
 			}
+		}
+	}
+
+	function traditionalForm() {
+		$form.block({
+			message: null,
+			overlayCSS: {
+				background: '#fff url(' + wc_checkout_params.ajax_loader_url + ') no-repeat center',
+				backgroundSize: '16px 16px',
+				opacity: 0.6
+			}
+		});
+
+		let errors = [],
+			omise_card = {},
+			omise_card_number_field = 'number',
+			omise_card_fields = {
+				'name' : $('#omise_card_name'),
+				'number' : $('#omise_card_number'),
+				'expiration_month' : $('#omise_card_expiration_month'),
+				'expiration_year' : $('#omise_card_expiration_year'),
+				'security_code' : $('#omise_card_security_code')
+			};
+
+		$.each(omise_card_fields, function(index, field) {
+			omise_card[index] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
+			if ("" === omise_card[index]) {
+				errors.push(omise_params['required_card_' + index]);
+			}
+		});
+
+		if (errors.length > 0) {
+			showError(errors);
+			$form.unblock();
+			return false;
+		}
+
+		hideError();
+
+		if(Omise) {
+			Omise.setPublicKey(omise_params.key);
+			Omise.createToken("card", omise_card, function (statusCode, response) {
+				if (statusCode == 200) {
+					$.each(omise_card_fields, function(index, field) {
+						field.val('');
+					});
+
+					$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>');
+					$form.submit();
+				} else {
+					handleTokensApiError(response);
+				};
+			});
+		} else {
+			showError(omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection);
+			$form.unblock();
 		}
 	}
 
@@ -185,6 +190,57 @@
 	function mapApiResponseToTranslatedTest(message)
 	{
 		return omise_params[message] ? omise_params[message] : message;
+	}
+
+	function requestCardToken() {
+		hideError()
+		$form.block({
+			message: null,
+			overlayCSS: {
+				background: '#fff url(' + wc_checkout_params.ajax_loader_url + ') no-repeat center',
+				backgroundSize: '16px 16px',
+				opacity: 0.6
+			}
+		});
+		const billingAddress = {
+			country: document.getElementById('billing_country').value,
+			postal_code: document.getElementById('billing_postcode').value,
+			state: document.getElementById('billing_state').value,
+			city: document.getElementById('billing_city').value,
+			street1: document.getElementById('billing_address_1').value,
+			street2: document.getElementById('billing_address_2').value,
+		}
+		OmiseCard.requestCardToken(billingAddress)
+	}
+
+	function handleCreateOrder(payload) {
+		$form.unblock();
+		if (payload.token) {
+			if (payload.remember) {
+				$('.omise_save_customer_card').val(payload.remember)
+			}
+			$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + payload.token + '"/>');
+			$form.submit();
+		}
+	}
+
+	if(Boolean(omise_params.secure_form_enabled)) {
+		$(document).on('updated_checkout', function () {
+			showOmiseEmbeddedCardForm({
+				element: document.getElementById('omise-card'),
+				publicKey: omise_params.key,
+				hideRememberCard: HIDE_REMEMBER_CARD,
+				locale: LOCALE,
+				theme: CARD_FORM_THEME ?? 'light',
+				design: FORM_DESIGN,
+				brandIcons: CARD_BRAND_ICONS,
+				onSuccess: handleCreateOrder,
+				onError: (error) => {
+					showError(error)
+					$form.unblock()
+				}
+			})
+		});
 	}
 
 	$(function () {

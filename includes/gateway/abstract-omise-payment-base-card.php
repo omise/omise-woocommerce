@@ -27,7 +27,8 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 
 		// Saving card.
-		if (isset($_POST['omise_save_customer_card']) && empty($card_id)) {
+		$saveCustomerCard = $_POST['omise_save_customer_card'];
+		if (isset($saveCustomerCard) && !empty($saveCustomerCard) && empty($card_id)) {
 			$cardDetails = $this->saveCard($omise_customer_id, $token, $order_id, $user->ID);
 			$omise_customer_id = $cardDetails['customer_id'];
 			$card_id = $cardDetails['card_id'];
@@ -57,7 +58,11 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				$order
 			),
 			'return_uri' => $this->getRedirectUrl('omise_callback', $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order)
+			'metadata' => $this->getMetadata(
+				$order_id,
+				$order,
+				[ 'secure_form_enabled' => $this->getSecureFormState()]
+			)
 		];
 
 		if (!empty($omise_customer_id) && ! empty($card_id)) {
@@ -75,6 +80,17 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Returns the the secure form state in yes/not format
+	 */
+	private function getSecureFormState()
+	{
+		// tracking the embedded form adoption
+		$omiseCardGateway = new Omise_Payment_Creditcard();
+		$secureFormEnabled = $omiseCardGateway->get_option('secure_form_enabled');
+		return (boolean)$secureFormEnabled ? 'yes' : 'no';
 	}
 
 	/**
@@ -110,9 +126,10 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			}
 
 			try {
-				$customer->get($omise_customer_id);
 				$customerCard = new OmiseCustomerCard;
-				$card = $customerCard->create($customer, $token);
+
+				// TODO: Save customer with $omise_customer_id from Embedded form
+				$card = $customerCard->create($omise_customer_id, $token);
 
 				return [
 					'customer_id' => $omise_customer_id,
@@ -127,6 +144,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 
 				// Saved customer ID is not found so we create a new customer and save the customer ID
 				$customer_data = $customer->create($user_id, $order_id, $customer_data);
+
 				return [
 					'customer_id' => $customer_data['customer_id'],
 					'card_id' => $customer_data['card_id']
@@ -233,8 +251,16 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		if ( is_checkout() && $this->is_available() ) {
 			wp_enqueue_script(
 				'omise-js',
-				'https://cdn.omise.co/omise.js',
+				Omise::OMISE_JS_LINK,
 				[ 'jquery' ],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				true
+			);
+
+			wp_enqueue_script(
+				'embedded-js',
+				plugins_url( '../../assets/javascripts/omise-embedded-card.js', __FILE__ ),
+				[],
 				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true
 			);
@@ -260,6 +286,8 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	 */
 	public function getParamsForJS()
 	{
+		$omiseCardGateway = new Omise_Payment_Creditcard();
+
 		return [
 			'key'                            => $this->public_key(),
 			'required_card_name'             => __(
@@ -333,7 +361,8 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)' => __(
 				'expiration month is not between 1 and 12, expiration date is invalid, number is invalid, and brand not supported (unknown)',
 				'omise'
-			)
+			),
+			'secure_form_enabled'	=> (boolean)$omiseCardGateway->get_option('secure_form_enabled')
 		];
 	}
 }
