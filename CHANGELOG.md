@@ -1,5 +1,13 @@
 # CHANGELOG
 
+
+### [v5.0.0 _(Apr 3, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.0.0)
+- Replace credit card form with secure form with a feature flag options to switch between credit card forms. (PR [#354](https://github.com/omise/omise-woocommerce/pull/354))
+- Added an admin notice to notify the user to update the current credit card form to embedded form. (PR [#358](https://github.com/omise/omise-woocommerce/pull/358))
+- Track the adoption of the secure form. (PR [#359](https://github.com/omise/omise-woocommerce/pull/359))
+- Removed SCB and KTB internet banking. (PR [#356](https://github.com/omise/omise-woocommerce/pull/356))
+- Bug fix: hanlde Shopeepay cancel payment. (PR [#361](https://github.com/omise/omise-woocommerce/pull/361))
+
 ### [v4.29.0 _(Mar 8, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v4.29.0)
 - Added Krungthai NEXT mobile banking (PR [#347](https://github.com/omise/omise-woocommerce/pull/347))
 
