@@ -18,14 +18,14 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             [ 'strong' => [] ]
 		);
 
-		$this->supports           = array( 'products', 'refunds' );
+		$this->supports           = ['products', 'refunds'];
 
 		$this->init_form_fields();
 		$this->init_settings();
 
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
-		$this->restricted_countries = array( 'TH' );
+		$this->restricted_countries = ['TH', 'SG', 'MY'];
 		$this->source_type          = 'atome';
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
