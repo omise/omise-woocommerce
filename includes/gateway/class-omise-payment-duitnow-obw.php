@@ -62,8 +62,6 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 	public function payment_fields()
 	{
 		parent::payment_fields();
-		$currency   = get_woocommerce_currency();
-		$cart_total = WC()->cart->total;
 
 		Omise_Util::render_view(
 			'templates/payment/form-duitnow-obw.php',
