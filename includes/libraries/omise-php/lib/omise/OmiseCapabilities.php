@@ -3,7 +3,6 @@
 class OmiseCapabilities extends OmiseApiResource
 {
     const ENDPOINT = 'capability';
-    const INSTALLMENT_MINIMUM = 200000;
 
     /**
      * @var array  of the filterable keys.
@@ -119,15 +118,15 @@ class OmiseCapabilities extends OmiseApiResource
      *
      * @return function
      */
-    public function makeBackendFilterChargeAmount($amount)
+    public function makeBackendFilterChargeAmount($amount, $minAmount = 200000)
     {
         $defMin = $this['limits']['charge_amount']['min'];
         $defMax = $this['limits']['charge_amount']['max'];
 
-        return function ($backend) use ($amount, $defMin, $defMax) {
+        return function ($backend) use ($amount, $defMin, $defMax, $minAmount) {
             // temporary hack for now to correct min value for installments to fixed minimum (different to normal charge minimum)
             if ($backend->type === 'installment' && get_woocommerce_currency() === 'THB') {
-                $min = self::INSTALLMENT_MINIMUM;
+                $min = $minAmount;
             } else {
                 $min = empty($backend->amount['min']) ? $defMin : $backend->amount['min'];
             }

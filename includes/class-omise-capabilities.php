@@ -122,7 +122,7 @@ class Omise_Capabilities {
 	 *
 	 * @return string
 	 */
-	public function getInstallmentBackends( $currency = '', $amount = null ) {
+	public function getInstallmentBackends( $currency = '', $amount = null, $minAmount = 200000 ) {
 
 		$params   = array();
 		$params[] = $this->capabilities->backendFilter['type']('installment');
@@ -131,7 +131,7 @@ class Omise_Capabilities {
 			$params[] = $this->capabilities->backendFilter['currency']( $currency );
 		}
 		if ( ! is_null( $amount ) ) {
-			$params[] = $this->capabilities->backendFilter['chargeAmount']( $amount );
+			$params[] = $this->capabilities->backendFilter['chargeAmount']( $amount, $minAmount );
 		}
 
 		return $this->capabilities->getBackends( $params );
@@ -222,5 +222,10 @@ class Omise_Capabilities {
 		}
 
 		return $this->getBackendByType($sourceType);
+	}
+
+	public function getInstallmentLimits()
+	{
+		return $this->capabilities['limits']['installment_amount'];
 	}
 }

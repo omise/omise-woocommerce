@@ -120,10 +120,11 @@ class Omise_Backend_Installment extends Omise_Backend
 		}
 
 		$supportedProviderList = [];
+		$installmentMinLimit = $capabilities->getInstallmentLimits()['min'];
 
 		// Note: As installment payment at the moment only supports THB and MYR currency, the 
 		//       $purchase_amount is multiplied with 100 to convert the amount into subunit (satang and sen).
-		$providers = $capabilities->getInstallmentBackends($currency, ($purchase_amount * 100));
+		$providers = $capabilities->getInstallmentBackends($currency, ($purchase_amount * 100), $installmentMinLimit);
 
 		foreach ($providers as &$provider) {
 			if (isset(self::$providers[$provider->_id])) {
