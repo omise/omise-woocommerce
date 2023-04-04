@@ -91,7 +91,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
         ];
 
         $currency = strtolower(get_woocommerce_currency());
-        $cartTotal = (WC()->cart->total);
+        $cartTotal = WC()->cart->total;
 
         if (!isset($limits[$currency])) {
             return [
