@@ -119,7 +119,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
                 'message' => __(
                     'Amount must be less than %1 %2',
                     number_format($limit['max'], 2),
-                    $currency
+                    strtoupper($currency)
                 )
             ];
         }
