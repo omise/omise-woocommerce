@@ -28,6 +28,8 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
         $this->restricted_countries = ['TH', 'SG', 'MY'];
         $this->source_type          = 'atome';
 
+        $this->register_omise_atome_scripts();
+
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
         add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
         add_action('woocommerce_order_action_' . $this->id . '_sync_payment', array($this, 'sync_payment'));
@@ -61,6 +63,16 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             ),
         );
     }
+
+    private function register_omise_atome_scripts() {
+		wp_enqueue_script(
+			'omise-atome-js',
+			plugins_url( '../assets/javascripts/omise-payment-atome.js', dirname( __FILE__ ) ),
+			array( 'jquery' ),
+			WC_VERSION,
+			true
+		);
+	}
 
     /**
      * @inheritdoc
