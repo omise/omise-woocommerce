@@ -38,7 +38,8 @@ class Omise_Payment_Factory {
 		'Omise_Payment_ShopeePay',
 		'Omise_Payment_Maybank_QR',
 		'Omise_Payment_DuitNow_QR',
-		'Omise_Payment_DuitNow_OBW'
+		'Omise_Payment_DuitNow_OBW',
+		'Omise_Payment_Atome'
 	);
 
 	/**
