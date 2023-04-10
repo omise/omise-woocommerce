@@ -9,7 +9,7 @@
 
         <p id="omise_atome_phone_field" class="form-row form-row-wide" style="display: none;">
             <span class="woocommerce-input-wrapper">
-                <input id="omise_phone_number" class="input-text" name="omise_phone_number" type="tel" autocomplete="off">
+                <input id="omise_atome_phone_number" class="input-text" name="omise_atome_phone_number" type="tel" autocomplete="off">
             </span>
         </p>
     </fieldset>
