@@ -16,7 +16,7 @@
 		$("html, body").animate({ scrollTop:0 },"slow");
 	}
 
-    function omiseHanldeError(message) {
+    function omiseHandleError(message) {
         $form.block({
             message: null,
             overlayCSS: {
@@ -40,13 +40,13 @@
             const phoneNumber = $('#omise_atome_phone_number').val();
 			
             if (!phoneNumber) {
-                return omiseHanldeError('Phone number is required in Atome');
+                return omiseHandleError('Phone number is required in Atome');
             }
 
             const phonePattern = /(\+)?([0-9]{10,13})/;
 
             if (!phonePattern.test(phoneNumber)) {
-                return omiseHanldeError('Phone number should be a number in Atome');
+                return omiseHandleError('Phone number should be a number in Atome');
             }
 
             $form.unblock();

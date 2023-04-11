@@ -148,7 +148,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
         $default_phone_selected = isset($_POST['omise_atome_phone_default']) ?
             $_POST['omise_atome_phone_default']
             : false;
-        $phone_number = true === (bool)$default_phone_selected ?
+        $phone_number = (bool)$default_phone_selected ?
             $order->get_billing_phone()
             : sanitize_text_field($_POST['omise_atome_phone_number']);
 
