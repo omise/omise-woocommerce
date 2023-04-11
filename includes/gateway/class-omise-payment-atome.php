@@ -145,10 +145,12 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
     public function charge($order_id, $order)
     {
         $currency = $order->get_currency();
-        $default_phone_selected = $_POST['omise_atome_phone_default'];
-        $phone_number = isset($default_phone_selected) && 1 == $default_phone_selected ?
+        $default_phone_selected = isset($_POST['omise_atome_phone_default']) ?
+            $_POST['omise_atome_phone_default']
+            : false;
+        $phone_number = (bool)$default_phone_selected ?
             $order->get_billing_phone()
-            : sanitize_text_field($_POST['omise_phone_number']);
+            : sanitize_text_field($_POST['omise_atome_phone_number']);
 
         return OmiseCharge::create([
             'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
