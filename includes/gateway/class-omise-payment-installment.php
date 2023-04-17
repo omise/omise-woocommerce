@@ -72,7 +72,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		$currency   = get_woocommerce_currency();
 		$cart_total = WC()->cart->total;
 		$capabilities = $this->backend->capabilities();
-		$installmentMinLimit = $capabilities->getInstallmentMinLimits();
+		$installmentMinLimit = $capabilities->getInstallmentMinLimit();
 
 		Omise_Util::render_view(
 			'templates/payment/form-installment.php',
