@@ -79,7 +79,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			array(
 				'installment_backends' => $this->backend->get_available_providers($currency, $cart_total),
 				'is_zero_interest'     => $capabilities ? $capabilities->is_zero_interest() : false,
-				'installment_min_limit' => Omise_Money::convert_currency_unit($installmentMinLimit, $currency)
+				'installment_min_limit' => number_format(Omise_Money::convert_currency_unit($installmentMinLimit, $currency))
 			)
 		);
 	}

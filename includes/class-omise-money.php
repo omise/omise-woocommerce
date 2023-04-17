@@ -59,7 +59,7 @@ class Omise_Money {
 			throw new Exception( __( 'We do not support the currency you are using.', 'omise' ) );
 		}
 
-		return number_format($amount / self::$subunit_multiplier[ $currency ]);
+		return $amount / self::$subunit_multiplier[ $currency ];
 	}
 
 	/**
