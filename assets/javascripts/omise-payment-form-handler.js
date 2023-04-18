@@ -14,7 +14,7 @@
 		let $ulError = $("<ul>").addClass("woocommerce-error");
 
 		if ($.isArray(message)) {
-			$.each(message, function(i, v) {
+			$.each(message, function (i, v) {
 				$ulError.append($("<li>" + v + "</li>"));
 			})
 		} else {
@@ -22,7 +22,7 @@
 		}
 
 		$form.prepend($ulError);
-		$("html, body").animate({ scrollTop:0 },"slow");
+		$("html, body").animate({ scrollTop: 0 }, "slow");
 	}
 
 	function omiseFormHandler() {
@@ -80,14 +80,14 @@
 			omise_card = {},
 			omise_card_number_field = 'number',
 			omise_card_fields = {
-				'name' : $('#omise_card_name'),
-				'number' : $('#omise_card_number'),
-				'expiration_month' : $('#omise_card_expiration_month'),
-				'expiration_year' : $('#omise_card_expiration_year'),
-				'security_code' : $('#omise_card_security_code')
+				'name': $('#omise_card_name'),
+				'number': $('#omise_card_number'),
+				'expiration_month': $('#omise_card_expiration_month'),
+				'expiration_year': $('#omise_card_expiration_year'),
+				'security_code': $('#omise_card_security_code')
 			};
 
-		$.each(omise_card_fields, function(index, field) {
+		$.each(omise_card_fields, function (index, field) {
 			omise_card[index] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
 			if ("" === omise_card[index]) {
 				errors.push(omise_params['required_card_' + index]);
@@ -102,11 +102,11 @@
 
 		hideError();
 
-		if(Omise) {
+		if (Omise) {
 			Omise.setPublicKey(omise_params.key);
 			Omise.createToken("card", omise_card, function (statusCode, response) {
 				if (statusCode == 200) {
-					$.each(omise_card_fields, function(index, field) {
+					$.each(omise_card_fields, function (index, field) {
 						field.val('');
 					});
 
@@ -187,8 +187,7 @@
 	 * @param {string} message
 	 * @returns string
 	 */
-	function mapApiResponseToTranslatedTest(message)
-	{
+	function mapApiResponseToTranslatedTest(message) {
 		return omise_params[message] ? omise_params[message] : message;
 	}
 
@@ -202,15 +201,63 @@
 				opacity: 0.6
 			}
 		});
-		const billingAddress = {
-			country: document.getElementById('billing_country').value,
-			postal_code: document.getElementById('billing_postcode').value,
-			state: document.getElementById('billing_state').value,
-			city: document.getElementById('billing_city').value,
-			street1: document.getElementById('billing_address_1').value,
-			street2: document.getElementById('billing_address_2').value,
+
+		const billingAddress = getBillingAddress();
+		OmiseCard.requestCardToken(billingAddress);
+	}
+
+	/**
+	 * @returns object | null
+	 */
+	function getBillingAddress() {
+		const billingAddress = {};
+		const billingAddressFields = [
+			{
+				key: 'country',
+				field: 'billing_country'
+			},
+			{
+				key: 'postal_code',
+				field: 'billing_postcode'
+			},
+			{
+				key: 'state',
+				field: 'billing_state'
+			},
+			{
+				key: 'city',
+				field: 'billing_city'
+			},
+			{
+				key: 'street1',
+				field: 'billing_address_1'
+			},
+			{
+				key: 'street2',
+				field: 'billing_address_2'
+			}
+		];
+
+		for (let billing of billingAddressFields) {
+			const billingField = document.getElementById(billing.field);
+
+			// If the billing field is not present and the field
+			// is billing address 2, skip to the next field
+			if (!billingField && billing.field === 'billing_address_2') {
+				continue;
+			}
+
+			// If any other field is not present, return null to
+			// indicate billing address is not complete
+			if (!billingField) {
+				return null;
+			}
+
+			// contstruct address object required for token
+			billingAddress[billing.key] = billingField.value;
 		}
-		OmiseCard.requestCardToken(billingAddress)
+
+		return billingAddress;
 	}
 
 	function handleCreateOrder(payload) {
@@ -224,7 +271,7 @@
 		}
 	}
 
-	if(Boolean(omise_params.secure_form_enabled)) {
+	if (Boolean(omise_params.secure_form_enabled)) {
 		$(document).on('updated_checkout', function () {
 			showOmiseEmbeddedCardForm({
 				element: document.getElementById('omise-card'),
@@ -259,7 +306,7 @@
 		});
 
 		/* Both Forms */
-		$('form.checkout, form#order_review').on('change', '#omise_cc_form input', function() {
+		$('form.checkout, form#order_review').on('change', '#omise_cc_form input', function () {
 			$('.omise_token').remove();
 		});
 
