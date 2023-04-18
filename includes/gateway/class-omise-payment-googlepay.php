@@ -231,7 +231,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
 	public function get_icon() {
 		$icon = Omise_Image::get_image([
 			'file' => 'googlepay.svg',
-			'alternate_text' => 'GooglePay',
+			'alternate_text' => 'Google Pay logo',
 		]);
 		return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
 	}
