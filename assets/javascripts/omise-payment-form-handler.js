@@ -247,9 +247,9 @@
 				continue;
 			}
 
-			// If any other field is not present, return null to
-			// indicate billing address is not complete
-			if (!billingField) {
+			// If any other field is not present or the value is empty,
+			// return null to indicate billing address is not complete
+			if (!billingField || billing.field === "") {
 				return null;
 			}
 
