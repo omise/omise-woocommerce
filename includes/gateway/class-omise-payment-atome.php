@@ -197,11 +197,13 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             $productId = $product_variation_id ? $item['variation_id'] : $item['product_id'];
             $product = new WC_Product($productId);
             $sku = $product->get_sku();
+            // item don't have price. So we have to take subtotal and divide it by quantity to get the price
+            $pricePerItem = $item['subtotal'] / $item['qty'];
 
             $products[$key] = [
                 'quantity' => $item['qty'],
                 'name' => $item['name'],
-                'amount' => Omise_Money::to_subunit($item['total'], $currency),
+                'amount' => Omise_Money::to_subunit($pricePerItem, $currency),
                 'sku' => empty($sku) ? $productId : $sku // if sku is not present then pass productId
             ];
         }
