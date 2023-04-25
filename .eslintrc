@@ -27,6 +27,6 @@
     "semi": ["error", "always"],
     "no-unused-vars": "error",
     "no-trailing-spaces": "error",
-    "indent": ["error", "tab"]
+    "indent": ["error", 2]
   }
 }
