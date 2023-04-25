@@ -1,28 +1,37 @@
 (function ($) {
+	/* global omise_params, wc_checkout_params, OmiseCard, showOmiseEmbeddedCardForm, LOCALE */
+	/* global Omise, HIDE_REMEMBER_CARD, CARD_FORM_THEME, FORM_DESIGN, CARD_BRAND_ICONS */
+
 	const $form = $('form.checkout, form#order_review');
 
+	/**
+	 *
+	 */
 	function hideError() {
-		$(".woocommerce-error").remove();
+		$('.woocommerce-error').remove();
 	}
 
+	/**
+	 * @param {string} message Error message
+	 */
 	function showError(message) {
 		if (!message) {
 			return;
 		}
 
-		$(".woocommerce-error, input.omise_token").remove();
-		let $ulError = $("<ul>").addClass("woocommerce-error");
+		$('.woocommerce-error, input.omise_token').remove();
+		const $ulError = $('<ul>').addClass('woocommerce-error');
 
 		if ($.isArray(message)) {
 			$.each(message, function (i, v) {
-				$ulError.append($("<li>" + v + "</li>"));
-			})
+				$ulError.append($('<li>' + v + '</li>'));
+			});
 		} else {
-			$ulError.html("<li>" + message + "</li>");
+			$ulError.html('<li>' + message + '</li>');
 		}
 
 		$form.prepend($ulError);
-		$("html, body").animate({ scrollTop: 0 }, "slow");
+		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	}
 
 	function omiseFormHandler() {
@@ -37,13 +46,16 @@
 			return true;
 		}
 
+		/**
+		 * @return {string} Value of the selected card
+		 */
 		function getSelectedCardId() {
 			const $selected_card_id = $("input[name='card_id']:checked");
 			if ($selected_card_id.length > 0) {
 				return $selected_card_id.val();
 			}
 
-			return "";
+			return '';
 		}
 
 		if ($('#payment_method_omise').is(':checked')) {
@@ -52,13 +64,14 @@
 				return false;
 			}
 
-			if (getSelectedCardId() !== "") {
+			if (getSelectedCardId() !== '') {
 				//submit the form right away if the card_id is not blank
 				return true;
 			}
 
 			if (0 === $('input.omise_token').length) {
-				(Boolean(omise_params.secure_form_enabled))
+				// eslint-disable-next-line no-unused-expressions
+				omise_params.secure_form_enabled
 					? requestCardToken()
 					: traditionalForm();
 				return false;
@@ -70,26 +83,32 @@
 		$form.block({
 			message: null,
 			overlayCSS: {
-				background: '#fff url(' + wc_checkout_params.ajax_loader_url + ') no-repeat center',
+				background:
+					'#fff url(' +
+					wc_checkout_params.ajax_loader_url +
+					') no-repeat center',
 				backgroundSize: '16px 16px',
-				opacity: 0.6
-			}
+				opacity: 0.6,
+			},
 		});
 
-		let errors = [],
+		const errors = [],
 			omise_card = {},
 			omise_card_number_field = 'number',
 			omise_card_fields = {
-				'name': $('#omise_card_name'),
-				'number': $('#omise_card_number'),
-				'expiration_month': $('#omise_card_expiration_month'),
-				'expiration_year': $('#omise_card_expiration_year'),
-				'security_code': $('#omise_card_security_code')
+				name: $('#omise_card_name'),
+				number: $('#omise_card_number'),
+				expiration_month: $('#omise_card_expiration_month'),
+				expiration_year: $('#omise_card_expiration_year'),
+				security_code: $('#omise_card_security_code'),
 			};
 
 		$.each(omise_card_fields, function (index, field) {
-			omise_card[index] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
-			if ("" === omise_card[index]) {
+			omise_card[index] =
+				index === omise_card_number_field
+					? field.val().replace(/\s/g, '')
+					: field.val();
+			if ('' === omise_card[index]) {
 				errors.push(omise_params['required_card_' + index]);
 			}
 		});
@@ -104,32 +123,50 @@
 
 		if (Omise) {
 			Omise.setPublicKey(omise_params.key);
-			Omise.createToken("card", omise_card, function (statusCode, response) {
-				if (statusCode == 200) {
-					$.each(omise_card_fields, function (index, field) {
-						field.val('');
-					});
+			Omise.createToken(
+				'card',
+				omise_card,
+				function (statusCode, response) {
+					if (parseInt(statusCode) === 200) {
+						$.each(omise_card_fields, function (index, field) {
+							field.val('');
+						});
 
-					$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>');
-					$form.submit();
-				} else {
-					handleTokensApiError(response);
-				};
-			});
+						$form.append(
+							'<input type="hidden" class="omise_token" name="omise_token" value="' +
+								response.id +
+								'"/>'
+						);
+						$form.submit();
+					} else {
+						handleTokensApiError(response);
+					}
+				}
+			);
 		} else {
-			showError(omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection);
+			showError(
+				omise_params.cannot_load_omisejs +
+					'<br/>' +
+					omise_params.check_internet_connection
+			);
 			$form.unblock();
 		}
 	}
 
 	function googlePay() {
-		window.addEventListener('loadpaymentdata', event => {
-			document.getElementById('place_order').style.display = 'inline-block';
+		window.addEventListener('loadpaymentdata', (event) => {
+			document.getElementById('place_order').style.display =
+				'inline-block';
 			const params = {
 				method: 'googlepay',
-				data: JSON.stringify(JSON.parse(event.detail.paymentMethodData.tokenizationData.token))
-			}
-			const billingAddress = (event.detail.paymentMethodData.info?.billingAddress);
+				data: JSON.stringify(
+					JSON.parse(
+						event.detail.paymentMethodData.tokenizationData.token
+					)
+				),
+			};
+			const billingAddress =
+				event.detail.paymentMethodData.info?.billingAddress;
 			if (billingAddress) {
 				Object.assign(params, {
 					billing_name: billingAddress.name,
@@ -138,7 +175,12 @@
 					billing_postal_code: billingAddress.postalCode,
 					billing_state: billingAddress.administrativeArea,
 					billing_street1: billingAddress.address1,
-					billing_street2: [billingAddress.address2, billingAddress.address3].filter(s => s).join(' '),
+					billing_street2: [
+						billingAddress.address2,
+						billingAddress.address3,
+					]
+						.filter((s) => s)
+						.join(' '),
 					billing_phone_number: billingAddress.phoneNumber,
 				});
 			}
@@ -146,37 +188,76 @@
 			hideError();
 
 			Omise.setPublicKey(omise_params.key);
-			Omise.createToken('tokenization', params, (statusCode, response) => {
-				if (statusCode == 200) {
-					document.getElementById('googlepay-button-container').style.display = 'none';
-					document.getElementById('googlepay-text').innerHTML = 'Card is successfully selected. Please proceed to \'Place order\'.';
-					document.getElementById('googlepay-text').classList.add('googlepay-selected');
+			Omise.createToken(
+				'tokenization',
+				params,
+				(statusCode, response) => {
+					if (parseInt(statusCode) === 200) {
+						document.getElementById(
+							'googlepay-button-container'
+						).style.display = 'none';
+						document.getElementById('googlepay-text').innerHTML =
+							"Card is successfully selected. Please proceed to 'Place order'.";
+						document
+							.getElementById('googlepay-text')
+							.classList.add('googlepay-selected');
 
-					const form = document.querySelector('form.checkout');
-					const input = document.createElement('input');
-					input.setAttribute('type', 'hidden');
-					input.setAttribute('class', 'omise_token');
-					input.setAttribute('name', 'omise_token');
-					input.setAttribute('value', response.id);
-					form.appendChild(input);
-				} else {
-					handleTokensApiError(response)
+						const form = document.querySelector('form.checkout');
+						const input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.setAttribute('class', 'omise_token');
+						input.setAttribute('name', 'omise_token');
+						input.setAttribute('value', response.id);
+						form.appendChild(input);
+					} else {
+						handleTokensApiError(response);
+					}
 				}
-			});
+			);
 		});
 	}
 
+	/**
+	 * @param {Object} response
+	 */
 	function handleTokensApiError(response) {
-		if (response.object && 'error' === response.object && 'invalid_card' === response.code) {
-			showError(omise_params.invalid_card + "<br/>" + mapApiResponseToTranslatedTest(response.message));
+		if (
+			response.object &&
+			'error' === response.object &&
+			'invalid_card' === response.code
+		) {
+			showError(
+				omise_params.invalid_card +
+					'<br/>' +
+					mapApiResponseToTranslatedText(response.message)
+			);
 		} else if (response.message) {
-			showError(omise_params.cannot_create_token + "<br/>" + mapApiResponseToTranslatedTest(response.message));
+			showError(
+				omise_params.cannot_create_token +
+					'<br/>' +
+					mapApiResponseToTranslatedText(response.message)
+			);
 		} else if (response.responseJSON && response.responseJSON.message) {
-			showError(omise_params.cannot_create_token + "<br/>" + mapApiResponseToTranslatedTest(response.responseJSON.message));
+			showError(
+				omise_params.cannot_create_token +
+					'<br/>' +
+					mapApiResponseToTranslatedText(
+						response.responseJSON.message
+					)
+			);
 		} else if (response.status == 0) {
-			showError(omise_params.cannot_create_token + "<br/>" + omise_params.cannot_connect_api + omise_params.retry_checkout);
+			showError(
+				omise_params.cannot_create_token +
+					'<br/>' +
+					omise_params.cannot_connect_api +
+					omise_params.retry_checkout
+			);
 		} else {
-			showError(omise_params.cannot_create_token + "<br/>" + omise_params.retry_checkout);
+			showError(
+				omise_params.cannot_create_token +
+					'<br/>' +
+					omise_params.retry_checkout
+			);
 		}
 		$form.unblock();
 	}
@@ -185,21 +266,27 @@
 	 * Return a translated localized text if found else return the same text.
 	 *
 	 * @param {string} message
-	 * @returns string
+	 * @return {string} Translated message
 	 */
-	function mapApiResponseToTranslatedTest(message) {
+	function mapApiResponseToTranslatedText(message) {
 		return omise_params[message] ? omise_params[message] : message;
 	}
 
+	/**
+	 *
+	 */
 	function requestCardToken() {
-		hideError()
+		hideError();
 		$form.block({
 			message: null,
 			overlayCSS: {
-				background: '#fff url(' + wc_checkout_params.ajax_loader_url + ') no-repeat center',
+				background:
+					'#fff url(' +
+					wc_checkout_params.ajax_loader_url +
+					') no-repeat center',
 				backgroundSize: '16px 16px',
-				opacity: 0.6
-			}
+				opacity: 0.6,
+			},
 		});
 
 		const billingAddress = getBillingAddress();
@@ -207,38 +294,38 @@
 	}
 
 	/**
-	 * @returns object | null
+	 * @return {Object} | {null} Billing address
 	 */
 	function getBillingAddress() {
 		const billingAddress = {};
 		const billingAddressFields = [
 			{
 				key: 'country',
-				field: 'billing_country'
+				field: 'billing_country',
 			},
 			{
 				key: 'postal_code',
-				field: 'billing_postcode'
+				field: 'billing_postcode',
 			},
 			{
 				key: 'state',
-				field: 'billing_state'
+				field: 'billing_state',
 			},
 			{
 				key: 'city',
-				field: 'billing_city'
+				field: 'billing_city',
 			},
 			{
 				key: 'street1',
-				field: 'billing_address_1'
+				field: 'billing_address_1',
 			},
 			{
 				key: 'street2',
-				field: 'billing_address_2'
-			}
+				field: 'billing_address_2',
+			},
 		];
 
-		for (let billing of billingAddressFields) {
+		for (const billing of billingAddressFields) {
 			const billingField = document.getElementById(billing.field);
 
 			// If the billing field is not present and the field
@@ -249,29 +336,37 @@
 
 			// If any other field is not present or the value is empty,
 			// return null to indicate billing address is not complete
-			if (!billingField || billing.field === "") {
+			if (!billingField || billing.field === '') {
 				return null;
 			}
 
-			// contstruct address object required for token
+			// construct address object required for token
 			billingAddress[billing.key] = billingField.value;
 		}
 
 		return billingAddress;
 	}
 
+	/**
+	 *
+	 * @param {Object} payload
+	 */
 	function handleCreateOrder(payload) {
 		$form.unblock();
 		if (payload.token) {
 			if (payload.remember) {
-				$('.omise_save_customer_card').val(payload.remember)
+				$('.omise_save_customer_card').val(payload.remember);
 			}
-			$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + payload.token + '"/>');
+			$form.append(
+				'<input type="hidden" class="omise_token" name="omise_token" value="' +
+					payload.token +
+					'"/>'
+			);
 			$form.submit();
 		}
 	}
 
-	if (Boolean(omise_params.secure_form_enabled)) {
+	if (omise_params.secure_form_enabled) {
 		$(document).on('updated_checkout', function () {
 			showOmiseEmbeddedCardForm({
 				element: document.getElementById('omise-card'),
@@ -283,10 +378,10 @@
 				brandIcons: CARD_BRAND_ICONS,
 				onSuccess: handleCreateOrder,
 				onError: (error) => {
-					showError(error)
-					$form.unblock()
-				}
-			})
+					showError(error);
+					$form.unblock();
+				},
+			});
 		});
 	}
 
@@ -306,10 +401,14 @@
 		});
 
 		/* Both Forms */
-		$('form.checkout, form#order_review').on('change', '#omise_cc_form input', function () {
-			$('.omise_token').remove();
-		});
+		$('form.checkout, form#order_review').on(
+			'change',
+			'#omise_cc_form input',
+			function () {
+				$('.omise_token').remove();
+			}
+		);
 
 		googlePay();
-	})
-})(jQuery)
+	});
+})(jQuery);

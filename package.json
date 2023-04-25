@@ -1,0 +1,17 @@
+{
+  "name": "omise-woocommerce",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/omise/omise-woocommerce.git",
+  "author": "mit@opn.ooo",
+  "license": "MIT",
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^14.4.0",
+    "eslint": "^8.39.0",
+    "eslint-config-wordpress": "^2.0.0",
+    "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "global": "^4.4.0"
+  }
+}

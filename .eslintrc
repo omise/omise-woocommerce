@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@wordpress/eslint-plugin/recommended"
+  ],
+  "plugins": [
+    "@wordpress"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jquery": true
+  },
+  "rules": {
+    "no-console": "off",
+    "quotes": [
+      2,
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "camelcase": "off",
+    "space-before-blocks": "error",
+    "space-in-parens": ["error", "never"],
+    "semi": ["error", "always"],
+    "no-unused-vars": "error",
+    "no-trailing-spaces": "error",
+    "indent": ["error", "tab"]
+  }
+}
