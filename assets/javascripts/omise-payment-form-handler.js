@@ -254,8 +254,8 @@
 		}
 	}
 
-	if(Boolean(omise_params.secure_form_enabled)) {
-		$(document).on('updated_checkout', function () {
+	function initializeSecureCardForm() {
+		if (Boolean(omise_params.secure_form_enabled)) {
 			showOmiseEmbeddedCardForm({
 				element: document.getElementById('omise-card'),
 				publicKey: omise_params.key,
@@ -270,7 +270,7 @@
 					$form.unblock()
 				}
 			})
-		});
+		}
 	}
 
 	$(function () {
@@ -293,6 +293,11 @@
 			$('.omise_token').remove();
 		});
 
+		$(document).on('updated_checkout', function () {
+			initializeSecureCardForm();
+		});
+
+		initializeSecureCardForm();
 		googlePay();
 	})
 })(jQuery)
