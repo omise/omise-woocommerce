@@ -212,50 +212,32 @@
 	 */
 	function getBillingAddress() {
 		const billingAddress = {};
-		const billingAddressFields = [
-			{
-				key: 'country',
-				field: 'billing_country'
-			},
-			{
-				key: 'postal_code',
-				field: 'billing_postcode'
-			},
-			{
-				key: 'state',
-				field: 'billing_state'
-			},
-			{
-				key: 'city',
-				field: 'billing_city'
-			},
-			{
-				key: 'street1',
-				field: 'billing_address_1'
-			},
-			{
-				key: 'street2',
-				field: 'billing_address_2'
-			}
-		];
+		const billingAddressFields = {
+			'country': 'billing_country',
+			'postal_code': 'billing_postcode',
+			'state': 'billing_state',
+			'city': 'billing_city',
+			'street1': 'billing_address_1',
+			'street2': 'billing_address_2'
+		};
 
-		for (let billing of billingAddressFields) {
-			const billingField = document.getElementById(billing.field);
+		for (let key in billingAddressFields) {
+			const billingField = document.getElementById(billingAddressFields[key]);
 
 			// If the billing field is not present and the field
 			// is billing address 2, skip to the next field
-			if (!billingField && billing.field === 'billing_address_2') {
+			if (!billingField && billingAddressFields[key] === 'billing_address_2') {
 				continue;
 			}
 
 			// If any other field is not present or the value is empty,
 			// return null to indicate billing address is not complete
-			if (!billingField || billing.field === "") {
+			if (!billingField || billingField.value.trim() === "") {
 				return null;
 			}
 
 			// construct address object required for token
-			billingAddress[billing.key] = billingField.value;
+			billingAddress[key] = billingField.value.trim();
 		}
 
 		return billingAddress;
