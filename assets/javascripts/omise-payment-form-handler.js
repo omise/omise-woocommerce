@@ -254,7 +254,7 @@
 				return null;
 			}
 
-			// contstruct address object required for token
+			// construct address object required for token
 			billingAddress[billing.key] = billingField.value;
 		}
 
