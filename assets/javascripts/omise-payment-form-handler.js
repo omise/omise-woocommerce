@@ -203,7 +203,7 @@
 			}
 		});
 
-        const billingAddress = getBillingAddress();
+		const billingAddress = getBillingAddress();
 		OmiseCard.requestCardToken(billingAddress);
 	}
 
