@@ -24,7 +24,11 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		}
 
 		$user = $order->get_user();
-		$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
+		$omise_customer_id = null;
+
+		if(!empty($user)) {
+			$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
+		}
 
 		// Saving card.
 		$saveCustomerCard = $_POST['omise_save_customer_card'];
