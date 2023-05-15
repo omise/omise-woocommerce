@@ -4,7 +4,7 @@
  * Plugin Name: Opn Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
- * Version:     5.0.0
+ * Version:     5.1.0
  * Author:      Opn Payments and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
@@ -22,7 +22,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '5.0.0';
+	public $version = '5.1.0';
 
 	/**
 	 * The Omise Instance.
@@ -59,10 +59,10 @@ class Omise
 	public function embedded_form_notice()
 	{
 		$this->omiseCardGateway = new Omise_Payment_Creditcard();
-		$embedded_form_enabled = $this->omiseCardGateway->get_option('embedded_form_enabled');
+		$secure_form_enabled = $this->omiseCardGateway->get_option('secure_form_enabled');
 
 		// hide if user enables the embedded form.
-		if (!(bool)$embedded_form_enabled) {
+		if (!(bool)$secure_form_enabled) {
 			$translation = __('Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. You will need to re-customize the credit card checkout form after the upgrade. <a target="_blank" href="https://www.omise.co/woocommerce-plugin">Learn how to enable Secure Form</a>.', 'omise');
 			echo "<div class='notice notice-warning is-dismissible'><p><strong>Opn Payments:</strong> $translation</p></div>";
 		}
@@ -200,6 +200,8 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-shopeepay.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-touch-n-go.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-atome.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-paypay.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-ajax-actions.php';

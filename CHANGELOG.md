@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### [v5.1.0 _(May 15, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.1.0)
+- Added Atome payment method. (PR [#364](https://github.com/omise/omise-woocommerce/pull/364))
+- Installment minimum amount from capability API. (PR [#365](https://github.com/omise/omise-woocommerce/pull/365))
+- Fixed Truemoney phone number input not displaying. (PR [#367](https://github.com/omise/omise-woocommerce/pull/367))
+- Added Google pay icon. (PR [#368](https://github.com/omise/omise-woocommerce/pull/368))
+- Fixed secure form not displaying on pay for order page. (PR [#371](https://github.com/omise/omise-woocommerce/pull/371))
+- Added PayPay payment method. (PR [#372](https://github.com/omise/omise-woocommerce/pull/372))
+- Fixed secured form database key mismatch. (PR [#373](https://github.com/omise/omise-woocommerce/pull/373))
+- Fixed guest checkout with pay for order link. (PR [#374](https://github.com/omise/omise-woocommerce/pull/374))
 
 ### [v5.0.0 _(Apr 3, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.0.0)
 - Replace credit card form with secure form with a feature flag options to switch between credit card forms. (PR [#354](https://github.com/omise/omise-woocommerce/pull/354))

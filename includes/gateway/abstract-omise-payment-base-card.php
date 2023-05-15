@@ -24,7 +24,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		}
 
 		$user = $order->get_user();
-		$omise_customer_id = $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
+		$omise_customer_id = $this->getOmiseCustomerId($user);
 
 		// Saving card.
 		$saveCustomerCard = $_POST['omise_save_customer_card'];
@@ -36,6 +36,17 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 
 		$data = $this->prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token);
 		return OmiseCharge::create($data);
+	}
+
+	/**
+	 * get omise customer id from user
+	 * @param object|null $user
+	 */
+	private function getOmiseCustomerId($user) {
+		if(empty($user)) {
+			return null;
+		}
+		return $this->is_test() ? $user->test_omise_customer_id : $user->live_omise_customer_id;
 	}
 
 	/**

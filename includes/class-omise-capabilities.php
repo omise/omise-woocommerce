@@ -223,4 +223,9 @@ class Omise_Capabilities {
 
 		return $this->getBackendByType($sourceType);
 	}
+
+	public function getInstallmentMinLimit()
+	{
+		return $this->capabilities['limits']['installment_amount']['min'];
+	}
 }

@@ -202,15 +202,45 @@
 				opacity: 0.6
 			}
 		});
-		const billingAddress = {
-			country: document.getElementById('billing_country').value,
-			postal_code: document.getElementById('billing_postcode').value,
-			state: document.getElementById('billing_state').value,
-			city: document.getElementById('billing_city').value,
-			street1: document.getElementById('billing_address_1').value,
-			street2: document.getElementById('billing_address_2').value,
+
+		const billingAddress = getBillingAddress();
+		OmiseCard.requestCardToken(billingAddress);
+	}
+
+	/**
+	 * @returns object | null
+	 */
+	function getBillingAddress() {
+		const billingAddress = {};
+		const billingAddressFields = {
+			'country': 'billing_country',
+			'postal_code': 'billing_postcode',
+			'state': 'billing_state',
+			'city': 'billing_city',
+			'street1': 'billing_address_1',
+			'street2': 'billing_address_2'
+		};
+
+		for (let key in billingAddressFields) {
+			const billingField = document.getElementById(billingAddressFields[key]);
+
+			// If the billing field is not present and the field
+			// is billing address 2, skip to the next field
+			if (!billingField && billingAddressFields[key] === 'billing_address_2') {
+				continue;
+			}
+
+			// If any other field is not present or the value is empty,
+			// return null to indicate billing address is not complete
+			if (!billingField || billingField.value.trim() === "") {
+				return null;
+			}
+
+			// construct address object required for token
+			billingAddress[key] = billingField.value.trim();
 		}
-		OmiseCard.requestCardToken(billingAddress)
+
+		return billingAddress;
 	}
 
 	function handleCreateOrder(payload) {
@@ -224,8 +254,8 @@
 		}
 	}
 
-	if(Boolean(omise_params.secure_form_enabled)) {
-		$(document).on('updated_checkout', function () {
+	function initializeSecureCardForm() {
+		if (Boolean(omise_params.secure_form_enabled)) {
 			showOmiseEmbeddedCardForm({
 				element: document.getElementById('omise-card'),
 				publicKey: omise_params.key,
@@ -240,7 +270,7 @@
 					$form.unblock()
 				}
 			})
-		});
+		}
 	}
 
 	$(function () {
@@ -263,6 +293,11 @@
 			$('.omise_token').remove();
 		});
 
+		$(document).on('updated_checkout', function () {
+			initializeSecureCardForm();
+		});
+
+		initializeSecureCardForm();
 		googlePay();
 	})
 })(jQuery)

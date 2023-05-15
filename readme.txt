@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 5.0.0
+Stable tag: 5.1.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,17 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.1.0 =
+
+- Added Atome payment method. (PR [#364](https://github.com/omise/omise-woocommerce/pull/364))
+- Installment minimum amount from capability API. (PR [#365](https://github.com/omise/omise-woocommerce/pull/365))
+- Fixed Truemoney phone number input not displaying. (PR [#367](https://github.com/omise/omise-woocommerce/pull/367))
+- Added Google pay icon. (PR [#368](https://github.com/omise/omise-woocommerce/pull/368))
+- Fixed secure form not displaying on pay for order page. (PR [#371](https://github.com/omise/omise-woocommerce/pull/371))
+- Added PayPay payment method. (PR [#372](https://github.com/omise/omise-woocommerce/pull/372))
+- Fixed secured form database key mismatch. (PR [#373](https://github.com/omise/omise-woocommerce/pull/373))
+- Fixed guest checkout with pay for order link. (PR [#374](https://github.com/omise/omise-woocommerce/pull/374))
 
 = 5.0.0 =
 
