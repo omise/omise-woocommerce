@@ -220,8 +220,8 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
 		$icon = Omise_Image::get_image([
 			'file' => 'atome.png',
 			'alternate_text' => 'Atome logo',
-            'width' => 20,
-            'height' => 20
+			'width' => 20,
+			'height' => 20
 		]);
 		return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
 	}
