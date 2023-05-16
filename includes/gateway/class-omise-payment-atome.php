@@ -191,11 +191,11 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
 
         // Loop through ordered items
         foreach ($items as $key => $item) {
-            $product_variation_id = $item['variation_id'];
-
             // Check if product has variation.
-            $productId = $product_variation_id ? $item['variation_id'] : $item['product_id'];
-            $product = new WC_Product($productId);
+            $product = $item['variation_id'] ?
+                new WC_Product_Variation($item['variation_id'])
+                : new WC_Product($item['product_id']);
+
             $sku = $product->get_sku();
             // item don't have price. So we have to take subtotal and divide it by quantity to get the price
             $pricePerItem = $item['subtotal'] / $item['qty'];
@@ -204,10 +204,25 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
                 'quantity' => $item['qty'],
                 'name' => $item['name'],
                 'amount' => Omise_Money::to_subunit($pricePerItem, $currency),
-                'sku' => empty($sku) ? $productId : $sku // if sku is not present then pass productId
+                'sku' => empty($sku) ? $product->get_id() : $sku // if sku is not present then pass productId
             ];
         }
 
         return $products;
     }
+
+    /**
+	 * Get icons
+	 *
+	 * @see WC_Payment_Gateway::get_icon()
+	 */
+	public function get_icon() {
+		$icon = Omise_Image::get_image([
+			'file' => 'atome.png',
+			'alternate_text' => 'Atome logo',
+            'width' => 20,
+            'height' => 20
+		]);
+		return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
+	}
 }
