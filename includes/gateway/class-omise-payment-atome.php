@@ -80,12 +80,12 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
     public function payment_fields()
     {
         parent::payment_fields();
-        $viewData = $this->validateMinRequiredAmount();
+        $viewData = $this->validateAtomeRequest();
 
         Omise_Util::render_view('templates/payment/form-atome.php', $viewData);
     }
 
-    private function validateMinRequiredAmount()
+    private function validateAtomeRequest()
     {
         $limits = [
             'thb' => [
@@ -103,7 +103,14 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
         ];
 
         $currency = strtolower(get_woocommerce_currency());
-        $cartTotal = WC()->cart->total;
+        $cart = WC()->cart;
+
+        if ($cart->subtotal === 0) {
+            return [
+                'status' => false,
+                'message' => 'Complimentary products cannot be billed.'
+            ];
+        }
 
         if (!isset($limits[$currency])) {
             return [
@@ -114,7 +121,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
 
         $limit = $limits[$currency];
 
-        if ($cartTotal < $limit['min']) {
+        if ($cart->total < $limit['min']) {
             return [
                 'status' => false,
                 'message' => sprintf(
@@ -125,7 +132,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             ];
         }
 
-        if ($cartTotal > $limit['max']) {
+        if ($cart->total > $limit['max']) {
             return [
                 'status' => false,
                 'message' => __(
