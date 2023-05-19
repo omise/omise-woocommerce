@@ -191,14 +191,20 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
 
         // Loop through ordered items
         foreach ($items as $key => $item) {
+            // item don't have price. So we have to take subtotal and divide it by quantity to get the price
+            $pricePerItem = $item['subtotal'] / $item['qty'];
+
+            // Remove product from the list if the price is 0
+            if ((float)$pricePerItem === 0.00) {
+                continue;
+            }
+
             // Check if product has variation.
             $product = $item['variation_id'] ?
                 new WC_Product_Variation($item['variation_id'])
                 : new WC_Product($item['product_id']);
 
             $sku = $product->get_sku();
-            // item don't have price. So we have to take subtotal and divide it by quantity to get the price
-            $pricePerItem = $item['subtotal'] / $item['qty'];
 
             $products[$key] = [
                 'quantity' => $item['qty'],
