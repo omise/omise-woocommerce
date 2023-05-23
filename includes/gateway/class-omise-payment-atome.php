@@ -202,7 +202,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             $pricePerItem = $item['subtotal'] / $item['qty'];
 
             // Remove product from the list if the price is 0
-            if ((float)$pricePerItem === 0.00) {
+            if ((float)$item['subtotal'] === 0.00) {
                 continue;
             }
 
