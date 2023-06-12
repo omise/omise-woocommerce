@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 5.1.0
+Stable tag: 5.1.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.1.1 =
+
+- Remove free products from the Atome bill. (PR [#378](https://github.com/omise/omise-woocommerce/pull/378))
+- Fix incompatible issue with country based payments plugin. (PR [#379](https://github.com/omise/omise-woocommerce/pull/379))
 
 = 5.1.0 =
 
