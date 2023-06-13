@@ -1,9 +1,5 @@
 # CHANGELOG
 
-### [v5.1.1 _(Jun 13, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.1.1)
-- Remove free products from the Atome bill. (PR [#378](https://github.com/omise/omise-woocommerce/pull/378))
-- Fix incompatible issue with country based payments plugin. (PR [#379](https://github.com/omise/omise-woocommerce/pull/379))
-
 ### [v5.1.0 _(May 15, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.1.0)
 - Added Atome payment method. (PR [#364](https://github.com/omise/omise-woocommerce/pull/364))
 - Installment minimum amount from capability API. (PR [#365](https://github.com/omise/omise-woocommerce/pull/365))
