@@ -255,10 +255,9 @@
 	}
 
 	function initializeSecureCardForm() {
-		const omiseCardElement = document.getElementById('omise-card');
-		if (omiseCardElement && Boolean(omise_params.secure_form_enabled)) {
+		if (Boolean(omise_params.secure_form_enabled)) {
 			showOmiseEmbeddedCardForm({
-				element: omiseCardElement,
+				element: document.getElementById('omise-card'),
 				publicKey: omise_params.key,
 				hideRememberCard: HIDE_REMEMBER_CARD,
 				locale: LOCALE,
