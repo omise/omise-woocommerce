@@ -47,10 +47,24 @@ class Omise
 	 */
 	public function __construct()
 	{
+		add_action('before_woocommerce_init', [$this, 'enable_hpos']);
 		add_action('plugins_loaded', array($this, 'check_dependencies'));
 		add_action('woocommerce_init', array($this, 'init'));
 		do_action('omise_initiated');
 		add_action('admin_notices', [$this, 'embedded_form_notice']);
+	}
+
+	/**
+	 * enable high performance order storage(HPOS) feature
+	 */
+	public function enable_hpos() {
+		if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+				'custom_order_tables', 
+				__FILE__, 
+				true
+			);
+		}
 	}
 
 	/**
