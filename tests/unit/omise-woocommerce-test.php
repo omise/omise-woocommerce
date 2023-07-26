@@ -36,7 +36,7 @@ class Omise_Test extends TestCase
 	}
 
 	/**
-	 * Making sure that when FeaturesUtil do not exist,
+	 * Making sure that when FeaturesUtil class do not exist,
 	 * it doesn't throw any error
 	 */
 	public function test_when_features_util_class_do_not_exist()
@@ -46,13 +46,12 @@ class Omise_Test extends TestCase
 	}
 
 	/**
-	 * Making sure that when FeaturesUti exist,
-	 * it doesn't throw any error
+	 * Making sure that when FeaturesUti class exist,
+	 * it doesn't throw any error and the 'declare_compatibility' method should be called once
 	 */
 	public function test_when_features_util_class_exist()
 	{
 		$featuresUtilMock = Mockery::mock('alias:\Automattic\WooCommerce\Utilities\FeaturesUtil');
-		// If the class exists, the 'declare_compatibility' method should be called once.
 		$featuresUtilMock->shouldReceive('declare_compatibility')->once();
 		$this->model->enable_hpos();
 		$this->assertTrue(class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class));
