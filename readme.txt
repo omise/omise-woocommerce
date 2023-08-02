@@ -36,7 +36,9 @@ From there:
 
 = 5.2.0 =
 
-- Declare High-Performance Order Storage(HPOS) as compatible. (PR [#385](https://github.com/omise/omise-woocommerce/pull/385))
+- Declare High-Performance Order Storage (HPOS) as compatible. (PR [#385](https://github.com/omise/omise-woocommerce/pull/385))
+- Added a script to run test `composer test`. (PR [#385](https://github.com/omise/omise-woocommerce/pull/385))
+- Update sonar properties to exclude javascript files. (PR [#385](https://github.com/omise/omise-woocommerce/pull/384))
 
 = 5.1.1 =
 
