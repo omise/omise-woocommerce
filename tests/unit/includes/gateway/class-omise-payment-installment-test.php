@@ -7,32 +7,12 @@ class Omise_Payment_Installment_Test extends TestCase
 {
 	public function setUp(): void
     {
+        // Mocking the parent class
         $offsite = Mockery::mock('overload:Omise_Payment_Offsite');
         $offsite->shouldReceive('init_settings');
         $offsite->shouldReceive('get_option');
 
-        if (!function_exists('wc_get_order')) {
-			function wc_get_order($orderId) {
-                $class = new stdClass();
-                $class->total = 999999;
-                return $class;
-			}
-		}
-
-		if (!function_exists('WC')) {
-			function WC() {
-                $class = new stdClass();
-                $class->cart = new stdClass();
-                $class->cart->total = 999999;
-                return $class;
-			}
-		}
-
-        if (!isset($_GLOBALS['wp'])) {
-            $wp = new stdClass();
-            $wp->query_vars = ['order-pay' => 11];
-        }
-
+        // mocking WP built-in functions
         if (!function_exists('wp_kses')) {
             function wp_kses() {}
         }
@@ -55,8 +35,43 @@ class Omise_Payment_Installment_Test extends TestCase
     /**
      * @test
      */
-    public function getTotalAmount()
+    public function getTotalAmountFromAdminOrderpage()
     {
+        // mocking built-in WooCommerce function
+        if (!function_exists('wc_get_order')) {
+			function wc_get_order() {
+                $class = new stdClass();
+                $class->total = 999999;
+                return $class;
+			}
+		}
+
+        // mocking the WP global variable $wp
+        $wp = new stdClass();
+        $wp->query_vars = ['order-pay' => 123];
+        $GLOBALS['wp'] = $wp;
+
+        $installment = new Omise_Payment_Installment();
+        $total = $installment->getTotalAmount();
+
+        $this->assertEquals($total, 999999);
+    }
+
+    /**
+     * @test
+     */
+    public function getTotalAmountFromCart()
+    {
+        // mocking WC() method
+        if (!function_exists('WC')) {
+			function WC() {
+                $class = new stdClass();
+                $class->cart = new stdClass();
+                $class->cart->total = 999999;
+                return $class;
+			}
+		}
+
         $installment = new Omise_Payment_Installment();
         $total = $installment->getTotalAmount();
 

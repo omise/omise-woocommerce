@@ -71,6 +71,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 
 		$currency   = get_woocommerce_currency();
 		$cart_total = $this->getTotalAmount();
+
 		$capabilities = $this->backend->capabilities();
 		$installmentMinLimit = $capabilities->getInstallmentMinLimit();
 
@@ -89,13 +90,14 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	 */
 	public function getTotalAmount()
 	{
-		// if it's order pay page for admin then get the order total
 		global $wp;
 
-		if ( isset($wp->query_vars['order-pay']) && absint($wp->query_vars['order-pay']) > 0 ) {
-			$order_id = absint($wp->query_vars['order-pay']); // The order ID
-
-			$order = wc_get_order( $order_id ); // Get the WC_Order Object instance
+		if (
+			isset($wp->query_vars['order-pay']) &&
+			(int)$wp->query_vars['order-pay'] > 0
+		) {
+			$order_id = (int)$wp->query_vars['order-pay'];
+			$order = wc_get_order( $order_id );
 			return $order->total;
 		}
 
