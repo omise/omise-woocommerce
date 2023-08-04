@@ -98,7 +98,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		) {
 			$order_id = (int)$wp->query_vars['order-pay'];
 			$order = wc_get_order( $order_id );
-			return $order->total;
+			return $order->get_total();
 		}
 
 		// if not an order page then get total from the cart

@@ -5,7 +5,7 @@ use Mockery;
 
 class Omise_Payment_Installment_Test extends TestCase
 {
-	public function setUp(): void
+    public function setUp(): void
     {
         // Mocking the parent class
         $offsite = Mockery::mock('overload:Omise_Payment_Offsite');
@@ -21,16 +21,16 @@ class Omise_Payment_Installment_Test extends TestCase
             function add_action() {}
         }
 
-		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
-	}
+        require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
+    }
 
     /**
-	 * close mockery after test cases are done
-	 */
-	public function tearDown(): void
-	{
-		Mockery::close();
-	}
+     * clsoe mockery after tests are done
+     */
+    public function teardown(): void
+    {
+        Mockery::close();
+    }
 
     /**
      * @test
@@ -39,12 +39,13 @@ class Omise_Payment_Installment_Test extends TestCase
     {
         // mocking built-in WooCommerce function
         if (!function_exists('wc_get_order')) {
-			function wc_get_order() {
+            function wc_get_order()
+            {
                 $class = new stdClass();
                 $class->total = 999999;
                 return $class;
-			}
-		}
+            }
+        }
 
         // mocking the WP global variable $wp
         $wp = new stdClass();
@@ -64,13 +65,14 @@ class Omise_Payment_Installment_Test extends TestCase
     {
         // mocking WC() method
         if (!function_exists('WC')) {
-			function WC() {
+            function WC()
+            {
                 $class = new stdClass();
                 $class->cart = new stdClass();
                 $class->cart->total = 999999;
                 return $class;
-			}
-		}
+            }
+        }
 
         $installment = new Omise_Payment_Installment();
         $total = $installment->getTotalAmount();
