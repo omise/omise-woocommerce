@@ -29,7 +29,7 @@ function showOmiseEmbeddedCardForm({
     publicKey: publicKey,
     element,
     customCardForm: true,
-    locale: 'en',
+    locale: locale,
     customCardFormTheme: theme,
     customCardFormHideRememberCard: hideRememberCard ?? false,
     customCardFormBrandIcons: brandIcons ?? null,
