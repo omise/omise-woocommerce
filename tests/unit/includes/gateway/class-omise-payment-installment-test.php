@@ -25,7 +25,7 @@ class Omise_Payment_Installment_Test extends TestCase
     }
 
     /**
-     * clsoe mockery after tests are done
+     * close mockery after tests are done
      */
     public function teardown(): void
     {
