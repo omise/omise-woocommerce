@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### [v5.2.1 _(Aug 9, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.2.1)
+- Fixed installment payment when admin manually pay for order. (PR [#388](https://github.com/omise/omise-woocommerce/pull/388))
+- Fixed Japanese translation issue in secure form. (PR [#389](https://github.com/omise/omise-woocommerce/pull/389))
+
 ### [v5.2.0 _(Aug 3, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.2.0)
 - Declare High-Performance Order Storage (HPOS) as compatible. (PR [#385](https://github.com/omise/omise-woocommerce/pull/385))
 - Added a script to run test `composer test`. (PR [#385](https://github.com/omise/omise-woocommerce/pull/385))
