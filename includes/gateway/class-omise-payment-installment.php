@@ -70,8 +70,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		parent::payment_fields();
 
 		$currency   = get_woocommerce_currency();
-		$cart_total = $this->getTotalAmount();
-
+		$cart_total = WC()->cart->total;
 		$capabilities = $this->backend->capabilities();
 		$installmentMinLimit = $capabilities->getInstallmentMinLimit();
 
@@ -83,26 +82,6 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 				'installment_min_limit' => number_format(Omise_Money::convert_currency_unit($installmentMinLimit, $currency))
 			)
 		);
-	}
-
-	/**
-	 * Get the total amount of an order
-	 */
-	public function getTotalAmount()
-	{
-		global $wp;
-
-		if (
-			isset($wp->query_vars['order-pay']) &&
-			(int)$wp->query_vars['order-pay'] > 0
-		) {
-			$order_id = (int)$wp->query_vars['order-pay'];
-			$order = wc_get_order( $order_id );
-			return $order->get_total();
-		}
-
-		// if not an order page then get total from the cart
-		return WC()->cart->total;
 	}
 
 	/**

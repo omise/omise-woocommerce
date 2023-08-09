@@ -25,11 +25,17 @@ function showOmiseEmbeddedCardForm({
   }
   element.style.height = iframeElementHeight + 'px'
 
+  const localeMatching = {
+    en_US: 'en',
+    ja_JP: 'ja',
+    th_TH: 'th'
+  }
+
   OmiseCard.configure({
     publicKey: publicKey,
     element,
     customCardForm: true,
-    locale: locale,
+    locale: localeMatching[locale] ?? 'en',
     customCardFormTheme: theme,
     customCardFormHideRememberCard: hideRememberCard ?? false,
     customCardFormBrandIcons: brandIcons ?? null,

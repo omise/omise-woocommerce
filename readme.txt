@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 5.2.1
+Stable tag: 5.2.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,11 +33,6 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
-
-= 5.2.1 =
-
-- Fix installment payment when admin manually pay for order. (PR [#388](https://github.com/omise/omise-woocommerce/pull/388))
-- Fixed Japanese translation issue in secure form. (PR [#389](https://github.com/omise/omise-woocommerce/pull/389))
 
 = 5.2.0 =
 
