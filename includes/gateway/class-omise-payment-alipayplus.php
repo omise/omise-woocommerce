@@ -85,7 +85,7 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 				'type' => $this->source_type,
 				'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent())
 			],
-			'return_uri' => 'https://opn.ooo', //$this->getRedirectUrl('omise_' . $this->source_type . '_callback', $order_id, $order),
+			'return_uri' => $this->getRedirectUrl('omise_' . $this->source_type . '_callback', $order_id, $order),
 			'metadata' => $this->getMetadata($order_id, $order)
 		]);
 	}
