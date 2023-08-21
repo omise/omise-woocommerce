@@ -1,35 +1,13 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Mockery;
+require_once __DIR__ . '/class-omise-offsite-test.php';
 
-class Omise_Payment_Installment_Test extends TestCase
+class Omise_Payment_Installment_Test extends Offsite_Test
 {
     public function setUp(): void
     {
-        // Mocking the parent class
-        $offsite = Mockery::mock('overload:Omise_Payment_Offsite');
-        $offsite->shouldReceive('init_settings');
-        $offsite->shouldReceive('get_option');
-
-        // mocking WP built-in functions
-        if (!function_exists('wp_kses')) {
-            function wp_kses() {}
-        }
-
-        if (!function_exists('add_action')) {
-            function add_action() {}
-        }
-
+        parent::setUp();
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
-    }
-
-    /**
-     * close mockery after tests are done
-     */
-    public function teardown(): void
-    {
-        Mockery::close();
     }
 
     /**
