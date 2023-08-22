@@ -104,7 +104,7 @@ class Omise_Payment_Alipay_Hk extends Omise_Payment_Alipayplus {
 	public function __construct() {
 		$source = 'alipay_hk';
 		$title = 'AlipayHK';
-		$countries = array( 'SG' );
+		$countries = array( 'SG', 'TH' );
 		parent::__construct( $source, $title, $countries );
 	}
 }
@@ -131,7 +131,7 @@ class Omise_Payment_Kakaopay extends Omise_Payment_Alipayplus {
 	public function __construct() {
 		$source = 'kakaopay';
 		$title = 'Kakao Pay';
-		$countries = array( 'SG' );
+		$countries = array( 'SG', 'TH' );
 		parent::__construct( $source, $title, $countries );
 	}
 }

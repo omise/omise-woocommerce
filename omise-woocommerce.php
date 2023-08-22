@@ -51,7 +51,6 @@ class Omise
 		add_action('plugins_loaded', array($this, 'check_dependencies'));
 		add_action('woocommerce_init', array($this, 'init'));
 		do_action('omise_initiated');
-		add_action('admin_notices', [$this, 'embedded_form_notice']);
 	}
 
 	/**
@@ -111,6 +110,8 @@ class Omise
 	{
 		if (!static::$can_initiate) {
 			add_action('admin_notices', array($this, 'init_error_messages'));
+			// Moving here because the class used in the function could not be found on uninstall
+			add_action('admin_notices', [$this, 'embedded_form_notice']);
 			return;
 		}
 
