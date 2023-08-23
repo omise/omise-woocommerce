@@ -110,9 +110,6 @@ class Omise
 	{
 		if (!static::$can_initiate) {
 			add_action('admin_notices', array($this, 'init_error_messages'));
-			// Moving here because the class used in the function could not be found on uninstall
-			add_action('admin_notices', [$this, 'embedded_form_notice']);
-			return;
 		}
 
 		$this->load_plugin_textdomain();
@@ -126,6 +123,13 @@ class Omise
 		$this->register_ajax_actions();
 
 		prepare_omise_myaccount_panel();
+
+		// adding action after all dependencies are loaded.
+		if (static::$can_initiate) {
+			// Moving here because the class used in the function could not be found on uninstall
+			add_action('admin_notices', [$this, 'embedded_form_notice']);
+			return;
+		}
 	}
 
 	/**
