@@ -110,6 +110,10 @@ class Omise
 	{
 		if (!static::$can_initiate) {
 			add_action('admin_notices', array($this, 'init_error_messages'));
+		}
+
+		// adding action after all dependencies are loaded.
+		if (static::$can_initiate) {
 			// Moving here because the class used in the function could not be found on uninstall
 			add_action('admin_notices', [$this, 'embedded_form_notice']);
 			return;
