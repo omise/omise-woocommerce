@@ -110,6 +110,7 @@ class Omise
 	{
 		if (!static::$can_initiate) {
 			add_action('admin_notices', array($this, 'init_error_messages'));
+			return;
 		}
 
 		$this->load_plugin_textdomain();
