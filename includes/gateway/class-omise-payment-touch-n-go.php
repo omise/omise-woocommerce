@@ -21,7 +21,7 @@ class Omise_Payment_TouchNGo extends Omise_Payment_Offsite {
 
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
-		$this->restricted_countries = array( 'SG', 'MY' );
+		$this->restricted_countries = array( 'SG', 'MY', 'TH' );
 		
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
