@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.0.2
-Stable tag: 5.2.1
+Stable tag: 5.3.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.3.0 =
+
+- Add Alipay+ on Thailand psp. (PR [#394](https://github.com/omise/omise-woocommerce/pull/394))
+- Adding admin_notices action once all dependencies are loaded. (PR [#395](https://github.com/omise/omise-woocommerce/pull/395))
 
 = 5.2.1 =
 
