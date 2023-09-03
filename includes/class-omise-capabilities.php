@@ -36,10 +36,10 @@ class Omise_Capabilities {
 	public static function retrieve($pKey = null, $sKey = null)
 	{
 		$shouldCallApi = self::shouldCallApi(
-			is_admin(), 
 			is_checkout(), 
 			// If endpoint url is `order-received`, it mean thank you page.
-			is_wc_endpoint_url( 'order-received' ) 
+			is_wc_endpoint_url( 'order-received' ),
+			is_admin(),
 		);
 
 		if( !$shouldCallApi ) return null;
