@@ -35,14 +35,7 @@ class Omise_Capabilities {
 	 */
 	public static function retrieve($pKey = null, $sKey = null)
 	{
-		$shouldCallApi = self::shouldCallApi(
-			is_checkout(),
-			// If endpoint url is `order-received`, it mean thank you page.
-			is_wc_endpoint_url( 'order-received' ),
-			is_admin(),
-		);
-
-		if ( !$shouldCallApi ) {
+		if ( !self::shouldCallApi() ) {
 			return null;
 		}
 
@@ -85,18 +78,19 @@ class Omise_Capabilities {
 	 * @param boolean $isThankYouPage
      * @return boolean
      */
-    public static function shouldCallApi($isCheckout, $isThankYouPage, $isAdmin,) {
-		$omisePages = [ 'omise' ];
+    public static function shouldCallApi() {
+		$omiseSettingPages = [ 'omise' ];
 
 		$currentAdminPage = isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : '';
 
 		// checkout page but not thank you page
 		// By default thank you page is also part of checkout pages
 		// and we do not need to call capabilities on thank you page.
-		$isPaymentPage = $isCheckout && !$isThankYouPage;
+		// If endpoint url is `order-received`, it mean thank you page.
+		$isPaymentPage = is_checkout() && !is_wc_endpoint_url( 'order-received' );
 
 		// if from admin panel and is omise page.
-		$isOmiseSettingPage = $isAdmin && in_array( $currentAdminPage, $omisePages );
+		$isOmiseSettingPage = is_admin() && in_array( $currentAdminPage, $omiseSettingPages );
 
         return $isPaymentPage || $isOmiseSettingPage;
     }
