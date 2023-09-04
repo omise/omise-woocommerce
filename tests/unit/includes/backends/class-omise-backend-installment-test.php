@@ -247,29 +247,3 @@ class Omise_Backend_Installment_Test extends TestCase
 		$this->assertEquals(833.33, $result);
 	}
 }
-
-/**
- * Mock Omise_Capabilities class.
- * NOTE: This might not be an ideal way to mock a class,
- *       feel free to enhance the test or the core code.
- *
- * @see includes/class-omise-capabilities
- */
-class Omise_Capabilities
-{
-	/**
-	 * @var self
-	 */
-	protected static $the_instance = null;
-
-	public static function retrieve()
-	{
-		self::$the_instance = self::$the_instance ?: new self();
-		return self::$the_instance;
-	}
-
-	public function is_zero_interest()
-	{
-		return false;
-	}
-}
