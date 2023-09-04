@@ -73,8 +73,8 @@ class Omise_Capabilities {
 	}
 
 	/**
-     * @return boolean
-     */
+	 * @return boolean
+	 */
     public static function shouldCallApi() {
 		$omiseSettingPages = [ 'omise' ];
 
