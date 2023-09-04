@@ -75,7 +75,7 @@ class Omise_Capabilities {
 	/**
 	 * @return boolean
 	 */
-    public static function shouldCallApi() {
+	public static function shouldCallApi() {
 		$omiseSettingPages = [ 'omise' ];
 
 		$currentAdminPage = isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : '';
@@ -89,8 +89,8 @@ class Omise_Capabilities {
 		// If page is omise setting page from admin panel.
 		$isOmiseSettingPage = is_admin() && in_array( $currentAdminPage, $omiseSettingPages );
 
-        return $isPaymentPage || $isOmiseSettingPage;
-    }
+		return $isPaymentPage || $isOmiseSettingPage;
+	}
 
 
 	/**
