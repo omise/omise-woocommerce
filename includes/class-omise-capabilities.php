@@ -73,9 +73,6 @@ class Omise_Capabilities {
 	}
 
 	/**
-	 * @param boolean $isCheckout
-	 * @param boolean $isAdmin
-	 * @param boolean $isThankYouPage
      * @return boolean
      */
     public static function shouldCallApi() {
