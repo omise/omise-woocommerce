@@ -77,17 +77,15 @@ class Omise_Capabilities {
 	 */
 	public static function shouldCallApi() {
 		$omiseSettingPages = [ 'omise' ];
-
 		$currentAdminPage = isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : '';
+		// If page is omise setting page from admin panel.
+		$isOmiseSettingPage = is_admin() && in_array( $currentAdminPage, $omiseSettingPages );
 
 		// If page is checkout page but not thank you page.
 		// By default thank you page is also part of checkout pages
 		// and we do not need to call capabilities on thank you page.
 		// If endpoint url is `order-received`, it mean thank you page.
 		$isPaymentPage = is_checkout() && !is_wc_endpoint_url( 'order-received' );
-
-		// If page is omise setting page from admin panel.
-		$isOmiseSettingPage = is_admin() && in_array( $currentAdminPage, $omiseSettingPages );
 
 		return $isPaymentPage || $isOmiseSettingPage;
 	}
