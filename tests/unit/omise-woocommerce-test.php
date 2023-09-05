@@ -1,7 +1,5 @@
 <?php
 
-use Omise;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class Omise_Test extends TestCase

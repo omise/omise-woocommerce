@@ -1,7 +1,6 @@
 <?php
 
 use PHPunit\Framework\TestCase;
-use Mockery;
 
 abstract class Offsite_Test extends TestCase
 {

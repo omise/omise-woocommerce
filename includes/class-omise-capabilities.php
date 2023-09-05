@@ -35,6 +35,10 @@ class Omise_Capabilities {
 	 */
 	public static function retrieve($pKey = null, $sKey = null)
 	{
+		if ( !self::shouldCallApi() ) {
+			return null;
+		}
+
 		$keys = self::getKeys($pKey, $sKey);
 
 		// Do not call capabilities API if keys are not present
@@ -67,6 +71,25 @@ class Omise_Capabilities {
 		self::$instance->secretKey = $keys['secret'];
 		return self::$instance;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public static function shouldCallApi() {
+		$omiseSettingPages = [ 'omise' ];
+		$currentAdminPage = isset( $_GET[ 'page' ] ) ? $_GET[ 'page' ] : '';
+		// If page is omise setting page from admin panel.
+		$isOmiseSettingPage = is_admin() && in_array( $currentAdminPage, $omiseSettingPages );
+
+		// If page is checkout page but not thank you page.
+		// By default thank you page is also part of checkout pages
+		// and we do not need to call capabilities on thank you page.
+		// If endpoint url is `order-received`, it mean thank you page.
+		$isPaymentPage = is_checkout() && !is_wc_endpoint_url( 'order-received' );
+
+		return $isPaymentPage || $isOmiseSettingPage;
+	}
+
 
 	/**
 	 * @param string|null $pKey
