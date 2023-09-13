@@ -20,8 +20,6 @@ abstract class Offsite_Test extends TestCase
         if (!function_exists('add_action')) {
             function add_action() {}
         }
-
-        require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-alipayplus.php';
     }
 
     /**
