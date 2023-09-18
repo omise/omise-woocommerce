@@ -11,6 +11,8 @@ abstract class Offsite_Test extends TestCase
         $offsite->shouldReceive('init_settings');
         $offsite->shouldReceive('get_option');
         $offsite->shouldReceive('get_provider');
+        $offsite->shouldReceive('getRedirectUrl');
+        $offsite->shouldReceive('getMetadata');
 
         // mocking WP built-in functions
         if (!function_exists('wp_kses')) {

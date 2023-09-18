@@ -56,7 +56,7 @@ class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
     /**
      * @test
      */
-    public function getIcon()
+    public function getIconReturnsCorrectImageLink()
     {
         // mocking WP built-in functions
         if (!function_exists('plugins_url')) {
@@ -74,5 +74,38 @@ class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
         $result = $this->obj->get_icon();
 
         $this->assertEquals("http://localhost/image.png", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getChargeRequestReturnsCorrectData()
+    {
+        $order = new class {
+            public function get_currency()
+            {
+                return 'thb';
+            }
+
+            public function get_total()
+            {
+                return 10000;
+            }
+        };
+
+        if (!function_exists('wc_get_user_agent')) {
+            function wc_get_user_agent() {
+                return "Chrome Web";
+            }
+        }
+
+        $expectedAmount = 1000000;
+        $expectedCurrency = 'thb';
+        $expectedSourceType = 'mobile_banking_ocbc';
+        $order_id = "123";
+        $result = $this->obj->get_charge_request($order_id, $order);
+        $this->assertEquals($expectedAmount, $result['amount']);
+        $this->assertEquals($expectedCurrency, $result['currency']);
+        $this->assertEquals($expectedSourceType, $result['source']['type']);
     }
 }
