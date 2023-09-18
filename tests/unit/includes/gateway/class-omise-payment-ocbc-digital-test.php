@@ -84,7 +84,7 @@ class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
         $order = new class {
             public function get_currency()
             {
-                return 'thb';
+                return 'sgd';
             }
 
             public function get_total()
@@ -100,7 +100,7 @@ class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
         }
 
         $expectedAmount = 1000000;
-        $expectedCurrency = 'thb';
+        $expectedCurrency = 'sgd';
         $expectedSourceType = 'mobile_banking_ocbc';
         $order_id = "123";
         $result = $this->obj->get_charge_request($order_id, $order);
