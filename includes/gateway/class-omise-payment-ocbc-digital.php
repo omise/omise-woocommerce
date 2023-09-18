@@ -77,10 +77,12 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 	 *
 	 * @see WC_Payment_Gateway::get_icon()
 	 */
-	public function get_icon() {
+	public function get_icon()
+	{
 		$icon = Omise_Image::get_image([
 			'file' => 'ocbc-digital.png',
 			'alternate_text' => 'OCBC Digital',
+			'width' => 60,
 		]);
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
