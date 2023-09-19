@@ -33,7 +33,7 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 			'enabled' => [
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments OCBC digital', 'omise' ),
+				'label'   => __( 'Enable Opn Payments OCBC Digital', 'omise' ),
 				'default' => 'no'
             ],
 

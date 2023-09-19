@@ -81,17 +81,16 @@ class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
      */
     public function getChargeRequestReturnsCorrectData()
     {
-        $order = new class {
-            public function get_currency()
-            {
-                return 'sgd';
-            }
+        // Create a mock of the $order object
+        $orderMock = Mockery::mock('WC_Order');
+        $expectedCurrency = 'SGD';
+        $expectedAmount = 1000000; // in subunits
 
-            public function get_total()
-            {
-                return 10000;
-            }
-        };
+        // Define expectations for the mock
+        $orderMock->shouldReceive('get_currency')
+            ->andReturn($expectedCurrency);
+        $orderMock->shouldReceive('get_total')
+            ->andReturn($expectedAmount/100);  // in units
 
         if (!function_exists('wc_get_user_agent')) {
             function wc_get_user_agent() {
@@ -99,11 +98,9 @@ class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
             }
         }
 
-        $expectedAmount = 1000000;
-        $expectedCurrency = 'sgd';
         $expectedSourceType = 'mobile_banking_ocbc';
         $order_id = "123";
-        $result = $this->obj->get_charge_request($order_id, $order);
+        $result = $this->obj->get_charge_request($order_id, $orderMock);
         $this->assertEquals($expectedAmount, $result['amount']);
         $this->assertEquals($expectedCurrency, $result['currency']);
         $this->assertEquals($expectedSourceType, $result['source']['type']);
