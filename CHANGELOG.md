@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### [v5.4.0 _(Sep 21, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.4.0)
+- Added OCBC Digital for Singapore PSP. (PR [#401](https://github.com/omise/omise-woocommerce/pull/401))
+
 ### [v5.3.1 _(Sep 05, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.3.1)
 - Fixed capabilities api calling on every pages. (PR [#398](https://github.com/omise/omise-woocommerce/pull/398))
 
