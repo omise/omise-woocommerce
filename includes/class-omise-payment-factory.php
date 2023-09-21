@@ -32,6 +32,7 @@ class Omise_Payment_Factory {
 		'Omise_Payment_TouchNGo',
 		'Omise_Payment_RabbitLinePay',
 		'Omise_Payment_OCBC_PAO',
+		'Omise_Payment_OCBC_Digital',
 		'Omise_Payment_GrabPay',
 		'Omise_Payment_GooglePay',
 		'Omise_Payment_Boost',

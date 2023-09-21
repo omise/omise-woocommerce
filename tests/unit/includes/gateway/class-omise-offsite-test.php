@@ -11,6 +11,8 @@ abstract class Offsite_Test extends TestCase
         $offsite->shouldReceive('init_settings');
         $offsite->shouldReceive('get_option');
         $offsite->shouldReceive('get_provider');
+        $offsite->shouldReceive('getRedirectUrl');
+        $offsite->shouldReceive('getMetadata');
 
         // mocking WP built-in functions
         if (!function_exists('wp_kses')) {
@@ -20,8 +22,6 @@ abstract class Offsite_Test extends TestCase
         if (!function_exists('add_action')) {
             function add_action() {}
         }
-
-        require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-alipayplus.php';
     }
 
     /**
