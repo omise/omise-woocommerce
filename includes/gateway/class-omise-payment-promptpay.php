@@ -138,7 +138,6 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 					<?php $this->load_qr_svg_to_DOM($qrcode, 'omise-promptpay-qrcode-svg') ?>
 				</div>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>
-
 				<div>
 					<?php echo __( 'Payment expires in: ', 'omise' ); ?>
 					<?php echo wc_format_datetime( $expires_datetime, wc_date_format() ); ?>
@@ -150,13 +149,13 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 				</div>
 
 				<div class="qr-alert-box">
-					<p><strong>Please follow the instructions below to make payment:</strong></p>
-					<ul class="align-left">
+					<p><strong>To make payment:</strong></p>
+					<ol class="align-left">
 						<li>Download the QR code or open your preferred bank app to scan it</li>
 						<li>Check that the payment details are correct</li>
 						<li>Import the QR code image into your bank app or scan the QR code with your bank app to pay.</li>
 						<li>Share the payment slip from your bank app to the seller</li>
-					</ul>
+					</ol>
 				</div>
 			</div>
 
