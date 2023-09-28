@@ -134,16 +134,6 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 			<div id="omise-offline-additional-details" class="omise omise-additional-payment-details-box omise-promptpay-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<p><strong><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></strong></p>
 
-				<div class="qr-alert-box">
-					<p><strong>Please follow the instructions below to make payment:</strong></p>
-					<ul class="align-left">
-						<li>Download the QR code or open your preferred bank app to scan it</li>
-						<li>Check that the payment details are correct</li>
-						<li>Import the QR code image into your bank app or scan the QR code with your bank app to pay.</li>
-						<li>Share the payment slip from your bank app to the seller</li>
-					</ul>
-				</div>
-
 				<div class="omise omise-promptpay-qrcode" alt="Opn Payments QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
 					<?php $this->load_qr_svg_to_DOM($qrcode, 'omise-promptpay-qrcode-svg') ?>
 				</div>
@@ -157,6 +147,16 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 
 				<div id="omise-offline-payment-timeout" style="margin-top: 2em; display: none;">
 					<p><button id="omise-offline-payment-refresh-status">refresh status</button></p>
+				</div>
+
+				<div class="qr-alert-box">
+					<p><strong>Please follow the instructions below to make payment:</strong></p>
+					<ul class="align-left">
+						<li>Download the QR code or open your preferred bank app to scan it</li>
+						<li>Check that the payment details are correct</li>
+						<li>Import the QR code image into your bank app or scan the QR code with your bank app to pay.</li>
+						<li>Share the payment slip from your bank app to the seller</li>
+					</ul>
 				</div>
 			</div>
 
