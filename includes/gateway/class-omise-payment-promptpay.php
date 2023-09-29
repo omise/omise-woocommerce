@@ -153,7 +153,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 					<ol class="align-left">
 						<li>Download the QR code or open your preferred bank app to scan it</li>
 						<li>Check that the payment details are correct</li>
-						<li>Import the QR code image into your bank app or scan the QR code with your bank app to pay.</li>
+						<li>Import the QR code image into your bank app or scan the QR code with your bank app to pay</li>
 						<li>Share the payment slip from your bank app to the seller</li>
 					</ol>
 				</div>
