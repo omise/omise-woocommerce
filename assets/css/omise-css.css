@@ -595,3 +595,13 @@ line-height: 2;
     width: 100%;
 	margin-bottom: 1rem;
 }
+
+.qr-alert-box {
+	padding: 15px;
+	margin: 20px 0;
+	border: 1px solid black;
+}
+
+.align-left {
+	text-align: left;
+}
