@@ -139,7 +139,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 				</div>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>
 				<div>
-					<?php echo __( 'Payment expires in: ', 'omise' ); ?>
+					<?php echo __( 'Payment expires at: ', 'omise' ); ?>
 					<?php echo wc_format_datetime( $expires_datetime, wc_date_format() ); ?>
 					<?php echo wc_format_datetime( $expires_datetime, wc_time_format() ); ?>
 				</div>
