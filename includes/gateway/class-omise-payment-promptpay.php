@@ -132,19 +132,30 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 
 		if ( 'view' === $context ) : ?>
 			<div id="omise-offline-additional-details" class="omise omise-additional-payment-details-box omise-promptpay-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
-				<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
+				<p><strong><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></strong></p>
+
 				<div class="omise omise-promptpay-qrcode" alt="Opn Payments QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
 					<?php $this->load_qr_svg_to_DOM($qrcode, 'omise-promptpay-qrcode-svg') ?>
 				</div>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>
 				<div>
-					<?php echo __( 'Payment expires in: ', 'omise' ); ?>
+					<?php echo __( 'Payment expires at: ', 'omise' ); ?>
 					<?php echo wc_format_datetime( $expires_datetime, wc_date_format() ); ?>
 					<?php echo wc_format_datetime( $expires_datetime, wc_time_format() ); ?>
 				</div>
 
 				<div id="omise-offline-payment-timeout" style="margin-top: 2em; display: none;">
 					<p><button id="omise-offline-payment-refresh-status">refresh status</button></p>
+				</div>
+
+				<div class="qr-alert-box">
+					<p><strong>To make payment:</strong></p>
+					<ol class="align-left">
+						<li>Download the QR code or open your preferred bank app to scan it</li>
+						<li>Check that the payment details are correct</li>
+						<li>Import the QR code image into your bank app or scan the QR code with your bank app to pay</li>
+						<li>Share the payment slip from your bank app to the seller</li>
+					</ol>
 				</div>
 			</div>
 
