@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### [v5.4.1 _(Oct 3, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.4.1)
+- Added payment instructions in thank you page for PromptPay payment. (PR [#401](https://github.com/omise/omise-woocommerce/pull/404))
+
 ### [v5.4.0 _(Sep 21, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.4.0)
 - Added OCBC Digital for Singapore PSP. (PR [#401](https://github.com/omise/omise-woocommerce/pull/401))
 
