@@ -16,13 +16,13 @@ trait Charge_Request_Builder
 			'amount'      => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency'    => $currency,
 			'description' => $description,
-			'metadata'    => $this->getMetadata($order_id),
-			'webhook_endpoints' => [ Omise_Util::getWebhookURL() ],
+			'metadata'    => $this->get_metadata($order_id),
+			'webhook_endpoints' => [ Omise_Util::get_webhook_url() ],
 			'source' 	  => [ 'type' => $source_type ]
 		];
 
 		if (!$callback_endpoint) {
-			$return_uri = $this->getRedirectUrl($callback_endpoint, $order_id, $order);
+			$return_uri = $this->get_redirect_url($callback_endpoint, $order_id, $order);
 
 			return array_merge($request, [
 				'return_uri'  => $return_uri,
@@ -36,7 +36,7 @@ trait Charge_Request_Builder
 	 * @param string $order_id
 	 * @param array $additionalData
 	 */
-	public function getMetadata($order_id, $additionalData = [])
+	public function get_metadata($order_id, $additionalData = [])
 	{
 		// override order_id as a reference for webhook handlers.
 		$orderId = [ 'order_id' => $order_id ];
@@ -48,7 +48,7 @@ trait Charge_Request_Builder
 	 * @param string $order_id
 	 * @param object $order
 	 */
-	public function getRedirectUrl($callback_url, $order_id, $order)
+	public function get_redirect_url($callback_url, $order_id, $order)
 	{
 		$redirectUrl = RedirectUrl::create($callback_url, $order_id);
 

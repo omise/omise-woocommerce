@@ -76,6 +76,12 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
+		$requestData = $this->get_charge_request($order_id, $order);
+		return OmiseCharge::create($requestData);
+	}
+
+	public function get_charge_request($order_id, $order)
+	{
 		$phoneOption = $_POST['omise_phone_number_default'];
 		$isPhoneOptionChecked = isset($phoneOption) && 1 == $phoneOption;
 		$phone_number = $isPhoneOptionChecked ?
@@ -91,6 +97,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 		$requestData['source'] = array_merge($requestData['source'], [
 			'phone_number' => $phone_number
 		]);
-		return OmiseCharge::create($requestData);
+
+		return $requestData;
 	}
 }

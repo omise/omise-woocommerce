@@ -64,13 +64,13 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency' => $currency,
 			'description' => 'WooCommerce Order id ' . $order_id,
-			'return_uri' => $this->getRedirectUrl('omise_callback', $order_id, $order),
-			'metadata' => $this->getMetadata(
+			'return_uri' => $this->get_redirect_url('omise_callback', $order_id, $order),
+			'metadata' => $this->get_metadata(
 				$order_id,
 				$order,
 				[ 'secure_form_enabled' => $this->getSecureFormState()]
 			),
-			'webhook_endpoints' => [ Omise_Util::getWebhookURL() ]
+			'webhook_endpoints' => [ Omise_Util::get_webhook_url() ]
 		];
 
 		if (!empty($omise_customer_id) && ! empty($card_id)) {

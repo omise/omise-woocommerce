@@ -98,8 +98,8 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 				'email' => $konbini_email,
 				'phone_number' => $konbini_phone
 			],
-			'metadata' => $this->getMetadata($order_id, $order),
-			'webhook_endpoints' => [ Omise_Util::getWebhookURL() ],
+			'metadata' => $this->get_metadata($order_id, $order),
+			'webhook_endpoints' => [ Omise_Util::get_webhook_url() ],
 		]);
 	}
 
