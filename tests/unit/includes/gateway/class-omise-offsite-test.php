@@ -11,6 +11,10 @@ abstract class Omise_Offsite_Test extends TestCase
         $offsite->shouldReceive('init_settings');
         $offsite->shouldReceive('get_option');
         $offsite->shouldReceive('get_provider');
+        $offsite->shouldReceive('build_charge_request')
+            ->andReturn([
+                'source' => [ 'type' => 'source_123' ]
+            ]);
 
         // mocking WP built-in functions
         if (!function_exists('wp_kses')) {

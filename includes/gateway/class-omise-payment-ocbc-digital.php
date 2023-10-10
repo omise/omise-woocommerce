@@ -57,15 +57,6 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
-		return OmiseCharge::create($this->get_charge_request($order_id, $order));
-	}
-
-	/**
-	 * @order_id integer
-	 * @order    object
-	 */
-	public function get_charge_request($order_id, $order)
-	{
 		$requestData = $this->build_charge_request(
 			$order_id,
 			$order,
@@ -76,6 +67,7 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 		$requestData['source'] = array_merge($requestData['source'], [
 			'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent())
 		]);
+
 		return OmiseCharge::create($requestData);
 	}
 

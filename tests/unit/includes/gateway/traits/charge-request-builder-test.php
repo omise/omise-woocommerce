@@ -38,10 +38,12 @@ class Charge_Request_Builder_Test extends TestCase
         $source_type = 'alipay';
         $callback_url = 'omise_alipay_callback';
 
-        if (!function_exists('apply_filters')) {
-            function apply_filters() {
-                return [];
-            }
+        // removed function_exists('apply_filters') check because "apply_filters"
+        // returns different data type such as string or array depending how it's
+        // implemented. So, even if "apply_filters" is already declared somewhere,
+        // it might not return the desired result. So, we are overriding it.
+        function apply_filters() {
+            return [];
         }
 
         $result = $mock->build_charge_request(

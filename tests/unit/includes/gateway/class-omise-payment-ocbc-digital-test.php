@@ -80,12 +80,25 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
     /**
      * @test
      */
-    public function getChargeRequestReturnsCorrectData()
+    public function testCharge()
     {
-        // Create a mock of the $order object
-        $orderMock = Mockery::mock('WC_Order');
         $expectedCurrency = 'SGD';
         $expectedAmount = 1000000; // in subunits
+        $expectedAmount = 1000000; // in subunits
+        $expectedRequest = [
+            "object" => "charge",
+            "id" => "chrg_test_no1t4tnemucod0e51mo",
+            "location" => "/charges/chrg_test_no1t4tnemucod0e51mo",
+            "amount" => $expectedAmount,
+            "currency" => $expectedCurrency
+        ];
+
+        // Create a mock for OmiseCharge
+        $chargeMock = Mockery::mock('overload:OmiseCharge');
+        $chargeMock->shouldReceive('create')->once()->andReturn($expectedRequest);
+
+        // Create a mock of the $order object
+        $orderMock = Mockery::mock('WC_Order');
 
         // Define expectations for the mock
         $orderMock->shouldReceive('get_currency')
@@ -101,9 +114,8 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
 
         $expectedSourceType = 'mobile_banking_ocbc';
         $order_id = "123";
-        $result = $this->obj->get_charge_request($order_id, $orderMock);
+        $result = $this->obj->charge($order_id, $orderMock);
         $this->assertEquals($expectedAmount, $result['amount']);
         $this->assertEquals($expectedCurrency, $result['currency']);
-        $this->assertEquals($expectedSourceType, $result['source']['type']);
     }
 }

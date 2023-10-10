@@ -38,6 +38,8 @@ trait Charge_Request_Builder
 		// override order_id as a reference for webhook handlers.
 		$orderId = [ 'order_id' => $order_id ];
 
+		echo var_dump(apply_filters('omise_charge_params_metadata', [], $order));
+
 		return array_merge(
 			apply_filters('omise_charge_params_metadata', [], $order),
 			array_merge($orderId, $additionalData)
