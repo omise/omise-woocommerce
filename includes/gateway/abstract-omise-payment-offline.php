@@ -27,7 +27,8 @@ abstract class Omise_Payment_Offline extends Omise_Payment {
 			'currency'    => $currency,
 			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
 			'source'      => array( 'type' => $this->source_type ),
-			'metadata'    => $metadata
+			'metadata'    => $metadata,
+			'webhook_endpoints' => [ Omise_Util::getWebhookURL() ]
 		) );
 	}
 

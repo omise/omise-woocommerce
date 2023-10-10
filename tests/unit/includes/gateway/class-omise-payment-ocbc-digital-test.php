@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
-class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
+class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
 {
     private $obj;
 
@@ -16,6 +16,7 @@ class Omise_Payment_OCBC_Digital_Test extends Offsite_Test
 
     public function tearDown(): void
     {
+        parent::tearDown();
         // destroy object and clear memory
         unset($this->obj);
     }

@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
-class Omise_Payment_TouchNGo_Test extends Offsite_Test
+class Omise_Payment_TouchNGo_Test extends Omise_Offsite_Test
 {
     public function setUp(): void
     {
@@ -19,5 +19,7 @@ class Omise_Payment_TouchNGo_Test extends Offsite_Test
         $expectedCountries = ['SG', 'MY', 'TH'];
 
         $this->assertEqualsCanonicalizing($expectedCountries, $obj->restricted_countries);
+
+        unset($obj);
     }
 }

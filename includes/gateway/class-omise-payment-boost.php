@@ -57,15 +57,13 @@ class Omise_Payment_Boost extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
-		$currency = $order->get_currency();
-		return OmiseCharge::create([
-			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency' => $currency,
-			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source' => ['type' => $this->source_type],
-			'return_uri' => $this->getRedirectUrl('omise_boost_callback', $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order)
-		]);
+		$requestData = $this->build_charge_request(
+			$order_id,
+			$order,
+			$this->source_type,
+			$this->id . "_callback"
+		);
+		return OmiseCharge::create($requestData);
 	}
 
 	/**

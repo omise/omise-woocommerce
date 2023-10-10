@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
-class Omise_Payment_Installment_Test extends Offsite_Test
+class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 {
     public function setUp(): void
     {
@@ -38,6 +38,10 @@ class Omise_Payment_Installment_Test extends Offsite_Test
         $total = $installment->getTotalAmount();
 
         $this->assertEquals($total, 999999);
+
+        unset($GLOBALS['wp']);
+        unset($installment);
+        unset($wp);
     }
 
     /**

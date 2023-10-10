@@ -57,19 +57,16 @@ class Omise_Payment_OCBC_PAO extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
-		$currency = $order->get_currency();
-
-		return OmiseCharge::create([
-			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency' => $currency,
-			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source' => [
-				'type' => $this->source_type,
-				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
-			],
-			'return_uri' => $this->getRedirectUrl('omise_ocbc_pao_callback', $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order)
+		$requestData = $this->build_charge_request(
+			$order_id,
+			$order,
+			$this->source_type,
+			$this->id . '_callback'
+		);
+		$requestData['source'] = array_merge($requestData['source'], [
+			'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent())
 		]);
+		return OmiseCharge::create($requestData);
 	}
 
 	/**

@@ -8,6 +8,8 @@ require_once dirname(__FILE__) . '/class-omise-payment.php';
  */
 abstract class Omise_Payment_Offsite extends Omise_Payment
 {
+	use Charge_Request_Builder;
+
 	/**
 	 * @inheritdoc
 	 */

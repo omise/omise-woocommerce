@@ -73,7 +73,8 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				$order_id,
 				$order,
 				[ 'secure_form_enabled' => $this->getSecureFormState()]
-			)
+			),
+			'webhook_endpoints' => [ Omise_Util::getWebhookURL() ]
 		];
 
 		if (!empty($omise_customer_id) && ! empty($card_id)) {

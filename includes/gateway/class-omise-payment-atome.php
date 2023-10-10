@@ -151,31 +151,26 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
      */
     public function charge($order_id, $order)
     {
-        $currency = $order->get_currency();
+        $requestData = $this->build_charge_request(
+			$order_id,
+			$order,
+			$this->source_type,
+			$this->id . "_callback"
+		);
+        
         $default_phone_selected = isset($_POST['omise_atome_phone_default']) ?
             $_POST['omise_atome_phone_default']
             : false;
         $phone_number = (bool)$default_phone_selected ?
             $order->get_billing_phone()
             : sanitize_text_field($_POST['omise_atome_phone_number']);
+		$requestData['source'] = array_merge($requestData['source'], [
+			'phone_number' => $phone_number,
+            'shipping' => $this->getAddress($order),
+            'items' => $this->getItems($order, $order->get_currency())
+		]);
 
-        return OmiseCharge::create([
-            'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-            'currency' => $currency,
-            'description' => apply_filters(
-                'omise_charge_params_description',
-                'WooCommerce Order id ' . $order_id,
-                $order
-            ),
-            'source' => [
-                'type' => $this->source_type,
-                'phone_number' => $phone_number,
-                'shipping' => $this->getAddress($order),
-                'items' => $this->getItems($order, $currency)
-            ],
-            'return_uri' => $this->getRedirectUrl('omise_atome_callback', $order_id, $order),
-            'metadata' => $this->getMetadata($order_id, $order)
-        ]);
+        return OmiseCharge::create($requestData);
     }
 
     private function getAddress($order)
