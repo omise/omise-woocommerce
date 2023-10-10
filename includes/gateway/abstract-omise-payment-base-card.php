@@ -63,11 +63,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		$data = [
 			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency' => $currency,
-			'description' => apply_filters(
-				'omise_charge_params_description',
-				'WooCommerce Order id ' . $order_id,
-				$order
-			),
+			'description' => 'WooCommerce Order id ' . $order_id,
 			'return_uri' => $this->getRedirectUrl('omise_callback', $order_id, $order),
 			'metadata' => $this->getMetadata(
 				$order_id,
