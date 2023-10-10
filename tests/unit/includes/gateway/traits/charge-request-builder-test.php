@@ -14,6 +14,12 @@ class Charge_Request_Builder_Test extends TestCase
      */
     public function buildChargeRequestReturnsValidResponse()
     {
+        if (!function_exists('get_rest_url')) {
+            function get_rest_url() {
+                return "http://localhost/";
+            }
+        }
+
         $mock = $this->getMockForTrait('Charge_Request_Builder');
         $redirectUrlMock = Mockery::mock('alias:RedirectUrl');
         $redirectUrlMock->shouldReceive('create')
@@ -37,14 +43,6 @@ class Charge_Request_Builder_Test extends TestCase
         };
         $source_type = 'alipay';
         $callback_url = 'omise_alipay_callback';
-
-        // removed function_exists('apply_filters') check because "apply_filters"
-        // returns different data type such as string or array depending how it's
-        // implemented. So, even if "apply_filters" is already declared somewhere,
-        // it might not return the desired result. So, we are overriding it.
-        function apply_filters() {
-            return [];
-        }
 
         $result = $mock->build_charge_request(
             $order_id,

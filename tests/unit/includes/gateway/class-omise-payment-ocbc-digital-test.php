@@ -12,6 +12,25 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-ocbc-digital.php';
         require_once __DIR__ . '/../../../../includes/classes/class-omise-image.php';
         $this->obj = new Omise_Payment_OCBC_Digital();
+
+        // mocking WP built-in functions
+        if (!function_exists('plugins_url')) {
+            function plugins_url() {
+                return "http://localhost";
+            }
+        }
+
+        if (!function_exists('apply_filters')) {
+            function apply_filters() {
+                return "http://localhost/image.png";
+            }
+        }
+
+        if (!function_exists('wc_get_user_agent')) {
+            function wc_get_user_agent() {
+                return "Chrome Web";
+            }
+        }
     }
 
     public function tearDown(): void
@@ -59,21 +78,7 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
      */
     public function getIconReturnsCorrectImageLink()
     {
-        // mocking WP built-in functions
-        if (!function_exists('plugins_url')) {
-            function plugins_url() {
-                return "http://localhost";
-            }
-        }
-
-        if (!function_exists('apply_filters')) {
-            function apply_filters() {
-                return "http://localhost/image.png";
-            }
-        }
-
         $result = $this->obj->get_icon();
-
         $this->assertEquals("http://localhost/image.png", $result);
     }
 
@@ -106,13 +111,6 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
         $orderMock->shouldReceive('get_total')
             ->andReturn($expectedAmount/100);  // in units
 
-        if (!function_exists('wc_get_user_agent')) {
-            function wc_get_user_agent() {
-                return "Chrome Web";
-            }
-        }
-
-        $expectedSourceType = 'mobile_banking_ocbc';
         $order_id = "123";
         $result = $this->obj->charge($order_id, $orderMock);
         $this->assertEquals($expectedAmount, $result['amount']);

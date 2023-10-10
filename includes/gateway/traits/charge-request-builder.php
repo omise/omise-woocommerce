@@ -11,11 +11,7 @@ trait Charge_Request_Builder
 	{
 		$currency = $order->get_currency();
 		$return_uri = $this->getRedirectUrl($callback_endpoint, $order_id, $order);
-		$description = apply_filters(
-			'omise_charge_params_description',
-			'WooCommerce Order id ' . $order_id,
-			$order
-		);
+		$description = 'WooCommerce Order id ' . $order_id;
 
 		return [
 			'amount'      => Omise_Money::to_subunit($order->get_total(), $currency),
@@ -38,12 +34,7 @@ trait Charge_Request_Builder
 		// override order_id as a reference for webhook handlers.
 		$orderId = [ 'order_id' => $order_id ];
 
-		echo var_dump(apply_filters('omise_charge_params_metadata', [], $order));
-
-		return array_merge(
-			apply_filters('omise_charge_params_metadata', [], $order),
-			array_merge($orderId, $additionalData)
-		);
+		return array_merge($orderId, $additionalData);
 	}
 
 	/**
