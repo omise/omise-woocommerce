@@ -6,8 +6,28 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 {
     public function setUp(): void
     {
+        $this->sourceType = 'installment_ktc';
         parent::setUp();
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
+
+        if (!function_exists('sanitize_text_field')) {
+            function sanitize_text_field() {
+                return 'Sanitized text';
+            }
+        }
+    }
+
+    public function getOrderMock($expectedAmount, $expectedCurrency)
+    {
+        // Create a mock of the $order object
+        $orderMock = Mockery::mock('WC_Order');
+
+        // Define expectations for the mock
+        $orderMock->shouldReceive('get_currency')
+            ->andReturn($expectedCurrency);
+        $orderMock->shouldReceive('get_total')
+            ->andReturn($expectedAmount);  // in units
+        return $orderMock;
     }
 
     /**
@@ -19,8 +39,6 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         if (!function_exists('wc_get_order')) {
             function wc_get_order() {
                 $class = new class {
-                    public $property;
-                
                     public function get_total() { 
                         return 999999;
                     }
@@ -63,5 +81,24 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $total = $installment->getTotalAmount();
 
         $this->assertEquals($total, 999999);
+    }
+
+    public function testGetChargeRequest()
+    {
+        $expectedAmount = 999999;
+        $expectedCurrency = 'thb';
+        $orderId = 'order_123';
+        $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
+
+        $_POST['source'] = ['type' => $this->sourceType];
+        $_POST[$this->sourceType . '_installment_terms'] = 3;
+
+        $installment = new Omise_Payment_Installment();
+        $result = $installment->get_charge_request($orderId, $orderMock);
+
+        $this->assertEquals($this->sourceType, $result['source']['type']);
+
+        unset($_POST['source']);
+        unset($_POST[$this->sourceType . '_installment_terms']);
     }
 }

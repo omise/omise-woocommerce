@@ -8,6 +8,7 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
 
     public function setUp(): void
     {
+        $this->sourceType = 'mobile_banking_ocbc';
         parent::setUp();
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-ocbc-digital.php';
         require_once __DIR__ . '/../../../../includes/classes/class-omise-image.php';

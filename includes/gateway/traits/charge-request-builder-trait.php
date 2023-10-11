@@ -17,9 +17,16 @@ trait Charge_Request_Builder
 			'currency'    => $currency,
 			'description' => $description,
 			'metadata'    => $this->get_metadata($order_id),
-			'webhook_endpoints' => [ Omise_Util::get_webhook_url() ],
 			'source' 	  => [ 'type' => $source_type ]
 		];
+
+		$omise_settings = Omise_Setting::instance();
+
+		if ($omise_settings->is_dynamic_webhook_enabled()) {
+			$request = array_merge($request, [
+				'webhook_endpoints' => [ Omise_Util::get_webhook_url() ],
+			]);
+		}
 
 		if (!$callback_endpoint) {
 			$return_uri = $this->get_redirect_url($callback_endpoint, $order_id, $order);

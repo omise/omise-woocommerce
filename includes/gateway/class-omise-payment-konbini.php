@@ -72,35 +72,34 @@ class Omise_Payment_Konbini extends Omise_Payment_Offline {
 		*/
 	public function charge($order_id, $order)
 	{
-		$konbini_name  = isset( $_POST['omise_konbini_name'] ) ?
-			sanitize_text_field( $_POST['omise_konbini_name'] ) :
-			'';
-		$konbini_email = isset( $_POST['omise_konbini_email'] ) ?
-			sanitize_text_field( $_POST['omise_konbini_email'] ) :
-			'';
-		$konbini_phone = isset( $_POST['omise_konbini_phone'] ) ?
-			sanitize_text_field( $_POST['omise_konbini_phone'] ) :
-			'';
+		$requestData = $this->get_charge_request($order_id, $order);
+		return OmiseCharge::create($requestData);
+	}
 
-		$currency = $order->get_order_currency();
+	public function get_charge_request($order_id, $order)
+	{
+		$requestData = $this->build_charge_request(
+			$order_id,
+			$order,
+			$this->source_type
+		);
 
-		return OmiseCharge::create([
-			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency' => $currency,
-			'description' => apply_filters(
-				'omise_charge_params_description',
-				'WooCommerce Order id ' . $order_id,
-				$order
-			),
-			'source' => [
-				'type' => $this->source_type,
-				'name' => $konbini_name,
-				'email' => $konbini_email,
-				'phone_number' => $konbini_phone
-			],
-			'metadata' => $this->get_metadata($order_id, $order),
-			'webhook_endpoints' => [ Omise_Util::get_webhook_url() ],
+		$konbini_name = $_POST['omise_konbini_name'];
+		$konbini_name  = isset($konbini_name) ? $konbini_name : '';
+
+		$konbini_email = $_POST['omise_konbini_email'];
+		$konbini_email = isset($konbini_email) ? $konbini_email : '';
+
+		$konbini_phone = $_POST['omise_konbini_phone'];
+		$konbini_phone = isset($konbini_phone) ? $konbini_phone : '';
+
+		$requestData['source'] = array_merge($requestData['source'], [
+			'name' => sanitize_text_field($konbini_name),
+			'email' => sanitize_text_field($konbini_email),
+			'phone_number' => sanitize_text_field($konbini_phone)
 		]);
+
+		return $requestData;
 	}
 
 	/**

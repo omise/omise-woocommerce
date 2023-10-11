@@ -151,6 +151,12 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
      */
     public function charge($order_id, $order)
     {
+        $requestData = $this->get_charge_request($order_id, $order);
+        return OmiseCharge::create($requestData);
+    }
+
+    public function get_charge_request($order_id, $order)
+	{
         $requestData = $this->build_charge_request(
 			$order_id,
 			$order,
@@ -170,7 +176,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             'items' => $this->getItems($order, $order->get_currency())
 		]);
 
-        return OmiseCharge::create($requestData);
+        return $requestData;
     }
 
     private function getAddress($order)

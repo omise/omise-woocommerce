@@ -105,6 +105,31 @@
 
 		<table class="form-table">
 			<tbody>
+			<tr>
+					<th scope="row"><label><?php _e( 'Enable Dynamic Webhook', 'omise' ); ?></label></th>
+					<td>
+						<fieldset>
+							<select class="regular-text" name="dynamic_webhook" id="dynamic_webhook">
+								<option
+									value="0"
+									<?php echo $settings['dynamic_webhook'] ? 'selected' : '' ?>
+								>
+									No
+								</option>
+								<option
+									value="1"
+									<?php echo $settings['dynamic_webhook'] ? 'selected' : '' ?>
+								>
+									Yes
+								</option>
+							</select>
+							<p class="description">
+								<?php
+									echo __( 'If enabled, charge and refund events will be automatically set to be received at the URL below. This can be useful when you need multiple webhook endpoints on the same account. ' );
+								?>
+						</fieldset>
+					</td>
+				</tr>
 				<tr>
 					<th scope="row"><label><?php _e( 'Webhook endpoint', 'omise' ); ?></label></th>
 					<td>

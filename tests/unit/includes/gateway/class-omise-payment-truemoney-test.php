@@ -6,6 +6,7 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
 {
     public function setUp(): void
     {
+        $this->sourceType = 'truemoney';
         parent::setUp();
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-truemoney.php';
     }

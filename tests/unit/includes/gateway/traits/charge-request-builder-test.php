@@ -40,11 +40,21 @@ class Charge_Request_Builder_Test extends TestCase
         $order_id = 'order_123';
         $expectedAmount = 999999;
         $expectedCurrency = 'thb';
+        $source_type = 'alipay';
+        $callback_url = 'omise_alipay_callback';
 
         $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
 
-        $source_type = 'alipay';
-        $callback_url = 'omise_alipay_callback';
+        // Create a mock of the $order object
+        $setting = Mockery::mock('alias:Omise_Setting')->makePartial();
+
+        $setting->shouldReceive('is_dynamic_webhook_enabled')
+            ->shouldReceive(1);
+
+        // Define expectations for the mock
+        $setting->shouldReceive('instance')
+            ->andReturn($setting);
+
         $mock = $this->getMockForTrait('Charge_Request_Builder');
         $result = $mock->build_charge_request(
             $order_id,

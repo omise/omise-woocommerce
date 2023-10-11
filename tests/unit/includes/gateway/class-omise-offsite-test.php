@@ -4,6 +4,8 @@ use PHPUnit\Framework\TestCase;
 
 abstract class Omise_Offsite_Test extends TestCase
 {
+    public $sourceType;
+
     public function setUp(): void
     {
         // Mocking the parent class
@@ -13,7 +15,7 @@ abstract class Omise_Offsite_Test extends TestCase
         $offsite->shouldReceive('get_provider');
         $offsite->shouldReceive('build_charge_request')
             ->andReturn([
-                'source' => [ 'type' => 'source_123' ]
+                'source' => [ 'type' => $this->sourceType ]
             ]);
 
         // mocking WP built-in functions
