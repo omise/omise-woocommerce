@@ -78,8 +78,6 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
 
         $this->assertEquals($expectedAmount, $result['amount']);
         $this->assertEquals($expectedCurrency, $result['currency']);
-
-        unset($_POST['source']);
         unset($obj);
     }
 }
