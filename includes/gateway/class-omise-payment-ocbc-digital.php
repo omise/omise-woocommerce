@@ -80,6 +80,6 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 			'alternate_text' => 'OCBC Digital',
 			'width' => 60,
 		]);
-		return Omise_Util::apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
+		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}
 }

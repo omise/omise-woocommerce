@@ -57,7 +57,7 @@ class Charge_Request_Builder_Test extends TestCase
         $setting = Mockery::mock('alias:Omise_Setting')->makePartial();
 
         $setting->shouldReceive('is_dynamic_webhook_enabled')
-            ->shouldReceive(1);
+            ->andReturn(true);
 
         // Define expectations for the mock
         $setting->shouldReceive('instance')
