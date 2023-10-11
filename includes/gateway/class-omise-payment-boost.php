@@ -53,17 +53,6 @@ class Omise_Payment_Boost extends Omise_Payment_Offsite {
 	}
 
 	/**
-	 * @inheritdoc
-	 */
-	public function charge($order_id, $order)
-	{
-		$requestData = $this->build_charge_request(
-			$order_id, $order, $this->source_type, $this->id . "_callback"
-		);
-		return OmiseCharge::create($requestData);
-	}
-
-	/**
 	 * Get icons
 	 *
 	 * @see WC_Payment_Gateway::get_icon()

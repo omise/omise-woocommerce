@@ -28,7 +28,7 @@ trait Charge_Request_Builder
 			]);
 		}
 
-		if (!$callback_endpoint) {
+		if ($callback_endpoint) {
 			$return_uri = $this->get_redirect_url($callback_endpoint, $order_id, $order);
 
 			return array_merge($request, [
