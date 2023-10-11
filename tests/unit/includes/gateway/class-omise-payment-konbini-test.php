@@ -1,8 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
-class Omise_Payment_Konbini_Test extends TestCase
+class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
 {
     public $expectedAmount = 999999;
     public $expectedCurrency = 'thb';
@@ -30,19 +28,6 @@ class Omise_Payment_Konbini_Test extends TestCase
         }
     }
 
-    public function getOrderMock($expectedAmount, $expectedCurrency)
-    {
-        // Create a mock of the $order object
-        $orderMock = Mockery::mock('WC_Order');
-
-        // Define expectations for the mock
-        $orderMock->shouldReceive('get_currency')
-            ->andReturn($expectedCurrency);
-        $orderMock->shouldReceive('get_total')
-            ->andReturn($expectedAmount);  // in units
-        return $orderMock;
-    }
-
     public function testGetChargeRequest()
     {
         $obj = new Omise_Payment_Konbini();
@@ -65,6 +50,22 @@ class Omise_Payment_Konbini_Test extends TestCase
             $_POST['omise_konbini_name'],
             $result['source']['name']
         );
+
+        unset($_POST['omise_konbini_name']);
+        unset($_POST['omise_konbini_email']);
+        unset($_POST['omise_konbini_phone']);
+        unset($obj);
+    }
+
+    public function testCharge()
+    {
+        $_POST['omise_konbini_name'] = 'Sanitized text';
+        $_POST['omise_konbini_email'] = 'omsie@opn.ooo';
+        $_POST['omise_konbini_phone'] = '1234567890';
+
+        $obj = new Omise_Payment_Konbini();
+        $this->getChargeTest($obj);
+        unset($obj);
 
         unset($_POST['omise_konbini_name']);
         unset($_POST['omise_konbini_email']);

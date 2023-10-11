@@ -23,4 +23,11 @@ class Omise_Payment_TouchNGo_Test extends Omise_Offsite_Test
 
         unset($obj);
     }
+
+    // public function testCharge()
+    // {
+    //     $obj = new Omise_Payment_TouchNGo();
+    //     echo '<pre>' . print_r(get_class_methods($obj), true) . '</pre>';
+    //     $this->getChargeTest($obj);
+    // }
 }

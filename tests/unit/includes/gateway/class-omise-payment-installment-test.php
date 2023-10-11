@@ -88,4 +88,17 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         unset($_POST['source']);
         unset($_POST[$this->sourceType . '_installment_terms']);
     }
+
+    public function testCharge()
+    {
+        $_POST['source'] = ['type' => $this->sourceType];
+        $_POST[$this->sourceType . '_installment_terms'] = 3;
+
+        $obj = new Omise_Payment_Installment();
+        $this->getChargeTest($obj);
+        unset($obj);
+
+        unset($_POST['source']);
+        unset($_POST[$this->sourceType . '_installment_terms']);
+    }
 }

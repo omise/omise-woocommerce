@@ -28,4 +28,12 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
         unset($_POST['omise_phone_number_default']);
         unset($obj);
     }
+
+    public function testCharge()
+    {
+        $_POST['omise_phone_number_default'] = true;
+        $obj = new Omise_Payment_Truemoney();
+        // echo '<pre>' . print_r(get_class_methods($obj), true) . '</pre>';
+        $this->getChargeTest($obj);
+    }
 }

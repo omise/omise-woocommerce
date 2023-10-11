@@ -49,35 +49,10 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
 
     public function testCharge()
     {
-        $orderId = 'order_123';
-        $expectedAmount = 999999;
-        $expectedCurrency = 'thb';
-        $expectedRequest = [
-            "object" => "charge",
-            "id" => "chrg_test_no1t4tnemucod0e51mo",
-            "location" => "/charges/chrg_test_no1t4tnemucod0e51mo",
-            "amount" => $expectedAmount,
-            "currency" => $expectedCurrency
-        ];
-
-        // Create a mock for OmiseCharge
-        $chargeMock = Mockery::mock('overload:OmiseCharge');
-        $chargeMock->shouldReceive('create')->once()->andReturn($expectedRequest);
-
-        $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
-
-        $wcProduct = Mockery::mock('overload:WC_Product');
-        $wcProduct->shouldReceive('get_sku')
-            ->once()
-            ->andReturn('sku_1234');
-
         $_POST['omise_atome_phone_default'] = true;
-
         $obj = new Omise_Payment_Atome();
-        $result = $obj->charge($orderId, $orderMock);
-
-        $this->assertEquals($expectedAmount, $result['amount']);
-        $this->assertEquals($expectedCurrency, $result['currency']);
+        $this->getChargeTest($obj);
+        unset($_POST['omise_atome_phone_default']);
         unset($obj);
     }
 }
