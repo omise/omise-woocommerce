@@ -15,6 +15,14 @@ class Charge_Request_Builder_Test extends TestCase
         }
     }
 
+    /**
+     * close mockery after tests are done
+     */
+    public function tearDown(): void
+    {
+        Mockery::close();
+    }
+
     public function getOrderMock($expectedAmount, $expectedCurrency)
     {
         // Create a mock of the $order object
@@ -76,8 +84,17 @@ class Charge_Request_Builder_Test extends TestCase
 
         $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
 
+        // Create a mock of the $order object
+        $setting = Mockery::mock('alias:Omise_Setting')->makePartial();
+
+        $setting->shouldReceive('is_dynamic_webhook_enabled')
+            ->shouldReceive(1);
+
+        // Define expectations for the mock
+        $setting->shouldReceive('instance')
+            ->andReturn($setting);
+
         $source_type = 'promptpay';
-        $callback_url = 'omise_promptpay_callback';
         $mock = $this->getMockForTrait('Charge_Request_Builder');
         $result = $mock->build_charge_request(
             $order_id,

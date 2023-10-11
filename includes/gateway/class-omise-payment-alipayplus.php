@@ -76,13 +76,19 @@ abstract class Omise_Payment_Alipayplus extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
+		$requestData = $this->get_charge_request($order_id, $order);
+		return OmiseCharge::create($requestData);
+	}
+
+	public function get_charge_request($order_id, $order)
+	{
 		$requestData = $this->build_charge_request(
 			$order_id, $order, $this->source_type, $this->id . "_callback"
 		);
 		$requestData['source'] = array_merge($requestData['source'], [
 			'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent())
 		]);
-		return OmiseCharge::create($requestData);
+		return $requestData;
 	}
 }
 
