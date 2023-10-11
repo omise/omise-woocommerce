@@ -72,10 +72,7 @@ class Omise_Payment_Internetbanking extends Omise_Payment_Offsite {
 	{
 		$source_type = sanitize_text_field($_POST['omise-offsite']);
 		$requestData = $this->build_charge_request(
-			$order_id,
-			$order,
-			$source_type,
-			$this->id . "_callback"
+			$order_id, $order, $source_type, $this->id . "_callback"
 		);
 		return OmiseCharge::create($requestData);
 	}

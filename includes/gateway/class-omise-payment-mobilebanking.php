@@ -80,10 +80,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 	public function charge($order_id, $order)
 	{
 		$requestData = $this->build_charge_request(
-			$order_id,
-			$order,
-			$this->source_type,
-			$this->id . "_callback"
+			$order_id, $order, $this->source_type, $this->id . "_callback"
 		);
 		$requestData['source'] = array_merge($requestData['source'], [
 			$requestData['platform_type'] = Omise_Util::get_platform_type(wc_get_user_agent())

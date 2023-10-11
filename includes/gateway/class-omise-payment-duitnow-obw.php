@@ -150,10 +150,7 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 	public function charge($order_id, $order)
 	{
 		$requestData = $this->build_charge_request(
-			$order_id,
-			$order,
-			$this->source_type,
-			$this->id . "_callback"
+			$order_id, $order, $this->source_type, $this->id . "_callback"
 		);
 		$source_bank = isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
 		$requestData['source'] = array_merge($requestData['source'], [

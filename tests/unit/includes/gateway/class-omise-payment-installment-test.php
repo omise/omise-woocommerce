@@ -17,19 +17,6 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         }
     }
 
-    public function getOrderMock($expectedAmount, $expectedCurrency)
-    {
-        // Create a mock of the $order object
-        $orderMock = Mockery::mock('WC_Order');
-
-        // Define expectations for the mock
-        $orderMock->shouldReceive('get_currency')
-            ->andReturn($expectedCurrency);
-        $orderMock->shouldReceive('get_total')
-            ->andReturn($expectedAmount);  // in units
-        return $orderMock;
-    }
-
     /**
      * @test
      */

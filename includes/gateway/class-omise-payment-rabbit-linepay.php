@@ -83,10 +83,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 	public function charge($order_id, $order)
 	{
 		$requestData = $this->build_charge_request(
-			$order_id,
-			$order,
-			$this->source_type,
-			$this->id . '_callback'
+			$order_id, $order, $this->source_type, $this->id . '_callback'
 		);
 		$requestData['capture'] = $this->payment_action === self::PAYMENT_ACTION_AUTO_CAPTURE;
 		return OmiseCharge::create($requestData);

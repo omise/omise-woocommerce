@@ -58,10 +58,7 @@ class Omise_Payment_Maybank_QR extends Omise_Payment_Offsite {
 	public function charge($order_id, $order)
 	{
 		$requestData = $this->build_charge_request(
-			$order_id,
-			$order,
-			$this->source_type,
-			$this->id . "_callback"
+			$order_id, $order, $this->source_type, $this->id . "_callback"
 		);
 		return OmiseCharge::create($requestData);
 	}
