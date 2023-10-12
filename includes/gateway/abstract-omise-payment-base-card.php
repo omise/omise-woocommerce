@@ -8,6 +8,8 @@ require_once dirname( __FILE__ ) . '/class-omise-payment.php';
  */
 abstract class Omise_Payment_Base_Card extends Omise_Payment
 {
+	use Charge_Request_Builder;
+
 	const PAYMENT_ACTION_AUTHORIZE         = 'manual_capture';
 	const PAYMENT_ACTION_AUTHORIZE_CAPTURE = 'auto_capture';
 
@@ -67,7 +69,6 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			'return_uri' => $this->get_redirect_url('omise_callback', $order_id, $order),
 			'metadata' => $this->get_metadata(
 				$order_id,
-				$order,
 				[ 'secure_form_enabled' => $this->getSecureFormState()]
 			),
 		];
