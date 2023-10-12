@@ -19,9 +19,7 @@ abstract class Omise_Payment_Offline extends Omise_Payment
 	public function charge( $order_id, $order )
 	{
 		$requestData = $this->build_charge_request(
-			$order_id,
-			$order,
-			$this->source_type
+			$order_id, $order, $this->source_type
 		);
 
 		return OmiseCharge::create($requestData);

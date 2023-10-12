@@ -137,18 +137,15 @@
 							<code><?php echo get_rest_url( null, 'omise/webhooks' ); ?></code>
 							<p class="description">
 								<?php
-								echo sprintf(
-									wp_kses(
-										__( 'To enable <a href="%s">WebHooks</a> feature, you must setup an endpoint at <a href="%s"><strong>Opn Payments dashboard</strong></a> by using the above url <em>(HTTPS only)</em>.', 'omise' ),
-										array(
-											'a'       => array( 'href' => array() ),
-											'em'      => array(),
-											'strong'  => array()
-										)
-									),
-									esc_url( 'https://www.omise.co/api-webhooks' ),
-									esc_url( 'https://dashboard.omise.co/v2/settings/webhooks' )
-								);
+									echo sprintf(
+										wp_kses(
+											__( 'Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="%s">Opn Payments dashboard</a> (HTTPS only).', 'omise' ),
+											[
+												'a' => ['href' => []],
+											],
+										),
+										esc_url( 'https://dashboard.omise.co/v2/settings/webhooks' )
+									);
 								?>
 						</fieldset>
 					</td>
