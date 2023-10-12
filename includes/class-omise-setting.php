@@ -175,6 +175,6 @@ class Omise_Setting {
 	public function is_dynamic_webhook_enabled()
 	{
 		$dynamic_webhook = $this->settings['dynamic_webhook'];
-		return isset($dynamic_webhook) && (bool)$dynamic_webhook;
+		return (bool)$dynamic_webhook;
 	}
 }
