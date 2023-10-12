@@ -84,9 +84,6 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $result = $installment->get_charge_request($orderId, $orderMock);
 
         $this->assertEquals($this->sourceType, $result['source']['type']);
-
-        unset($_POST['source']);
-        unset($_POST[$this->sourceType . '_installment_terms']);
     }
 
     public function testCharge()
@@ -96,9 +93,5 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 
         $obj = new Omise_Payment_Installment();
         $this->getChargeTest($obj);
-        unset($obj);
-
-        unset($_POST['source']);
-        unset($_POST[$this->sourceType . '_installment_terms']);
     }
 }

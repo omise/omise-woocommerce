@@ -65,11 +65,5 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
 
         $obj = new Omise_Payment_Konbini();
         $this->getChargeTest($obj);
-        unset($obj);
-
-        unset($_POST['omise_konbini_name']);
-        unset($_POST['omise_konbini_email']);
-        unset($_POST['omise_konbini_phone']);
-        unset($obj);
     }
 }

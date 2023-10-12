@@ -52,7 +52,5 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         $_POST['omise_atome_phone_default'] = true;
         $obj = new Omise_Payment_Atome();
         $this->getChargeTest($obj);
-        unset($_POST['omise_atome_phone_default']);
-        unset($obj);
     }
 }

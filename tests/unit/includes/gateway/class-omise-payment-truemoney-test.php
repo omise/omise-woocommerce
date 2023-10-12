@@ -29,11 +29,27 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
         unset($obj);
     }
 
+    public function testGetChargeRequestWhenCustomerOverridesDefaultPhone()
+    {
+        $obj = new Omise_Payment_Truemoney();
+
+        $orderId = 'order_123';
+        $expectedAmount = 999999;
+        $expectedCurrency = 'thb';
+        $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
+
+        $_POST['omise_phone_number_default'] = false;
+        $_POST['omise_phone_number'] = '1234567890';
+        
+        $result = $obj->get_charge_request($orderId, $orderMock);
+
+        $this->assertEquals($this->sourceType, $result['source']['type']);
+    }
+
     public function testCharge()
     {
         $_POST['omise_phone_number_default'] = true;
         $obj = new Omise_Payment_Truemoney();
-        // echo '<pre>' . print_r(get_class_methods($obj), true) . '</pre>';
         $this->getChargeTest($obj);
     }
 }

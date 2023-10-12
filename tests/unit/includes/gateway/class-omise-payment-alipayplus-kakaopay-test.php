@@ -20,7 +20,5 @@ class Omise_Payment_Kakaopay_Test extends Omise_Offsite_Test
         $expectedCountries = ['SG', 'TH'];
 
         $this->assertEqualsCanonicalizing($expectedCountries, $obj->restricted_countries);
-        unset($expectedCountries);
-        unset($obj);
     }
 }

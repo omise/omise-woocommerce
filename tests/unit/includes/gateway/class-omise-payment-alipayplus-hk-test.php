@@ -46,6 +46,5 @@ class Omise_Payment_Alipay_Hk_Test extends Omise_Offsite_Test
     {
         $obj = new Omise_Payment_Alipay_Hk();
         $this->getChargeTest($obj);
-        unset($obj);
     }
 }
