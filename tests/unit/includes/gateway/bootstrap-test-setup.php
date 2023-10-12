@@ -16,12 +16,6 @@ abstract class Bootstrap_Test_Setup extends TestCase
         if (!function_exists('add_action')) {
             function add_action() {}
         }
-
-        if (!function_exists('sanitize_text_field')) {
-            function sanitize_text_field() {
-                return 'Sanitized text';
-            }
-        }
     }
 
     public function getOrderMock($expectedAmount, $expectedCurrency)
@@ -66,6 +60,9 @@ abstract class Bootstrap_Test_Setup extends TestCase
         Mockery::close();
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function getChargeTest($classObj)
     {
         $expectedAmount = 999999;
