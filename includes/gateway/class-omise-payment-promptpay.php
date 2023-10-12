@@ -47,6 +47,23 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	}
 
 	/**
+	 * register scripts for count down
+	 */
+	private function register_omise_promptpay_count_down_script($expiresAt) {
+		wp_enqueue_script(
+			'omise-promptpay-count-down',
+			plugins_url( '../assets/javascripts/omise-promptpay-count-down.js', dirname( __FILE__ ) ),
+			array(),
+			WC_VERSION,
+			true
+		);
+		wp_localize_script('omise-promptpay-count-down', 'omise', [
+			// Format `c` is used to format as ISO string
+			'qr_expires_at' => $expiresAt->format('c')
+		]);
+	}
+
+	/**
 	 * @see WC_Settings_API::init_form_fields()
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 */
@@ -128,6 +145,10 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		$expires_datetime = new WC_DateTime( $charge['expires_at'], new DateTimeZone( 'UTC' ) );
 		$expires_datetime->set_utc_offset( wc_timezone_offset() );
 
+		if ( 'view' === $context ) {
+			$this->register_omise_promptpay_count_down_script($expires_datetime);
+		}
+
 		$nonce = wp_create_nonce( OmisePluginHelperWcOrder::get_order_key_by_id( $order ) );
 
 		if ( 'view' === $context ) : ?>
@@ -139,9 +160,8 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 				</div>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>
 				<div>
-					<?php echo __( 'Payment expires at: ', 'omise' ); ?>
-					<?php echo wc_format_datetime( $expires_datetime, wc_date_format() ); ?>
-					<?php echo wc_format_datetime( $expires_datetime, wc_time_format() ); ?>
+					<?php echo __( 'Payment expires in: ', 'omise' ); ?>
+					<span id="countdown"></span>
 				</div>
 
 				<div id="omise-offline-payment-timeout" style="margin-top: 2em; display: none;">
