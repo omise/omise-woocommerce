@@ -46,7 +46,6 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 
 		public static function get_webhook_url()
 		{
-			return 'https://opn.ooo';
 			return get_rest_url( null, 'omise/webhooks' );
 		}
 	}
