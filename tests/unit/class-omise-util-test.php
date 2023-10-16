@@ -39,6 +39,9 @@ class Omise_Util_Test extends TestCase
 		$this->assertEquals( $expectedOutput, Omise_Util::get_platform_type( $userAgent ) );
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 */
 	public function test_get_webhook_url()
 	{
 		if (!function_exists('get_rest_url')) {

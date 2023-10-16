@@ -21,7 +21,7 @@ class Omise_Payment_Base_Card_Test extends TestCase
         $setting->shouldReceive('instance')
             ->andReturn($setting);
         $setting->shouldReceive('is_dynamic_webhook_enabled')
-            ->andReturn(false);
+            ->andReturn(true);
 
         $redirectUrlMock = Mockery::mock('alias:RedirectUrl');
         $redirectUrlMock->shouldReceive('create')
@@ -65,11 +65,17 @@ class Omise_Payment_Base_Card_Test extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testPrepareChargeData()
+    public function testCharge()
     {
         if (!function_exists('wc_clean')) {
             function wc_clean() {
                 return 'tokn_123';
+            }
+        }
+
+        if (!function_exists('get_rest_url')) {
+            function get_rest_url() {
+                return 'https://abc.com/wp-json/omise/webhooks';
             }
         }
 
