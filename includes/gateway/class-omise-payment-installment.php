@@ -110,28 +110,34 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$source_type = isset($_POST['source']['type']) ? $_POST['source']['type'] : '';
-		$installment_terms = isset($_POST[$source_type . '_installment_terms']) ? $_POST[$source_type . '_installment_terms'] : '';
-		$currency = $order->get_currency();
+		$requestData = $this->get_charge_request($order_id, $order);
+		return OmiseCharge::create($requestData);
+	}
+
+	public function get_charge_request($order_id, $order)
+	{
+		$source_type = $_POST['source']['type'];
+		$source_type = isset($source_type) ? $source_type : '';
+		$requestData = $this->build_charge_request(
+			$order_id,
+			$order,
+			$source_type,
+			$this->id . "_callback"
+		);
+
+		$installment_terms = $_POST[$source_type . '_installment_terms'];
+		$installment_terms = isset($installment_terms) ? $installment_terms : '';
 		$provider = $this->backend->get_provider($source_type);
-
-		$payload = [
-			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency' => $currency,
-			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source' => [
-				'type' => sanitize_text_field($source_type),
-				'installment_terms' => sanitize_text_field($installment_terms)
-			],
-			'return_uri' => $this->getRedirectUrl('omise_installment_callback', $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order)
-		];
-
+		
 		if (isset($provider['zero_interest_installments'])) {
 			$payload['zero_interest_installments'] = $provider['zero_interest_installments'];
 		}
 
-		return OmiseCharge::create($payload);
+		$requestData['source'] = array_merge($requestData['source'], [
+			'installment_terms' => sanitize_text_field($installment_terms)
+		]);
+
+		return $requestData;
 	}
 
 	/**

@@ -57,28 +57,15 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
-		return OmiseCharge::create($this->get_charge_request($order_id, $order));
-	}
+		$requestData = $this->build_charge_request(
+			$order_id, $order, $this->source_type, $this->id . '_callback'
+		);
 
-	/**
-	 * @order_id integer
-	 * @order    object
-	 */
-	public function get_charge_request($order_id, $order)
-	{
-		$currency = $order->get_currency();
+		$requestData['source'] = array_merge($requestData['source'], [
+			'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent())
+		]);
 
-		return [
-			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency' => $currency,
-			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source' => [
-				'type' => $this->source_type,
-				'platform_type' => Omise_Util::get_platform_type( wc_get_user_agent() ) 
-			],
-			'return_uri' => $this->getRedirectUrl("{$this->id}_callback", $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order)
-		];
+		return OmiseCharge::create($requestData);
 	}
 
 	/**

@@ -43,5 +43,10 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 		{
 			return null !== self::get_platform_type(wc_get_user_agent());
 		}
+
+		public static function get_webhook_url()
+		{
+			return get_rest_url( null, 'omise/webhooks' );
+		}
 	}
 }

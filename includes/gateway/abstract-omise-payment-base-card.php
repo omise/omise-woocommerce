@@ -8,6 +8,8 @@ require_once dirname( __FILE__ ) . '/class-omise-payment.php';
  */
 abstract class Omise_Payment_Base_Card extends Omise_Payment
 {
+	use Charge_Request_Builder;
+
 	const PAYMENT_ACTION_AUTHORIZE         = 'manual_capture';
 	const PAYMENT_ACTION_AUTHORIZE_CAPTURE = 'auto_capture';
 
@@ -63,18 +65,21 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		$data = [
 			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency' => $currency,
-			'description' => apply_filters(
-				'omise_charge_params_description',
-				'WooCommerce Order id ' . $order_id,
-				$order
-			),
-			'return_uri' => $this->getRedirectUrl('omise_callback', $order_id, $order),
-			'metadata' => $this->getMetadata(
+			'description' => 'WooCommerce Order id ' . $order_id,
+			'return_uri' => $this->get_redirect_url('omise_callback', $order_id, $order),
+			'metadata' => $this->get_metadata(
 				$order_id,
-				$order,
 				[ 'secure_form_enabled' => $this->getSecureFormState()]
-			)
+			),
 		];
+
+		$omise_settings = Omise_Setting::instance();
+
+		if ($omise_settings->is_dynamic_webhook_enabled()) {
+			$data = array_merge($data, [
+				'webhook_endpoints' => [ Omise_Util::get_webhook_url() ],
+			]);
+		}
 
 		if (!empty($omise_customer_id) && ! empty($card_id)) {
 			$data['customer'] = $omise_customer_id;

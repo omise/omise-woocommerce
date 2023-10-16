@@ -51,20 +51,4 @@ class Omise_Payment_Alipay extends Omise_Payment_Offsite {
 			),
 		);
 	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function charge($order_id, $order)
-	{
-		$currency = $order->get_currency();
-		return OmiseCharge::create([
-			'amount'      => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency'    => $currency,
-			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source'      => ['type' => $this->source_type],
-			'return_uri'  => $this->getRedirectUrl('omise_alipay_callback', $order_id, $order),
-			'metadata'    => $this->getMetadata($order_id, $order)
-		]);
-	}
 }

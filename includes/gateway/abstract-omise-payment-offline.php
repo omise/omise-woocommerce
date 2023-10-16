@@ -7,28 +7,22 @@ require_once dirname( __FILE__ ) . '/class-omise-payment.php';
 /**
  * @since 4.0
  */
-abstract class Omise_Payment_Offline extends Omise_Payment {
+abstract class Omise_Payment_Offline extends Omise_Payment
+{
+	use Charge_Request_Builder;
 
 	protected $enabled_processing_notification = true;
 
 	/**
 	 * @inheritdoc
 	 */
-	public function charge( $order_id, $order ) {
-		$total    = $order->get_total();
-		$currency = $order->get_currency();
-		$metadata = array_merge(
-			apply_filters( 'omise_charge_params_metadata', array(), $order ),
-			array( 'order_id' => $order_id ) // override order_id as a reference for webhook handlers.
+	public function charge( $order_id, $order )
+	{
+		$requestData = $this->build_charge_request(
+			$order_id, $order, $this->source_type
 		);
 
-		return OmiseCharge::create( array(
-			'amount'      => Omise_Money::to_subunit( $total, $currency ),
-			'currency'    => $currency,
-			'description' => apply_filters( 'omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order ),
-			'source'      => array( 'type' => $this->source_type ),
-			'metadata'    => $metadata
-		) );
+		return OmiseCharge::create($requestData);
 	}
 
 	/**

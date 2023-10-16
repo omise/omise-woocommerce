@@ -8,6 +8,8 @@ require_once dirname(__FILE__) . '/class-omise-payment.php';
  */
 abstract class Omise_Payment_Offsite extends Omise_Payment
 {
+	use Charge_Request_Builder;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -47,5 +49,17 @@ abstract class Omise_Payment_Offsite extends Omise_Payment
 			}
 			$errors->add('validation', __('Please select bank below', 'omise'));
 		}
+	}
+
+	/**
+	 * Override charge() method in the child class if the payment method requires
+	 * more data than received from build_charge_request()
+	 */
+	public function charge($order_id, $order)
+	{
+		$requestData = $this->build_charge_request(
+			$order_id, $order, $this->source_type, $this->id . "_callback"
+		);
+		return OmiseCharge::create($requestData);
 	}
 }
