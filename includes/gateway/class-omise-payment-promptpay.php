@@ -96,7 +96,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	 * @param string $id Value to be added in the id attribute of the svg element
 	 */
 	private function load_qr_svg_to_DOM($url, $id = null) {
-		$svg_file = file_get_contents($url);
+		$svg_file = $this->file_get_contents($url);
 
 		$find_string   = '<svg';
 		$position = strpos($svg_file, $find_string);
@@ -136,7 +136,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		}
 
 		$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
-		if ( self::STATUS_PENDING !== $charge['status'] ) {
+		if ( $this->get_pending_status() !== $charge['status'] ) {
 			return;
 		}
 
