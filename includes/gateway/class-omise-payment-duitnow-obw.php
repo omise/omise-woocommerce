@@ -149,19 +149,14 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
+		$requestData = $this->build_charge_request(
+			$order_id, $order, $this->source_type, $this->id . "_callback"
+		);
 		$source_bank = isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
-		$currency = $order->get_currency();
-		return OmiseCharge::create([
-			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency' => $currency,
-			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source' => [
-				'type' => $this->source_type,
-				'bank' => sanitize_text_field($source_bank),
-			],
-			'return_uri' => $this->getRedirectUrl('omise_duitnow_obw_callback', $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order)
+		$requestData['source'] = array_merge($requestData['source'], [
+			'bank' => sanitize_text_field($source_bank),
 		]);
+		return OmiseCharge::create($requestData);
 	}
 
 	/**

@@ -105,6 +105,31 @@
 
 		<table class="form-table">
 			<tbody>
+			<tr>
+					<th scope="row"><label><?php _e( 'Enable Dynamic Webhook', 'omise' ); ?></label></th>
+					<td>
+						<fieldset>
+							<select class="regular-text" name="dynamic_webhook" id="dynamic_webhook">
+								<option
+									value="0"
+									<?php echo $settings['dynamic_webhook'] ? 'selected' : '' ?>
+								>
+									No
+								</option>
+								<option
+									value="1"
+									<?php echo $settings['dynamic_webhook'] ? 'selected' : '' ?>
+								>
+									Yes
+								</option>
+							</select>
+							<p class="description">
+								<?php
+									echo __( 'If enabled, charge and refund events will be automatically set to be received at the URL below. This can be useful when you need multiple webhook endpoints on the same account. ' );
+								?>
+						</fieldset>
+					</td>
+				</tr>
 				<tr>
 					<th scope="row"><label><?php _e( 'Webhook endpoint', 'omise' ); ?></label></th>
 					<td>
@@ -112,18 +137,15 @@
 							<code><?php echo get_rest_url( null, 'omise/webhooks' ); ?></code>
 							<p class="description">
 								<?php
-								echo sprintf(
-									wp_kses(
-										__( 'To enable <a href="%s">WebHooks</a> feature, you must setup an endpoint at <a href="%s"><strong>Opn Payments dashboard</strong></a> by using the above url <em>(HTTPS only)</em>.', 'omise' ),
-										array(
-											'a'       => array( 'href' => array() ),
-											'em'      => array(),
-											'strong'  => array()
-										)
-									),
-									esc_url( 'https://www.omise.co/api-webhooks' ),
-									esc_url( 'https://dashboard.omise.co/v2/settings/webhooks' )
-								);
+									echo sprintf(
+										wp_kses(
+											__( 'Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="%s">Opn Payments dashboard</a> (HTTPS only).', 'omise' ),
+											[
+												'a' => ['href' => []],
+											],
+										),
+										esc_url( 'https://dashboard.omise.co/v2/settings/webhooks' )
+									);
 								?>
 						</fieldset>
 					</td>
