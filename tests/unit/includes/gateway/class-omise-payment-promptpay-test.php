@@ -36,7 +36,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
     {
         $expiresAt = '2023-11-22T14:48:00.000Z';
 
-        $this->mockFileGetContent->shouldReceive('get_contents')->once();
+        $this->mockFileGetContent->shouldReceive('get_contents')->once()->andReturn('<svg></svg>');
 
         $this->mockOmisePaymentOffline->shouldReceive('init_settings');
         $this->mockOmisePaymentOffline->shouldReceive('get_option');
