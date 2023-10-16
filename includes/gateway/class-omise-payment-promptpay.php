@@ -96,7 +96,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	 * @param string $id Value to be added in the id attribute of the svg element
 	 */
 	private function load_qr_svg_to_DOM($url, $id = null) {
-		$svg_file = $this->file_get_contents($url);
+		$svg_file = File_Get_Contents_Wrapper::get_contents($url);
 
 		$find_string   = '<svg';
 		$position = strpos($svg_file, $find_string);

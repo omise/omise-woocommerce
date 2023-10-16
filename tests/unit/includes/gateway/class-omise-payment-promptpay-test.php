@@ -10,6 +10,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
     public $mockOmisePluginHelper;
     public $mockOmisePaymentOffline;
     public $mockOmiseCharge;
+    public $mockFileGetContent;
 
     public function setUp(): void
     {
@@ -23,6 +24,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockOmisePluginHelper = Mockery::mock('overload:OmisePluginHelperWcOrder')->shouldIgnoreMissing();
         $this->mockOmisePaymentOffline = Mockery::mock('overload:Omise_Payment_Offline');
         $this->mockOmiseCharge = Mockery::mock('overload:OmiseCharge');
+        $this->mockFileGetContent = Mockery::mock('overload:File_Get_Contents_Wrapper');
 
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-promptpay.php';
     }
@@ -33,6 +35,8 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
     public function textExpiresAtFieldIsPassedToJavascript()
     {
         $expiresAt = '2023-11-22T14:48:00.000Z';
+
+        $this->mockFileGetContent->shouldReceive('get_contents')->once();
 
         $this->mockOmisePaymentOffline->shouldReceive('init_settings');
         $this->mockOmisePaymentOffline->shouldReceive('get_option');
