@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/bootstrap-test-setup.php';
 
-class Omise_Payment_Offline_Test extends Bootstrap_Test_Setup
+abstract class Omise_Payment_Offline_Test extends Bootstrap_Test_Setup
 {
     public function setUp(): void
     {

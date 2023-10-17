@@ -133,6 +133,16 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * get pending status
+	 * 
+	 * This function is crate to get value for pending status,
+	 * since we cannot mock constant values for unit test.
+	 */
+	public function get_pending_status() {
+		return self::STATUS_PENDING;
+	}
+
+	/**
 	 * Register all required javascripts
 	 */
 	public function omise_checkout_assets() {
