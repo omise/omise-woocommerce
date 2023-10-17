@@ -143,16 +143,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * file_get_contents wrapper
-	 * 
-	 * Since we cannot mock global function,
-	 * we have to create a wrapper for file_get_contents.
-	 */
-	public function file_get_contents( $url ) {
-		return file_get_contents( $url );
-	}
-
-	/**
 	 * Register all required javascripts
 	 */
 	public function omise_checkout_assets() {
