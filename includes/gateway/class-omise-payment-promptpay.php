@@ -47,6 +47,23 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	}
 
 	/**
+	 * register scripts for count down
+	 */
+	private function register_omise_promptpay_count_down_script($expiresAt) {
+		wp_enqueue_script(
+			'omise-promptpay-count-down',
+			plugins_url( '../assets/javascripts/omise-promptpay-count-down.js', dirname( __FILE__ ) ),
+			array(),
+			WC_VERSION,
+			true
+		);
+		wp_localize_script('omise-promptpay-count-down', 'omise', [
+			// Format `c` is used to format as ISO string
+			'qr_expires_at' => $expiresAt->format('c')
+		]);
+	}
+
+	/**
 	 * @see WC_Settings_API::init_form_fields()
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 */
@@ -79,7 +96,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	 * @param string $id Value to be added in the id attribute of the svg element
 	 */
 	private function load_qr_svg_to_DOM($url, $id = null) {
-		$svg_file = file_get_contents($url);
+		$svg_file = File_Get_Contents_Wrapper::get_contents($url);
 
 		$find_string   = '<svg';
 		$position = strpos($svg_file, $find_string);
@@ -119,7 +136,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		}
 
 		$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
-		if ( self::STATUS_PENDING !== $charge['status'] ) {
+		if ( $this->get_pending_status() !== $charge['status'] ) {
 			return;
 		}
 
@@ -127,6 +144,10 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 
 		$expires_datetime = new WC_DateTime( $charge['expires_at'], new DateTimeZone( 'UTC' ) );
 		$expires_datetime->set_utc_offset( wc_timezone_offset() );
+
+		if ( 'view' === $context ) {
+			$this->register_omise_promptpay_count_down_script($expires_datetime);
+		}
 
 		$nonce = wp_create_nonce( OmisePluginHelperWcOrder::get_order_key_by_id( $order ) );
 
@@ -139,9 +160,8 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 				</div>
 				<a id="omise-download-promptpay-qr" class="omise-download-promptpay-qr" href="<?php echo $qrcode ?>" download="qr_code.svg">Download QR</a>
 				<div>
-					<?php echo __( 'Payment expires at: ', 'omise' ); ?>
-					<?php echo wc_format_datetime( $expires_datetime, wc_date_format() ); ?>
-					<?php echo wc_format_datetime( $expires_datetime, wc_time_format() ); ?>
+					<?php echo __( 'Payment expires in: ', 'omise' ); ?>
+					<span id="countdown"></span>
 				</div>
 
 				<div id="omise-offline-payment-timeout" style="margin-top: 2em; display: none;">

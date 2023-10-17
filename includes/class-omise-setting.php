@@ -60,6 +60,7 @@ class Omise_Setting {
 			'test_private_key' => '',
 			'live_public_key'  => '',
 			'live_private_key' => '',
+			'dynamic_webhook'  => 0,
 			'backends' => null,
 		);
 	}
@@ -138,7 +139,6 @@ class Omise_Setting {
 	 */
 	public function is_test() {
 		$sandbox = $this->settings['sandbox'];
-
 		return isset( $sandbox ) && $sandbox == 'yes';
 	}
 
@@ -170,5 +170,11 @@ class Omise_Setting {
 		}
 
 		return $this->settings['live_private_key'];
+	}
+
+	public function is_dynamic_webhook_enabled()
+	{
+		$dynamic_webhook = $this->settings['dynamic_webhook'];
+		return (bool)$dynamic_webhook;
 	}
 }

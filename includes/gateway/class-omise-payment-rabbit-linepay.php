@@ -82,15 +82,10 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 	 */
 	public function charge($order_id, $order)
 	{
-		$currency = $order->get_currency();
-		return OmiseCharge::create([
-			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
-			'currency' => $currency,
-			'description' => apply_filters('omise_charge_params_description', 'WooCommerce Order id ' . $order_id, $order),
-			'source' => ['type' => $this->source_type],
-			'return_uri' => $this->getRedirectUrl('omise_rabbit_linepay_callback', $order_id, $order),
-			'metadata' => $this->getMetadata($order_id, $order),
-			'capture' => $this->payment_action === self::PAYMENT_ACTION_AUTO_CAPTURE
-		]);
+		$requestData = $this->build_charge_request(
+			$order_id, $order, $this->source_type, $this->id . '_callback'
+		);
+		$requestData['capture'] = $this->payment_action === self::PAYMENT_ACTION_AUTO_CAPTURE;
+		return OmiseCharge::create($requestData);
 	}
 }
