@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.3.2
-Stable tag: 5.5.0
+Stable tag: 5.5.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -34,7 +34,11 @@ From there:
 
 == Changelog ==
 
-= 5.5.0 ==
+= 5.5.1 =
+
+- Fix mobile banking issue. (PR [#413](https://github.com/omise/omise-woocommerce/pull/413))
+
+= 5.5.0 =
 
 - Added dynamic webhook. (PR [#407](https://github.com/omise/omise-woocommerce/pull/407))
 - Add QR expires countdown for PromptPay. (PR [#408](https://github.com/omise/omise-woocommerce/pull/408))
