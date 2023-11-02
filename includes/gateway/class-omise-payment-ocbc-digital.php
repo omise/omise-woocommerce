@@ -60,11 +60,6 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 		$requestData = $this->build_charge_request(
 			$order_id, $order, $this->source_type, $this->id . '_callback'
 		);
-
-		$requestData['source'] = array_merge($requestData['source'], [
-			'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent())
-		]);
-
 		return OmiseCharge::create($requestData);
 	}
 

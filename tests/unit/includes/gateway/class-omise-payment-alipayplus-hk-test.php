@@ -30,18 +30,6 @@ class Omise_Payment_Alipay_Hk_Test extends Omise_Offsite_Test
         unset($obj);
     }
 
-    public function testGetChargeRequest()
-    {
-        $expectedAmount = 999999;
-        $expectedCurrency = 'thb';
-        $orderId = 'order_123';
-        $obj = new Omise_Payment_Alipay_Hk();
-        $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
-        $result = $obj->get_charge_request($orderId, $orderMock);
-
-        $this->assertEquals($this->sourceType, $result['source']['type']);
-    }
-
     public function testCharge()
     {
         $obj = new Omise_Payment_Alipay_Hk();

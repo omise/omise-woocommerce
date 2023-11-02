@@ -20,6 +20,11 @@ trait Charge_Request_Builder
 			'source' 	  => [ 'type' => $source_type ]
 		];
 
+		// add platform type for certain payment methods
+		if ($this->source_requires_platform_type($source_type)) {
+			$request['source']['platform_type'] = Omise_Util::get_platform_type(wc_get_user_agent());
+		}
+
 		$omise_settings = Omise_Setting::instance();
 
 		if ($omise_settings->is_dynamic_webhook_enabled()) {
@@ -63,5 +68,35 @@ trait Charge_Request_Builder
 		$order->add_meta_data('token', RedirectUrl::getToken(), true);
 
 		return $redirectUrl;
+	}
+
+	public function source_requires_platform_type($source_type)
+	{
+		$requires_platform_type = [
+			'mobile_banking_kbank',
+			'mobile_banking_scb',
+			'mobile_banking_bay',
+			'mobile_banking_bbl',
+			'mobile_banking_ktb',
+			'mobile_banking_ocbc_pao',
+			'mobile_banking_ocbc',
+			'installment_first_choice',
+			'installment_bay',
+			'installment_bbl',
+			'installment_kbank',
+			'installment_ktc',
+			'installment_scb',
+			'installment_citi',
+			'installment_ttb',
+			'installment_uob',
+			'installment_mbb',
+			'alipay_cn',
+			'alipay_hk',
+			'dana',
+			'gcash',
+			'kakaopay',
+		];
+
+		return in_array($source_type, $requires_platform_type);
 	}
 }
