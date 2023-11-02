@@ -85,7 +85,7 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 		);
 
 		$requestData['source'] = array_merge($requestData['source'], [
-			$requestData['platform_type'] = Omise_Util::get_platform_type(wc_get_user_agent())
+			'platform_type' => Omise_Util::get_platform_type(wc_get_user_agent())
 		]);
 		return OmiseCharge::create($requestData);
 	}
