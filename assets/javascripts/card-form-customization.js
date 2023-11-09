@@ -63,22 +63,15 @@ function handleFontChange() {
 
   if (fontName.value == 'Others') {
     document.getElementById('custom_sf_custom_font_name').style.display = null
-    document.getElementById('custom_sf_custom_font_url').style.display = null
   }
 
   fontName.addEventListener('change', (event) => {
-    console.log(event.target.value)
     if (event.target.value == 'Others') {
       document.getElementById('custom_sf_custom_font_name').style.display = null
-      document.getElementById('custom_sf_custom_font_url').style.display = null
     } else {
       const customFontName = document.getElementById('custom_sf_custom_font_name');
       customFontName.value = "";
       customFontName.style.display = "none";
-
-      const customFontUrl = document.getElementById('custom_sf_custom_font_url');
-      customFontUrl.value = "";
-      customFontUrl.style.display = "none"
     }
   });
 }

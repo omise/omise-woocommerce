@@ -27,8 +27,7 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 			'font' => [
 				'name' => 'Poppins',
 				'size' => 16,
-				'custom_name' => '',
-				'custom_url' => ''
+				'custom_name' => ''
 			],
 			'input' => [
 				'height' => '44px',
@@ -53,8 +52,7 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 			'font' => [
 				'name' => 'Poppins',
 				'size' => 16,
-				'custom_name' => '',
-				'custom_url' => ''
+				'custom_name' => ''
 			],
 			'input' => [
 				'height' => '44px',

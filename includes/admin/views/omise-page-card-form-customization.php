@@ -41,14 +41,6 @@
         </td>
       </tr>
 
-      <tr id="custom_sf_custom_font_url" style="display: none;">
-        <td class="text-bold" style="width: 250px;"></td>
-        <td>
-          <input type="text" class="select-input" placeholder="Font URL" name="font[custom_url]" />
-          <div class="description">Enter if you have a custom font URL. Leave it empty if you <br /> are using Google fonts</div>
-        </td>
-      </tr>
-
       <tr>
         <td class="text-bold" style="width: 250px;">Font Size</td>
         <td>

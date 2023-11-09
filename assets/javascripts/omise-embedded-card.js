@@ -25,9 +25,9 @@ function showOmiseEmbeddedCardForm({
   }
   element.style.height = iframeElementHeight + 'px'
 
-  const fontName = font.name
+  let fontName = font.name
 
-  if (font.custom_name.trim() != "") {
+  if (font.name.trim() === "Others" && font.custom_name.trim() != "") {
     fontName = font.custom_name.trim()
   }
 
@@ -41,7 +41,6 @@ function showOmiseEmbeddedCardForm({
     customCardFormBrandIcons: brandIcons ?? null,
     style: {
       fontFamily: fontName,
-      fontUrl: font.custom_url,
       fontSize: font.size,
       input: {
         height: input.height,
