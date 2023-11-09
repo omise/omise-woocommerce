@@ -112,7 +112,6 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 				$options[$componentKey][$key] = sanitize_text_field($data[$componentKey][$key]);
 			}
 		}
-		error_log(print_r($options, true));
 		update_option(self::PAGE_NAME, $options);
 		$this->add_message('message', "Update has been saved!");
 	}
