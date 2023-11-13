@@ -30,7 +30,6 @@
             <option value="Circular">Circular</option>
             <option value="<?php echo $customFontOther ?>"><?php echo $customFontOther ?></option>
           </select>
-          <div class="description">Match font used in form with your selected font</div>
         </td>
       </tr>
 
