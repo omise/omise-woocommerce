@@ -27,7 +27,7 @@ function showOmiseEmbeddedCardForm({
 
   let fontName = font.name
 
-  if (font.name.trim() === "Others" && font.custom_name.trim() != "") {
+  if (font.name.trim() === OMISE_CUSTOM_FONT_OTHER && font.custom_name.trim() !== '') {
     fontName = font.custom_name.trim()
   }
 

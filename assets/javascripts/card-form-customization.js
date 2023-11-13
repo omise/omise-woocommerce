@@ -61,17 +61,17 @@ function getDesignFormValues() {
 function handleFontChange() {
   const fontName = document.getElementById('custom_sf_font_name');
 
-  if (fontName.value == 'Others') {
+  if (fontName.value === OMISE_CUSTOM_FONT_OTHER) {
     document.getElementById('custom_sf_custom_font_name').style.display = null
   }
 
   fontName.addEventListener('change', (event) => {
-    if (event.target.value == 'Others') {
+    if (event.target.value === OMISE_CUSTOM_FONT_OTHER) {
       document.getElementById('custom_sf_custom_font_name').style.display = null
     } else {
       const customFontName = document.getElementById('custom_sf_custom_font_name');
-      customFontName.value = "";
-      customFontName.style.display = "none";
+      customFontName.value = '';
+      customFontName.style.display = 'none';
     }
   });
 }

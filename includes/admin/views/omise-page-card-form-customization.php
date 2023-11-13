@@ -4,6 +4,7 @@
   $cardFormTheme = $omiseCardGateway->get_option('card_form_theme');
   $cardIcons = $omiseCardGateway->get_card_icons();
   $publicKey = Omise()->settings()->public_key();
+  $customFontOther = 'Other';
 ?>
 
 <link rel="stylesheet" href="<?php echo $assetUrl . '/css/card-form-customization.css'; ?>">
@@ -26,8 +27,8 @@
         <td>
           <select id="custom_sf_font_name" class="select-input" name="font[name]">
             <option value="Poppins">Poppins</option>
-            <option value="Circular" selected>Circular</option>
-            <option value="Others" selected>Others</option>
+            <option value="Circular">Circular</option>
+            <option value="<?php echo $customFontOther ?>"><?php echo $customFontOther ?></option>
           </select>
           <div class="description">Match font used in form with your selected font</div>
         </td>
@@ -198,6 +199,7 @@
   window.DEFAULT_FORM_DESIGN = JSON.parse(`<?php echo json_encode($formDesign) ?>`);
   window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($cardIcons) ?>`);
   window.LOCALE = `<?php echo get_locale(); ?>`;
+  window.OMISE_CUSTOM_FONT_OTHER = `<?php echo $customFontOther ?>`;
 </script>
 <script src="<?php echo $assetUrl . '/javascripts/omise-embedded-card.js'; ?>"></script>
 <script src="<?php echo $assetUrl . '/javascripts/card-form-customization.js'; ?>"></script>
