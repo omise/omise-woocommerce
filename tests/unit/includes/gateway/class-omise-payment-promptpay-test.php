@@ -1,7 +1,5 @@
 <?php
 
-use Mockery\Mock;
-
 class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
 {
     public $mockOrder;
@@ -14,6 +12,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
 
     public function setUp(): void
     {
+        parent::setUp();
         function wc_timezone_offset() {}
         function wp_create_nonce() {}
         function admin_url() {}
@@ -27,14 +26,6 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockFileGetContent = Mockery::mock('overload:File_Get_Contents_Wrapper');
 
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-promptpay.php';
-    }
-
-    /**
-     * close mockery after tests are done
-     */
-    public function tearDown(): void
-    {
-        Mockery::close();
     }
 
     /**

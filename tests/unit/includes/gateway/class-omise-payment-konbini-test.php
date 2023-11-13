@@ -7,6 +7,7 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
 
     public function setUp(): void
     {
+        parent::setUp();
         // Mocking the parent class
         $offline = Mockery::mock('overload:Omise_Payment_Offline');
         $offline->shouldReceive('init_settings');
@@ -26,14 +27,6 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
                 return 'Sanitized text';
             }
         }
-    }
-
-    /**
-     * close mockery after tests are done
-     */
-    public function tearDown(): void
-    {
-        Mockery::close();
     }
 
     public function testGetChargeRequest()

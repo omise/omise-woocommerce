@@ -24,15 +24,6 @@ abstract class Omise_Offsite_Test extends Bootstrap_Test_Setup
         unset($offsite);
     }
 
-    /**
-     * close mockery after tests are done
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        Mockery::close();
-    }
-
     public function getChargeTest($classObj)
     {
         $expectedAmount = 999999;

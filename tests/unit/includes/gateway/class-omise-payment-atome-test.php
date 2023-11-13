@@ -24,14 +24,6 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         }
     }
 
-    /**
-     * close mockery after tests are done
-     */
-    public function tearDown(): void
-    {
-        Mockery::close();
-    }
-
     public function testGetChargeRequest()
     {
         $expectedAmount = 999999;
