@@ -26,8 +26,10 @@ function showOmiseEmbeddedCardForm({
   element.style.height = iframeElementHeight + 'px'
 
   let fontName = font.name
+  const isCustomFontSet = font.name.toLowerCase().trim() === OMISE_CUSTOM_FONT_OTHER.toLowerCase()
+  const isCustomFontEmpty = font.custom_name.trim() === ''
 
-  if (font.name.trim() === OMISE_CUSTOM_FONT_OTHER && font.custom_name.trim() !== '') {
+  if (isCustomFontSet && !isCustomFontEmpty) {
     fontName = font.custom_name.trim()
   }
 
