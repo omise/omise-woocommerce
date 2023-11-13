@@ -57,6 +57,7 @@ trait Charge_Request_Builder
 	 */
 	public function get_redirect_url($callback_url, $order_id, $order)
 	{
+		return 'https://opn.ooo';
 		$redirectUrl = RedirectUrl::create($callback_url, $order_id);
 
 		// Call after RedirectUrl::create
