@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### [v5.5.1 _(Nov 2, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.5.1)
+- Fix mobile banking issue. (PR [#413](https://github.com/omise/omise-woocommerce/pull/413))
+
+### [v5.5.0 _(Oct 17, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.5.0)
+- Added dynamic webhook. (PR [#407](https://github.com/omise/omise-woocommerce/pull/407))
+- Add QR expires countdown for PromptPay. (PR [#408](https://github.com/omise/omise-woocommerce/pull/408))
+
 ### [v5.4.1 _(Oct 3, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.4.1)
 - Added payment instructions in thank you page for PromptPay payment. (PR [#401](https://github.com/omise/omise-woocommerce/pull/404))
 
