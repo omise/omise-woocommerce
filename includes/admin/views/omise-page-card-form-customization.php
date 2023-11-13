@@ -37,7 +37,7 @@
         <td class="text-bold" style="width: 250px;"></td>
         <td>
           <input type="text" class="select-input" placeholder="Font Name" name="font[custom_name]" />
-          <div class="description">Specify the Google font to use</div>
+          <div class="description">Specify other font name (note: only Google Fonts supported)</div>
         </td>
       </tr>
 
