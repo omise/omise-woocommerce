@@ -42,6 +42,15 @@ class Omise_Payment_Base_Card_Test extends TestCase
         };
     }
 
+    
+    /**
+     * close mockery after tests are done
+     */
+    public function tearDown(): void
+    {
+        Mockery::close();
+    }
+
     public function getOrderMock($expectedAmount, $expectedCurrency)
     {
         // Create a mock of the $order object

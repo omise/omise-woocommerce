@@ -18,6 +18,14 @@ abstract class Bootstrap_Test_Setup extends TestCase
         }
     }
 
+    /**
+     * close mockery after tests are done
+     */
+    public function tearDown(): void
+    {
+        Mockery::close();
+    }
+
     public function getOrderMock($expectedAmount, $expectedCurrency)
     {
         // Create a mock of the $order object
@@ -50,14 +58,6 @@ abstract class Bootstrap_Test_Setup extends TestCase
                 ]
             ]);
         return $orderMock;
-    }
-
-    /**
-     * close mockery after tests are done
-     */
-    public function tearDown(): void
-    {
-        Mockery::close();
     }
 
     /**

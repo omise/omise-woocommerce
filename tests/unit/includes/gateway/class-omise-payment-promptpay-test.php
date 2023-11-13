@@ -29,6 +29,15 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-promptpay.php';
     }
 
+
+    /**
+     * close mockery after tests are done
+     */
+    public function tearDown(): void
+    {
+        Mockery::close();
+    }
+
     /**
      * @test
      */

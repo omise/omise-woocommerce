@@ -28,6 +28,15 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
         }
     }
 
+
+    /**
+     * close mockery after tests are done
+     */
+    public function tearDown(): void
+    {
+        Mockery::close();
+    }
+
     public function testGetChargeRequest()
     {
         $obj = new Omise_Payment_Konbini();
