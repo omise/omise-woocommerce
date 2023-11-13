@@ -139,7 +139,7 @@
 								<?php
 									echo sprintf(
 										wp_kses(
-											__( 'Unless dynamic webhooks are enabled, you must add the URL below as a new endpoint on your <a href="%s">Opn Payments dashboard</a> (HTTPS only).', 'omise' ),
+											__( 'Unless dynamic webhooks are enabled, you must add the URL above as a new endpoint on your <a href="%s">Opn Payments dashboard</a> (HTTPS only).', 'omise' ),
 											[
 												'a' => ['href' => []],
 											],

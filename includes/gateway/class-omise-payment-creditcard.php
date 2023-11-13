@@ -148,7 +148,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					'css'         => Omise_Card_Image::get_css(),
 					'default'     => Omise_Card_Image::get_amex_default_display(),
 					'description' => wp_kses(
-						__( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Omise payment gateway.', 'omise' ),
+						__( 'This only controls the icons displayed on the checkout page.<br />It is not related to card processing on OPN payment gateway.', 'omise' ),
 						array( 'br' => array() )
 					)
 				)

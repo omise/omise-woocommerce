@@ -66,12 +66,16 @@ function handleFontChange() {
   }
 
   fontName.addEventListener('change', (event) => {
+    const customFontName = document.getElementById('custom_sf_custom_font_name');
+    const inputCustomFont = customFontName.querySelector('input')
+
     if (event.target.value === OMISE_CUSTOM_FONT_OTHER) {
-      document.getElementById('custom_sf_custom_font_name').style.display = null
+      customFontName.style.display = null;
+      inputCustomFont.required = true;
     } else {
-      const customFontName = document.getElementById('custom_sf_custom_font_name');
-      customFontName.value = '';
       customFontName.style.display = 'none';
+      inputCustomFont.value = '';
+      inputCustomFont.required = false;
     }
   });
 }
