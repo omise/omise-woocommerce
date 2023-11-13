@@ -27,7 +27,6 @@
         <td>
           <select id="custom_sf_font_name" class="select-input" name="font[name]">
             <option value="Poppins">Poppins</option>
-            <option value="Circular">Circular</option>
             <option value="<?php echo $customFontOther ?>"><?php echo $customFontOther ?></option>
           </select>
         </td>
