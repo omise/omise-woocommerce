@@ -24,7 +24,6 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         }
     }
 
-
     /**
      * close mockery after tests are done
      */

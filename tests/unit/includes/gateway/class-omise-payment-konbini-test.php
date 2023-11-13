@@ -28,7 +28,6 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
         }
     }
 
-
     /**
      * close mockery after tests are done
      */

@@ -11,7 +11,6 @@ abstract class Omise_Payment_Offline_Test extends Bootstrap_Test_Setup
         require_once __DIR__ . '/../../../../includes/gateway/abstract-omise-payment-offline.php';
     }
 
-    
     /**
      * close mockery after tests are done
      */
