@@ -56,5 +56,6 @@
 		window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['formDesign']) ?>`);
 		window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($viewData['cardIcons']) ?>`);
 		window.LOCALE = `<?php echo get_locale(); ?>`;
+		window.OMISE_CUSTOM_FONT_OTHER = 'Other';
 	</script>
 <?php endif; ?>

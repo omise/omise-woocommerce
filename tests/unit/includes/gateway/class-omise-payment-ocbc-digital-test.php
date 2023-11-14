@@ -21,12 +21,6 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
             }
         }
 
-        if (!function_exists('apply_filters')) {
-            function apply_filters() {
-                return "http://localhost/image.png";
-            }
-        }
-
         if (!function_exists('wc_get_user_agent')) {
             function wc_get_user_agent() {
                 return "Chrome Web";
@@ -80,7 +74,10 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
     public function getIconReturnsCorrectImageLink()
     {
         $result = $this->obj->get_icon();
-        $this->assertEquals("http://localhost/image.png", $result);
+        $this->assertEquals(
+            "<img src='/ocbc-digital.png' class='Omise-Image' style='width: 60px; max-height: 30px;' alt='OCBC Digital' />",
+            $result
+        );
     }
 
     /**

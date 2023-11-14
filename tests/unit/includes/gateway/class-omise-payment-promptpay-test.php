@@ -1,7 +1,5 @@
 <?php
 
-use Mockery\Mock;
-
 class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
 {
     public $mockOrder;
@@ -14,6 +12,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
 
     public function setUp(): void
     {
+        parent::setUp();
         function wc_timezone_offset() {}
         function wp_create_nonce() {}
         function admin_url() {}

@@ -8,6 +8,5 @@ abstract class Omise_Payment_Offline_Test extends Bootstrap_Test_Setup
     {
         parent::setUp();
         Mockery::mock('alias:Omise_Payment')->makePartial();
-        require_once __DIR__ . '/../../../../includes/gateway/abstract-omise-payment-offline.php';
     }
 }

@@ -126,7 +126,7 @@ msgid "Opn Payments Credit / Debit Card"
 msgstr "Opn Payments クレジットカード ／ デビットカード"
 
 #: includes/gateway/class-omise-payment-creditcard.php:23
-msgid "Accept payment through <strong>Credit / Debit Card</strong> via Opn Payments payment gateway."
+msgid "Accept payment through <strong>Credit / Debit Card</strong> via Opn Payments."
 msgstr "Opn Payments決済ゲートウェイを経由して<strong>クレジットカード／デビットカード</strong>決済を受け付けます。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:58
@@ -174,7 +174,7 @@ msgid "Supported card icons"
 msgstr "ご利用可能ブランド"
 
 #: includes/gateway/class-omise-payment-creditcard.php:134
-msgid "This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Opn Payments payment gateway."
+msgid "This only controls the icons displayed on the checkout page.<br />It is not related to card processing on Opn Payments."
 msgstr "ご提供可能なカードブランドのアイコンを決済画面に表示できます。<br/>本項目の選択内容は、カード処理システムには影響いたしません。"
 
 #: includes/gateway/class-omise-payment-creditcard.php:191

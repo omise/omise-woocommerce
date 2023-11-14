@@ -58,6 +58,28 @@ function getDesignFormValues() {
   return formValues;
 }
 
+function handleFontChange() {
+  const fontName = document.getElementById('omise_sf_font_name');
+
+  if (fontName.value === OMISE_CUSTOM_FONT_OTHER) {
+    document.getElementById('omise_sf_custom_font_name').style.display = null
+  }
+
+  fontName.addEventListener('change', (event) => {
+    const customFontName = document.getElementById('omise_sf_custom_font_name');
+    const inputCustomFont = customFontName.querySelector('input')
+
+    if (event.target.value === OMISE_CUSTOM_FONT_OTHER) {
+      customFontName.style.display = null;
+      inputCustomFont.required = true;
+    } else {
+      customFontName.style.display = 'none';
+      inputCustomFont.value = '';
+      inputCustomFont.required = false;
+    }
+  });
+}
+
 function initOmiseCardForm() {
   const customCardFormTheme = CARD_FORM_THEME ?? 'light';
   document.querySelector('.omise-modal .content').style.background =
@@ -91,3 +113,4 @@ document.getElementById('omise-modal').addEventListener('click', (event) => {
 
 setDesignFormValues();
 handleColorInputChanges();
+handleFontChange();
