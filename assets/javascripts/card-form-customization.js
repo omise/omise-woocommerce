@@ -59,14 +59,14 @@ function getDesignFormValues() {
 }
 
 function handleFontChange() {
-  const fontName = document.getElementById('custom_sf_font_name');
+  const fontName = document.getElementById('omise_sf_font_name');
 
   if (fontName.value === OMISE_CUSTOM_FONT_OTHER) {
-    document.getElementById('custom_sf_custom_font_name').style.display = null
+    document.getElementById('omise_sf_custom_font_name').style.display = null
   }
 
   fontName.addEventListener('change', (event) => {
-    const customFontName = document.getElementById('custom_sf_custom_font_name');
+    const customFontName = document.getElementById('omise_sf_custom_font_name');
     const inputCustomFont = customFontName.querySelector('input')
 
     if (event.target.value === OMISE_CUSTOM_FONT_OTHER) {

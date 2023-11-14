@@ -25,14 +25,14 @@
       <tr>
         <td class="text-bold" style="width: 250px;">Font Name</td>
         <td>
-          <select id="custom_sf_font_name" class="select-input" name="font[name]">
+          <select id="omise_sf_font_name" class="select-input" name="font[name]">
             <option value="Poppins">Poppins</option>
             <option value="<?php echo $customFontOther ?>"><?php echo $customFontOther ?></option>
           </select>
         </td>
       </tr>
 
-      <tr id="custom_sf_custom_font_name" style="display: none;">
+      <tr id="omise_sf_custom_font_name" style="display: none;">
         <td class="text-bold" style="width: 250px;"></td>
         <td>
           <input type="text" class="select-input" placeholder="Font Name" name="font[custom_name]" />
