@@ -25,6 +25,14 @@ function showOmiseEmbeddedCardForm({
   }
   element.style.height = iframeElementHeight + 'px'
 
+  let fontName = font.name
+  const isCustomFontSet = font.name.toLowerCase().trim() === OMISE_CUSTOM_FONT_OTHER.toLowerCase()
+  const isCustomFontEmpty = font.custom_name.trim() === ''
+
+  if (isCustomFontSet && !isCustomFontEmpty) {
+    fontName = font.custom_name.trim()
+  }
+
   OmiseCard.configure({
     publicKey: publicKey,
     element,
@@ -34,7 +42,7 @@ function showOmiseEmbeddedCardForm({
     customCardFormHideRememberCard: hideRememberCard ?? false,
     customCardFormBrandIcons: brandIcons ?? null,
     style: {
-      fontFamily: font.name,
+      fontFamily: fontName,
       fontSize: font.size,
       input: {
         height: input.height,

@@ -2,8 +2,8 @@
 Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
 Requires at least: 4.3.1
-Tested up to: 6.3.2
-Stable tag: 5.5.1
+Tested up to: 6.4.0
+Stable tag: 5.6.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,10 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.6.0 =
+
+- Support Google fonts other than Poppins. (PR [#416](https://github.com/omise/omise-woocommerce/pull/416))
 
 = 5.5.1 =
 

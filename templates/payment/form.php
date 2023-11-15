@@ -60,5 +60,6 @@
 		window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['form_design']) ?>`);
 		window.LOCALE = `<?php echo get_locale(); ?>`;
 		window.HIDE_REMEMBER_CARD = `<?php echo $hideRememberCard ?>` == 'yes' ? true : false;
+		window.OMISE_CUSTOM_FONT_OTHER = 'Other';
 	</script>
 <?php endif; ?>

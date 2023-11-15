@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Brain;
 
 abstract class Bootstrap_Test_Setup extends TestCase
 {
@@ -8,14 +9,20 @@ abstract class Bootstrap_Test_Setup extends TestCase
 
     public function setUp(): void
     {
-        // mocking WP built-in functions
-        if (!function_exists('wp_kses')) {
-            function wp_kses() {}
-        }
+        Brain\Monkey\setUp();
+        Brain\Monkey\Functions\stubs( [
+            'wp_kses' => null,
+			'add_action' => null,
+		] );
+    }
 
-        if (!function_exists('add_action')) {
-            function add_action() {}
-        }
+    /**
+     * close mockery after tests are done
+     */
+    public function tearDown(): void
+    {
+        Brain\Monkey\tearDown();
+        Mockery::close();
     }
 
     public function getOrderMock($expectedAmount, $expectedCurrency)
@@ -50,14 +57,6 @@ abstract class Bootstrap_Test_Setup extends TestCase
                 ]
             ]);
         return $orderMock;
-    }
-
-    /**
-     * close mockery after tests are done
-     */
-    public function tearDown(): void
-    {
-        Mockery::close();
     }
 
     /**
