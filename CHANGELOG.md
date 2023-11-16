@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### [v5.6.0 _(Nov 15, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.6.0)
+- Support Google fonts other than Poppins. (PR [#416](https://github.com/omise/omise-woocommerce/pull/416))
+
 ### [v5.5.1 _(Nov 2, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.5.1)
 - Fix mobile banking issue. (PR [#413](https://github.com/omise/omise-woocommerce/pull/413))
 
