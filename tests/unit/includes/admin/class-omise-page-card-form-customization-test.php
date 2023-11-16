@@ -9,17 +9,14 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
 {
     public function setUp(): void
     {
-        // mocking WP built-in functions
-        if (!function_exists('get_option')) {
-            function get_option() {}
-        }
-
+        Brain\Monkey\setUp();
         Mockery::mock('alias:Omise_Admin_Page');
         require_once __DIR__ . '/../../../../includes/admin/class-omise-page-card-form-customization.php';
     }
 
     public function tearDown(): void
     {
+        Brain\Monkey\tearDown();
         Mockery::close();
     }
 
@@ -91,6 +88,48 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
         $themeValues = $this->invokeMethod($obj, 'get_dark_theme', []);
 
         $this->assertEqualsCanonicalizing($expected, $themeValues);
+    }
+
+    /**
+     * Test for merchants using secure form prior to v5.6.0
+     * Make sure it includes custom_name
+     * @test
+     */
+    public function testGetDesignSettingIncludesCustomName()
+    {
+        // settings of merchant's secure form prior to v5.6.0
+        $savedSettings = [
+            'font' => [
+                'name' => 'Poppins',
+                'size' => 16,
+            ],
+            'input' => [
+                'height' => '44px',
+                'border_radius' => '4px',
+                'border_color' => '#475266',
+                'active_border_color' => '#475266',
+                'background_color' => '#131926',
+                'label_color' => '#E6EAF2',
+                'text_color' => '#ffffff',
+                'placeholder_color' => '#DBDBDB',
+            ],
+            'checkbox' => [
+                'text_color' => '#E6EAF2',
+                'theme_color' => '#1451CC',
+            ]
+        ];
+
+        Brain\Monkey\Functions\stubs( [
+            'get_option' => $savedSettings,
+		] );
+
+        $obj = Omise_Page_Card_From_Customization::get_instance();
+        $designValues = $obj->get_design_setting();
+
+        $expected = $savedSettings;
+        $expected['font']['custom_name'] = '';
+        $this->assertEqualsCanonicalizing($expected, $designValues);
+        $this->assertArrayHasKey('custom_name', $designValues['font']);
     }
 
     /**
