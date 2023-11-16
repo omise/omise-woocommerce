@@ -88,6 +88,14 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 		if (empty($formDesign)) {
 			$formDesign = $this->get_default_design_setting();
 		}
+
+		// Old saved settings might not have the newer fields. Make sure
+		// we add the missing field
+		// TODO: Find a better way to handle this
+		if (!in_array('custom_name', $formDesign['font'])) {
+			$formDesign['font']['custom_name'] = '';
+		}
+
 		return $formDesign;
 	}
 
