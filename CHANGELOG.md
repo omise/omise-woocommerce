@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### [v5.6.1 _(Nov 16, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.6.1)
+- Fixed a custom font name bug. (PR [#419](https://github.com/omise/omise-woocommerce/pull/419))
+
 ### [v5.6.0 _(Nov 15, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.6.0)
 - Support Google fonts other than Poppins. (PR [#416](https://github.com/omise/omise-woocommerce/pull/416))
 
