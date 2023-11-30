@@ -54,7 +54,7 @@ body:
                     * Operating System (for example, iOS version 17.1.1).
         
                     * Browser, if it is a web issue (for example, Firefox version 119.0.1).
-    validations:
+    attributes:
       placeholder: |
         * Development Environment (for example, XCode version 12.0).
         
