@@ -1,0 +1,70 @@
+name: Issue report
+description: Report an issue
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this issue report. Detailed information helps us troubleshoot and resolve your problems faster.
+  - type: textarea
+    id: expectation
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what were your expectations.
+      placeholder: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Actual behavior
+      description: A clear and concise description of what actually happened.
+      placeholder: What actually happened?
+    validations:
+      required: true
+  - type: textarea
+    id: repro-steps
+    attributes:
+      label: Steps to reproduce the issue
+      description: List the steps to reproduce the issue.
+      placeholder: |
+        1. 
+        2. 
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Add any logs/error messages to help debug the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Name and version information
+      description: Mention the name and version of the following compobnents.
+                    * Development Environment (for example, XCode version 12.0).
+        
+                    * SDK (for example, Omise-iOS version 4.25).
+        
+                    * Package Manager (for example, SwiftPM version 0.6.0).
+        
+                    * Operating System (for example, iOS version 17.1.1).
+        
+                    * Browser, if it is a web issue (for example, Firefox version 119.0.1).
+    validations:
+      placeholder: |
+        * Development Environment (for example, XCode version 12.0).
+        
+        * SDK (for example, Omise-iOS version 4.25).
+        
+        * Package Manager (for example, SwiftPM version 0.6.0).
+        
+        * Operating System (for example, iOS version 17.1.1).
+        
+        * Browser, if it is a web issue (for example, Firefox version 119.0.1).
+    validations:
+      required: true
+  
