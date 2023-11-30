@@ -44,7 +44,7 @@ body:
     id: versions
     attributes:
       label: Name and version information
-      description: Mention the name and version of the following compobnents.
+      description: Mention the name and version of the following components.
                     * Development Environment (for example, XCode version 12.0).
         
                     * SDK (for example, Omise-iOS version 4.25).
