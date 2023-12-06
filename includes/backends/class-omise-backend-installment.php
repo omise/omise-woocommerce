@@ -24,28 +24,28 @@ class Omise_Backend_Installment extends Omise_Backend
 			'installment_first_choice' => array(
 				'bank_code'          => 'first_choice',
 				'title'              => __('Krungsri First Choice', 'omise'),
-				'interest_rate'      => 1.3,
+				'interest_rate'      => 1.16,
 				'min_allowed_amount' => 300.00,
 			),
 
 			'installment_bay' => array(
 				'bank_code'          => 'bay',
 				'title'              => __('Krungsri', 'omise'),
-				'interest_rate'      => 0.8,
+				'interest_rate'      => 0.74,
 				'min_allowed_amount' => 500.00,
 			),
 
 			'installment_ktc' => array(
 				'bank_code'          => 'ktc',
 				'title'              => __('Krungthai Card (KTC)', 'omise'),
-				'interest_rate'      => 0.8,
+				'interest_rate'      => 0.74,
 				'min_allowed_amount' => 300.00,
 			),
 
 			'installment_bbl' => array(
 				'bank_code'          => 'bbl',
 				'title'              => __('Bangkok Bank', 'omise'),
-				'interest_rate'      => 0.8,
+				'interest_rate'      => 0.74,
 				'min_allowed_amount' => 500.00,
 			),
 
@@ -73,14 +73,14 @@ class Omise_Backend_Installment extends Omise_Backend
 			'installment_ttb' => array(
 				'bank_code'          => 'ttb',
 				'title'              => __('TMBThanachart Bank', 'omise'),
-				'interest_rate'      => 0,
+				'interest_rate'      => 0.8,
 				'min_allowed_amount' => 500.00,
 			),
 
 			'installment_uob' => array(
 				'bank_code'          => 'uob',
 				'title'              => __('United Overseas Bank', 'omise'),
-				'interest_rate'      => 0,
+				'interest_rate'      => 0.64,
 				'min_allowed_amount' => 500.00,
 			),
 
