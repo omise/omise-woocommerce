@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### [v5.6.2 _(Dec 7, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.6.2)
+- Update OCBC digital logo. (PR [#422](https://github.com/omise/omise-woocommerce/pull/422))
+- Update installment interest rates. (PR [#423](https://github.com/omise/omise-woocommerce/pull/423))
+
 ### [v5.6.1 _(Nov 16, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.6.1)
 - Fixed a custom font name bug. (PR [#419](https://github.com/omise/omise-woocommerce/pull/419))
 
