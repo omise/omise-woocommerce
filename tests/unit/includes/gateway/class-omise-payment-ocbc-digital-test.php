@@ -75,7 +75,7 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
     {
         $result = $this->obj->get_icon();
         $this->assertEquals(
-            "<img src='/ocbc-digital.png' class='Omise-Image' style='width: 60px; max-height: 30px;' alt='OCBC Digital' />",
+            "<img src='/ocbc-digital.svg' class='Omise-Image' style='width: 30px; max-height: 30px;' alt='OCBC Digital' />",
             $result
         );
     }
