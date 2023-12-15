@@ -295,7 +295,12 @@
 		});
 
 		$(document).on('updated_checkout', function () {
-			initializeSecureCardForm();
+			const iframe = document.getElementById('omise-checkout-iframe-app');
+
+			// Ignore if secure form is already initialized.
+			if (!iframe) {
+				initializeSecureCardForm();
+			}
 		});
 
 		initializeSecureCardForm();

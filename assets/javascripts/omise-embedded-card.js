@@ -66,4 +66,20 @@ function showOmiseEmbeddedCardForm({
     onCreateTokenSuccess: onSuccess ?? noop,
     onError: onError ?? noop
   });
+
+  preventAutoScrollToSecureForm()
+}
+
+// Link: https://stackoverflow.com/questions/6596668/iframe-on-the-page-bottom-avoid-automatic-scroll-of-the-page
+function preventAutoScrollToSecureForm() {
+  const iframe = document.getElementById('omise-checkout-iframe-app');
+
+  iframe.addEventListener('load', function () {
+    // hide iframe to avoid auto scroll to secure form
+    iframe.style.display = "none";
+
+    // Bring back secure form
+    // why 1000? 0-800: didn't work, 900: Gave flaky results
+    setTimeout(() => iframe.style.display = "block", 1000)
+  });
 }
