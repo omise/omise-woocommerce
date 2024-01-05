@@ -6,15 +6,22 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
  */
 class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 {
+	/**
+	 * Backends identifier
+	 * @var string
+	 */
+	const WALLET = 'truemoney';
+	const JUMPAPP = 'truemoney_jumpapp';
+
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->id                 = 'omise_truemoney';
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Opn Payments TrueMoney Wallet', 'omise' );
+		$this->method_title       = __( 'Opn Payments TrueMoney', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>TrueMoney Wallet</strong> via Opn Payments payment gateway (only available in Thailand).', 'omise' ),
+			__( 'Accept payments through <strong>TrueMoney</strong> via Opn Payments payment gateway (only available in Thailand).', 'omise' ),
 			array( 'strong' => array() )
 		);
 
@@ -26,7 +33,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'TH' );
-		$this->source_type          = 'truemoney';
+		$this->source_type        = $this->get_source();
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
@@ -43,7 +50,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments TrueMoney Wallet Payment', 'omise' ),
+				'label'   => __( 'Enable Opn Payments TrueMoney Payment', 'omise' ),
 				'default' => 'no'
 			),
 
@@ -51,7 +58,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 				'title'       => __( 'Title', 'omise' ),
 				'type'        => 'text',
 				'description' => __( 'This controls the title the user sees during checkout.', 'omise' ),
-				'default'     => __( 'TrueMoney Wallet', 'omise' ),
+				'default'     => __( 'TrueMoney', 'omise' ),
 			),
 
 			'description' => array(
@@ -68,7 +75,10 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	public function payment_fields()
 	{
 		parent::payment_fields();
-		Omise_Util::render_view( 'templates/payment/form-truemoney.php', array() );
+
+		if (self::WALLET === $this->source_type) {
+			Omise_Util::render_view( 'templates/payment/form-truemoney.php', array() );
+		}
 	}
 
 	/**
@@ -82,22 +92,61 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 
 	public function get_charge_request($order_id, $order)
 	{
-		$phoneOption = $_POST['omise_phone_number_default'];
-		$isPhoneOptionChecked = isset($phoneOption) && 1 == $phoneOption;
-		$phone_number = $isPhoneOptionChecked ?
-			$order->get_billing_phone() :
-			sanitize_text_field( $_POST['omise_phone_number'] );
-
 		$requestData = $this->build_charge_request(
 			$order_id,
 			$order,
 			$this->source_type,
 			$this->id . '_callback'
 		);
-		$requestData['source'] = array_merge($requestData['source'], [
-			'phone_number' => $phone_number
-		]);
+
+		if (self::WALLET === $this->source_type) {
+			$phoneOption = $_POST['omise_phone_number_default'];
+			$isPhoneOptionChecked = isset($phoneOption) && 1 == $phoneOption;
+			$phone_number = $isPhoneOptionChecked ?
+				$order->get_billing_phone() :
+				sanitize_text_field( $_POST['omise_phone_number'] );
+
+			$requestData['source'] = array_merge($requestData['source'], [
+				'phone_number' => $phone_number
+			]);
+		}
 
 		return $requestData;
+	}
+
+	/**
+	 * Return the right ShopeePay backend depending on the platform and availability of
+	 * the backend in the capability
+	 */
+	private function get_source()
+	{
+		$capabilities = Omise_Capabilities::retrieve();
+
+		if (!$capabilities) {
+			return self::JUMPAPP;
+		}
+
+		$isJumpappEnabled = $capabilities->get_truemoney_backend(self::JUMPAPP);
+		$isWalletEnabled = $capabilities->get_truemoney_backend(self::WALLET);
+
+		if (!empty($isWalletEnabled) && empty($isJumpappEnabled)) {
+			return self::WALLET;
+		}
+
+		// if (
+		// 	!empty($isJumpappEnabled) && !empty($isWalletEnabled) ||
+		// 	!empty($isJumpappEnabled) && empty($isWalletEnabled)
+		// ) {
+		// 	return self::JUMPAPP;
+		// }
+
+		// if (!empty($isWalletEnabled) && empty($isJumpappEnabled)) {
+		// 	return self::WALLET;
+		// }
+
+		// Case 1: Both jumpapp and wallet are enabled
+		// Case 2: jumpapp is enabled and wallet is disabled
+		// Case 3: Both are disabled.
+		return self::JUMPAPP;
 	}
 }
