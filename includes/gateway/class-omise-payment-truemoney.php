@@ -133,17 +133,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 			return self::WALLET;
 		}
 
-		// if (
-		// 	!empty($isJumpappEnabled) && !empty($isWalletEnabled) ||
-		// 	!empty($isJumpappEnabled) && empty($isWalletEnabled)
-		// ) {
-		// 	return self::JUMPAPP;
-		// }
-
-		// if (!empty($isWalletEnabled) && empty($isJumpappEnabled)) {
-		// 	return self::WALLET;
-		// }
-
+		// Return JUMP APP for the following cases:
 		// Case 1: Both jumpapp and wallet are enabled
 		// Case 2: jumpapp is enabled and wallet is disabled
 		// Case 3: Both are disabled.
