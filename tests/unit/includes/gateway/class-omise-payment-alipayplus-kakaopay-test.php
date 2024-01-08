@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class Omise_Payment_Kakaopay_Test extends Omise_Offsite_Test
 {
     public function setUp(): void

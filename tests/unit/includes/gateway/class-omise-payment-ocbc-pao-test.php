@@ -26,6 +26,9 @@ class Omise_Payment_OCBC_PAO_Test extends Omise_Offsite_Test
      */
     public function testCharge()
     {
+        Brain\Monkey\Functions\expect('wc_get_user_agent')
+			->with('123')
+			->andReturn('Chrome Web');
         $this->getChargeTest($this->obj);
     }
 }

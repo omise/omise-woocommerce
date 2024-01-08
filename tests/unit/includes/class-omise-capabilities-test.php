@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/gateway/bootstrap-test-setup.php';
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 {
 	private $omiseSettingMock;
@@ -15,15 +18,15 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 	{
 		parent::setUp();
 
+		Mockery::mock('Omise_Payment_Offsite');
 		require_once __DIR__ . '/../../../includes/class-omise-capabilities.php';
+		require_once __DIR__ . '/../../../includes/gateway/class-omise-payment-truemoney.php';
 		$this->omiseSettingMock = Mockery::mock('alias:Omise_Setting');
 		$this->omiseCapabilitiesMock = Mockery::mock('alias:OmiseCapabilities');
-		Mockery::namedMock('Omise_Payment_Truemoney', 'Omise_Payment_Truemoney_Stub');
 	}
 
 	/**
 	 * @dataProvider retrieve_data_provider
-	 * @runInSeparateProcess
 	 * @covers Omise_Capabilities
 	 */
 	public function test_retrieve_should_return_value_when_it_should_call_api($isCheckout, $isThankYouPage, $isAdmin, $adminPageName, $expected)
