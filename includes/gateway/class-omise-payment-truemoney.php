@@ -75,9 +75,8 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	public function payment_fields()
 	{
 		parent::payment_fields();
-
 		if (self::WALLET === $this->source_type) {
-			Omise_Util::render_view( 'templates/payment/form-truemoney.php', array() );
+			Omise_Util::render_view( 'templates/payment/form-truemoney.php', [] );
 		}
 	}
 
@@ -118,7 +117,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	 * Return the right ShopeePay backend depending on the platform and availability of
 	 * the backend in the capability
 	 */
-	private function get_source()
+	public function get_source()
 	{
 		$capabilities = Omise_Capabilities::retrieve();
 
