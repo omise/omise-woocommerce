@@ -255,16 +255,16 @@ class Omise_Capabilities {
 	/**
 	 * Retrieves details of TrueMoney from capabilities.
 	 *
-	 * @param string $sourceType
+	 * @param string $source_type
 	 */
-	public function get_truemoney_backend($sourceType)
+	public function get_truemoney_backend($source_type)
 	{
-		$truemoneySourceTypes = [Omise_Payment_Truemoney::WALLET, Omise_Payment_Truemoney::JUMPAPP];
+		$truemoney_source_types = [Omise_Payment_Truemoney::WALLET, Omise_Payment_Truemoney::JUMPAPP];
 
-		if (!in_array($sourceType, $truemoneySourceTypes)) {
+		if (!in_array($source_type, $truemoney_source_types)) {
 			return null;
 		}
 
-		return $this->getBackendByType($sourceType);
+		return $this->getBackendByType($source_type);
 	}
 }

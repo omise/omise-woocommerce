@@ -91,7 +91,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 
 	public function get_charge_request($order_id, $order)
 	{
-		$requestData = $this->build_charge_request(
+		$request_data = $this->build_charge_request(
 			$order_id,
 			$order,
 			$this->source_type,
@@ -99,18 +99,18 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 		);
 
 		if (self::WALLET === $this->source_type) {
-			$phoneOption = $_POST['omise_phone_number_default'];
-			$isPhoneOptionChecked = isset($phoneOption) && 1 == $phoneOption;
-			$phone_number = $isPhoneOptionChecked ?
+			$phone_option = $_POST['omise_phone_number_default'];
+			$is_phone_option_checked = isset($phone_option) && 1 == $phone_option;
+			$phone_number = $is_phone_option_checked ?
 				$order->get_billing_phone() :
 				sanitize_text_field( $_POST['omise_phone_number'] );
 
-			$requestData['source'] = array_merge($requestData['source'], [
+			$request_data['source'] = array_merge($request_data['source'], [
 				'phone_number' => $phone_number
 			]);
 		}
 
-		return $requestData;
+		return $request_data;
 	}
 
 	/**
@@ -125,10 +125,10 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 			return self::JUMPAPP;
 		}
 
-		$isJumpappEnabled = $capabilities->get_truemoney_backend(self::JUMPAPP);
-		$isWalletEnabled = $capabilities->get_truemoney_backend(self::WALLET);
+		$is_jumpapp_enabled = $capabilities->get_truemoney_backend(self::JUMPAPP);
+		$is_wallet_enabled = $capabilities->get_truemoney_backend(self::WALLET);
 
-		if (!empty($isWalletEnabled) && empty($isJumpappEnabled)) {
+		if (!empty($is_wallet_enabled) && empty($is_jumpapp_enabled)) {
 			return self::WALLET;
 		}
 
