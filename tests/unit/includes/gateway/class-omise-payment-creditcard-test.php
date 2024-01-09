@@ -1,7 +1,6 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Brain;
 
 class Omise_Payment_CreditCard_Test extends TestCase
 {

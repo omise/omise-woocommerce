@@ -20,12 +20,6 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
                 return "http://localhost";
             }
         }
-
-        if (!function_exists('wc_get_user_agent')) {
-            function wc_get_user_agent() {
-                return "Chrome Web";
-            }
-        }
     }
 
     public function tearDown(): void
@@ -85,6 +79,9 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
      */
     public function testCharge()
     {
+        Brain\Monkey\Functions\expect('wc_get_user_agent')
+			->with('123')
+			->andReturn('Chrome Web');
         $this->getChargeTest($this->obj);
     }
 }

@@ -251,4 +251,20 @@ class Omise_Capabilities {
 	{
 		return $this->capabilities['limits']['installment_amount']['min'];
 	}
+
+	/**
+	 * Retrieves details of TrueMoney from capabilities.
+	 *
+	 * @param string $source_type
+	 */
+	public function get_truemoney_backend($source_type)
+	{
+		$truemoney_source_types = [Omise_Payment_Truemoney::WALLET, Omise_Payment_Truemoney::JUMPAPP];
+
+		if (!in_array($source_type, $truemoney_source_types)) {
+			return null;
+		}
+
+		return $this->getBackendByType($source_type);
+	}
 }
