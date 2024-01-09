@@ -101,8 +101,8 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 			->andReturn(false);
 
 		$capabilities = new Omise_Capabilities;
-		$isEnabled = $capabilities->get_truemoney_backend('abc');
-		$this->assertNull($isEnabled);
+		$is_enabled = $capabilities->get_truemoney_backend('abc');
+		$this->assertNull($is_enabled);
 	}
 
 	public function truemoney_source_provider()
