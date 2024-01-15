@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v5.7.0 _(Jan 11, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.7.0)
+- Added TrueMoney jumpapp. (PR [#431](https://github.com/omise/omise-woocommerce/pull/431))
+- Updated README.md. (PR [#429](https://github.com/omise/omise-woocommerce/pull/429))
+
 ## [v5.6.2 _(Dec 7, 2023)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.6.2)
 - Update OCBC digital logo. (PR [#422](https://github.com/omise/omise-woocommerce/pull/422))
 - Update installment interest rates. (PR [#423](https://github.com/omise/omise-woocommerce/pull/423))

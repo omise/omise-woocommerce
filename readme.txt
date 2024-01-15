@@ -1,9 +1,9 @@
 === Opn Payments ===
 Contributors: Opn Payments
-Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney wallet, woocommerce payment
+Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.4.2
-Stable tag: 5.6.2
+Stable tag: 5.7.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.7.0 =
+
+- Added TrueMoney jumpapp. (PR [#431](https://github.com/omise/omise-woocommerce/pull/431))
+- Updated README.md. (PR [#429](https://github.com/omise/omise-woocommerce/pull/429))
 
 = 5.6.2 =
 
