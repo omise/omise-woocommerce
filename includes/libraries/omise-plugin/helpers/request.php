@@ -36,8 +36,13 @@ if (!class_exists('RequestHelper')) {
         public static function get_client_ip()
         {
             $headersToCheck = [
+                // Check for a client using a shared internet connection
                 'HTTP_CLIENT_IP',
+
+                // Check if the proxy is used for IP/IPs
                 'HTTP_X_FORWARDED_FOR',
+
+                // check for other possible forwarded IP headers
                 'HTTP_X_FORWARDED',
                 'HTTP_FORWARDED_FOR',
                 'HTTP_FORWARDED',
@@ -55,6 +60,7 @@ if (!class_exists('RequestHelper')) {
                 return $_SERVER[$header];
             }
 
+            // return default remote IP address
             return $_SERVER['REMOTE_ADDR'];
         }
 
