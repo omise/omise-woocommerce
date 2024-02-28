@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('RequestHelper')) {
+if (!class_exists('RequestHelper')) {
     class RequestHelper
     {
         /**
@@ -9,7 +9,7 @@ if (! class_exists('RequestHelper')) {
          * 
          * Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Site
          */
-        public static function isUserOriginated()
+        public static function is_user_originated()
         {
             $fetch_site = sanitize_text_field($_SERVER['HTTP_SEC_FETCH_SITE']);
 
@@ -20,9 +20,9 @@ if (! class_exists('RequestHelper')) {
         /**
          * @param string|null $order_token
          */
-        public static function validateRequest($order_token = null)
+        public static function validate_request($order_token = null)
         {
-            $token = isset( $_GET['token'] ) ? sanitize_text_field( $_GET['token'] ) : null;
+            $token = isset($_GET['token']) ? sanitize_text_field($_GET['token']) : null;
 
             // For all payment except offline and OCBC PAO.
             if ($token) {
@@ -30,7 +30,42 @@ if (! class_exists('RequestHelper')) {
             }
 
             // For offline payment methods does not include token in the return URI.
-            return !self::isUserOriginated();
+            return !self::is_user_originated();
+        }
+
+        public static function get_client_ip()
+        {
+            $headersToCheck = [
+                'HTTP_CLIENT_IP',
+                'HTTP_X_FORWARDED_FOR',
+                'HTTP_X_FORWARDED',
+                'HTTP_FORWARDED_FOR',
+                'HTTP_FORWARDED',
+            ];
+
+            foreach($headersToCheck as $header) {
+                if (empty($_SERVER[$header])) {
+                    continue;
+                }
+
+                if ($header === 'HTTP_X_FORWARDED_FOR') {
+                    return self::process_forwarded_for_header($_SERVER[$header]);
+                }
+
+                return $_SERVER[$header];
+            }
+
+            return $_SERVER['REMOTE_ADDR'];
+        }
+
+        private static function process_forwarded_for_header($forwardedForHeader)
+        {
+            // Split if multiple IP addresses exist and get the last IP address
+            if (strpos($forwardedForHeader, ',') !== false) {
+                $multiple_ips = explode(",", $forwardedForHeader);
+                return trim(current($multiple_ips));
+            }
+            return $forwardedForHeader;
         }
     }
 }
