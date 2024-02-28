@@ -9,12 +9,6 @@ class Omise_Payment_Wechat_Pay_Test extends Omise_Offsite_Test
         parent::setUp();
         $this->sourceType = 'wechat_pay';
 
-        $requestHelper = Mockery::mock('alias:RequestHelper');
-        $requestHelper->shouldReceive('get_client_ip')
-            ->andReturn('192.168.1.1');
-
-        $omiseImage = 
-
         Brain\Monkey\setUp();
         Brain\Monkey\Functions\stubs([
             'apply_filters' => function () {
@@ -25,6 +19,7 @@ class Omise_Payment_Wechat_Pay_Test extends Omise_Offsite_Test
             },
         ]);
 
+        require_once __DIR__ . '/../../../../includes/libraries/omise-plugin/helpers/request.php';
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-wechat-pay.php';
     }
 
