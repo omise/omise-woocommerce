@@ -31,14 +31,13 @@ class Omise_Callback {
 		$order_id = isset( $_GET['order_id'] ) ? sanitize_text_field( $_GET['order_id'] ) : null;
 		$order = wc_get_order( $order_id );
 
-		if(!RequestHelper::validateRequest($order->get_meta('token'))) {
+		if(!RequestHelper::validate_request($order->get_meta('token'))) {
 			return wp_redirect( wc_get_checkout_url() );
 		}
 
 		$callback = new self( $order );
 		$callback->validate();
 	}
-
 
 	/**
 	 * Sometimes cancelling a transaction does not updates the status on the Omise backend

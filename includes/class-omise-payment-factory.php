@@ -41,7 +41,8 @@ class Omise_Payment_Factory {
 		'Omise_Payment_DuitNow_QR',
 		'Omise_Payment_DuitNow_OBW',
 		'Omise_Payment_Atome',
-		'Omise_Payment_PayPay'
+		'Omise_Payment_PayPay',
+		'Omise_Payment_Wechat_Pay',
 	);
 
 	/**

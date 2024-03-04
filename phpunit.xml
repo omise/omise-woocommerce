@@ -24,4 +24,12 @@
             <directory suffix=".php">vendor</directory>
         </exclude>
     </coverage>
+	<php>
+		<server name="HTTP_CLIENT_IP" value="192.168.1.1"/>
+		<server name="HTTP_X_FORWARDED_FOR" value="192.168.1.2"/>
+		<server name="HTTP_X_FORWARDED" value="192.168.1.3"/>
+		<server name="HTTP_FORWARDED_FOR" value="192.168.1.4"/>
+		<server name="HTTP_FORWARDED" value="192.168.1.5"/>
+		<server name="REMOTE_ADDR" value="192.168.1.6"/>
+	</php>
 </phpunit>

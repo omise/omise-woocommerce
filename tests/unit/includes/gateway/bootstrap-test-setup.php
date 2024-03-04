@@ -2,7 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 
-
 abstract class Bootstrap_Test_Setup extends TestCase
 {
     public $sourceType;
