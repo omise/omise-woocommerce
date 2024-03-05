@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.4.2
-Stable tag: 5.7.0
+Stable tag: 5.8.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.8.0 =
+
+- Add WeChat Pay. (PR [#434](https://github.com/omise/omise-woocommerce/pull/434))
+- Use WC order number metadata. (PR [#435](https://github.com/omise/omise-woocommerce/pull/435))
 
 = 5.7.0 =
 
