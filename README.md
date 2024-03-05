@@ -7,6 +7,13 @@ Opn Payments provides a set of APIs that help merchants of any size accept payme
 
 **Omise WooCommerce** is our official plugin providing support for processing payments on WooCommerce through Opn Payments.
 
+## Security Warning
+
+<div class=notice>
+  Do NOT use versions less than 4.8 as they are outdated and have security vulnerabilities.
+</div>
+
+
 ## Usage
 
 See our [official docs](https://docs.opn.ooo/woocommerce-plugin) for details on installation and configuration.
