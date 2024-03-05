@@ -9,9 +9,8 @@ Opn Payments provides a set of APIs that help merchants of any size accept payme
 
 ## Security Warning
 
-<div class=notice>
-  Do NOT use versions less than 4.8 as they are outdated and have security vulnerabilities.
-</div>
+**Do NOT use versions less than 4.8 as they are outdated and have security vulnerabilities.**
+
 
 
 ## Usage
