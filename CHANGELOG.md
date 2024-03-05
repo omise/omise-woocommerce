@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v5.8.0 _(Mar 5, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.8.0)
+- Add WeChat Pay. (PR [#434](https://github.com/omise/omise-woocommerce/pull/434))
+- Use WC order number metadata. (PR [#435](https://github.com/omise/omise-woocommerce/pull/435))
+
 ## [v5.7.0 _(Jan 11, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.7.0)
 - Added TrueMoney jumpapp. (PR [#431](https://github.com/omise/omise-woocommerce/pull/431))
 - Updated README.md. (PR [#429](https://github.com/omise/omise-woocommerce/pull/429))
