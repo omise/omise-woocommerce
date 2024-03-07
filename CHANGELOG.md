@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v5.8.1 _(Mar 7, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.8.1)
+- Revert "Use WC order number metadata". (PR [#440](https://github.com/omise/omise-woocommerce/pull/440))
+
 ## [v5.8.0 _(Mar 5, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.8.0)
 - Add WeChat Pay. (PR [#434](https://github.com/omise/omise-woocommerce/pull/434))
 - Use WC order number metadata. (PR [#435](https://github.com/omise/omise-woocommerce/pull/435))

@@ -34,8 +34,6 @@ class Charge_Request_Builder_Test extends TestCase
         $orderMock->shouldReceive('get_total')
             ->andReturn($expectedAmount);  // in units
         $orderMock->shouldReceive('add_meta_data');
-        $orderMock->shouldReceive('get_order_number')
-            ->andReturn(1234);
         return $orderMock;
     }
 

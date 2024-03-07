@@ -10,14 +10,13 @@ trait Charge_Request_Builder
 	)
 	{
 		$currency = $order->get_currency();
-		$order_number = $order->get_order_number();
-		$description = 'WooCommerce Order id ' . $order_number;
+		$description = 'WooCommerce Order id ' . $order_id;
 
 		$request = [
 			'amount'      => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency'    => $currency,
 			'description' => $description,
-			'metadata'    => $this->get_metadata($order_number),
+			'metadata'    => $this->get_metadata($order_id),
 			'source' 	  => [ 'type' => $source_type ]
 		];
 
@@ -41,13 +40,13 @@ trait Charge_Request_Builder
 	}
 
 	/**
-	 * @param string $order_number
+	 * @param string $order_id
 	 * @param array $additionalData
 	 */
-	public function get_metadata($order_number, $additionalData = [])
+	public function get_metadata($order_id, $additionalData = [])
 	{
 		// override order_id as a reference for webhook handlers.
-		$orderId = [ 'order_id' => $order_number ];
+		$orderId = [ 'order_id' => $order_id ];
 		return array_merge($orderId, $additionalData);
 	}
 
