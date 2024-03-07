@@ -62,8 +62,6 @@ class Omise_Payment_Base_Card_Test extends TestCase
             ->andReturn($expectedAmount);  // in units
         $orderMock->shouldReceive('add_meta_data')
             ->andReturn(['order_id' => 'order_123']);
-        $orderMock->shouldReceive('get_order_number')
-            ->andReturn(1234);
         $orderMock->shouldReceive('get_user')
             ->andReturn((object)[
                 'ID' => 'user_123',
