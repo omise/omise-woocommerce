@@ -62,14 +62,13 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	private function prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token)
 	{
 		$currency = $order->get_currency();
-		$order_number = $order->get_order_number();
 		$data = [
 			'amount' => Omise_Money::to_subunit($order->get_total(), $currency),
 			'currency' => $currency,
-			'description' => 'WooCommerce Order id ' . $order_number,
+			'description' => 'WooCommerce Order id ' . $order_id,
 			'return_uri' => $this->get_redirect_url('omise_callback', $order_id, $order),
 			'metadata' => $this->get_metadata(
-				$order_number,
+				$order_id,
 				[ 'secure_form_enabled' => $this->getSecureFormState()]
 			),
 		];
