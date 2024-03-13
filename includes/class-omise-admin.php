@@ -64,7 +64,7 @@ if (!class_exists('Omise_Admin')) {
 		public function wordpress_hook_card_form_customization()
 		{
 			add_submenu_page(
-				null,
+				"",
 				__('Custom card form customization', 'omise'),
 				Omise_Page_Card_From_Customization::PAGE_NAME,
 				'manage_options',
