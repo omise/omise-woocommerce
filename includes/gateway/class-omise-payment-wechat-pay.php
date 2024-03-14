@@ -8,7 +8,7 @@ class Omise_Payment_Wechat_Pay extends Omise_Payment_Offsite
 		parent::__construct();
 
 		$this->id                 = 'omise_wechat_pay';
-		$this->has_fields         = true;
+		$this->has_fields         = false;
 		$this->method_title       = __( 'Opn Payments WeChat Pay', 'omise' );
 		$this->method_description = wp_kses(
 			__( 'Accept payment through <strong>WeChat Pay</strong> via Opn Payments payment gateway.', 'omise' ),
