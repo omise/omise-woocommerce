@@ -122,6 +122,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 		$capabilities = Omise_Capabilities::retrieve();
 
 		if (!$capabilities) {
+			$this->has_fields = false;
 			return self::JUMPAPP;
 		}
 
@@ -136,6 +137,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 		// Case 1: Both jumpapp and wallet are enabled
 		// Case 2: jumpapp is enabled and wallet is disabled
 		// Case 3: Both are disabled.
+		$this->has_fields = false;
 		return self::JUMPAPP;
 	}
 }
