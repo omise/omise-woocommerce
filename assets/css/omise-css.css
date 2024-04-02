@@ -356,12 +356,6 @@ ul.omise-banks-list {
 	border-color: #1e4598;
 }
 
-/** Citi **/
-.bank-logo.citi {
-	background: url('../images/citi.svg') #0b689d;
-	border-color: #0b689d;
-}
-
 /** First Choice **/
 .bank-logo.first_choice {
 	background: url('../images/firstchoice.svg') #007bc4;
