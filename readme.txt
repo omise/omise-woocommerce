@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.4.2
-Stable tag: 5.8.1
+Stable tag: 5.8.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,13 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.8.2 =
+
+- Resolve PHP warnings. (PR [#443](https://github.com/omise/omise-woocommerce/pull/443))
+- Remove white box appearing under WeChat Pay. (PR [#444](https://github.com/omise/omise-woocommerce/pull/444))
+- Remove white box appearing under Truemoney. (PR [#445](https://github.com/omise/omise-woocommerce/pull/445))
+- Removed Citi installment. (PR [#446](https://github.com/omise/omise-woocommerce/pull/446))
 
 = 5.8.1 =
 
