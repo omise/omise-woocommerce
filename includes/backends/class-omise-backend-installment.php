@@ -63,13 +63,6 @@ class Omise_Backend_Installment extends Omise_Backend
 				'min_allowed_amount' => 500.00,
 			),
 
-			'installment_citi' => array(
-				'bank_code'          => 'citi',
-				'title'              => __('Citibank', 'omise'),
-				'interest_rate'      => 0,
-				'min_allowed_amount' => 500.00,
-			),
-
 			'installment_ttb' => array(
 				'bank_code'          => 'ttb',
 				'title'              => __('TMBThanachart Bank', 'omise'),
