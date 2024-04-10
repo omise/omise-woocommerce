@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [v5.8.2 _(Apr 9, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.8.2)
+- Resolve PHP warnings. (PR [#443](https://github.com/omise/omise-woocommerce/pull/443))
+- Remove white box appearing under WeChat Pay. (PR [#444](https://github.com/omise/omise-woocommerce/pull/444))
+- Remove white box appearing under Truemoney. (PR [#445](https://github.com/omise/omise-woocommerce/pull/445))
+- Removed Citi installment. (PR [#446](https://github.com/omise/omise-woocommerce/pull/446))
+
 ## [v5.8.1 _(Mar 7, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.8.1)
 - Revert "Use WC order number metadata". (PR [#440](https://github.com/omise/omise-woocommerce/pull/440))
 
