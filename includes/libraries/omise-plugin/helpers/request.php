@@ -24,7 +24,7 @@ if (!class_exists('RequestHelper')) {
         {
             $token = isset($_GET['token']) ? sanitize_text_field($_GET['token']) : null;
 
-            // For all payment except offline and OCBC PAO.
+            // For all payment except offline
             if ($token) {
                 return $token === $order_token;
             }
