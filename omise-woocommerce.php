@@ -51,6 +51,7 @@ class Omise
 		add_action('plugins_loaded', array($this, 'check_dependencies'));
 		add_action('woocommerce_init', array($this, 'init'));
 		do_action('omise_initiated');
+		add_action( 'woocommerce_blocks_loaded', [ $this, 'block_init' ] );
 	}
 
 	/**
@@ -61,6 +62,12 @@ class Omise
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
 				'custom_order_tables', 
 				__FILE__, 
+				true
+			);
+
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+				'cart_checkout_blocks',
+				__FILE__,
 				true
 			);
 		}
@@ -131,6 +138,16 @@ class Omise
 			add_action('admin_notices', [$this, 'embedded_form_notice']);
 			return;
 		}
+	}
+
+	public function block_init()
+	{
+		require_once __DIR__ . '/includes/blocks/omise-block.php';
+		require_once __DIR__ . '/includes/blocks/omise-block-config.php';
+		require_once __DIR__ . '/includes/blocks/omise-block-payments.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-credit-card.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-promptpay.php';
+		Omise_Block::init();
 	}
 
 	/**
