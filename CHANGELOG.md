@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v5.8.3 _(May 8, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.8.3)
+- Remove OCBC PAO (PR: [#449](https://github.com/omise/omise-woocommerce/pull/449))
+
 ## [v5.8.2 _(Apr 9, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.8.2)
 - Resolve PHP warnings. (PR [#443](https://github.com/omise/omise-woocommerce/pull/443))
 - Remove white box appearing under WeChat Pay. (PR [#444](https://github.com/omise/omise-woocommerce/pull/444))
