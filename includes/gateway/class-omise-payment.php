@@ -276,6 +276,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
+		// echo var_dump( $order_id );
 		if ( ! $this->load_order( $order_id ) ) {
 			return $this->invalid_order( $order_id );
 		}

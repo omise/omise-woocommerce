@@ -3,12 +3,11 @@
 class Omise_Block {
     public static function init() {
         if ( self::is_active() ) {
-			self::container()->get( Omise_Block_Payments::class );
+			self::container()->get( Omise_Block_Config::class );
 		}
     }
 
     /**
-	 *
 	 * Loads the Blocks integration if WooCommerce Blocks is installed as a feature plugin.
 	 */
 	private static function is_active() {
@@ -41,14 +40,9 @@ class Omise_Block {
 		static $container;
 		if ( ! $container ) {
 			$container = \Automattic\WooCommerce\Blocks\Package::container();
-
-			$container->register( Omise_Block_Payments::class, function ( $container ) {
-				return new Omise_Block_Payments( $container );
+			$container->register( Omise_Block_Config::class, function ( $container ) {
+				return new Omise_Block_Config( $container );
 			} );
-
-			// $container->register( Omise_Block_Config::class, function ( $container ) {
-			// 	return new Omise_Block_Config( $container );
-			// } );
 		}
 
 		return $container;

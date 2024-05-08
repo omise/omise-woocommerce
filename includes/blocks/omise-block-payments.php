@@ -1,10 +1,11 @@
 <?php
 
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
+use Automattic\WooCommerce\Blocks\Registry\Container;
+
 class Omise_Block_Payments {
 
     private $container;
-
-    private $payment_methods = [];
 
     function __construct($container) {
         $this->container = $container;
@@ -14,18 +15,16 @@ class Omise_Block_Payments {
 
     private function add_payment_methods() {
         $this->container->register(Omise_Block_Credit_Card::class, function ( $container ) {
-			// return new Omise_Block_Credit_Card( $container->get( AssetsApi::class ) );
             return new Omise_Block_Credit_Card();
 		} );
 
         $this->container->register(Omise_Block_Promptpay::class, function ( $container ) {
-			// return new Omise_Block_Credit_Card( $container->get( AssetsApi::class ) );
             return new Omise_Block_Promptpay();
 		} );
     }
 
     private function initialize() {
-		add_action( 'woocommerce_blocks_payment_method_type_registration', array( $this, 'register_payment_methods' ) );
+		add_action( 'woocommerce_blocks_payment_method_type_registration', [ $this, 'register_payment_methods' ] );
     }
 
     public function register_payment_methods( $registry ) {
@@ -35,14 +34,7 @@ class Omise_Block_Payments {
         ];
 
 		foreach ( $payment_methods as $clazz ) {
-			$registry->register( $this->container->get($clazz) );
+			$registry->register( new $clazz );
 		}
     }
-
-    /**
-	 * @return \PaymentPlugins\Blocks\Stripe\Payments\AbstractStripePayment[]
-	 */
-	// public function get_payment_methods() {
-	// 	return $this->payment_methods;
-	// }
 }

@@ -5,7 +5,9 @@ const { getSetting } = window.wc.wcSettings
 
 const settings = getSetting( 'omise_promptpay_data', {} )
 
-const label = decodeEntities( settings.title )
+const defaultLabel = __( 'Promptpay', 'omise' );
+
+const label = decodeEntities( settings.title ) || defaultLabel;
 
 const Content = () => {
 	return decodeEntities( settings.description || '' )

@@ -1,0 +1,26 @@
+{
+    "name": "opn-payments",
+    "title": "opn-payments",
+    "version": "1.0.0",
+    "description": "OPN payments",
+    "author": "OPN payments",
+    "keywords": [],
+    "engines": {
+        "node": ">=12.20.1",
+        "npm": ">=6.14.0"
+    },
+    "devDependencies": {
+        "@woocommerce/dependency-extraction-webpack-plugin": "^1.7.0",
+        "@wordpress/scripts": "^27.8.0"
+    },
+    "scripts": {
+        "start": "wp-scripts start",
+        "build": "wp-scripts build",
+        "check-engines": "wp-scripts check-engines",
+        "format:js": "wp-scripts format resources/js",
+        "lint:js": "wp-scripts lint-js resources/js",
+        "lint:js-fix": "eslint resources/js --ext=js,jsx,ts,tsx --fix",
+        "lint:js:report": "npm run lint:js -- --output-file eslint_report.json --ext=js,ts,tsx --format json",
+        "packages-update": "wp-scripts packages-update"
+    }
+}

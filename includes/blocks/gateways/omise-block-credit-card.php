@@ -6,7 +6,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
     /**
 	 * The gateway instance.
 	 *
-	 * @var WC_Gateway_Dummy
+	 * @var Omise_Block_Credit_Card
 	 */
 	private $gateway;
 
@@ -17,6 +17,10 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 	 */
 	protected $name = 'omise';
 
+	public function __construct() {
+		add_action( 'woocommerce_rest_checkout_process_payment_with_context', [ $this, 'add_payment_request_order_meta' ], 8, 2 );
+	}
+
 	/**
 	 * Initializes the payment method type.
 	 */
@@ -24,7 +28,6 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 		$this->settings = get_option( "woocommerce_{$this->name}_settings", [] );
 		$gateways       = WC()->payment_gateways->payment_gateways();
 		$this->gateway  = $gateways[ $this->name ];
-		// echo get_class($this->gateway);
 	}
 
 	/**
@@ -33,8 +36,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 	 * @return boolean
 	 */
 	public function is_active() {
-		return true;
-		return $this->gateway->is_available();
+		return wc_string_to_bool( $this->get_setting( 'enabled', 'no' ) );
 	}
 
 	/**
@@ -43,16 +45,12 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_script_handles() {
+		$script_asset = require __DIR__ .  '/../assets/js/build/credit_card.asset.php';
 		wp_register_script(
 			"{$this->name}-payments-blocks",
-			plugin_dir_url( __DIR__ ) . 'assets/js/omise-credit-card.js',
-			[
-                'wc-blocks-registry',
-				'wc-settings',
-				'wp-element',
-				'wp-html-entities',
-            ],
-			null,
+			plugin_dir_url( __DIR__ ) . 'assets/js/build/credit_card.js',
+			$script_asset[ 'dependencies' ],
+			$script_asset[ 'version' ],
 			true
 		);
 
@@ -66,9 +64,26 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data() {
 		return [
+			'name'        => $this->name,
 			'title'       => $this->get_setting( 'title' ),
 			'description' => $this->get_setting( 'description' ),
-			'supports'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] )
+			'features'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] )
 		];
+	}
+
+	/**
+	 * Add payment request data to the order meta as hooked on the
+	 * woocommerce_rest_checkout_process_payment_with_context action.
+	 *
+	 * @param PaymentContext $context Holds context for the payment.
+	 * @param PaymentResult  $result  Result object for the payment.
+	 */
+	public function add_payment_request_order_meta( $context, &$result ) {
+
+		echo var_dump('hello hello');
+		$data = $context->payment_data;
+		if ( ! empty( $data['payment_request_type'] ) && 'stripe' === $context->payment_method ) {
+			$this->add_order_meta( $context->order, $data['payment_request_type'] );
+		}
 	}
 }

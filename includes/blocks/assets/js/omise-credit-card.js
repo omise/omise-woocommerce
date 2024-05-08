@@ -1,11 +1,13 @@
+import { __ } from '@wordpress/i18n';
+import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 import { decodeEntities } from '@wordpress/html-entities';
-
-const { registerPaymentMethod } = window.wc.wcBlocksRegistry
-const { getSetting } = window.wc.wcSettings
+import { getSetting } from '@woocommerce/settings';
 
 const settings = getSetting( 'omise_data', {} )
 
-const label = decodeEntities( settings.title )
+const defaultLabel = __( 'Credit/Debit card', 'omise' );
+
+const label = decodeEntities( settings.title ) || defaultLabel;
 
 const Content = () => {
 	return decodeEntities( settings.description || '' )
