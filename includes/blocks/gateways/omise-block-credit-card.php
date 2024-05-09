@@ -36,7 +36,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 	 * @return boolean
 	 */
 	public function is_active() {
-		return wc_string_to_bool( $this->get_setting( 'enabled', 'no' ) );
+		return $this->gateway->is_available();
 	}
 
 	/**

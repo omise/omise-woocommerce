@@ -1,7 +1,7 @@
+import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-
-const { registerPaymentMethod } = window.wc.wcBlocksRegistry
-const { getSetting } = window.wc.wcSettings
+import { registerPaymentMethod } from '@woocommerce/blocks-registry';
+import { getSetting } from '@woocommerce/settings';
 
 const settings = getSetting( 'omise_promptpay_data', {} )
 
@@ -19,7 +19,7 @@ const Label = ( props ) => {
 }
 
 registerPaymentMethod( {
-	name: "omise_promptpay",
+	name: settings.name,
 	label: <Label />,
 	content: <Content />,
 	edit: <Content />,

@@ -240,19 +240,19 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 *
 	 * @return bool
 	 */
-	public function is_available(){	
-		if ( !parent::is_available() ) {
-			return false;			
-		}
+	// public function is_available(){
+	// 	if ( !parent::is_available() ) {
+	// 		return false;
+	// 	}
 
-		$capabilities = Omise_Capabilities::retrieve();
+	// 	$capabilities = Omise_Capabilities::retrieve();
 
-		if ( !$capabilities ) {
-			return false;
-		}
+	// 	if ( !$capabilities ) {
+	// 		return false;
+	// 	}
 
-		return $this->is_capability_support($capabilities->get_available_payment_methods());
-	}
+	// 	return $this->is_capability_support($capabilities->get_available_payment_methods());
+	// }
 
 	/**
 	 * check if payment method is support by omise capability api version 2017
@@ -276,7 +276,6 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
-		// echo var_dump( $order_id );
 		if ( ! $this->load_order( $order_id ) ) {
 			return $this->invalid_order( $order_id );
 		}

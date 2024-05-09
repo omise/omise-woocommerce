@@ -19,7 +19,7 @@ const Label = ( props ) => {
 }
 
 registerPaymentMethod( {
-	name: "omise",
+	name: settings.name,
 	label: <Label />,
 	content: <Content />,
 	edit: <Content />,
