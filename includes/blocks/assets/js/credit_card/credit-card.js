@@ -1,27 +1,44 @@
-import {useEffect, useRef} from '@wordpress/element';
+import {useEffect, useRef, useState} from '@wordpress/element';
 
-export const PaymentMethod = ({getData, content, ...props}) => {
-    const Content = content;
-    const desc = getData('description');
-    const el = useRef(null);
-    useEffect(() => {
-        if (el.current && el.current.childNodes.length == 0) {
-            el.current.classList.add('no-content');
-        }
-    });
-    return (
-        <>
-            {desc && <Description desc={desc} payment_method={getData('name')}/>}
-            <div ref={el} className='wc-stripe-blocks-payment-method-content'>
-                <Content {...{...props, getData}}/>
-            </div>
-        </>);
+const CreditCardPaymentMethod = (props) => {
+    const { description, settings } = props;
+    console.log({settings})
+	const [saveCard, setSaveCard] = useState(false);
+	const [cardToken, setCardToken] = useState('');
+	const el = useRef(null);
+
+	const onSuccess = (payload) => {
+		if (payload.remember) {
+			setSaveCard(payload.remember);
+		}
+
+		setCardToken(payload.token)
+	}
+
+	const onError = (error) => {
+		console.error(error)
+	}
+
+	useEffect(() => {
+		showOmiseEmbeddedCardForm({
+			element: el.current,
+			publicKey: settings.public_key,
+			hideRememberCard: !settings.user_logged_in,
+			locale: settings.lcoale,
+			theme: settings.card_form_theme ?? 'light',
+			design: settings.form_design,
+			brandIcons: settings.card_brand_icons,
+			onSuccess: onSuccess,
+			onError: onError,
+		})
+	}, [el.current])
+
+	return (<>
+        <p>{description}</p>
+		<div ref={el} id="omise-card" style={{width:"100%"}}></div>
+		<input type="hidden" name="omise_save_customer_card" id="omise_save_customer_card" value={saveCard} />
+		<input type="hidden" className="omise_token" name="omise_token" value={cardToken} />
+	</>)
 }
 
-const Description = ({desc, payment_method}) => {
-    return (
-        <div className={`wc-stripe-blocks-payment-method__desc ${payment_method}`}>
-            <p>{desc}</p>
-        </div>
-    )
-}
+export default CreditCardPaymentMethod
