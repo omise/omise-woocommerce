@@ -15,6 +15,7 @@
     },
     "scripts": {
         "start": "wp-scripts start",
+        "start:hot": "wp-scripts start --hot",
         "build": "wp-scripts build",
         "check-engines": "wp-scripts check-engines",
         "format:js": "wp-scripts format resources/js",

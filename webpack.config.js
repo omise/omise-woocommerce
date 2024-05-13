@@ -29,7 +29,7 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		'credit_card': '/includes/blocks/assets/js/omise-credit-card.js',
-		'promptpay': '/includes/blocks/assets/js/omise-promptpay.js',
+		'omise_promptpay': '/includes/blocks/assets/js/omise-promptpay.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),
@@ -43,6 +43,6 @@ module.exports = {
 		new WooCommerceDependencyExtractionWebpackPlugin({
 			requestToExternal,
 			requestToHandle
-		})
+		}),
 	]
 };
