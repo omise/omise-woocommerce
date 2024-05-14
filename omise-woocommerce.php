@@ -148,6 +148,13 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-apm.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-credit-card.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-promptpay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-hk.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-cn.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-dana.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-gcash.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-kakaopay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-touch-n-go.php';
 		Omise_Block::init();
 	}
 
