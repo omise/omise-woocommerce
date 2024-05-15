@@ -29,14 +29,7 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		'credit_card': '/includes/blocks/assets/js/omise-credit-card.js',
-		'omise_promptpay': '/includes/blocks/assets/js/omise-promptpay.js',
-		'omise_alipay': '/includes/blocks/assets/js/omise-alipay.js',
-		'omise_alipay_hk': '/includes/blocks/assets/js/omise-alipay-hk.js',
-		'omise_alipay_cn': '/includes/blocks/assets/js/omise-alipay-cn.js',
-		'omise_dana': '/includes/blocks/assets/js/omise-dana.js',
-		'omise_kakaopay': '/includes/blocks/assets/js/omise-kakaopay.js',
-		'omise_gcash': '/includes/blocks/assets/js/omise-gcash.js',
-		// 'omise_touch_n_go': '/includes/blocks/assets/js/omise-touch-n-go.js',
+		'omise-one-click-apms': '/includes/blocks/assets/js/omise-one-click-apms.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),

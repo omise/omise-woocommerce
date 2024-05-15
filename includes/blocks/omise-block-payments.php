@@ -13,7 +13,18 @@ class Omise_Block_Payments {
         Omise_Block_Gcash::class,
         Omise_Block_Kakaopay::class,
         Omise_Block_Dana::class,
-        // Omise_Block_Touch_N_Go::class,
+        Omise_Block_Touch_N_Go::class,
+        Omise_Block_Bill_Payment_Lotus::class,
+        Omise_Block_Shopeepay::class,
+        Omise_Block_Wechat_Pay::class,
+        Omise_Block_Grabpay::class,
+        Omise_Block_Paynow::class,
+        Omise_Block_Ocbc_Digital::class,
+        Omise_Block_Boost::class,
+        Omise_Block_Maybank_QR::class,
+        Omise_Block_DuitNow_QR::class,
+        Omise_Block_Paypay::class,
+        Omise_Block_RabbitLinePay::class,
     ];
 
     function __construct($container) {
