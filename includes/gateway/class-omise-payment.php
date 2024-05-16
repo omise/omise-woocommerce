@@ -48,7 +48,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 	 *
 	 * @var   \Omise_Backend
 	 */
-	protected $backend;
+	public $backend;
 
 	/**
 	 * @see omise/includes/class-omise-setting.php

@@ -166,6 +166,7 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-qr.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-paypay.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-rabbit-linepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-mobilebanking.php';
 		Omise_Block::init();
 	}
 

@@ -30,6 +30,7 @@ module.exports = {
 	entry: {
 		'credit_card': '/includes/blocks/assets/js/omise-credit-card.js',
 		'omise-one-click-apms': '/includes/blocks/assets/js/omise-one-click-apms.js',
+		'omise-mobilebanking': '/includes/blocks/assets/js/omise-mobilebanking.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),
