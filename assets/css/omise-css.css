@@ -207,6 +207,7 @@ ul.omise-banks-list {
 
 .omise-banks-list .item.mobile-banking {
 	padding-bottom: 0;
+	list-style-type: none;
 }
 
 .omise-banks-list .item.fpx:first-child {
