@@ -1,23 +1,12 @@
-import {useEffect, useRef, useState} from '@wordpress/element';
+import {useEffect, useRef, useState, useCallback} from '@wordpress/element';
 
 const CreditCardPaymentMethod = (props) => {
     const { description, settings } = props;
-    console.log({settings})
-	const [saveCard, setSaveCard] = useState(false);
-	const [cardToken, setCardToken] = useState('');
 	const el = useRef(null);
-
-	const onSuccess = (payload) => {
-		if (payload.remember) {
-			setSaveCard(payload.remember);
-		}
-
-		setCardToken(payload.token)
-	}
-
-	const onError = (error) => {
-		console.error(error)
-	}
+	const saveCardRef = useRef(false);
+	const cardTokenRef = useRef(null);
+	const {eventRegistration, emitResponse} = props;
+    const {onPaymentSetup, onCheckoutValidation} = eventRegistration;
 
 	useEffect(() => {
 		showOmiseEmbeddedCardForm({
@@ -28,16 +17,64 @@ const CreditCardPaymentMethod = (props) => {
 			theme: settings.card_form_theme ?? 'light',
 			design: settings.form_design,
 			brandIcons: settings.card_brand_icons,
-			onSuccess: onSuccess,
-			onError: onError,
-		})
-	}, [el.current])
+			onSuccess: (payload) => {
+				if (payload.remember) {
+					saveCardRef.current = payload.remember
+				}
+
+				cardTokenRef.current = payload.token;
+			},
+			onError: (error) => {
+				console.error(error)
+			},
+		});
+	}, [])
+
+	useEffect( () => {
+		const unsubscribe = onCheckoutValidation( () => {
+			OmiseCard.requestCardToken()
+			return true;
+		} );
+		return unsubscribe;
+	}, [ onCheckoutValidation ] );
+
+	useEffect(() => {
+        const unsubscribe = onPaymentSetup(async () => {
+			return await new Promise( ( resolve ) => {
+				const intervalId = setInterval( () => {
+					if (cardTokenRef.current && cardTokenRef.current.value !== "") {
+						clearInterval(intervalId); // Stop the interval once cardToken is not empty
+						try {
+							const response = {
+								type: emitResponse.responseTypes.SUCCESS,
+								meta: {
+									paymentMethodData: {
+										"omise_save_customer_card": saveCardRef.current.value,
+										"omise_token": cardTokenRef.current,
+									}
+								}
+							};
+							resolve(response)
+						} catch (error) {
+							const response = {type: emitResponse.responseTypes.ERROR, message: error.message}
+							resolve(response)
+						}
+					}
+				}, 1000 );
+			} );
+        });
+        return () => unsubscribe();
+    }, [
+		emitResponse.responseTypes.ERROR,
+		emitResponse.responseTypes.SUCCESS,
+		onPaymentSetup,
+	]);
 
 	return (<>
         <p>{description}</p>
 		<div ref={el} id="omise-card" style={{width:"100%"}}></div>
-		<input type="hidden" name="omise_save_customer_card" id="omise_save_customer_card" value={saveCard} />
-		<input type="hidden" className="omise_token" name="omise_token" value={cardToken} />
+		<input type="hidden" name="omise_save_customer_card" id="omise_save_customer_card" />
+		<input type="hidden" className="omise_token" name="omise_token" />
 	</>)
 }
 
