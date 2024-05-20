@@ -1,5 +1,8 @@
 <?php
 
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
+use Automattic\WooCommerce\Blocks\Registry\Container;
+
 class Omise_Block_Payments {
 
     private $container;
