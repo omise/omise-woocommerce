@@ -71,7 +71,15 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 			if ( ! empty( $omise_customer_id ) ) {
 				try {
 					$cards = new OmiseCustomerCard;
-					$viewData['existingCards'] = $cards->get($omise_customer_id);
+					$existingCards = $cards->get($omise_customer_id);
+
+					foreach($existingCards['data'] as $card) {
+						$viewData['existing_cards'][] = [
+							'id' => $card['id'],
+							'brand' => $card['brand'],
+							'last_digits' => $card['last_digits'],
+						];
+					}
 				} catch (Exception $e) {
 					// nothing
 				}
