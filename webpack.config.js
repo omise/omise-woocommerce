@@ -29,7 +29,7 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		'credit_card': '/includes/blocks/assets/js/omise-credit-card.js',
-		'omise_promptpay': '/includes/blocks/assets/js/omise-promptpay.js',
+		'omise-one-click-apms': '/includes/blocks/assets/js/omise-one-click-apms.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),

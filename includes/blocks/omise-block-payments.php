@@ -7,6 +7,29 @@ class Omise_Block_Payments {
 
     private $container;
 
+    private $payment_methods = [
+        Omise_Block_Credit_Card::class,
+        Omise_Block_Promptpay::class,
+        Omise_Block_Alipay::class,
+        Omise_Block_Alipay_HK::class,
+        Omise_Block_Alipay_CN::class,
+        Omise_Block_Gcash::class,
+        Omise_Block_Kakaopay::class,
+        Omise_Block_Dana::class,
+        Omise_Block_Touch_N_Go::class,
+        Omise_Block_Bill_Payment_Lotus::class,
+        Omise_Block_Shopeepay::class,
+        Omise_Block_Wechat_Pay::class,
+        Omise_Block_Grabpay::class,
+        Omise_Block_Paynow::class,
+        Omise_Block_Ocbc_Digital::class,
+        Omise_Block_Boost::class,
+        Omise_Block_Maybank_QR::class,
+        Omise_Block_DuitNow_QR::class,
+        Omise_Block_Paypay::class,
+        Omise_Block_RabbitLinePay::class,
+    ];
+
     function __construct($container) {
         $this->container = $container;
         $this->add_payment_methods();
@@ -14,13 +37,11 @@ class Omise_Block_Payments {
     }
 
     private function add_payment_methods() {
-        $this->container->register(Omise_Block_Credit_Card::class, function ( $container ) {
-            return new Omise_Block_Credit_Card();
-		} );
-
-        $this->container->register(Omise_Block_Promptpay::class, function ( $container ) {
-            return new Omise_Block_Promptpay();
-		} );
+        foreach($this->payment_methods as $payment_method) {
+            $this->container->register($payment_method, function ( $container ) use ($payment_method) {
+                return new $payment_method;
+            } );
+        }
     }
 
     private function initialize() {
@@ -28,12 +49,7 @@ class Omise_Block_Payments {
     }
 
     public function register_payment_methods( $registry ) {
-		$payment_methods = [
-            Omise_Block_Credit_Card::class,
-            Omise_Block_Promptpay::class,
-        ];
-
-		foreach ( $payment_methods as $clazz ) {
+		foreach ( $this->payment_methods as $clazz ) {
 			$registry->register( new $clazz );
 		}
     }

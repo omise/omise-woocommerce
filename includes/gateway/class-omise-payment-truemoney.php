@@ -114,7 +114,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	}
 
 	/**
-	 * Return the right ShopeePay backend depending on the platform and availability of
+	 * Return the right Truemoney backend depending on the platform and availability of
 	 * the backend in the capability
 	 */
 	public function get_source()
