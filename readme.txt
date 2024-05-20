@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.4.2
-Stable tag: 5.8.2
+Stable tag: 5.8.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,10 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 5.8.3 =
+
+- Remove OCBC PAO (PR: [#449](https://github.com/omise/omise-woocommerce/pull/449))
 
 = 5.8.2 =
 
