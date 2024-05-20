@@ -3,7 +3,7 @@
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
-    /**
+	/**
 	 * The gateway instance.
 	 */
 	protected $gateway;
@@ -19,9 +19,9 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
 	 * Initializes the payment method type.
 	 */
 	public function initialize() {
-		$this->settings = get_option( "woocommerce_{$this->name}_settings", [] );
+		$this->settings = get_option("woocommerce_{$this->name}_settings", []);
 		$gateways       = WC()->payment_gateways->payment_gateways();
-		$this->gateway  = $gateways[ $this->name ];
+		$this->gateway  = $gateways[$this->name];
 	}
 
 	/**
@@ -39,20 +39,20 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_script_handles() {
-		if ( ! wp_script_is( 'wc-omise-mobilebanking-payments-blocks', 'enqueued' ) ) {
+		if (!wp_script_is('wc-omise-mobilebanking-payments-blocks', 'enqueued')) {
 			$script_asset = require __DIR__ . '/../assets/js/build/omise-mobilebanking.asset.php';
-            wp_register_script(
-                "wc-omise-mobilebanking-payments-blocks",
-                plugin_dir_url( __DIR__ ) . 'assets/js/build/omise-mobilebanking.js',
-                $script_asset[ 'dependencies' ],
-                $script_asset[ 'version' ],
-                true
-            );
+			wp_register_script(
+				"wc-omise-mobilebanking-payments-blocks",
+				plugin_dir_url(__DIR__) . 'assets/js/build/omise-mobilebanking.js',
+				$script_asset['dependencies'],
+				$script_asset['version'],
+				true
+			);
 
-            wp_enqueue_script( 'wc-omise-mobilebanking-payments-blocks' );
-        }
+			wp_enqueue_script('wc-omise-mobilebanking-payments-blocks');
+		}
 
-		return [ 'wc-omise-mobilebanking-payments-blocks' ];
+		return ['wc-omise-mobilebanking-payments-blocks'];
 	}
 
 	/**
@@ -61,15 +61,15 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-        $currency   = get_woocommerce_currency();
+		$currency   = get_woocommerce_currency();
 		return [
 			'name'        => $this->name,
-			'title'       => $this->get_setting( 'title' ),
-			'description' => $this->get_setting( 'description' ),
-			'supports'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] ),
-            'data' => [
-                'backends' => $this->gateway->backend->get_available_providers( $currency ),
-            ]
+			'title'       => $this->get_setting('title'),
+			'description' => $this->get_setting('description'),
+			'supports'    => array_filter($this->gateway->supports, [$this->gateway, 'supports']),
+			'data' => [
+				'backends' => $this->gateway->backend->get_available_providers($currency),
+			]
 		];
 	}
 }
