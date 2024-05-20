@@ -41,22 +41,16 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_script_handles() {
-		wp_enqueue_script(
-			'omise-credit-card',
-			plugins_url( '../assets/javascripts/omise-payment-credit-card.js', dirname( __FILE__ ) ),
-			array( 'jquery' ),
-			WC_VERSION,
-			true
-		);
-
-		$script_asset = require __DIR__ .  '/../assets/js/build/credit_card.asset.php';
-		wp_register_script(
-			"{$this->name}-payments-blocks",
-			plugin_dir_url( __DIR__ ) . 'assets/js/build/credit_card.js',
-			$script_asset[ 'dependencies' ],
-			$script_asset[ 'version' ],
-			true
-		);
+		if ( is_checkout() && $this->is_active() ) {
+			$script_asset = require __DIR__ .  '/../assets/js/build/credit_card.asset.php';
+			wp_register_script(
+				"{$this->name}-payments-blocks",
+				plugin_dir_url( __DIR__ ) . 'assets/js/build/credit_card.js',
+				$script_asset[ 'dependencies' ],
+				$script_asset[ 'version' ],
+				true
+			);
+		}
 
 		return [ "{$this->name}-payments-blocks" ];
 	}
@@ -77,7 +71,15 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
 			if ( ! empty( $omise_customer_id ) ) {
 				try {
 					$cards = new OmiseCustomerCard;
-					$viewData['existingCards'] = $cards->get($omise_customer_id);
+					$existingCards = $cards->get($omise_customer_id);
+
+					foreach($existingCards['data'] as $card) {
+						$viewData['existing_cards'][] = [
+							'id' => $card['id'],
+							'brand' => $card['brand'],
+							'last_digits' => $card['last_digits'],
+						];
+					}
 				} catch (Exception $e) {
 					// nothing
 				}
