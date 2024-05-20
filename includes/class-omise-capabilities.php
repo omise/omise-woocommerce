@@ -90,7 +90,6 @@ class Omise_Capabilities {
 		return $isPaymentPage || $isOmiseSettingPage;
 	}
 
-
 	/**
 	 * @param string|null $pKey
 	 * @param string|null $sKey

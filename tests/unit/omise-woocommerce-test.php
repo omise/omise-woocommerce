@@ -50,7 +50,7 @@ class Omise_Test extends TestCase
 	public function test_when_features_util_class_exist()
 	{
 		$featuresUtilMock = Mockery::mock('alias:\Automattic\WooCommerce\Utilities\FeaturesUtil');
-		$featuresUtilMock->shouldReceive('declare_compatibility')->once();
+		$featuresUtilMock->shouldReceive('declare_compatibility')->twice();
 		$this->model->enable_hpos();
 		$this->assertTrue(class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class));
 	}
