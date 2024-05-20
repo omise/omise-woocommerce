@@ -1,4 +1,3 @@
-
 import { __ } from '@wordpress/i18n';
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -18,19 +17,18 @@ const Label = ( props ) => {
 const Content = (props) => {
 	return <CreditCardPaymentMethod
 		{...props}
-		description={decodeEntities( settings.description || '' )}
 		settings={settings}
 	/>
 }
 
-registerPaymentMethod( {
+registerPaymentMethod({
 	name: settings.name,
 	label: <Label />,
-	content: <Content />,
-	edit: <Content />,
+	content: <Content settings={settings} />,
+	edit: <Content settings={settings} />,
 	canMakePayment: () => true,
 	ariaLabel: label,
 	supports: {
 		features: settings.supports,
 	}
-} )
+})
