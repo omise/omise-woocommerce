@@ -1,8 +1,5 @@
 <?php
 
-use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
-use Automattic\WooCommerce\Blocks\Registry\Container;
-
 class Omise_Block_Payments {
 
     private $container;
@@ -28,6 +25,7 @@ class Omise_Block_Payments {
         Omise_Block_DuitNow_QR::class,
         Omise_Block_Paypay::class,
         Omise_Block_RabbitLinePay::class,
+        Omise_Block_Mobile_Banking::class,
     ];
 
     function __construct($container) {
