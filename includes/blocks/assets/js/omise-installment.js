@@ -22,6 +22,7 @@ const InstallmentPaymentMethod = (props) => {
 
     const onInstallmentSelected = (e) => {
         installmentRef.current = e.target.value
+        termRef.current = null
     }
 
     const onTermsSelected = (e) => {
