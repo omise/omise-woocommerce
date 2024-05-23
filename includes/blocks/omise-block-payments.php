@@ -26,6 +26,7 @@ class Omise_Block_Payments {
         Omise_Block_Paypay::class,
         Omise_Block_RabbitLinePay::class,
         Omise_Block_Mobile_Banking::class,
+        Omise_Block_Installment::class,
     ];
 
     function __construct($container) {

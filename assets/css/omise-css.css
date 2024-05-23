@@ -192,6 +192,7 @@ fieldset.card-exists,
  * 2.3). Form, bank list components
  */
 ul.omise-banks-list {
+	list-style-type: none;
 	margin: 0;
 }
 
@@ -284,6 +285,7 @@ ul.omise-banks-list {
 /** Media Quries **/
 @media all and (min-width: 375px) {
 	ul.omise-banks-list {
+		list-style-type: none;
 		margin: 0 0 0 1.75em;
 	}
 
@@ -303,6 +305,7 @@ ul.omise-banks-list {
 
 @media all and (min-width: 768px) {
 	ul.omise-banks-list {
+		list-style-type: none;
 		margin: 0;
 	}
 
@@ -319,6 +322,7 @@ ul.omise-banks-list {
 
 @media all and (min-width: 1024px) {
 	ul.omise-banks-list {
+		list-style-type: none;
 		margin: 0 0 0 1.75em;
 	}
 
