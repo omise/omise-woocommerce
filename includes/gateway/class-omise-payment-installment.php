@@ -122,7 +122,11 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	public function get_charge_request($order_id, $order)
 	{
 		// Prior to WC blocks, we get source as array. With WC blocks, source is now a string.
-		$source_type = is_array($_POST['source']) ? $_POST['source']['type'] : $_POST['source'];
+		$source_type = isset($_POST['source'])
+			? (is_array($_POST['source'])
+				? $_POST['source']['type']
+				: $_POST['source'])
+			: '';
 		$source_type = isset($source_type) ? $source_type : '';
 		$requestData = $this->build_charge_request(
 			$order_id,

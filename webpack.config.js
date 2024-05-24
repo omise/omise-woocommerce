@@ -32,6 +32,7 @@ module.exports = {
 		'omise-one-click-apms': '/includes/blocks/assets/js/omise-one-click-apms.js',
 		'omise-mobilebanking': '/includes/blocks/assets/js/omise-mobilebanking.js',
 		'omise_installment': '/includes/blocks/assets/js/omise-installment.js',
+		'omise_fpx': '/includes/blocks/assets/js/omise-fpx.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),

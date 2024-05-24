@@ -3,7 +3,7 @@
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
 class Omise_Block_Installment extends AbstractPaymentMethodType {
-    /**
+	/**
 	 * The gateway instance.
 	 */
 	protected $gateway;
@@ -15,7 +15,7 @@ class Omise_Block_Installment extends AbstractPaymentMethodType {
 	 */
 	protected $name = 'omise_installment';
 
-    /**
+	/**
 	 * Initializes the payment method type.
 	 */
 	public function initialize() {
