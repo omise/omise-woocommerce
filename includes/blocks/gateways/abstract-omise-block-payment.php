@@ -38,24 +38,24 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
 		return $this->gateway->is_available();
 	}
 
-    /**
+	/**
 	 * Returns an array of scripts/handles to be registered for this payment method.
 	 *
 	 * @return array
 	 */
 	public function get_payment_method_script_handles() {
-        if (!wp_script_is("wc-{$this->name}-payments-blocks", 'enqueued')) {
-            $script_asset = require __DIR__ . "/../assets/js/build/{$this->name}.asset.php";
-            wp_register_script(
-                "wc-{$this->name}-payments-blocks",
-                plugin_dir_url(__DIR__) . "assets/js/build/{$this->name}.js",
-                $script_asset['dependencies'],
-                $script_asset['version'],
-                true
-            );
+		if (!wp_script_is("wc-{$this->name}-payments-blocks", 'enqueued')) {
+			$script_asset = require __DIR__ . "/../assets/js/build/{$this->name}.asset.php";
+			wp_register_script(
+				"wc-{$this->name}-payments-blocks",
+				plugin_dir_url(__DIR__) . "assets/js/build/{$this->name}.js",
+				$script_asset['dependencies'],
+				$script_asset['version'],
+				true
+			);
 
-            wp_enqueue_script("wc-{$this->name}-payments-blocks");
-        }
+			wp_enqueue_script("wc-{$this->name}-payments-blocks");
+		}
 
 		return ["wc-{$this->name}-payments-blocks"];
 	}

@@ -10,11 +10,11 @@ class Omise_Block_Installment extends Omise_Block_Payment {
 
 	public function set_additional_data() {
 		$viewData = $this->gateway->get_view_data();
-        $installment_backends = [];
+		$installment_backends = [];
 
-        foreach($viewData['installment_backends'] as $backend) {
-            $installment_backends[] = (array)$backend;
-        }
+		foreach($viewData['installment_backends'] as $backend) {
+			$installment_backends[] = (array)$backend;
+		}
 
 		$this->additional_data = [
 			'is_zero_interest' => $viewData['is_zero_interest'],
