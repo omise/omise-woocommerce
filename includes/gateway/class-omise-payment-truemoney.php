@@ -33,7 +33,6 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 		$this->title                = $this->get_option( 'title' );
 		$this->description          = $this->get_option( 'description' );
 		$this->restricted_countries = array( 'TH' );
-		$this->source_type        = $this->get_source();
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
@@ -75,9 +74,21 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	public function payment_fields()
 	{
 		parent::payment_fields();
-		if (self::WALLET === $this->source_type) {
+		if ($this->is_wallet()) {
 			Omise_Util::render_view( 'templates/payment/form-truemoney.php', [] );
 		}
+	}
+
+	public function is_wallet()
+	{
+		// Moved the logic to set source type from constructor because
+		// the Capability API is not being called from WC blocks.
+		if (!$this->source_type) {
+			$this->source_type = $this->get_source();
+
+		}
+
+		return self::WALLET === $this->source_type;
 	}
 
 	/**
@@ -85,12 +96,14 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$requestData = $this->get_charge_request($order_id, $order);
-		return OmiseCharge::create($requestData);
+		$request_data = $this->get_charge_request($order_id, $order);
+		return OmiseCharge::create($request_data);
 	}
 
 	public function get_charge_request($order_id, $order)
 	{
+		$is_wallet = $this->is_wallet();
+
 		$request_data = $this->build_charge_request(
 			$order_id,
 			$order,
@@ -98,7 +111,7 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 			$this->id . '_callback'
 		);
 
-		if (self::WALLET === $this->source_type) {
+		if ($is_wallet) {
 			$phone_option = $_POST['omise_phone_number_default'];
 			$is_phone_option_checked = isset($phone_option) && 1 == $phone_option;
 			$phone_number = $is_phone_option_checked ?

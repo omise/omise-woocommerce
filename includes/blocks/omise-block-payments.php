@@ -29,6 +29,7 @@ class Omise_Block_Payments {
         Omise_Block_Installment::class,
         Omise_Block_Fpx::class,
         Omise_Block_Atome::class,
+        Omise_Block_Truemoney::class,
     ];
 
     function __construct($container) {

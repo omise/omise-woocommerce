@@ -138,7 +138,6 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 		}
 
 		$charge = OmiseCharge::retrieve( $this->get_charge_id_from_order() );
-		error_log(print_r($charge['return_uri'], true));
 		if ( $this->get_pending_status() !== $charge['status'] ) {
 			return;
 		}
