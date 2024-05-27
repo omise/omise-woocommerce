@@ -1,7 +1,7 @@
 <?php
 
 class Omise_Block_Atome extends Omise_Block_Payment {
-    /**
+	/**
 	 * Payment method name/id/slug.
 	 *
 	 * @var string
@@ -9,6 +9,6 @@ class Omise_Block_Atome extends Omise_Block_Payment {
 	protected $name = 'omise_atome';
 
 	public function set_additional_data() {
-        $this->additional_data = $this->gateway->validate_atome_request();
-    }
+		$this->additional_data = $this->gateway->validate_atome_request();
+	}
 }
