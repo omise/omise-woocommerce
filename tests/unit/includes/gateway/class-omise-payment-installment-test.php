@@ -40,7 +40,7 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $GLOBALS['wp'] = $wp;
 
         $installment = new Omise_Payment_Installment();
-        $total = $installment->getTotalAmount();
+        $total = $installment->get_total_amount();
 
         $this->assertEquals($total, 999999);
 
@@ -65,7 +65,7 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         }
 
         $installment = new Omise_Payment_Installment();
-        $total = $installment->getTotalAmount();
+        $total = $installment->get_total_amount();
 
         $this->assertEquals($total, 999999);
     }
