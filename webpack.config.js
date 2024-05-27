@@ -33,6 +33,7 @@ module.exports = {
 		'omise-mobilebanking': '/includes/blocks/assets/js/omise-mobilebanking.js',
 		'omise_installment': '/includes/blocks/assets/js/omise-installment.js',
 		'omise_fpx': '/includes/blocks/assets/js/omise-fpx.js',
+		'omise_atome': '/includes/blocks/assets/js/omise-atome.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),
