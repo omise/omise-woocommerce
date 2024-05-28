@@ -35,6 +35,7 @@ module.exports = {
 		'omise_fpx': '/includes/blocks/assets/js/omise-fpx.js',
 		'omise_atome': '/includes/blocks/assets/js/omise-atome.js',
 		'omise_truemoney': '/includes/blocks/assets/js/omise-truemoney.js',
+		'omise_googlepay': '/includes/blocks/assets/js/omise-googlepay.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),

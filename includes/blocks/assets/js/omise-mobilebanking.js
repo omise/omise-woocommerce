@@ -71,7 +71,7 @@ const MobileBankingPaymentMethod = (props) => {
 }
 
 registerPaymentMethod( {
-    name: settings.name,
+    name: settings.name || "",
     label: <Label />,
     content: <MobileBankingPaymentMethod />,
     edit: <MobileBankingPaymentMethod />,

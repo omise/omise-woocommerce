@@ -108,7 +108,7 @@ const InstallmentPaymentMethod = (props) => {
 }
 
 registerPaymentMethod( {
-    name: settings.name,
+    name: settings.name || "",
     label: <Label />,
     content: <InstallmentPaymentMethod />,
     edit: <InstallmentPaymentMethod />,

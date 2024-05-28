@@ -107,7 +107,7 @@ const AtomePaymentMethod = (props) => {
 }
 
 registerPaymentMethod( {
-    name: settings.name,
+    name: settings.name || "",
     label: <Label />,
     content: <AtomePaymentMethod />,
     edit: <AtomePaymentMethod />,
