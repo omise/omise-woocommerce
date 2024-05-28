@@ -171,6 +171,7 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-installment.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-fpx.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
 		Omise_Block::init();
 	}
 

@@ -38,7 +38,7 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
 		return $this->gateway->is_available();
 	}
 
-    /**
+	/**
 	 * Returns an array of scripts/handles to be registered for this payment method.
 	 *
 	 * @return array
