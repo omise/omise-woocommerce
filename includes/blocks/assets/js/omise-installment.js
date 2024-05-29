@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from '@wordpress/element';
+import {useEffect, useRef} from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';

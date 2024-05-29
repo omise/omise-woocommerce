@@ -40,7 +40,11 @@ const FpxPaymentMethod = (props) => {
             }
         });
         return () => unsubscribe();
-    }, [ onPaymentSetup ]);
+    }, [
+        emitResponse.responseTypes.ERROR,
+		emitResponse.responseTypes.SUCCESS,
+		onPaymentSetup,
+    ]);
 
     return (<>
         {description && <p>{description}</p>}
