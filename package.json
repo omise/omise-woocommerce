@@ -10,6 +10,7 @@
         "npm": ">=6.14.0"
     },
     "devDependencies": {
+        "@google-pay/button-react": "^3.1.0",
         "@woocommerce/dependency-extraction-webpack-plugin": "^1.7.0",
         "@wordpress/scripts": "^27.9.0"
     },

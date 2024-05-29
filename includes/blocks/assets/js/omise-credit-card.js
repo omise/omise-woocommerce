@@ -22,7 +22,7 @@ const Content = (props) => {
 }
 
 registerPaymentMethod({
-	name: settings.name,
+	name: settings.name || "",
 	label: <Label />,
 	content: <Content settings={settings} />,
 	edit: <Content settings={settings} />,

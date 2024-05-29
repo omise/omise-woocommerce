@@ -13,7 +13,7 @@ export function registerOmisePaymentMethod({settings, label}) {
     }
     
     registerPaymentMethod( {
-        name: settings.name,
+        name: settings.name || "",
         label: <Label />,
         content: <Content />,
         edit: <Content />,

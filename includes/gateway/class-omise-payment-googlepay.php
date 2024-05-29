@@ -2,6 +2,9 @@
 defined('ABSPATH') or die('No direct script access allowed.');
 
 class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
+
+    private $googlepay_config;
+
     public function __construct() {
         Omise_Payment::__construct();
 
@@ -18,6 +21,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
         $this->init_form_fields();
         $this->init_settings();
         $this->register_omise_googlepay_scripts();
+        $this->init_googlepay_config();
 
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
@@ -155,50 +159,68 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
         );
     }
 
-    private function google_pay_button_scripts() {
-        $cardNetworks = [];
-        $this->get_option('accept_amex') == 'yes' ? array_push($cardNetworks, "AMEX") : null;
-        $this->get_option('accept_jcb') == 'yes' ? array_push($cardNetworks, "JCB") : null;
-        $this->get_option('accept_mastercard') == 'yes' ? array_push($cardNetworks, "MASTERCARD") : null;
-        $this->get_option('accept_visa') == 'yes' ? array_push($cardNetworks, "VISA") : null;
-        $allowedCardNetworks = json_encode($cardNetworks);
+    private function init_googlepay_config() {
+        $this->googlepay_config = [
+            'environment' => $this->is_test() ? 'TEST' : 'PRODUCTION',
+            'api_version' => 2,
+            'api_version_minor' => 0,
+            'allowed_auth_methods' => ['PAN_ONLY'],
+            'allowed_card_networks' => $this->allowed_card_networks(),
+            'billing_address_required' => $this->get_option('request_billing_address') == 'yes',
+            'phone_number_required' => $this->get_option('request_phone_number') == 'yes',
+            'public_key' => $this->public_key(),
+            'merchantId' => $this->get_option('merchant_id'),
+            'price_status' => 'NOT_CURRENTLY_KNOWN',
+            'currency' => get_woocommerce_currency(),
+        ];
+    }
 
-        return array("script" =>
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+    }
+
+    private function google_pay_button_scripts() {
+        $isBillingAddressRequired = $this->googlepay_config['billing_address_required'] ? 'true' : 'false';
+        $isPhoneNumberRequired = $this->googlepay_config['phone_number_required'] ? 'true' : 'false';
+
+        return ["script" =>
             "<script type='module'>
                 const button = document.createElement('google-pay-button')
-                button.setAttribute('environment', '" . ($this->is_test() ? 'TEST' : 'PRODUCTION') . "')
+                button.setAttribute('environment', '" . $this->googlepay_config['environment'] . "')
                 button.setAttribute('button-type', 'pay')
                 button.setAttribute('button-color', 'black')
                 button.paymentRequest = {
-                    apiVersion: 2,
-                    apiVersionMinor: 0,
+                    apiVersion: " . $this->googlepay_config['api_version'] . ",
+                    apiVersionMinor: " . $this->googlepay_config['api_version_minor'] . ",
                     allowedPaymentMethods: [
                         {
                             type: 'CARD',
                             parameters: {
-                                allowedAuthMethods: ['PAN_ONLY'],
-                                allowedCardNetworks: " . $allowedCardNetworks . ",
-                                billingAddressRequired: " . ($this->get_option('request_billing_address') == 'yes' ? 'true' : 'false') . ",
+                                allowedAuthMethods: " . $this->googlepay_config['allowed_auth_methods'] . ",
+                                allowedCardNetworks: " . json_encode($this->googlepay_config['allowed_card_networks']) . ",
+                                billingAddressRequired: " . $isBillingAddressRequired . ",
                                 billingAddressParameters: {
                                     format: 'FULL',
-                                    phoneNumberRequired: " . ($this->get_option('request_phone_number') == 'yes' ? 'true' : 'false') . ",
+                                    phoneNumberRequired: " . $isPhoneNumberRequired . ",
                                 },
                             },
                             tokenizationSpecification: {
                                 type: 'PAYMENT_GATEWAY',
                                 parameters: {
                                     gateway: 'omise',
-                                    gatewayMerchantId: '" . $this->public_key() . "',
+                                    gatewayMerchantId: '" . $this->googlepay_config['public_key'] . "',
                                 },
                             },
                         },
                     ],
                     merchantInfo: {
-                        merchantId: '" . $this->get_option('merchant_id') . "',
+                        merchantId: '" . $this->googlepay_config['merchant_id'] . "',
                     },
                     transactionInfo: {
-                        totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-                        currencyCode: '" . get_woocommerce_currency(). "',
+                        totalPriceStatus: " . $this->googlepay_config['price_status'] . ",
+                        currencyCode: '" . $this->googlepay_config['currency'] . "',
                     },
                 }
                 
@@ -220,7 +242,16 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                     el.addEventListener('click', toggleOrderButton)
                 })
             </script>"
-        );
+        ];
+    }
+
+    public function allowed_card_networks() {
+        $cardNetworks = [];
+        $this->get_option('accept_amex') == 'yes' ? array_push($cardNetworks, "AMEX") : null;
+        $this->get_option('accept_jcb') == 'yes' ? array_push($cardNetworks, "JCB") : null;
+        $this->get_option('accept_mastercard') == 'yes' ? array_push($cardNetworks, "MASTERCARD") : null;
+        $this->get_option('accept_visa') == 'yes' ? array_push($cardNetworks, "VISA") : null;
+        return $cardNetworks;
     }
 
     /**

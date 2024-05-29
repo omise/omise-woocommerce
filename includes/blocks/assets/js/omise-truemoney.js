@@ -104,7 +104,7 @@ const TruemoneyPaymentMethod = ({content, ...props}) => {
 }
 
 registerPaymentMethod( {
-    name: settings.name,
+    name: settings.name || "",
     label: <Label />,
     content: <TruemoneyPaymentMethod />,
     edit: <TruemoneyPaymentMethod />,
