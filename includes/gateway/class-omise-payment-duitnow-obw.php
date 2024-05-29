@@ -21,6 +21,8 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 		$this->restricted_countries = array('MY');
 		$this->source_type          = 'duitnow_obw';
 
+		$this->init_payment_config();
+
 		add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
 		add_action('woocommerce_order_action_' . $this->id . '_sync_payment', array($this, 'sync_payment'));
@@ -56,91 +58,22 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 		);
 	}
 
+	public function init_payment_config() {
+		$capabilities = Omise_Capabilities::retrieve();
+		$this->backend = $capabilities
+			? $capabilities->getBackendByType($this->source_type)
+			: null;
+	}
+
 	/**
 	 * @inheritdoc
 	 */
 	public function payment_fields()
 	{
 		parent::payment_fields();
-
 		Omise_Util::render_view(
 			'templates/payment/form-duitnow-obw.php',
-			array(
-				'duitnow_obw_banklist' => array(
-					'affin' => array(
-						'code' => 'affin',
-						'name' => 'Affin Bank'
-					),
-					'alliance' => array(
-						'code' => 'alliance',
-						'name' => 'Alliance Bank'
-					),
-					'agro' => array(
-						'code' => 'agro',
-						'name' => 'Agrobank'
-					),
-					'ambank' => array(
-						'code' => 'ambank',
-						'name' => 'AmBank'
-					),
-					'cimb' => array(
-						'code' => 'cimb',
-						'name' => 'CIMB Bank'
-					),
-					'islam' => array(
-						'code' => 'islam',
-						'name' => 'Bank Islam'
-					),
-					'rakyat' => array(
-						'code' => 'rakyat',
-						'name' => 'Bank Rakyat'
-					),
-					'muamalat' => array(
-						'code' => 'muamalat',
-						'name' => 'Bank Muamalat'
-					),
-					'bsn' => array(
-						'code' => 'bsn',
-						'name' => 'Bank Simpanan Nasional'
-					),
-					'hongleong' => array(
-						'code' => 'hongleong',
-						'name' => 'Hong Leong'
-					),
-					'hsbc' => array(
-						'code' => 'hsbc',
-						'name' => 'HSBC Bank'
-					),
-					'kfh' => array(
-						'code' => 'kfh',
-						'name' => 'Kuwait Finance House'
-					),
-					'maybank2u' => array(
-						'code' => 'maybank2u',
-						'name' => 'Maybank'
-					),
-					'ocbc' => array(
-						'code' => 'ocbc',
-						'name' => 'OCBC'
-					),
-					'public' => array(
-						'code' => 'public',
-						'name' => 'Public Bank'
-					),
-					'rhb' => array(
-						'code' => 'rhb',
-						'name' => 'RHB Bank'
-					),
-					'sc' => array(
-						'code' => 'sc',
-						'name' => 'Standard Chartered'
-					),
-					'uob' => array(
-						'code' => 'uob',
-						'name' => 'United Overseas Bank'
-					),
-				)
-			)
+			[ 'duitnow_obw_banklist' => !$this->backend ? $this->backend->banks : [] ]
 		);
 	}
 
@@ -149,14 +82,19 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$requestData = $this->build_charge_request(
+		$request_data = $this->build_charge_request(
 			$order_id, $order, $this->source_type, $this->id . "_callback"
 		);
-		$source_bank = isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
-		$requestData['source'] = array_merge($requestData['source'], [
+
+		// Prior to WC blocks, we get bank in source array. With WC blocks, bank is now a string.
+		$source_bank = isset($_POST['bank'])
+			? $_POST['bank']
+			: (isset($_POST['source']) ? $_POST['source']['bank'] : '');
+		$request_data['source'] = array_merge($request_data['source'], [
 			'bank' => sanitize_text_field($source_bank),
 		]);
-		return OmiseCharge::create($requestData);
+
+		return OmiseCharge::create($request_data);
 	}
 
 	/**

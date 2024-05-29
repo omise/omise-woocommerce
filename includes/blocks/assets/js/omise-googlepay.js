@@ -27,7 +27,9 @@ const Content = (props) => {
                         }
                     }
                 };
-            } else if (error) {
+            }
+
+            if (error) {
                 return {
                     type: emitResponse.responseTypes.ERROR,
                     message: error
@@ -68,6 +70,7 @@ const Content = (props) => {
         Omise.setPublicKey(data['public_key']);
 		Omise.createToken('tokenization', params, (statusCode, response) => {
             if (statusCode == 200) {
+                setError(null);
                 setToken(response.id);
 
                 // submit order
