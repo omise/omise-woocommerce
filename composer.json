@@ -6,9 +6,16 @@
     "require-dev": {
         "phpunit/phpunit": "^5.7 || ^9.5",
         "mockery/mockery": "^1.6",
-        "brain/monkey": "^2.6"
+        "brain/monkey": "^2.6",
+        "woocommerce/woocommerce-blocks": "^11.7"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --testdox --colors"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "automattic/jetpack-autoloader": true
+        }
     }
 }

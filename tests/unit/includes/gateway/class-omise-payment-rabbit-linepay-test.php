@@ -6,7 +6,7 @@ class Omise_Payment_RabbitLinePay_Test extends Omise_Offsite_Test
 {
     private $obj;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'mobile_banking_ocbc';
         parent::setUp();
@@ -14,7 +14,7 @@ class Omise_Payment_RabbitLinePay_Test extends Omise_Offsite_Test
         $this->obj = new Omise_Payment_RabbitLinePay();
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
         // destroy object and clear memory

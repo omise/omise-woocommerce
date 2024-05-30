@@ -4,7 +4,7 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_Atome_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'atome';
         parent::setUp();
@@ -22,6 +22,11 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         if (!defined('WC_VERSION')) {
             define('WC_VERSION', '1.0.0');
         }
+
+        Brain\Monkey\setUp();
+        Brain\Monkey\Functions\stubs( [
+            'wp_kses' => null,
+		] );
     }
 
     public function testGetChargeRequest()
@@ -42,9 +47,6 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         $result = $obj->get_charge_request($orderId, $orderMock);
 
         $this->assertEquals($this->sourceType, $result['source']['type']);
-
-        unset($_POST['source']);
-        unset($obj);
     }
 
     public function testCharge()

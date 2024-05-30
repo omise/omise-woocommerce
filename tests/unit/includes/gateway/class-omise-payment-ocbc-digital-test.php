@@ -6,7 +6,7 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
 {
     private $obj;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'mobile_banking_ocbc';
         parent::setUp();
@@ -22,7 +22,7 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
         }
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
         // destroy object and clear memory

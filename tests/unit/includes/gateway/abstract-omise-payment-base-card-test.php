@@ -6,7 +6,7 @@ class Omise_Payment_Base_Card_Test extends TestCase
 {
     public $obj;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $omisePaymentMock = Mockery::mock('overload:Omise_Payment');
         $omisePaymentMock->shouldReceive('is_test')
@@ -45,7 +45,7 @@ class Omise_Payment_Base_Card_Test extends TestCase
     /**
      * close mockery after tests are done
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         Mockery::close();
     }

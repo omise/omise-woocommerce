@@ -7,7 +7,7 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
  */
 class Omise_Payment_Kakaopay_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'kakaopay';
         parent::setUp();

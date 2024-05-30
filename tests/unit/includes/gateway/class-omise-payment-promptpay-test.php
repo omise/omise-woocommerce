@@ -10,7 +10,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
     public $mockOmiseCharge;
     public $mockFileGetContent;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         function wc_timezone_offset() {}

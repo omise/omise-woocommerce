@@ -5,7 +5,7 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
     public $expectedAmount = 999999;
     public $expectedCurrency = 'thb';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         // Mocking the parent class

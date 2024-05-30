@@ -4,12 +4,11 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_Wechat_Pay_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->sourceType = 'wechat_pay';
 
-        Brain\Monkey\setUp();
         Brain\Monkey\Functions\stubs([
             'apply_filters' => function () {
                 return Omise_Image::get_image([

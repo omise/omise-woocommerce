@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class Omise_Payment_CreditCard_Test extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         Brain\Monkey\setUp();
 
@@ -34,7 +34,7 @@ class Omise_Payment_CreditCard_Test extends TestCase
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-creditcard.php';
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         Brain\Monkey\tearDown();
         Mockery::close();

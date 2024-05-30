@@ -4,7 +4,7 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_Internetbanking_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'fpx';
         parent::setUp();

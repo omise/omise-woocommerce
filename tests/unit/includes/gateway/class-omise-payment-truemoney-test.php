@@ -6,7 +6,7 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
 {
     private $omise_capability_mock;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'truemoney';
         parent::setUp();

@@ -2,9 +2,11 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
+use Brain\Monkey;
+
 class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'installment_ktc';
         parent::setUp();
@@ -43,10 +45,6 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $total = $installment->get_total_amount();
 
         $this->assertEquals($total, 999999);
-
-        unset($GLOBALS['wp']);
-        unset($installment);
-        unset($wp);
     }
 
     /**
@@ -54,15 +52,11 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
      */
     public function getTotalAmountFromCart()
     {
-        // mocking WC() method
-        if (!function_exists('WC')) {
-            function WC() {
-                $class = new stdClass();
-                $class->cart = new stdClass();
-                $class->cart->total = 999999;
-                return $class;
-            }
-        }
+        $clazz = new stdClass();
+        $clazz->cart = new stdClass();
+        $clazz->cart->total = 999999;
+
+        Monkey\Functions\expect('WC')->andReturn($clazz);
 
         $installment = new Omise_Payment_Installment();
         $total = $installment->get_total_amount();

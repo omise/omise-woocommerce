@@ -9,7 +9,7 @@ class Omise_Test extends TestCase
 	/**
 	 * setup add_action and do_action before the test run
 	 */
-	public function setUp(): void
+	protected function setUp(): void
 	{
 		if (!function_exists('add_action')) {
 			function add_action()
@@ -28,7 +28,7 @@ class Omise_Test extends TestCase
 	/**
 	 * close mockery after test cases are done
 	 */
-	public function tearDown(): void
+	protected function tearDown(): void
 	{
 		Mockery::close();
 	}

@@ -4,7 +4,7 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_Mobilebanking_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         require_once __DIR__ . '/../../../../includes/backends/class-omise-backend-mobile-banking.php';
