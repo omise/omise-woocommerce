@@ -84,7 +84,7 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
 	/**
 	 * Set additional data requried to make UI work. Different payment
 	 * methods may require different additional data.
-	 * 
+	 *
 	 * @return void
 	 */
 	abstract public function set_additional_data();
