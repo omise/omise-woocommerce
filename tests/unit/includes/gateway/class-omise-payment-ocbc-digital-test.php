@@ -13,20 +13,6 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-ocbc-digital.php';
         require_once __DIR__ . '/../../../../includes/classes/class-omise-image.php';
         $this->obj = new Omise_Payment_OCBC_Digital();
-
-        // mocking WP built-in functions
-        if (!function_exists('plugins_url')) {
-            function plugins_url() {
-                return "http://localhost";
-            }
-        }
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        // destroy object and clear memory
-        unset($this->obj);
     }
 
     /**

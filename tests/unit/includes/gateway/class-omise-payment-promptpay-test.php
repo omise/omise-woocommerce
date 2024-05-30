@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
 {
     public $mockOrder;
@@ -33,6 +35,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
      */
     public function textExpiresAtFieldIsPassedToJavascript()
     {
+        Monkey\Functions\expect('wp_enqueue_script');
         $expiresAt = '2023-11-22T14:48:00.000Z';
 
         $this->mockFileGetContent->shouldReceive('get_contents')->once()->andReturn('<svg></svg>');

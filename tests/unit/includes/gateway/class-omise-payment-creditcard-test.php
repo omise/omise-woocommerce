@@ -1,12 +1,14 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Brain\Monkey;
 
 class Omise_Payment_CreditCard_Test extends TestCase
 {
     protected function setUp(): void
     {
-        Brain\Monkey\setUp();
+        parent::setUp();
+        Monkey\setUp();
 
         $omisePaymentMock = Mockery::mock('overload:Omise_Payment');
         $omisePaymentMock->shouldReceive('init_settings');
@@ -36,7 +38,7 @@ class Omise_Payment_CreditCard_Test extends TestCase
 
     protected function tearDown(): void
     {
-        Brain\Monkey\tearDown();
+        Monkey\tearDown();
         Mockery::close();
     }
 
@@ -45,9 +47,11 @@ class Omise_Payment_CreditCard_Test extends TestCase
      */
     public function testClassIsInitializedProperly()
     {
-        Brain\Monkey\Functions\stubs( [
+        Monkey\Functions\stubs( [
             'wp_kses' => null,
 		] );
+        Monkey\Functions\expect('wp_enqueue_script');
+        Monkey\Functions\expect('plugins_url');
         $creditCard = new Omise_Payment_Creditcard;
         
         $this->assertEquals($creditCard->source_type, 'credit_card');

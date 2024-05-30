@@ -20,6 +20,7 @@ abstract class Bootstrap_Test_Setup extends TestCase
             'wp_kses' => null,
 			'add_action' => null,
 		] );
+        Monkey\Functions\expect('plugins_url')->andReturn('');
     }
 
     /**

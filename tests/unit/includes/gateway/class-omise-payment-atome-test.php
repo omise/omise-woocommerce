@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
+use Brain\Monkey;
+
 class Omise_Payment_Atome_Test extends Omise_Offsite_Test
 {
     protected function setUp(): void
@@ -10,13 +12,7 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         parent::setUp();
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-atome.php';
 
-        if (!function_exists('wp_enqueue_script')) {
-            function wp_enqueue_script() {}
-        }
-
-        if (!function_exists('plugins_url')) {
-            function plugins_url() {}
-        }
+        Monkey\Functions\expect('wp_enqueue_script');
 
         // dummy version
         if (!defined('WC_VERSION')) {
