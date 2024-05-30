@@ -64,7 +64,7 @@ class Omise_Payment_GooglePay_Test extends TestCase
             'billing_address_required' => false,
             'phone_number_required' => false,
             'public_key' => 'pkey_123',
-            'merchantId' => null,
+            'merchant_id' => null,
             'price_status' => 'NOT_CURRENTLY_KNOWN',
             'currency' => 'thb',
         ];
@@ -77,6 +77,80 @@ class Omise_Payment_GooglePay_Test extends TestCase
         $config->invoke($googlepay);
 
         $result = $googlepay->googlepay_config;
+
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function google_pay_button_scripts()
+    {
+        $googlepay = new Omise_Payment_GooglePay;
+
+        $reflection = new \ReflectionClass($googlepay);
+        $config = $reflection->getMethod('google_pay_button_scripts');
+        $config->setAccessible(true);
+        $result = $config->invoke($googlepay);
+
+        $expected = [
+            'script' => "<script type='module'>
+                const button = document.createElement('google-pay-button')
+                button.setAttribute('environment', 'TEST')
+                button.setAttribute('button-type', 'pay')
+                button.setAttribute('button-color', 'black')
+                button.paymentRequest = {
+                    apiVersion: 2,
+                    apiVersionMinor: 0,
+                    allowedPaymentMethods: [
+                        {
+                            type: 'CARD',
+                            parameters: {
+                                allowedAuthMethods: [\"PAN_ONLY\"],
+                                allowedCardNetworks: [],
+                                billingAddressRequired: false,
+                                billingAddressParameters: {
+                                    format: 'FULL',
+                                    phoneNumberRequired: false,
+                                },
+                            },
+                            tokenizationSpecification: {
+                                type: 'PAYMENT_GATEWAY',
+                                parameters: {
+                                    gateway: 'omise',
+                                    gatewayMerchantId: 'pkey_123',
+                                },
+                            },
+                        },
+                    ],
+                    merchantInfo: {
+                        merchantId: '',
+                    },
+                    transactionInfo: {
+                        totalPriceStatus: NOT_CURRENTLY_KNOWN,
+                        currencyCode: 'thb',
+                    },
+                }
+
+                const div = document.getElementById('googlepay-button-container')
+                div.appendChild(button)
+
+                function toggleOrderButton() {
+                    const placeOrderButton = document.getElementById('place_order')
+                    const paymentBox = document.getElementById('payment_method_omise_googlepay')
+
+                    if (document.getElementsByClassName('omise-secondary-text googlepay-selected').length < 1) {
+                        placeOrderButton.style.display = paymentBox.checked ? 'none' : 'inline-block'
+                    }
+                }
+
+                toggleOrderButton()
+                const paymentMethods = document.getElementsByClassName('input-radio')
+                Array.from(paymentMethods).forEach((el) => {
+                    el.addEventListener('click', toggleOrderButton)
+                })
+            </script>"
+        ];
 
         $this->assertEquals($expected, $result);
     }
