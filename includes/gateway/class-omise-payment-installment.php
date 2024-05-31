@@ -31,6 +31,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
 		add_action('woocommerce_order_action_' . $this->id . '_sync_payment', array($this, 'sync_payment'));
 		add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
+		add_action('wp_enqueue_scripts', array( $this, 'omise_scripts' ));
 	}
 
 	/**
@@ -106,15 +107,25 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	}
 
 	/**
+	 * Get the total amount of an order in cents
+	 */
+	public function convertToCents($amount)
+	{
+			return intval(floatval($amount) * 100);
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function charge($order_id, $order)
 	{
-		$requestData = $this->get_charge_request($order_id, $order);
+		$token = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
+		$source = isset( $_POST['omise_source'] ) ? wc_clean( $_POST['omise_source'] ) : '';
+		$requestData = $this->get_charge_request($order_id, $order, $token, $source);
 		return OmiseCharge::create($requestData);
 	}
 
-	public function get_charge_request($order_id, $order)
+	public function get_charge_request($order_id, $order, $token, $source)
 	{
 		$source_type = $_POST['source']['type'];
 		$source_type = isset($source_type) ? $source_type : '';
@@ -133,9 +144,8 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			$payload['zero_interest_installments'] = $provider['zero_interest_installments'];
 		}
 
-		$requestData['source'] = array_merge($requestData['source'], [
-			'installment_terms' => sanitize_text_field($installment_terms)
-		]);
+		$requestData['source'] = $source;
+		$requestData['card'] = $token;
 
 		return $requestData;
 	}
@@ -150,5 +160,49 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	public function is_capability_support($available_payment_methods)
 	{
 		return preg_grep('/^installment_/', $available_payment_methods);
+	}
+
+	public function omise_scripts() {
+		if ( is_checkout() && $this->is_available() ) {
+			wp_enqueue_script(
+				'omise-js',
+				Omise::OMISE_JS_LINK,
+				[ 'jquery' ],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				true
+			);
+
+			wp_enqueue_script(
+				'omise-installment-form',
+				plugins_url( '../../assets/javascripts/omise-installment-form.js', __FILE__ ),
+				[ 'omise-js' ],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				true
+			);
+
+			wp_enqueue_script(
+				'omise-payment-form-handler',
+				plugins_url( '../../assets/javascripts/omise-payment-form-handler.js', __FILE__ ),
+				[ 'omise-js' ],
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				true
+			);
+
+			wp_localize_script(
+				'omise-payment-form-handler',
+				'omise_installment_params',
+				$this->getParamsForJS()
+			);
+		}
+	}
+
+	public function getParamsForJS()
+	{
+		$omiseCardGateway = new Omise_Payment_Creditcard();
+
+		return [
+			'key'                            => $this->public_key(),
+			'amount'                         => $this->convertToCents($this->getTotalAmount()),
+		];
 	}
 }
