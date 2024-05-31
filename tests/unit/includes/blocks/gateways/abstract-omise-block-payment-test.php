@@ -4,10 +4,12 @@ use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
+require_once __DIR__ . '/traits/mock-gateways.php';
+
 class Omise_Block_Payment_Test extends TestCase
 {
     // Adds Mockery expectations to the PHPUnit assertions count.
-    use MockeryPHPUnitIntegration;
+    use MockeryPHPUnitIntegration, MockPaymentGateways;
 
     public $obj;
 
@@ -15,6 +17,7 @@ class Omise_Block_Payment_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/abstract-omise-block-payment.php';
         $this->obj = new class extends Omise_Block_Payment {
             public function set_additional_data() {
@@ -28,37 +31,12 @@ class Omise_Block_Payment_Test extends TestCase
      */
     public function initialize()
     {
-        $clazz = (object) [
-            'payment_gateways' => new class {
-                function payment_gateways() {
-                    // dummy gateway
-                    $gateway = new class {
-                        public $supports = ['products'];
-
-                        public function is_available() {
-                            return true;
-                        }
-
-                        public function supports() {
-                            return $this->supports;
-                        }
-                    };
-
-                    return [
-                        'abc' => $gateway,
-                        'xyz' => $gateway,
-                    ];
-                }
-            }
-        ];
-
         Monkey\Functions\expect('get_option')->andReturn(null);
-        Monkey\Functions\expect('WC')->andReturn($clazz);
 
         $reflection = new \ReflectionClass($this->obj);
         $name_property = $reflection->getProperty('name');
         $name_property->setAccessible(true);
-        $name_property->setValue($this->obj, 'abc');
+        $name_property->setValue($this->obj, 'omise_atome');
 
         $this->obj->initialize();
 
@@ -78,7 +56,7 @@ class Omise_Block_Payment_Test extends TestCase
         $reflection = new \ReflectionClass($this->obj);
         $name_property = $reflection->getProperty('name');
         $name_property->setAccessible(true);
-        $name_property->setValue($this->obj, 'abc');
+        $name_property->setValue($this->obj, 'omise_atome');
 
         $this->obj->initialize();
 
@@ -96,7 +74,7 @@ class Omise_Block_Payment_Test extends TestCase
         $reflection = new \ReflectionClass($this->obj);
         $name_property = $reflection->getProperty('name');
         $name_property->setAccessible(true);
-        $name_property->setValue($this->obj, 'abc');
+        $name_property->setValue($this->obj, 'omise_atome');
 
         $this->obj->initialize();
 
@@ -106,7 +84,7 @@ class Omise_Block_Payment_Test extends TestCase
         $this->assertArrayHasKey('description', $data);
         $this->assertArrayHasKey('supports', $data);
         $this->assertEquals('array', gettype($data['supports']));
-        $this->assertEquals('abc', $data['name']);
+        $this->assertEquals('omise_atome', $data['name']);
     }
 
     /**
