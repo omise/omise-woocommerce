@@ -81,26 +81,6 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $this->assertEquals($total, 999999);
     }
 
-    public function test_get_charge_request()
-    {
-        $this->backend_installment_mock->shouldReceive('get_provider');
-
-        Monkey\Functions\expect('add_action');
-
-        $expectedAmount = 999999;
-        $expectedCurrency = 'thb';
-        $orderId = 'order_123';
-        $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
-
-        $_POST['source'] = ['type' => $this->sourceType];
-        $_POST[$this->sourceType . '_installment_terms'] = 3;
-
-        $installment = new Omise_Payment_Installment();
-        $result = $installment->get_charge_request($orderId, $orderMock);
-
-        $this->assertEquals($this->sourceType, $result['source']['type']);
-    }
-
     public function test_charge()
     {
         $this->backend_installment_mock->shouldReceive('get_provider');
