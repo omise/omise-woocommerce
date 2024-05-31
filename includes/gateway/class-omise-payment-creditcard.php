@@ -173,8 +173,15 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 	public function payment_fields() {
 		parent::payment_fields();
 
+		$viewData = $this->get_existing_cards();
+		$viewData = array_merge($viewData, $this->get_secure_form_config());
+
+		Omise_Util::render_view( 'templates/payment/form.php', $viewData );
+	}
+
+	public function get_existing_cards() {
 		if ( is_user_logged_in() ) {
-			$viewData['user_logged_in'] = true;
+			$data['user_logged_in'] = true;
 
 			$current_user      = wp_get_current_user();
 			$omise_customer_id = $this->is_test() ? $current_user->test_omise_customer_id : $current_user->live_omise_customer_id;
@@ -182,24 +189,30 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 			if ( ! empty( $omise_customer_id ) ) {
 				try {
 					$cards = new OmiseCustomerCard;
-					$viewData['existingCards'] = $cards->get($omise_customer_id);
+					$data['existingCards'] = $cards->get($omise_customer_id);
 				} catch (Exception $e) {
 					// nothing
 				}
 			}
-		} else {
-			$viewData['user_logged_in'] = false;
+
+			return $data;
 		}
 
-		$viewData['secure_form_enabled'] = (boolean)$this->get_option('secure_form_enabled');
+		return [
+			'user_logged_in' => false
+		];
+	}
 
-		if ($viewData['secure_form_enabled'] === self::SECURE_FORM_ENABLED) {
-			$viewData['card_form_theme'] = $this->get_option('card_form_theme');
-			$viewData['card_icons'] = $this->get_card_icons();
-			$viewData['form_design'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
+	public function get_secure_form_config() {
+		$data['secure_form_enabled'] = (boolean)$this->get_option('secure_form_enabled');
+
+		if ($data['secure_form_enabled'] === self::SECURE_FORM_ENABLED) {
+			$data['card_form_theme'] = $this->get_option('card_form_theme');
+			$data['card_icons'] = $this->get_card_icons();
+			$data['form_design'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
 		}
 
-		Omise_Util::render_view( 'templates/payment/form.php', $viewData );
+		return $data;
 	}
 
 	/**

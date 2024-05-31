@@ -26,6 +26,18 @@ trait MockPaymentGateways
                         public function get_option() {
                             return false;
                         }
+
+                        public function is_test() {
+                            return true;
+                        }
+
+                        public function get_existing_cards() {
+                            return ['user_logged_in' => false];
+                        }
+
+                        public function get_secure_form_config() {
+                            return ['secure_form_enabled' => false];
+                        }
                     };
 
                     return [
