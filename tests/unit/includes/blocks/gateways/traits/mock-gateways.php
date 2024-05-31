@@ -15,6 +15,8 @@ trait MockPaymentGateways
                     $gateway = new class {
                         public $supports = ['products'];
 
+                        public $backend;
+
                         public function is_available() {
                             return true;
                         }
@@ -40,14 +42,22 @@ trait MockPaymentGateways
                         }
                     };
 
+                    $gateway->backend = new class {
+                        public function get_available_providers($currency) {
+                            return $currency;
+                        }
+                    };
+
                     return [
                         'omise' => $gateway,
                         'omise_promptpay' => $gateway,
                         'omise_atome' => $gateway,
+                        'omise_mobilebanking' => $gateway,
                     ];
                 }
             }
         ];
+
         Monkey\Functions\expect('WC')->andReturn($wc);
     }
 }
