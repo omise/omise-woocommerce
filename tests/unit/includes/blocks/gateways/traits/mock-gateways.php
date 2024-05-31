@@ -40,6 +40,14 @@ trait MockPaymentGateways
                         public function get_secure_form_config() {
                             return ['secure_form_enabled' => false];
                         }
+
+                        public function get_view_data() {
+                            return [
+                                'installment_backends' => [],
+                                'is_zero_interest' => true,
+                                'installment_min_limit' =>  2000
+                            ];
+                        }
                     };
 
                     $gateway->backend = new class {
@@ -53,6 +61,7 @@ trait MockPaymentGateways
                         'omise_promptpay' => $gateway,
                         'omise_atome' => $gateway,
                         'omise_mobilebanking' => $gateway,
+                        'omise_installment' => $gateway,
                     ];
                 }
             }
