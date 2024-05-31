@@ -9,6 +9,7 @@ trait MockPaymentGateways
     public function mockWcGateways()
     {
         $wc = (object) [
+            'version' => '1.1.0',
             'payment_gateways' => new class {
                 function payment_gateways() {
                     // dummy gateway
