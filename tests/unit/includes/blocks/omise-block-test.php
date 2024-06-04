@@ -2,7 +2,6 @@
 
 use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Brain\Monkey;
 
 class Omise_Block_Test extends TestCase
 {

@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_TouchNGo_Test extends Omise_Offsite_Test
@@ -16,6 +18,7 @@ class Omise_Payment_TouchNGo_Test extends Omise_Offsite_Test
      */
     public function restrictedCountriesHasRequiredCountries()
     {
+        Monkey\Functions\expect('add_action');
         $obj = new Omise_Payment_TouchNGo();
         $expectedCountries = ['SG', 'MY', 'TH'];
 

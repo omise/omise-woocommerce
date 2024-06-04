@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
 {
     public $expectedAmount = 999999;
@@ -8,6 +10,9 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
     protected function setUp(): void
     {
         parent::setUp();
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('add_action');
+
         // Mocking the parent class
         $offline = Mockery::mock('overload:Omise_Payment_Offline');
         $offline->shouldReceive('init_settings');
@@ -21,12 +26,6 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
             ]);
 
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-konbini.php';
-
-        if (!function_exists('sanitize_text_field')) {
-            function sanitize_text_field() {
-                return 'Sanitized text';
-            }
-        }
     }
 
     public function testGetChargeRequest()

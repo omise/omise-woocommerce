@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_Mobilebanking_Test extends Omise_Offsite_Test
@@ -13,9 +15,11 @@ class Omise_Payment_Mobilebanking_Test extends Omise_Offsite_Test
 
     public function testCharge()
     {
-        Brain\Monkey\Functions\expect('wc_get_user_agent')
+        Monkey\Functions\expect('wc_get_user_agent')
 			->with('123')
 			->andReturn('Chrome Web');
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('add_action');
         $_POST['omise-offsite'] = 'mobile_banking_bbl';
         $obj = new Omise_Payment_Mobilebanking();
         $this->getChargeTest($obj);

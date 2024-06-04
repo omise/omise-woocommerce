@@ -10,13 +10,9 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
     {
         $this->sourceType = 'installment_ktc';
         parent::setUp();
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('add_action');
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
-
-        if (!function_exists('sanitize_text_field')) {
-            function sanitize_text_field() {
-                return 'Sanitized text';
-            }
-        }
     }
 
     /**

@@ -13,16 +13,13 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-atome.php';
 
         Monkey\Functions\expect('wp_enqueue_script');
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('plugins_url');
 
         // dummy version
         if (!defined('WC_VERSION')) {
             define('WC_VERSION', '1.0.0');
         }
-
-        Brain\Monkey\setUp();
-        Brain\Monkey\Functions\stubs( [
-            'wp_kses' => null,
-		] );
     }
 
     public function testGetChargeRequest()
@@ -47,6 +44,7 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
 
     public function testCharge()
     {
+        Monkey\Functions\expect('add_action');
         $_POST['omise_atome_phone_default'] = true;
         $obj = new Omise_Payment_Atome();
         $this->getChargeTest($obj);

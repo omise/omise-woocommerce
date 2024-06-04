@@ -16,11 +16,6 @@ abstract class Bootstrap_Test_Setup extends TestCase
     {
         parent::setUp();
         Monkey\setUp();
-        Monkey\Functions\stubs( [
-            'wp_kses' => null,
-			'add_action' => null,
-		] );
-        Monkey\Functions\expect('plugins_url')->andReturn('');
     }
 
     /**
@@ -29,6 +24,7 @@ abstract class Bootstrap_Test_Setup extends TestCase
     protected function tearDown(): void
     {
         Monkey\tearDown();
+        Mockery::close();
         parent::tearDown();
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
@@ -10,15 +12,17 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
     {
         $this->sourceType = 'truemoney';
         parent::setUp();
-        Brain\Monkey\Functions\expect('is_admin')
+        Monkey\Functions\expect('is_admin')
 			->with('123')
 			->andReturn(true);
-		Brain\Monkey\Functions\expect('is_checkout')
+		Monkey\Functions\expect('is_checkout')
 			->with('123')
 			->andReturn(true);
-		Brain\Monkey\Functions\expect('is_wc_endpoint_url')
+		Monkey\Functions\expect('is_wc_endpoint_url')
 			->with('123')
 			->andReturn(true);
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('add_action');
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-truemoney.php';
         $this->omise_capability_mock = Mockery::mock('alias:Omise_Capabilities');
     }

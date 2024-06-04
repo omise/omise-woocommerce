@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_DuitNow_OBW_Test extends Omise_Offsite_Test
@@ -10,6 +12,7 @@ class Omise_Payment_DuitNow_OBW_Test extends Omise_Offsite_Test
     {
         $this->sourceType = 'duitnow_obw';
         parent::setUp();
+        Monkey\Functions\expect('add_action');
         $this->omise_capability_mock = Mockery::mock('alias:Omise_Capabilities');
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-duitnow-obw.php';
     }

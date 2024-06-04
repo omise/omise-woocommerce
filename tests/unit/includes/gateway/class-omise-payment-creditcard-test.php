@@ -10,7 +10,6 @@ class Omise_Payment_CreditCard_Test extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Monkey\setUp();
 
         $this->omisePaymentMock = Mockery::mock('overload:Omise_Payment');
         $this->omisePaymentMock->shouldReceive('init_settings');
@@ -39,6 +38,7 @@ class Omise_Payment_CreditCard_Test extends TestCase
             define('WC_VERSION', '1.0.0');
         }
 
+        Monkey\Functions\expect('add_action')->andReturn(null);
         Monkey\Functions\expect('wp_enqueue_script');
         Monkey\Functions\expect('wp_kses')
             ->times(3)
@@ -56,6 +56,7 @@ class Omise_Payment_CreditCard_Test extends TestCase
     {
         Monkey\tearDown();
         Mockery::close();
+        parent::tearDown();
     }
 
     /**

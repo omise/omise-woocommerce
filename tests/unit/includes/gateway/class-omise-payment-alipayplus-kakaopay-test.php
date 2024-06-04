@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
 /**
@@ -11,6 +13,7 @@ class Omise_Payment_Kakaopay_Test extends Omise_Offsite_Test
     {
         $this->sourceType = 'kakaopay';
         parent::setUp();
+        Monkey\Functions\expect('wp_kses');
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-alipayplus.php';
     }
 

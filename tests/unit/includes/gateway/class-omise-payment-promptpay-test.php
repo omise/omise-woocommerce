@@ -36,6 +36,9 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
     public function textExpiresAtFieldIsPassedToJavascript()
     {
         Monkey\Functions\expect('wp_enqueue_script');
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('add_action');
+        Monkey\Functions\expect('plugins_url');
         $expiresAt = '2023-11-22T14:48:00.000Z';
 
         $this->mockFileGetContent->shouldReceive('get_contents')->once()->andReturn('<svg></svg>');

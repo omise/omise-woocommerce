@@ -48,6 +48,7 @@ class Omise_Payment_Base_Card_Test extends TestCase
     protected function tearDown(): void
     {
         Mockery::close();
+        parent::tearDown();
     }
 
     public function getOrderMock($expectedAmount, $expectedCurrency)
