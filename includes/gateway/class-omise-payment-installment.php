@@ -69,10 +69,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	{
 		parent::payment_fields();
 
-		Omise_Util::render_view(
-			'templates/payment/form-installment.php',
-			$this->get_view_data()
-		);
+		Omise_Util::render_view('templates/payment/form-installment.php', $this->get_view_data());
 	}
 
 	public function get_view_data()
