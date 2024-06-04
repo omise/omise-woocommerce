@@ -174,23 +174,16 @@ class Omise_Capabilities {
 	}
 
 	/**
-	 * Retrieves details of Touch n Go payment backends from capabilities.
-	 *
-	 * @return string
-	 */
-	public function getTouchNGoBackends()
-	{
-		return $this->getBackendByType('touch_n_go');
-	}
-
-	/**
 	 * Retrieves backend by type
 	 */
 	public function getBackendByType($sourceType)
 	{
 		$params = [];
 		$params[] = $this->capabilities->backendFilter['type']($sourceType);
-		return $this->capabilities->getBackends($params);
+		$backed = $this->capabilities->getBackends($params);
+		// Only variables hould be passed
+		// https://www.php.net/reset
+		return reset($backed);
 	}
 
 	/**

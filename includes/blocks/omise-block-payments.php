@@ -32,6 +32,7 @@ class Omise_Block_Payments {
         Omise_Block_Truemoney::class,
         Omise_Block_GooglePay::class,
         Omise_Block_InternetBanking::class,
+        Omise_Block_DuitNow_OBW::class,
     ];
 
     function __construct($container) {
