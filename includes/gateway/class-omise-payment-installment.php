@@ -119,13 +119,11 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$token = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
-		$source = isset( $_POST['omise_source'] ) ? wc_clean( $_POST['omise_source'] ) : '';
-		$requestData = $this->get_charge_request($order_id, $order, $token, $source);
+		$requestData = $this->get_charge_request($order_id, $order);
 		return OmiseCharge::create($requestData);
 	}
 
-	public function get_charge_request($order_id, $order, $token, $source)
+	public function get_charge_request($order_id, $order)
 	{
 		$source_type = $_POST['source']['type'];
 		$source_type = isset($source_type) ? $source_type : '';
@@ -144,8 +142,8 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			$payload['zero_interest_installments'] = $provider['zero_interest_installments'];
 		}
 
-		$requestData['source'] = $source;
-		$requestData['card'] = $token;
+		$requestData['source'] = isset( $_POST['omise_source'] ) ? wc_clean( $_POST['omise_source'] ) : '';
+		$requestData['card'] = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
 
 		return $requestData;
 	}
