@@ -173,6 +173,7 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
 		Omise_Block::init();
 	}
 

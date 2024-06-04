@@ -36,6 +36,7 @@ module.exports = {
 		'omise_atome': '/includes/blocks/assets/js/omise-atome.js',
 		'omise_truemoney': '/includes/blocks/assets/js/omise-truemoney.js',
 		'omise_googlepay': '/includes/blocks/assets/js/omise-googlepay.js',
+		'omise_internetbanking': '/includes/blocks/assets/js/omise-internetbanking.js',
 	},
 	output: {
 		path: path.resolve( __dirname, 'includes/blocks/assets/js/build' ),
