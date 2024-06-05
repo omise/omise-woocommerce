@@ -17,7 +17,7 @@ export function registerOmisePaymentMethod({settings, label}) {
         label: <Label />,
         content: <Content />,
         edit: <Content />,
-        canMakePayment: () => true,
+        canMakePayment: () => settings.is_active,
         ariaLabel: label,
         supports: {
             features: settings.supports,

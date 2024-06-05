@@ -65,7 +65,8 @@ abstract class Omise_Block_Apm extends AbstractPaymentMethodType {
             'name'        => $this->name,
             'title'       => $this->get_setting( 'title' ),
             'description' => $this->get_setting( 'description' ),
-            'supports'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] )
+            'supports'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] ),
+            'is_active'   => $this->is_active(),
         ];
     }
 }

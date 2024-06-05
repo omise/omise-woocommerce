@@ -94,7 +94,7 @@ registerPaymentMethod( {
     label: <Label />,
     content: <FpxPaymentMethod />,
     edit: <FpxPaymentMethod />,
-    canMakePayment: () => true,
+    canMakePayment: () => settings.is_active,
     ariaLabel: label,
     supports: {
         features: settings.supports,

@@ -47,6 +47,7 @@ class Omise_Block_Credit_Card_Test extends TestCase
      */ 
     public function is_active()
     {
+        Monkey\Functions\expect('wc_string_to_bool')->andReturn(true);
         $this->obj->initialize();
 
         $is_active = $this->obj->is_active();
@@ -64,6 +65,7 @@ class Omise_Block_Credit_Card_Test extends TestCase
         $name_property->setAccessible(true);
         $name_property->setValue($this->obj, 'omise');
 
+        Monkey\Functions\expect('wc_string_to_bool');
         Monkey\Functions\expect('get_locale')->andReturn('thb');
 
         $this->omiseSettingMock->shouldReceive('instance')->andReturn($this->omiseSettingMock);
@@ -85,10 +87,11 @@ class Omise_Block_Credit_Card_Test extends TestCase
      */
     public function get_payment_method_script_handles()
     {
-        Monkey\Functions\expect('wp_script_is')->andReturn(false);
+        Monkey\Functions\expect('wp_script_is');
         Monkey\Functions\expect('wp_register_script');
         Monkey\Functions\expect('plugin_dir_url');
         Monkey\Functions\expect('is_checkout')->andReturn(true);
+        Monkey\Functions\expect('wc_string_to_bool')->andReturn(null);
 
         $this->obj->initialize();
 

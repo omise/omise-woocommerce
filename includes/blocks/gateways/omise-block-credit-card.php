@@ -32,7 +32,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
      * @return boolean
      */
     public function is_active() {
-        return $this->gateway->is_available();
+        return wc_string_to_bool( $this->get_setting( 'enabled', 'no' ) );
     }
 
     /**
@@ -43,13 +43,16 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
     public function get_payment_method_script_handles() {
         if ( is_checkout() && $this->is_active() ) {
             $script_asset = require_once __DIR__ .  '/../assets/js/build/credit_card.asset.php';
-            wp_register_script(
-                "{$this->name}-payments-blocks",
-                plugin_dir_url( __DIR__ ) . 'assets/js/build/credit_card.js',
-                $script_asset[ 'dependencies' ],
-                $script_asset[ 'version' ],
-                true
-            );
+
+            if (is_array($script_asset)) {
+                wp_register_script(
+                    "{$this->name}-payments-blocks",
+                    plugin_dir_url( __DIR__ ) . 'assets/js/build/credit_card.js',
+                    $script_asset[ 'dependencies' ],
+                    $script_asset[ 'version' ],
+                    true
+                );
+            }
         }
 
         return [ "{$this->name}-payments-blocks" ];
@@ -71,6 +74,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
             'features'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] ),
             'locale'      => get_locale(),
             'public_key'  => Omise_Setting::instance()->public_key(),
+            'is_active'   => $this->is_active(),
         ]);
     }
 }

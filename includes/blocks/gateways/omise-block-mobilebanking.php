@@ -69,7 +69,8 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
             'supports'    => array_filter($this->gateway->supports, [$this->gateway, 'supports']),
             'data' => [
                 'backends' => $this->gateway->backend->get_available_providers($currency),
-            ]
+            ],
+            'is_active'   => $this->is_active(),
         ];
     }
 }

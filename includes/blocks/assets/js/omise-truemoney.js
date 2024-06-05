@@ -108,7 +108,7 @@ registerPaymentMethod( {
     label: <Label />,
     content: <TruemoneyPaymentMethod />,
     edit: <TruemoneyPaymentMethod />,
-    canMakePayment: () => true,
+    canMakePayment: () => settings.is_active,
     ariaLabel: label,
     supports: {
         features: settings.supports,
