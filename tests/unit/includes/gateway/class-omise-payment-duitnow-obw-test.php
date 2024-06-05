@@ -8,7 +8,7 @@ class Omise_Payment_DuitNow_OBW_Test extends Omise_Offsite_Test
 {
     private $omise_capability_mock;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         $this->sourceType = 'duitnow_obw';
         parent::setUp();
