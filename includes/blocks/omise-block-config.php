@@ -15,8 +15,8 @@ class Omise_Block_Config {
 
     private function register_payment_methods() {
         // register the payments API
-		$this->container->register( Omise_Block_Payments::class, function ( $container ) {
-			return new Omise_Block_Payments( $container );
-		} );
-    } 
+        $this->container->register( Omise_Block_Payments::class, function ( $container ) {
+            return new Omise_Block_Payments( $container );
+        } );
+    }
 }

@@ -62,7 +62,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
      */
     public function get_payment_method_data() {
         $viewData = $this->gateway->get_existing_cards();
-		$viewData = array_merge($viewData, $this->gateway->get_secure_form_config());
+        $viewData = array_merge($viewData, $this->gateway->get_secure_form_config());
 
         return array_merge($viewData, [
             'name'        => $this->name,

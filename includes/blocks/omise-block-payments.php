@@ -50,12 +50,12 @@ class Omise_Block_Payments {
     }
 
     private function initialize() {
-		add_action( 'woocommerce_blocks_payment_method_type_registration', [ $this, 'register_payment_methods' ] );
+        add_action( 'woocommerce_blocks_payment_method_type_registration', [ $this, 'register_payment_methods' ] );
     }
 
     public function register_payment_methods( $registry ) {
-		foreach ( $this->payment_methods as $clazz ) {
-			$registry->register( new $clazz );
-		}
+        foreach ( $this->payment_methods as $clazz ) {
+            $registry->register( new $clazz );
+        }
     }
 }
