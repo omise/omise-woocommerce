@@ -3,15 +3,13 @@
 use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 
-class Omise_Block_Payments_Test extends TestCase
+class Omise_Block_Config_Test extends TestCase
 {
-    public $obj;
-
-    // @runInSeparateProcess
-    protected function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         require_once __DIR__ . '/../../../../includes/blocks/omise-block-payments.php';
+        require_once __DIR__ . '/../../../../includes/blocks/omise-block-config.php';
     }
 
     /**
@@ -21,9 +19,7 @@ class Omise_Block_Payments_Test extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $container = \Automattic\WooCommerce\Blocks\Package::container();
-
         Monkey\Functions\expect('add_action')->andReturn(null);
-
-        new Omise_Block_Payments($container);
+        new Omise_Block_Config($container);
     }
 }
