@@ -35,7 +35,7 @@ class Omise_Block_Payments {
         Omise_Block_DuitNow_OBW::class,
     ];
 
-    function __construct($container) {
+    public function __construct($container) {
         $this->container = $container;
         $this->add_payment_methods();
         $this->initialize();
@@ -43,7 +43,7 @@ class Omise_Block_Payments {
 
     private function add_payment_methods() {
         foreach($this->payment_methods as $payment_method) {
-            $this->container->register($payment_method, function ( $container ) use ($payment_method) {
+            $this->container->register($payment_method, function () use ($payment_method) {
                 return new $payment_method;
             } );
         }

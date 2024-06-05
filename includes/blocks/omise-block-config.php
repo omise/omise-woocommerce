@@ -7,7 +7,7 @@ class Omise_Block_Config {
     // Automattic\WooCommerce\Blocks\Registry\Container
     private $container;
 
-    function __construct($container) {
+    public function __construct($container) {
         $this->container = $container;
         $this->register_payment_methods();
         $this->container->get( Omise_Block_Payments::class );

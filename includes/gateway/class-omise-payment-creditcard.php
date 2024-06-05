@@ -172,10 +172,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 	 */
 	public function payment_fields() {
 		parent::payment_fields();
-
-		$viewData = $this->get_existing_cards();
-		$viewData = array_merge($viewData, $this->get_secure_form_config());
-
+		$viewData = array_merge($this->get_existing_cards(), $this->get_secure_form_config());
 		Omise_Util::render_view( 'templates/payment/form.php', $viewData );
 	}
 
@@ -198,9 +195,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 			return $data;
 		}
 
-		return [
-			'user_logged_in' => false
-		];
+		return [ 'user_logged_in' => false ];
 	}
 
 	public function get_secure_form_config() {

@@ -103,7 +103,7 @@ class Omise_Payment_CreditCard_Test extends TestCase
     /**
      * @test
      */
-    public function get_existing_cards() {
+    public function get_existing_cards_for_user_logged_in() {
         Monkey\Functions\expect('is_user_logged_in')->andReturn(true);
         Monkey\Functions\expect('wp_get_current_user')->andReturn((object)['test_omise_customer_id' => 1]);
         Monkey\Functions\expect('plugins_url');
@@ -113,6 +113,16 @@ class Omise_Payment_CreditCard_Test extends TestCase
 
         $creditCard = new Omise_Payment_Creditcard;
 
+        $data = $creditCard->get_existing_cards();
+
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey('user_logged_in', $data);
+    }
+
+    public function get_existing_cards_for_user_not_logged_in() {
+        Monkey\Functions\expect('is_user_logged_in')->andReturn(false);
+
+        $creditCard = new Omise_Payment_Creditcard;
         $data = $creditCard->get_existing_cards();
 
         $this->assertIsArray($data);

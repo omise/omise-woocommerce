@@ -18,10 +18,8 @@ class Omise_Block {
 
             if ( \method_exists( '\Automattic\WooCommerce\Blocks\Package', 'feature' ) ) {
                 $feature = \Automattic\WooCommerce\Blocks\Package::feature();
-                if ( \method_exists( $feature, 'is_feature_plugin_build' ) ) {
-                    if ( $feature->is_feature_plugin_build() ) {
-                        return true;
-                    }
+                if ( \method_exists( $feature, 'is_feature_plugin_build' ) && $feature->is_feature_plugin_build() ) {
+                    return true;
                 }
             }
         }
