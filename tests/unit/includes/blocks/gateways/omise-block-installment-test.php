@@ -1,15 +1,13 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
 require_once __DIR__ . '/traits/mock-gateways.php';
 
 class Omise_Block_Installment_test extends TestCase
 {
-    // Adds Mockery expectations to the PHPUnit assertions count.
-    use MockeryPHPUnitIntegration, MockPaymentGateways;
+    use MockPaymentGateways;
 
     public $obj;
 

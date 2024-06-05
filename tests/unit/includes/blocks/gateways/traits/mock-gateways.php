@@ -52,8 +52,14 @@ trait MockPaymentGateways
                     };
 
                     $gateway->backend = new class {
+                        public $banks = ['bank1', 'bank2'];
+
                         public function get_available_providers($currency) {
                             return $currency;
+                        }
+
+                        public function get_available_banks() {
+                            return ['bank1', 'bank2'];
                         }
                     };
 
@@ -63,6 +69,8 @@ trait MockPaymentGateways
                         'omise_atome' => $gateway,
                         'omise_mobilebanking' => $gateway,
                         'omise_installment' => $gateway,
+                        'omise_fpx' => $gateway,
+                        'omise_duitnow_obw' => $gateway,
                     ];
                 }
             }
