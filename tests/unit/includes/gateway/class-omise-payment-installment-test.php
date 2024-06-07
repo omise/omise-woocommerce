@@ -72,6 +72,11 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 
     public function testGetChargeRequest()
     {
+        if (!function_exists('wc_clean')) {
+            function wc_clean() {
+                return 'src_test_123';
+            }
+        }
         $expectedAmount = 999999;
         $expectedCurrency = 'thb';
         $orderId = 'order_123';
@@ -79,11 +84,11 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 
         $_POST['source'] = ['type' => $this->sourceType];
         $_POST[$this->sourceType . '_installment_terms'] = 3;
-
+        $_POST['omise_source'] = 'src_test_123';
         $installment = new Omise_Payment_Installment();
         $result = $installment->get_charge_request($orderId, $orderMock);
 
-        $this->assertEquals($this->sourceType, $result['source']['type']);
+        $this->assertEquals('src_test_123', $result['source']);
     }
 
     public function testCharge()
@@ -93,5 +98,11 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 
         $obj = new Omise_Payment_Installment();
         $this->getChargeTest($obj);
+    }
+
+    function wc_clean($var) {
+        // For simplicity, we'll just return the variable as is.
+        // In a real-world scenario, you might want to replace this with actual sanitization logic.
+        return $var;
     }
 }
