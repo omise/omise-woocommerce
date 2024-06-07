@@ -1,4 +1,6 @@
-<?php if ( ! empty( $viewData['installment_backends'] ) ) : ?>
+<?php 
+// @codeCoverageIgnoreStart
+if ( ! empty( $viewData['installment_backends'] ) ) : ?>
 	<div id="omise-installment" style="width:100%; max-width: 400px;"></div>
 	<script>
 		window.LOCALE = `<?php echo get_locale(); ?>`;
@@ -14,4 +16,6 @@
 			}
 		?>
 	</p>
-<?php endif; ?>
+<?php endif; 
+// @codeCoverageIgnoreEnd
+?>
