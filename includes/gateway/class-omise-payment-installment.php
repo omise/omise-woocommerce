@@ -160,6 +160,9 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		return preg_grep('/^installment_/', $available_payment_methods);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function omise_scripts() {
 		if ( is_checkout() && $this->is_available() ) {
 			wp_enqueue_script(
@@ -196,8 +199,6 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 
 	public function getParamsForJS()
 	{
-		$omiseCardGateway = new Omise_Payment_Creditcard();
-
 		return [
 			'key'                            => $this->public_key(),
 			'amount'                         => $this->convertToCents($this->getTotalAmount()),

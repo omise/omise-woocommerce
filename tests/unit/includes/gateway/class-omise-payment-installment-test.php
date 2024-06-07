@@ -100,9 +100,31 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $this->getChargeTest($obj);
     }
 
-    function wc_clean($var) {
-        // For simplicity, we'll just return the variable as is.
-        // In a real-world scenario, you might want to replace this with actual sanitization logic.
-        return $var;
+    public function testGetParamsForJS()
+    {
+        $mock = Mockery::mock('overload:Omise_Payment_Offsite');
+        $instance = new Omise_Payment_Installment($mock);
+        $result = $instance->getParamsForJS();
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('key', $result);
+        $this->assertArrayHasKey('amount', $result);
+        $this->assertEquals('pkey_test_123', $result['key']);
+        $this->assertEquals(99999900, $result['amount']);
+    }
+
+    public function testConvertToCents()
+    {
+        $instance = new Omise_Payment_Installment();
+        $this->assertEquals(100, $instance->convertToCents(1.00));
+        $this->assertEquals(150, $instance->convertToCents(1.50));
+        $this->assertEquals(0, $instance->convertToCents(0.00));
+
+        $this->assertEquals(10000, $instance->convertToCents(100));
+        $this->assertEquals(0, $instance->convertToCents(0));
+
+        $this->assertEquals(100, $instance->convertToCents('1.00'));
+        $this->assertEquals(0, $instance->convertToCents('0.00'));
+        $this->assertEquals(10000, $instance->convertToCents('100'));
     }
 }
