@@ -169,7 +169,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
             'billing_address_required' => $this->get_option('request_billing_address') == 'yes',
             'phone_number_required' => $this->get_option('request_phone_number') == 'yes',
             'public_key' => $this->public_key(),
-            'merchantId' => $this->get_option('merchant_id'),
+            'merchant_id' => $this->get_option('merchant_id'),
             'price_status' => 'NOT_CURRENTLY_KNOWN',
             'currency' => get_woocommerce_currency(),
         ];
@@ -198,7 +198,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                         {
                             type: 'CARD',
                             parameters: {
-                                allowedAuthMethods: " . $this->googlepay_config['allowed_auth_methods'] . ",
+                                allowedAuthMethods: " . json_encode($this->googlepay_config['allowed_auth_methods']) . ",
                                 allowedCardNetworks: " . json_encode($this->googlepay_config['allowed_card_networks']) . ",
                                 billingAddressRequired: " . $isBillingAddressRequired . ",
                                 billingAddressParameters: {
@@ -223,10 +223,10 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                         currencyCode: '" . $this->googlepay_config['currency'] . "',
                     },
                 }
-                
-                const div = document.getElementById('googlepay-button-container')                 
+
+                const div = document.getElementById('googlepay-button-container')
                 div.appendChild(button)
-                
+
                 function toggleOrderButton() {
                     const placeOrderButton = document.getElementById('place_order')
                     const paymentBox = document.getElementById('payment_method_omise_googlepay')
@@ -235,7 +235,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                         placeOrderButton.style.display = paymentBox.checked ? 'none' : 'inline-block'
                     }
                 }
-                
+
                 toggleOrderButton()
                 const paymentMethods = document.getElementsByClassName('input-radio')
                 Array.from(paymentMethods).forEach((el) => {

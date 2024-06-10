@@ -15,7 +15,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 			return self::$instance;
 		}
 
-		private function __construct() {
+		public function __construct() {
 			// prevent running directly without wooCommerce
 			if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
 				return;

@@ -85,7 +85,7 @@ registerPaymentMethod( {
     label: <Label />,
     content: <DuitNowOBWPaymentMethod />,
     edit: <DuitNowOBWPaymentMethod />,
-    canMakePayment: () => true,
+    canMakePayment: () => settings.is_active,
     ariaLabel: label,
     supports: {
         features: settings.supports,

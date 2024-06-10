@@ -8,3 +8,4 @@ vendor
 .phpunit.result.cache
 composer.lock
 .nvmrc
+wp-content

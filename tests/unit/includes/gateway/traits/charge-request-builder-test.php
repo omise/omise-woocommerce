@@ -18,7 +18,7 @@ class Charge_Request_Builder_Test extends TestCase
     /**
      * close mockery after tests are done
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         Mockery::close();
     }

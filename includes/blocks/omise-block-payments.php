@@ -35,7 +35,7 @@ class Omise_Block_Payments {
         Omise_Block_DuitNow_OBW::class,
     ];
 
-    function __construct($container) {
+    public function __construct($container) {
         $this->container = $container;
         $this->add_payment_methods();
         $this->initialize();
@@ -43,19 +43,19 @@ class Omise_Block_Payments {
 
     private function add_payment_methods() {
         foreach($this->payment_methods as $payment_method) {
-            $this->container->register($payment_method, function ( $container ) use ($payment_method) {
+            $this->container->register($payment_method, function () use ($payment_method) {
                 return new $payment_method;
             } );
         }
     }
 
     private function initialize() {
-		add_action( 'woocommerce_blocks_payment_method_type_registration', [ $this, 'register_payment_methods' ] );
+        add_action( 'woocommerce_blocks_payment_method_type_registration', [ $this, 'register_payment_methods' ] );
     }
 
     public function register_payment_methods( $registry ) {
-		foreach ( $this->payment_methods as $clazz ) {
-			$registry->register( new $clazz );
-		}
+        foreach ( $this->payment_methods as $clazz ) {
+            $registry->register( new $clazz );
+        }
     }
 }

@@ -7,14 +7,14 @@ use PHPUnit\Framework\TestCase;
  */
 class Omise_Page_Card_From_Customization_Test extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         Brain\Monkey\setUp();
         Mockery::mock('alias:Omise_Admin_Page');
         require_once __DIR__ . '/../../../../includes/admin/class-omise-page-card-form-customization.php';
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         Brain\Monkey\tearDown();
         Mockery::close();

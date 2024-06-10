@@ -86,7 +86,7 @@ registerPaymentMethod( {
     label: <Label />,
     content: <InternetBankingPaymentMethod />,
     edit: <InternetBankingPaymentMethod />,
-    canMakePayment: () => true,
+    canMakePayment: () => settings.is_active,
     ariaLabel: label,
     supports: {
         features: settings.supports,

@@ -2,25 +2,39 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
+use Brain\Monkey;
+
+/**
+ * @runInSeparateProcess
+ * @preserveGlobalState disabled
+ */
+
 class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected $backend_installment_mock;
+
+    protected function setUp(): void
     {
         $this->sourceType = 'installment_ktc';
         parent::setUp();
-        require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
 
-        if (!function_exists('sanitize_text_field')) {
-            function sanitize_text_field() {
-                return 'Sanitized text';
-            }
-        }
+        Monkey\Functions\expect('wp_kses');
+        Omise_Unit_Test::include_class('backends/class-omise-backend.php');
+		Omise_Unit_Test::include_class('backends/class-omise-backend-installment.php');
+
+        $this->backend_installment_mock = Mockery::mock('Omise_Backend_Installment');
+        require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
     }
 
     /**
      * @test
      */
-    public function getTotalAmountFromAdminOrderpage()
+    public function get_total_amount_from_admin_order_page()
     {
         // mocking built-in WooCommerce function
         if (!function_exists('wc_get_order')) {
@@ -34,6 +48,9 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
             }
         }
 
+        Monkey\Functions\expect('add_action');
+
+
         // mocking the WP global variable $wp
         $wp = new stdClass();
         $wp->query_vars = ['order-pay' => 123];
@@ -43,26 +60,20 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $total = $installment->get_total_amount();
 
         $this->assertEquals($total, 999999);
-
-        unset($GLOBALS['wp']);
-        unset($installment);
-        unset($wp);
     }
 
     /**
      * @test
      */
-    public function getTotalAmountFromCart()
+    public function get_total_amount_from_cart()
     {
-        // mocking WC() method
-        if (!function_exists('WC')) {
-            function WC() {
-                $class = new stdClass();
-                $class->cart = new stdClass();
-                $class->cart->total = 999999;
-                return $class;
-            }
-        }
+        Monkey\Functions\expect('add_action');
+
+        $clazz = new stdClass();
+        $clazz->cart = new stdClass();
+        $clazz->cart->total = 999999;
+
+        Monkey\Functions\expect('WC')->andReturn($clazz);
 
         $installment = new Omise_Payment_Installment();
         $total = $installment->get_total_amount();
@@ -70,8 +81,12 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $this->assertEquals($total, 999999);
     }
 
-    public function testGetChargeRequest()
+    public function test_get_charge_request()
     {
+        $this->backend_installment_mock->shouldReceive('get_provider');
+
+        Monkey\Functions\expect('add_action');
+
         $expectedAmount = 999999;
         $expectedCurrency = 'thb';
         $orderId = 'order_123';
@@ -86,12 +101,52 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $this->assertEquals($this->sourceType, $result['source']['type']);
     }
 
-    public function testCharge()
+    public function test_charge()
     {
+        $this->backend_installment_mock->shouldReceive('get_provider');
+
+        Monkey\Functions\expect('add_action');
+
         $_POST['source'] = ['type' => $this->sourceType];
         $_POST[$this->sourceType . '_installment_terms'] = 3;
 
         $obj = new Omise_Payment_Installment();
         $this->getChargeTest($obj);
+    }
+
+    public function test_get_view_data()
+    {
+        $capability = Mockery::mock('alias:Omise_Capabilities');
+        $capability->shouldReceive('retrieve')
+            ->andReturn(new class {
+                public function getInstallmentMinLimit() {
+                    return 2000;
+                }
+
+                public function is_zero_interest() {
+                    return true;
+                }
+
+                public function getInstallmentBackends() {
+                    return [];
+                }
+            });
+
+        $this->backend_installment_mock->shouldReceive('get_available_providers');
+        Monkey\Functions\expect('get_woocommerce_currency')->andReturn('thb');
+
+        $clazz = new stdClass();
+        $clazz->cart = new stdClass();
+        $clazz->cart->total = 999999;
+
+        Monkey\Functions\expect('WC')->andReturn($clazz);
+        Monkey\Functions\expect('add_action');
+
+        $obj = new Omise_Payment_Installment();
+        $result = $obj->get_view_data();
+
+        $this->assertArrayHasKey('installment_backends', $result);
+        $this->assertArrayHasKey('is_zero_interest', $result);
+        $this->assertArrayHasKey('installment_min_limit', $result);
     }
 }

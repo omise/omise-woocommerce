@@ -111,7 +111,7 @@ registerPaymentMethod( {
     label: <Label />,
     content: <AtomePaymentMethod />,
     edit: <AtomePaymentMethod />,
-    canMakePayment: () => true,
+    canMakePayment: () => settings.is_active,
     ariaLabel: label,
     supports: {
         features: settings.supports,

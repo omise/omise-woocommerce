@@ -1,5 +1,7 @@
 <?php
 
+use Brain\Monkey;
+
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
 /**
@@ -7,10 +9,14 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
  */
 class Omise_Payment_Alipay_Hk_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'alipay_hk';
         parent::setUp();
+
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('wc_get_user_agent')->andReturn('Chrome Web');
+
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-alipayplus.php';
 
         if (!function_exists('wc_get_user_agent')) {

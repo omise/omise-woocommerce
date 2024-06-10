@@ -2,21 +2,19 @@
 
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
+use Brain\Monkey;
+
 class Omise_Payment_Atome_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'atome';
         parent::setUp();
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-atome.php';
 
-        if (!function_exists('wp_enqueue_script')) {
-            function wp_enqueue_script() {}
-        }
-
-        if (!function_exists('plugins_url')) {
-            function plugins_url() {}
-        }
+        Monkey\Functions\expect('wp_enqueue_script');
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('plugins_url');
 
         // dummy version
         if (!defined('WC_VERSION')) {
@@ -42,13 +40,11 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         $result = $obj->get_charge_request($orderId, $orderMock);
 
         $this->assertEquals($this->sourceType, $result['source']['type']);
-
-        unset($_POST['source']);
-        unset($obj);
     }
 
     public function testCharge()
     {
+        Monkey\Functions\expect('add_action');
         $_POST['omise_atome_phone_default'] = true;
         $obj = new Omise_Payment_Atome();
         $this->getChargeTest($obj);

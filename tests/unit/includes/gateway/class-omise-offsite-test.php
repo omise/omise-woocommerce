@@ -6,7 +6,7 @@ abstract class Omise_Offsite_Test extends Bootstrap_Test_Setup
 {
     public $sourceType;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -19,9 +19,6 @@ abstract class Omise_Offsite_Test extends Bootstrap_Test_Setup
             ->andReturn([
                 'source' => [ 'type' => $this->sourceType ]
             ]);
-
-        // destroy object and clear memory
-        unset($offsite);
     }
 
     public function getChargeTest($classObj)

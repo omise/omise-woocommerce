@@ -26,7 +26,7 @@ registerPaymentMethod({
 	label: <Label />,
 	content: <Content settings={settings} />,
 	edit: <Content settings={settings} />,
-	canMakePayment: () => true,
+	canMakePayment: () => settings.is_active,
 	ariaLabel: label,
 	supports: {
 		features: settings.supports,
