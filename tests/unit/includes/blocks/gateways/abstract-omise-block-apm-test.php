@@ -48,6 +48,7 @@ class Omise_Block_Apm_Test extends TestCase
      */ 
     public function is_active()
     {
+        Monkey\Functions\expect('wc_string_to_bool')->andReturn(true);
         // Calling initialize() to set $gateway value
         $reflection = new \ReflectionClass($this->obj);
         $name_property = $reflection->getProperty('name');

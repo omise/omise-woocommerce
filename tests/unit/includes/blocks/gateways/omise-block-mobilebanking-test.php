@@ -88,6 +88,6 @@ class Omise_Block_Mobile_Banking_Test extends TestCase
 
         $result = $this->obj->get_payment_method_script_handles();
 
-        $this->assertEquals([ 'wc-omise-mobilebanking-payments-blocks' ], $result);
+        $this->assertEquals([ 'wc-omise_mobilebanking-payments-blocks' ], $result);
     }
 }

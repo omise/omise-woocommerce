@@ -241,10 +241,20 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
      * @return bool
      */
     public function is_available(){
-        if ( !parent::is_available() ) {
+        $is_available = parent::is_available();
+
+        if ( !$is_available ) {
             return false;
         }
 
+        if (\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils::is_checkout_block_default()) {
+            return $this->is_active();
+        }
+
+        return $is_available;
+    }
+
+    public function is_active() {
         $capabilities = Omise_Capabilities::retrieve();
 
         if ( !$capabilities ) {
@@ -473,7 +483,11 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             $this->order()->update_status( 'failed' );
         }
 
-        wc_add_notice( sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ), 'error' );
+        if (\Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils::is_checkout_block_default()) {
+            throw new \Exception(sprintf( wp_kses( $message, [ 'br' => [] ] ), __( $reason, 'omise' ) ));
+        }
+
+        wc_add_notice( sprintf( wp_kses( $message, [ 'br' => [] ] ), __( $reason, 'omise' ) ), 'error' );
     }
 
     /**

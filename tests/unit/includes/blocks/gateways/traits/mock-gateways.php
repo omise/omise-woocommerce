@@ -49,6 +49,10 @@ trait MockPaymentGateways
                                 'installment_min_limit' =>  2000
                             ];
                         }
+
+                        public function is_active() {
+                            return true;
+                        }
                     };
 
                     $gateway->backend = new class {

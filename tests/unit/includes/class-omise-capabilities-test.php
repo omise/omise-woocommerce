@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/gateway/bootstrap-test-setup.php';
 
+use Brain\Monkey;
+
 /**
  * @runTestsInSeparateProcesses
  */
@@ -39,13 +41,13 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 		// mocking page name
 		$_GET['page'] = $adminPageName;
 
-		Brain\Monkey\Functions\expect('is_admin')
+		Monkey\Functions\expect('is_admin')
 			->with('123')
 			->andReturn($GLOBALS['isAdmin']);
-		Brain\Monkey\Functions\expect('is_checkout')
+		Monkey\Functions\expect('is_checkout')
 			->with('123')
 			->andReturn($GLOBALS['isCheckout']);
-		Brain\Monkey\Functions\expect('is_wc_endpoint_url')
+		Monkey\Functions\expect('is_wc_endpoint_url')
 			->with('123')
 			->andReturn($GLOBALS['isThankYouPage']);
 
@@ -88,15 +90,15 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 	 */
 	public function test_get_truemoney_backend_returns_null_when_invalid_payment_is_passed()
 	{
-		Brain\Monkey\Functions\expect('is_admin')
+		Monkey\Functions\expect('is_admin')
 			->with('123')
 			->andReturn(true);
 
-		Brain\Monkey\Functions\expect('is_checkout')
+		Monkey\Functions\expect('is_checkout')
 			->with('123')
 			->andReturn(true);
 
-		Brain\Monkey\Functions\expect('is_wc_endpoint_url')
+		Monkey\Functions\expect('is_wc_endpoint_url')
 			->with('123')
 			->andReturn(false);
 

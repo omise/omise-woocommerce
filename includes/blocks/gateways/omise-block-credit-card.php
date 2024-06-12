@@ -74,7 +74,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
             'features'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] ),
             'locale'      => get_locale(),
             'public_key'  => Omise_Setting::instance()->public_key(),
-            'is_active'   => $this->is_active(),
+            'is_active'   => $this->gateway->is_active(),
         ]);
     }
 }

@@ -30,7 +30,7 @@ abstract class Omise_Block_Apm extends AbstractPaymentMethodType {
      * @return boolean
      */
     public function is_active() {
-        return $this->gateway->is_available();
+        return wc_string_to_bool( $this->get_setting( 'enabled', 'no' ) );
     }
 
     /**
@@ -66,7 +66,7 @@ abstract class Omise_Block_Apm extends AbstractPaymentMethodType {
             'title'       => $this->get_setting( 'title' ),
             'description' => $this->get_setting( 'description' ),
             'supports'    => array_filter( $this->gateway->supports, [ $this->gateway, 'supports' ] ),
-            'is_active'   => $this->is_active(),
+            'is_active'   => $this->gateway->is_active(),
         ];
     }
 }

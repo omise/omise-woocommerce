@@ -12,7 +12,8 @@ class Omise_Block_DuitNow_OBW extends Omise_Block_Payment {
         if (!$this->gateway->backend) {
             $this->gateway->init_payment_config();
         }
-        
-        $this->additional_data = [ 'banks' => $this->gateway->backend->banks ];
+
+        $banks = $this->gateway->backend ? $this->gateway->backend->banks : [];
+        $this->additional_data = [ 'banks' => $banks ];
     }
 }
