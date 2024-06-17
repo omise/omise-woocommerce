@@ -71,6 +71,7 @@ trait MockPaymentGateways
                         'omise_installment' => $gateway,
                         'omise_fpx' => $gateway,
                         'omise_duitnow_obw' => $gateway,
+                        'omise_konbini' => $gateway,
                     ];
                 }
             }

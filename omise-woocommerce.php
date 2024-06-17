@@ -175,6 +175,7 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-obw.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-konbini.php';
 		Omise_Block::init();
 	}
 
