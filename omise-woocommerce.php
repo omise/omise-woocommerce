@@ -15,6 +15,7 @@
  */
 defined('ABSPATH') or die('No direct script access allowed.');
 
+#[AllowDynamicProperties]
 class Omise
 {
 	/**
