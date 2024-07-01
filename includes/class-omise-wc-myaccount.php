@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 if ( ! class_exists( 'Omise_MyAccount' ) ) {
+	#[AllowDynamicProperties]
 	class Omise_MyAccount
 	{
 		private static $instance;
