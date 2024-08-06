@@ -9,6 +9,7 @@ if ( class_exists( 'Omise_Payment' ) ) {
     return;
 }
 
+#[AllowDynamicProperties]
 abstract class Omise_Payment extends WC_Payment_Gateway {
     use Sync_Order;
 

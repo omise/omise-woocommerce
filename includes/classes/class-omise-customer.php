@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) or die( "No direct script access allowed." );
 
 if ( ! class_exists( 'Omise_Customer' ) ) {
+    #[AllowDynamicProperties]
 	class Omise_Customer
     {
         private $customer;

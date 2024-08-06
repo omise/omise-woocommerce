@@ -26,11 +26,6 @@ class Omise_Rest_Webhooks_Controller {
 	/**
 	 * @var string
 	 */
-	const OCBC_PAO_CALLBACK_ENDPOINT = 'ocbc-pao-callback';
-
-	/**
-	 * @var string
-	 */
 	const RETURN_TRUE = '__return_true';
 
 	/**
@@ -53,16 +48,6 @@ class Omise_Rest_Webhooks_Controller {
 			array(
 				'methods' => WP_REST_Server::READABLE,
 				'callback' => array( $this, 'callback_paynow_payment_status' ),
-				'permission_callback' => self::RETURN_TRUE
-			)
-		);
-
-		register_rest_route(
-			self::ENDPOINT_NAMESPACE,
-			'/' . self::OCBC_PAO_CALLBACK_ENDPOINT . '/(?P<order_id>\d+)',
-			array(
-				'methods' => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'callback_ocbc_pao_callback' ),
 				'permission_callback' => self::RETURN_TRUE
 			)
 		);
@@ -105,17 +90,5 @@ class Omise_Rest_Webhooks_Controller {
 			}
 		}
 		return rest_ensure_response( $data );
-	}
-
-	/**
-	 * @param  WP_REST_Request $request
-	 *
-	 * @return WP_Error|WP_REST_Response
-	 */
-	public function callback_ocbc_pao_callback($request) {
-		$order_id = $request->get_param('order_id');
-		$url = add_query_arg('order_id', $order_id, home_url('wc-api/omise_ocbc_pao_callback'));
-		wp_redirect($url);
-		exit();
 	}
 }
