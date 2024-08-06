@@ -65,6 +65,10 @@ class Omise_Block_Credit_Card_Test extends TestCase
         $name_property->setAccessible(true);
         $name_property->setValue($this->obj, 'omise');
 
+        if (!defined('OMISE_WOOCOMMERCE_PLUGIN_VERSION')) {
+            define('OMISE_WOOCOMMERCE_PLUGIN_VERSION', '9.1.0');
+        }
+
         Monkey\Functions\expect('wc_string_to_bool');
         Monkey\Functions\expect('get_locale')->andReturn('thb');
 
