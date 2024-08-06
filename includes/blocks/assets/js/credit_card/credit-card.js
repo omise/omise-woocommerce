@@ -76,7 +76,7 @@ const CreditCardPaymentMethod = (props) => {
 								type: emitResponse.responseTypes.SUCCESS,
 								meta: {
 									paymentMethodData: {
-										"omise_save_customer_card": saveCardRef.current.value,
+										"omise_save_customer_card": saveCardRef.current,
 										"omise_token": cardTokenRef.current,
 									}
 								}

@@ -87,7 +87,28 @@ class Omise_Capabilities {
 		// If endpoint url is `order-received`, it mean thank you page.
 		$isPaymentPage = is_checkout() && !is_wc_endpoint_url( 'order-received' );
 
-		return $isPaymentPage || $isOmiseSettingPage;
+		global $wp;
+		$isFromCheckout = !$wp
+			? false
+			: strpos($wp->request, '/checkout') === strlen($wp->request) - strlen('/checkout');
+
+		return $isPaymentPage || $isOmiseSettingPage || $isFromCheckout;
+	}
+
+	/**
+	 * Checks if checkout is the current page.
+	 *
+	 * @return boolean
+	 */
+	public static function better_is_checkout() {
+		$checkout_path    = wp_parse_url(wc_get_checkout_url(), PHP_URL_PATH);
+		$current_url_path = wp_parse_url("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]", PHP_URL_PATH);
+
+		return (
+			$checkout_path !== null
+			&& $current_url_path !== null
+			&& trailingslashit($checkout_path) === trailingslashit($current_url_path)
+		);
 	}
 
 	/**

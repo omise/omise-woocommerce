@@ -186,7 +186,8 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 			if ( ! empty( $omise_customer_id ) ) {
 				try {
 					$cards = new OmiseCustomerCard;
-					$data['existingCards'] = $cards->get($omise_customer_id);
+					$existingCards = $cards->get($omise_customer_id);
+					$data['existing_cards'] = $existingCards['data'];
 				} catch (Exception $e) {
 					// nothing
 				}

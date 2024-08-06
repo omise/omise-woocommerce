@@ -43,7 +43,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		public function init_panel() {
 			if ( ! empty( $this->omise_customer_id ) ) {
 				try {
-					$viewData['existingCards'] = $this->customerCard->get($this->omise_customer_id);
+					$viewData['existing_cards'] = $this->customerCard->get($this->omise_customer_id)['data'];
 					$viewData['cardFormTheme'] = $this->omiseCardGateway->get_option('card_form_theme');
 					$viewData['secure_form_enabled'] = (boolean)$this->omiseCardGateway->get_option('secure_form_enabled');
 					$viewData['formDesign'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
