@@ -69,26 +69,28 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	{
 		parent::payment_fields();
 
+		Omise_Util::render_view('templates/payment/form-installment.php', $this->get_view_data());
+	}
+
+	public function get_view_data()
+	{
 		$currency   = get_woocommerce_currency();
-		$cart_total = $this->getTotalAmount();
+		$cart_total = $this->get_total_amount();
 
 		$capabilities = $this->backend->capabilities();
 		$installmentMinLimit = $capabilities->getInstallmentMinLimit();
 
-		Omise_Util::render_view(
-			'templates/payment/form-installment.php',
-			array(
-				'installment_backends' => $this->backend->get_available_providers($currency, $cart_total),
-				'is_zero_interest'     => $capabilities ? $capabilities->is_zero_interest() : false,
-				'installment_min_limit' => number_format(Omise_Money::convert_currency_unit($installmentMinLimit, $currency))
-			)
-		);
+		return [
+			'installment_backends' => $this->backend->get_available_providers($currency, $cart_total),
+			'is_zero_interest'     => $capabilities ? $capabilities->is_zero_interest() : false,
+			'installment_min_limit' => number_format(Omise_Money::convert_currency_unit($installmentMinLimit, $currency))
+		];
 	}
 
 	/**
 	 * Get the total amount of an order
 	 */
-	public function getTotalAmount()
+	public function get_total_amount()
 	{
 		global $wp;
 
@@ -116,7 +118,12 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 
 	public function get_charge_request($order_id, $order)
 	{
-		$source_type = $_POST['source']['type'];
+		// Prior to WC blocks, we get source as array. With WC blocks, source is now a string.
+		$source_type = isset($_POST['source'])
+			? (is_array($_POST['source'])
+				? $_POST['source']['type']
+				: $_POST['source'])
+			: '';
 		$source_type = isset($source_type) ? $source_type : '';
 		$requestData = $this->build_charge_request(
 			$order_id,

@@ -52,6 +52,7 @@ class Omise
 		add_action('plugins_loaded', array($this, 'check_dependencies'));
 		add_action('woocommerce_init', array($this, 'init'));
 		do_action('omise_initiated');
+		add_action( 'woocommerce_blocks_loaded', [ $this, 'block_init' ] );
 	}
 
 	/**
@@ -62,6 +63,12 @@ class Omise
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
 				'custom_order_tables', 
 				__FILE__, 
+				true
+			);
+
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+				'cart_checkout_blocks',
+				__FILE__,
 				true
 			);
 		}
@@ -132,6 +139,45 @@ class Omise
 			add_action('admin_notices', [$this, 'embedded_form_notice']);
 			return;
 		}
+	}
+
+	public function block_init()
+	{
+		require_once __DIR__ . '/includes/blocks/omise-block.php';
+		require_once __DIR__ . '/includes/blocks/omise-block-config.php';
+		require_once __DIR__ . '/includes/blocks/omise-block-payments.php';
+		require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-apm.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-credit-card.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-promptpay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-hk.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-cn.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-dana.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-gcash.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-kakaopay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-touch-n-go.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-bill-payment-lotus.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-shopeepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-wechat-pay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-grabpay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-paynow.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-ocbc-digital.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-boost.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-maybank-qr.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-qr.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-paypay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-rabbit-linepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-mobilebanking.php';
+		require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-payment.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-installment.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-fpx.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-obw.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-konbini.php';
+		Omise_Block::init();
 	}
 
 	/**

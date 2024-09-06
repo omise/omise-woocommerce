@@ -17,6 +17,8 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 			array( 'strong' => array() )
 		);
 
+		$this->supports           = [ 'products' ];
+
 		$this->init_form_fields();
 		$this->init_settings();
 

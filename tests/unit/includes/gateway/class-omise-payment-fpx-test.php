@@ -1,13 +1,16 @@
 <?php
 
+use Brain\Monkey;
+
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
 class Omise_Payment_FPX_Test extends Omise_Offsite_Test
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->sourceType = 'fpx';
         parent::setUp();
+        Monkey\Functions\expect('add_action');
         require_once __DIR__ . '/../../../../includes/backends/class-omise-backend-fpx.php';
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-fpx.php';
     }

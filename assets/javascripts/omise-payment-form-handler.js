@@ -255,22 +255,25 @@
 	}
 
 	function initializeSecureCardForm() {
-		const omiseCardElement = document.getElementById('omise-card');
-		if (omiseCardElement && Boolean(omise_params.secure_form_enabled)) {
-			showOmiseEmbeddedCardForm({
-				element: omiseCardElement,
-				publicKey: omise_params.key,
-				hideRememberCard: HIDE_REMEMBER_CARD,
-				locale: LOCALE,
-				theme: CARD_FORM_THEME ?? 'light',
-				design: FORM_DESIGN,
-				brandIcons: CARD_BRAND_ICONS,
-				onSuccess: handleCreateOrder,
-				onError: (error) => {
-					showError(error)
-					$form.unblock()
-				}
-			})
+		// This will be undefined when WC block is enabled in Checkout page
+		if (typeof HIDE_REMEMBER_CARD !== 'undefined') {
+			const omiseCardElement = document.getElementById('omise-card');
+			if (omiseCardElement && Boolean(omise_params.secure_form_enabled)) {
+				showOmiseEmbeddedCardForm({
+					element: omiseCardElement,
+					publicKey: omise_params.key,
+					hideRememberCard: HIDE_REMEMBER_CARD,
+					locale: LOCALE,
+					theme: CARD_FORM_THEME ?? 'light',
+					design: FORM_DESIGN,
+					brandIcons: CARD_BRAND_ICONS,
+					onSuccess: handleCreateOrder,
+					onError: (error) => {
+						showError(error)
+						$form.unblock()
+					}
+				})
+			}
 		}
 	}
 

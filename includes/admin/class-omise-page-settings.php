@@ -56,7 +56,7 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 
 		$settings = $page->get_settings();
 		
-		// Although this variable looks like unsed, it will be available in the view.
+		// Although this variable looks like unused, it will be available in the view.
 		$available_payment_methods = [];
 		$capabilities = Omise_Capabilities::retrieve();
 

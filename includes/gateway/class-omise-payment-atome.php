@@ -80,12 +80,12 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
     public function payment_fields()
     {
         parent::payment_fields();
-        $viewData = $this->validateAtomeRequest();
+        $viewData = $this->validate_atome_request();
 
         Omise_Util::render_view('templates/payment/form-atome.php', $viewData);
     }
 
-    private function validateAtomeRequest()
+    public function validate_atome_request()
     {
         $limits = [
             'thb' => [

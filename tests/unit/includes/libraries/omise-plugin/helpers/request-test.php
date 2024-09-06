@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class RequestHelperTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         require_once __DIR__ . '/../../../../../../includes/libraries/omise-plugin/helpers/request.php';
     }

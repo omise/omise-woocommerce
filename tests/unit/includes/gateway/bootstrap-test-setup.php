@@ -1,27 +1,31 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Brain\Monkey;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+// @runInSeparateProcess
 abstract class Bootstrap_Test_Setup extends TestCase
 {
+    // Adds Mockery expectations to the PHPUnit assertions count.
+    use MockeryPHPUnitIntegration;
+
     public $sourceType;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        Brain\Monkey\setUp();
-        Brain\Monkey\Functions\stubs( [
-            'wp_kses' => null,
-			'add_action' => null,
-		] );
+        parent::setUp();
+        Monkey\setUp();
     }
 
     /**
      * close mockery after tests are done
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        Brain\Monkey\tearDown();
+        Monkey\tearDown();
         Mockery::close();
+        parent::tearDown();
     }
 
     public function getOrderMock($expectedAmount, $expectedCurrency)

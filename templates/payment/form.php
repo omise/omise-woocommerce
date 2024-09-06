@@ -1,5 +1,5 @@
 <?php
-	$showExistingCards = $viewData['user_logged_in'] && isset($viewData['existingCards']['data']) && sizeof($viewData['existingCards']['data']) > 0;
+	$showExistingCards = $viewData['user_logged_in'] && isset($viewData['existing_cards']) && sizeof($viewData['existing_cards']) > 0;
 	$hideRememberCard = $viewData['user_logged_in'] ? 'no' : 'yes';
 ?>
 
@@ -7,7 +7,7 @@
 	<?php if ($showExistingCards) : ?>
 		<h3><?php _e('Use an existing card', 'omise'); ?></h3>
 		<ul class="omise-customer-card-list">
-			<?php foreach ($viewData['existingCards']['data'] as $row => $card) : ?>
+			<?php foreach ($viewData['existing_cards'] as $row => $card) : ?>
 				<li class="item">
 					<input <?php echo $row === 0 ? 'checked=checked' : ''; ?> id="card-<?php echo $card['id']; ?>" type="radio" name="card_id" value="<?php echo $card['id']; ?>" />
 					<label for="card-<?php echo $card['id']; ?>">

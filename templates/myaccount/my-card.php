@@ -8,8 +8,8 @@
 			<th><?php _e( 'Action', 'omise' ); ?></th>
 		</tr>
 		<tbody>
-			<?php if ( isset( $viewData['existingCards']['data'] ) ): ?>
-				<?php foreach( $viewData['existingCards']['data'] as $card ): ?>
+			<?php if ( isset( $viewData['existing_cards'] ) ): ?>
+				<?php foreach( $viewData['existing_cards'] as $card ): ?>
 					<?php
 						$nonce = wp_create_nonce( 'omise_delete_card_' . $card['id'] );
 						$created_date = date_i18n( get_option( 'date_format' ), strtotime($card['created']));

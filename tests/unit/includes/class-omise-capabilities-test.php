@@ -14,7 +14,7 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 	/**
 	 * setup add_action and do_action before the test run
 	 */
-	public function setUp(): void
+	protected function setUp(): void
 	{
 		parent::setUp();
 
