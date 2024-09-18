@@ -87,12 +87,37 @@ class Omise_Capabilities {
 		// If endpoint url is `order-received`, it mean thank you page.
 		$isPaymentPage = is_checkout() && !is_wc_endpoint_url( 'order-received' );
 
-		global $wp;
-		$isFromCheckout = !$wp
-			? false
-			: strpos($wp->request, '/checkout') === strlen($wp->request) - strlen('/checkout');
+		return $isPaymentPage || $isOmiseSettingPage || self::isFromCheckoutPage();
+	}
 
-		return $isPaymentPage || $isOmiseSettingPage || $isFromCheckout;
+	public static function isFromCheckoutPage()
+	{
+		global $wp;
+
+		if (!$wp) {
+			return false;
+		}
+
+		$endpoints = ['checkout', 'batch'];
+
+		foreach($endpoints as $endpoint) {
+			if (trim($wp->request) !== '') {
+				$len = strlen($wp->request);
+				if (strpos($wp->request, $endpoint) === $len - strlen($endpoint)) {
+					return true;
+				}
+			}
+
+			if (isset($wp->query_vars['rest_route'])) {
+				$route = $wp->query_vars['rest_route'];
+				$len = strlen($route);
+				if (strpos($route, $endpoint) === $len - strlen($endpoint)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**

@@ -11,7 +11,7 @@ export function registerOmisePaymentMethod({settings, label}) {
         const { PaymentMethodLabel } = props.components
         return <PaymentMethodLabel text={ label } />
     }
-    
+
     registerPaymentMethod( {
         name: settings.name || "",
         label: <Label />,

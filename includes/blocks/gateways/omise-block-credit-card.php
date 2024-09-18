@@ -48,10 +48,12 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
                 wp_register_script(
                     'embedded-js',
                     plugins_url( '../../assets/javascripts/omise-embedded-card.js', __FILE__ ),
-                    [],
+                    ['omise-js'],
                     OMISE_WOOCOMMERCE_PLUGIN_VERSION,
                     true
                 );
+
+                $script_asset['dependencies'] = array_merge($script_asset['dependencies'], ['embedded-js']);
 
                 wp_register_script(
                     "{$this->name}-payments-blocks",

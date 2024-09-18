@@ -33,37 +33,42 @@ function showOmiseEmbeddedCardForm({
     fontName = font.custom_name.trim()
   }
 
-  OmiseCard.configure({
-    publicKey: publicKey,
-    element,
-    customCardForm: true,
-    locale: locale,
-    customCardFormTheme: theme,
-    customCardFormHideRememberCard: hideRememberCard ?? false,
-    customCardFormBrandIcons: brandIcons ?? null,
-    style: {
-      fontFamily: fontName,
-      fontSize: font.size,
-      input: {
-        height: input.height,
-        borderRadius: input.border_radius,
-        border: `1.2px solid ${input.border_color}`,
-        focusBorder: `1.2px solid ${input.active_border_color}`,
-        background: input.background_color,
-        color: input.text_color,
-        labelColor: input.label_color,
-        placeholderColor: input.placeholder_color,
+  // when card payment is selected and a page is refreshed then it takes around 1s
+  // for OmiseCard to be available. So, we add a timeout of 1 sec. refer to
+  // showOmiseEmbeddedCardForm() in assets/javascrips/omise-embedded-card.js
+  setTimeout(() => {
+    OmiseCard.configure({
+      publicKey: publicKey,
+      element,
+      customCardForm: true,
+      locale: locale,
+      customCardFormTheme: theme,
+      customCardFormHideRememberCard: hideRememberCard ?? false,
+      customCardFormBrandIcons: brandIcons ?? null,
+      style: {
+        fontFamily: fontName,
+        fontSize: font.size,
+        input: {
+          height: input.height,
+          borderRadius: input.border_radius,
+          border: `1.2px solid ${input.border_color}`,
+          focusBorder: `1.2px solid ${input.active_border_color}`,
+          background: input.background_color,
+          color: input.text_color,
+          labelColor: input.label_color,
+          placeholderColor: input.placeholder_color,
+        },
+        checkBox: {
+          textColor: checkbox.text_color,
+          themeColor: checkbox.theme_color,
+          border: `1.2px solid ${input.border_color}`,
+        }
       },
-      checkBox: {
-        textColor: checkbox.text_color,
-        themeColor: checkbox.theme_color,
-        border: `1.2px solid ${input.border_color}`,
-      }
-    },
-  });
+    });
 
-  OmiseCard.open({
-    onCreateTokenSuccess: onSuccess ?? noop,
-    onError: onError ?? noop
-  });
+    OmiseCard.open({
+      onCreateTokenSuccess: onSuccess ?? noop,
+      onError: onError ?? noop
+    });
+  }, 1000)
 }
