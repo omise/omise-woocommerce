@@ -1,6 +1,7 @@
 <?php
 
-use Automattic\WooCommerce\Blocks\Registry\Container;
+use Automattic\WooCommerce\StoreApi\StoreApi;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 
 class Omise_Block_Config {
 
