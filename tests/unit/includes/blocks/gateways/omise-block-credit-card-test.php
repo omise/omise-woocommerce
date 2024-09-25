@@ -92,7 +92,7 @@ class Omise_Block_Credit_Card_Test extends TestCase
     public function get_payment_method_script_handles()
     {
         Monkey\Functions\expect('wp_script_is');
-        Monkey\Functions\expect('wp_register_script');
+        Monkey\Functions\expect('wp_enqueue_script');
         Monkey\Functions\expect('plugin_dir_url');
         Monkey\Functions\expect('plugins_url');
         Monkey\Functions\expect('is_checkout')->andReturn(true);

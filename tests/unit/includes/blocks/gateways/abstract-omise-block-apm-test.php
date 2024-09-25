@@ -88,7 +88,6 @@ class Omise_Block_Apm_Test extends TestCase
     public function get_payment_method_script_handles()
     {
         Monkey\Functions\expect('wp_script_is')->andReturn(false);
-        Monkey\Functions\expect('wp_register_script');
         Monkey\Functions\expect('plugin_dir_url');
         Monkey\Functions\expect('wp_enqueue_script');
 

@@ -98,7 +98,6 @@ class Omise_Block_Payment_Test extends TestCase
         $name_property->setValue($this->obj, 'omise_atome');
 
         Monkey\Functions\expect('wp_script_is')->andReturn(false);
-        Monkey\Functions\expect('wp_register_script');
         Monkey\Functions\expect('plugin_dir_url');
         Monkey\Functions\expect('wp_enqueue_script');
 
