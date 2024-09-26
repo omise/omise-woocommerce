@@ -41,15 +41,13 @@ abstract class Omise_Block_Apm extends AbstractPaymentMethodType {
     public function get_payment_method_script_handles() {
         if ( ! wp_script_is( 'wc-omise-one-click-apms-payments-blocks', 'enqueued' ) ) {
             $script_asset = require_once __DIR__ . '/../assets/js/build/omise-one-click-apms.asset.php';
-            wp_register_script(
+            wp_enqueue_script(
                 "wc-omise-one-click-apms-payments-blocks",
                 plugin_dir_url( __DIR__ ) . 'assets/js/build/omise-one-click-apms.js',
                 $script_asset[ 'dependencies' ],
                 $script_asset[ 'version' ],
                 true
             );
-
-            wp_enqueue_script( 'wc-omise-one-click-apms-payments-blocks' );
         }
 
         return [ 'wc-omise-one-click-apms-payments-blocks' ];

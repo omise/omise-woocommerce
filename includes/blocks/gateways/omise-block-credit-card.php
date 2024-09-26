@@ -41,11 +41,18 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
      * @return array
      */
     public function get_payment_method_script_handles() {
-        if ( is_checkout() && $this->is_active() ) {
-            $script_asset = require_once __DIR__ .  '/../assets/js/build/credit_card.asset.php';
+        if ($this->is_active()) {
+            $script_asset_path =  __DIR__ .  '/../assets/js/build/credit_card.asset.php';
+            $script_asset = file_exists( $script_asset_path )
+                ? require_once( $script_asset_path )
+                : [
+                    'dependencies' => [],
+                    'version' => '1.0.0'
+                ];
 
-            if (is_array($script_asset)) {
-                wp_register_script(
+            // Load the script related to OmiseJS in checkout
+            if (is_checkout()) {
+                wp_enqueue_script(
                     'embedded-js',
                     plugins_url( '../../assets/javascripts/omise-embedded-card.js', __FILE__ ),
                     ['omise-js'],
@@ -54,8 +61,11 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
                 );
 
                 $script_asset['dependencies'] = array_merge($script_asset['dependencies'], ['embedded-js']);
+            }
 
-                wp_register_script(
+            // Load the script for UI in checkout and cart page.
+            if (is_checkout() || is_cart() || is_page('cart')) {
+                wp_enqueue_script(
                     "{$this->name}-payments-blocks",
                     plugin_dir_url( __DIR__ ) . 'assets/js/build/credit_card.js',
                     $script_asset[ 'dependencies' ],
