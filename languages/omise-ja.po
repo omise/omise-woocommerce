@@ -588,4 +588,4 @@ msgstr "以下から銀行をお選びください"
 
 #: omise-woocommerce.php:66
 msgid "Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection."
-msgstr 重要なプラグインのアップデートがリリースされました：WooCommerce Blockと互換性があり、セキュアなフォームでの決済が必須になりました。すぐに更新し、クレジットカードのフォームを再設定することで、コンプライアンスと顧客データ保護を強化しましょう。"
+msgstr "重要なプラグインのアップデートがリリースされました：WooCommerce Blockと互換性があり、セキュアなフォームでの決済が必須になりました。すぐに更新し、クレジットカードのフォームを再設定することで、コンプライアンスと顧客データ保護を強化しましょう。"
