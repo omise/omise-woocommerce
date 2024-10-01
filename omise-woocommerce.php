@@ -84,7 +84,7 @@ class Omise
 
 		// hide if user enables the embedded form.
 		if (!(bool)$secure_form_enabled) {
-			$translation = __('Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. You will need to re-customize the credit card checkout form after the upgrade. <a target="_blank" href="https://www.omise.co/woocommerce-plugin">Learn how to enable Secure Form</a>.', 'omise');
+			$translation = __('Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection.', 'omise');
 			echo "<div class='notice notice-warning is-dismissible'><p><strong>Opn Payments:</strong> $translation</p></div>";
 		}
 	}
