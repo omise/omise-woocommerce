@@ -44,7 +44,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
         if ($this->is_active()) {
             $script_asset_path =  __DIR__ .  '/../assets/js/build/credit_card.asset.php';
             $script_asset = file_exists( $script_asset_path )
-                ? require_once( $script_asset_path )
+                ? require $script_asset_path
                 : [
                     'dependencies' => [],
                     'version' => '1.0.0'
