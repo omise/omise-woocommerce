@@ -94,7 +94,6 @@ class Omise_Payment_CreditCard_Test extends TestCase
 
         $config = $creditCard->get_secure_form_config();
 
-        $this->assertArrayHasKey('secure_form_enabled', $config);
         $this->assertArrayHasKey('card_form_theme', $config);
         $this->assertArrayHasKey('card_icons', $config);
         $this->assertArrayHasKey('form_design', $config);

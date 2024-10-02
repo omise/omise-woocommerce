@@ -38,9 +38,9 @@ trait MockPaymentGateways
                             return ['user_logged_in' => false];
                         }
 
-                        public function get_secure_form_config() {
-                            return ['secure_form_enabled' => false];
-                        }
+                        // public function get_secure_form_config() {
+                        //     return ['secure_form_enabled' => false];
+                        // }
 
                         public function get_view_data() {
                             return [

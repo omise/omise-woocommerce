@@ -60,12 +60,8 @@
 			}
 		});
 
-		if(Boolean(parseInt(omise_params.secure_form_enabled))) {
-			hideError();
-			OmiseCard.requestCardToken()
-		} else {
-			saveCardTraditional()
-		}
+		hideError();
+		OmiseCard.requestCardToken()
 	}
 
 	$(".delete_card").click(function(event){
@@ -87,71 +83,6 @@
 		create_card();
 	});
 
-	function saveCardTraditional() {
-		let errors                  = [],
-			omise_card              = {},
-			omise_card_number_field = 'number',
-			omise_card_fields       = {
-				'name'             : $( '#omise_card_name' ),
-				'number'           : $( '#omise_card_number' ),
-				'expiration_month' : $( '#omise_card_expiration_month' ),
-				'expiration_year'  : $( '#omise_card_expiration_year' ),
-				'security_code'    : $( '#omise_card_security_code' )
-			};
-
-		$.each( omise_card_fields, function( index, field ) {
-			omise_card[ index ] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
-			if ( "" === omise_card[ index ] ) {
-				errors.push( omise_params[ 'required_card_' + index ] );
-			}
-		} );
-		
-		if ( errors.length > 0 ) {
-			showError(errors, $form);
-			return false;
-		}else{
-			hideError();
-			if(Omise){
-				Omise.setPublicKey(omise_params.key);
-				Omise.createToken("card", omise_card, function (statusCode, response) {
-					if (statusCode == 200) {
-						$.each( omise_card_fields, function( index, field ) {
-							field.val( '' );
-						} );
-
-						const data = {
-							action: "omise_create_card",
-							omise_token: response.id,
-							omise_nonce: $("#omise_add_card_nonce").val()
-						};
-						
-						$.post(omise_params.ajax_url, data, 
-							function(wp_response){
-								if(wp_response.id){
-									window.location.reload();
-								}else{
-									showError(wp_response.message, $form);
-								}
-							}, "json"
-						);
-					} else {
-						if(response.message){
-							showError( omise_params.cannot_create_card + "<br/>" + response.message, $form );
-						}else if(response.responseJSON && response.responseJSON.message){
-							showError( omise_params.cannot_create_card + "<br/>" + response.responseJSON.message, $form );
-						}else if(response.status==0){
-							showError( omise_params.cannot_create_card + "<br/>" + omise_params.cannot_connect_api, $form );
-						}else {
-							showError( omise_params.retry_or_contact_support, $form );
-						}
-					}
-				});
-			}else{
-				showError( omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection, $form );
-			}
-		}
-	}
-
 	function saveCardEmbedded(payload) {
 		const data = {
 			action: "omise_create_card",
@@ -169,21 +100,19 @@
 		);
 	}
 
-	if(Boolean(parseInt(omise_params.secure_form_enabled))) {
-		showOmiseEmbeddedCardForm({
-			element: document.getElementById('omise-card'),
-			publicKey: omise_params.key,
-			locale: LOCALE,
-			theme: CARD_FORM_THEME ?? 'light',
-			design: FORM_DESIGN,
-			brandIcons: CARD_BRAND_ICONS,
-			hideRememberCard: true,
-			onSuccess: saveCardEmbedded,
-			onError: (error) => {
-				showError(error)
-				$form.unblock()
-			}
-		})
-	}
+	showOmiseEmbeddedCardForm({
+		element: document.getElementById('omise-card'),
+		publicKey: omise_params.key,
+		locale: LOCALE,
+		theme: CARD_FORM_THEME ?? 'light',
+		design: FORM_DESIGN,
+		brandIcons: CARD_BRAND_ICONS,
+		hideRememberCard: true,
+		onSuccess: saveCardEmbedded,
+		onError: (error) => {
+			showError(error)
+			$form.unblock()
+		}
+	})
 }
 )(jQuery);
