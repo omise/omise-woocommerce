@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -27,8 +28,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 		$this->description          = $this->get_option( 'description' );
 		$this->payment_action       = $this->get_option( 'payment_action' );
 		$this->restricted_countries = array( 'TH', 'JP', 'SG', 'MY' );
-
-		$this->register_omise_credit_card_scripts();
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -84,7 +83,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					),
 					'desc_tip'    => true
 				),
-
 				'card_form_theme' => [
 					'title'       => __( 'Secure form theme', 'omise' ),
 					'type'        => 'select',
@@ -141,16 +139,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					)
 				)
 			)
-		);
-	}
-
-	private function register_omise_credit_card_scripts() {
-		wp_enqueue_script(
-			'omise-credit-card',
-			plugins_url( '../assets/javascripts/omise-payment-credit-card.js', dirname( __FILE__ ) ),
-			array( 'jquery' ),
-			WC_VERSION,
-			true
 		);
 	}
 
