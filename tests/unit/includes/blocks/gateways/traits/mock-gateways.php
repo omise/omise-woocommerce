@@ -44,9 +44,10 @@ trait MockPaymentGateways
 
                         public function get_view_data() {
                             return [
-                                'installment_backends' => [],
-                                'is_zero_interest' => true,
-                                'installment_min_limit' =>  2000
+                                'installments_enabled' => true,
+                                'installment_min_limit' =>  2000,
+                                'total_amount' => 4000,
+                                'currency' => 'thb',
                             ];
                         }
                     };

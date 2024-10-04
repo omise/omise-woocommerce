@@ -125,8 +125,24 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $obj = new Omise_Payment_Installment();
         $result = $obj->get_view_data();
 
-        $this->assertArrayHasKey('installment_backends', $result);
+        $this->assertArrayHasKey('installments_enabled', $result);
         $this->assertArrayHasKey('is_zero_interest', $result);
         $this->assertArrayHasKey('installment_min_limit', $result);
+    }
+
+    public function testConvertToCents()
+    {
+        Monkey\Functions\expect('add_action');
+        $instance = new Omise_Payment_Installment();
+        $this->assertEquals(100, $instance->convert_to_cents(1.00));
+        $this->assertEquals(150, $instance->convert_to_cents(1.50));
+        $this->assertEquals(0, $instance->convert_to_cents(0.00));
+
+        $this->assertEquals(10000, $instance->convert_to_cents(100));
+        $this->assertEquals(0, $instance->convert_to_cents(0));
+
+        $this->assertEquals(100, $instance->convert_to_cents('1.00'));
+        $this->assertEquals(0, $instance->convert_to_cents('0.00'));
+        $this->assertEquals(10000, $instance->convert_to_cents('100'));
     }
 }

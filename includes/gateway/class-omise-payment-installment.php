@@ -82,9 +82,11 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		$installmentMinLimit = $capabilities->getInstallmentMinLimit();
 
 		return [
-			'installment_backends' => $this->backend->get_available_providers($currency, $cart_total),
+			'installments_enabled' => $this->backend->get_available_providers($currency, $cart_total),
 			'is_zero_interest'     => $capabilities ? $capabilities->is_zero_interest() : false,
-			'installment_min_limit' => number_format(Omise_Money::convert_currency_unit($installmentMinLimit, $currency))
+			'installment_min_limit' => Omise_Money::convert_currency_unit($installmentMinLimit, $currency),
+			'currency' => $currency,
+			'total_amount' => Omise_Money::to_subunit($cart_total, $currency),
 		];
 	}
 
@@ -111,7 +113,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	/**
 	 * Get the total amount of an order in cents
 	 */
-	public function convertToCents($amount)
+	public function convert_to_cents($amount)
 	{
 			return intval(floatval($amount) * 100);
 	}
@@ -121,38 +123,16 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$requestData = $this->get_charge_request($order_id, $order);
-		return OmiseCharge::create($requestData);
-	}
-
-	public function get_charge_request($order_id, $order)
-	{
-		// Prior to WC blocks, we get source as array. With WC blocks, source is now a string.
-		$source_type = isset($_POST['source'])
-			? (is_array($_POST['source'])
-				? $_POST['source']['type']
-				: $_POST['source'])
-			: '';
-		$source_type = isset($source_type) ? $source_type : '';
 		$requestData = $this->build_charge_request(
 			$order_id,
 			$order,
-			$source_type,
+			null,
 			$this->id . "_callback"
 		);
-
-		$installment_terms = $_POST[$source_type . '_installment_terms'];
-		$installment_terms = isset($installment_terms) ? $installment_terms : '';
-		$provider = $this->backend->get_provider($source_type);
-		
-		if (isset($provider['zero_interest_installments'])) {
-			$payload['zero_interest_installments'] = $provider['zero_interest_installments'];
-		}
-
-		$requestData['source'] = isset( $_POST['omise_source'] ) ? wc_clean( $_POST['omise_source'] ) : '';
-		$requestData['card'] = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
-
-		return $requestData;
+		$requestData['description'] = 'staging';
+		$requestData['source'] = isset($_POST['source']) ? wc_clean($_POST['source']) : '';
+		$requestData['card'] = isset($_POST['token']) ? wc_clean($_POST['token']) : '';
+		return OmiseCharge::create($requestData);
 	}
 
 	/**
@@ -195,20 +175,6 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true
 			);
-
-			wp_localize_script(
-				'omise-payment-form-handler',
-				'omise_installment_params',
-				$this->getParamsForJS()
-			);
 		}
-	}
-
-	public function getParamsForJS()
-	{
-		return [
-			'key'                            => $this->public_key(),
-			'amount'                         => $this->convertToCents($this->getTotalAmount()),
-		];
 	}
 }

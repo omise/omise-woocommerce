@@ -309,31 +309,10 @@
 		}
 	}
 
-	function initializeInstallmentForm() {
-		const omiseInstallmentElement = document.getElementById('omise-installment');
-		if (omiseInstallmentElement && $('#payment_method_omise_installment').is(':checked')){
-			showOmiseInstallmentForm({
-				element: omiseInstallmentElement,
-				publicKey: omise_installment_params.key,
-				amount: omise_installment_params.amount,
-				locale: LOCALE,
-				onSuccess: handleCreateOrder,
-				onError: (error) => {
-					showError(error)
-					$form.unblock()
-				}
-			})
-		} else {
-			OmiseCard.destroy();
-		}
-	}
-
 	function setupOmiseForm() {
 		var selectedPaymentMethod = $('input[name="payment_method"]:checked').val();
 			if (selectedPaymentMethod === 'omise') {
 				initializeSecureCardForm();
-			} else if (selectedPaymentMethod === 'omise_installment') {
-				initializeInstallmentForm();
 			} else {
 				OmiseCard.destroy();
 			}
