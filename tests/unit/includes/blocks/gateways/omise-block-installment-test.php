@@ -47,4 +47,24 @@ class Omise_Block_Installment_Test extends TestCase
         $this->assertArrayHasKey('installments_enabled', $result);
         $this->assertArrayHasKey('total_amount', $result);
     }
+
+    /**
+     * @test
+     */
+    public function get_payment_method_script_handles()
+    {
+        $reflection = new \ReflectionClass($this->obj);
+        $name_property = $reflection->getProperty('name');
+        $name_property->setAccessible(true);
+        $name_property->setValue($this->obj, 'omise_atome');
+
+        Monkey\Functions\expect('wp_script_is')->andReturn(false);
+        Monkey\Functions\expect('plugin_dir_url');
+        Monkey\Functions\expect('wp_enqueue_script');
+        Monkey\Functions\expect('is_checkout');
+
+        $result = $this->obj->get_payment_method_script_handles();
+
+        $this->assertEquals([ 'wc-omise_atome-payments-blocks' ], $result);
+    }
 }
