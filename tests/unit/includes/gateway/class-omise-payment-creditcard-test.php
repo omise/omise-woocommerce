@@ -39,7 +39,6 @@ class Omise_Payment_CreditCard_Test extends TestCase
         }
 
         Monkey\Functions\expect('add_action')->andReturn(null);
-        Monkey\Functions\expect('wp_enqueue_script');
         Monkey\Functions\expect('wp_kses')
             ->times(3)
             ->andReturn(
@@ -64,8 +63,6 @@ class Omise_Payment_CreditCard_Test extends TestCase
      */
     public function test_class_is_initialized_properly()
     {
-        Monkey\Functions\expect('plugins_url');
-
         $creditCard = new Omise_Payment_Creditcard;
         
         $this->assertEquals('credit_card', $creditCard->source_type);
@@ -88,13 +85,10 @@ class Omise_Payment_CreditCard_Test extends TestCase
         $cardFormCustomization->shouldReceive('get_instance')->andReturn($cardFormCustomization);
         $cardFormCustomization->shouldReceive('get_design_setting')->andReturn(['abc' => ['xyz']]);
 
-        Monkey\Functions\expect('plugins_url');
-
         $creditCard = new Omise_Payment_Creditcard;
 
         $config = $creditCard->get_secure_form_config();
 
-        $this->assertArrayHasKey('secure_form_enabled', $config);
         $this->assertArrayHasKey('card_form_theme', $config);
         $this->assertArrayHasKey('card_icons', $config);
         $this->assertArrayHasKey('form_design', $config);
@@ -106,7 +100,6 @@ class Omise_Payment_CreditCard_Test extends TestCase
     public function get_existing_cards_for_user_logged_in() {
         Monkey\Functions\expect('is_user_logged_in')->andReturn(true);
         Monkey\Functions\expect('wp_get_current_user')->andReturn((object)['test_omise_customer_id' => 1]);
-        Monkey\Functions\expect('plugins_url');
 
         $customerCard = Mockery::mock('alias:OmiseCustomerCard');
         $customerCard->shouldReceive('get')->andReturn(1);

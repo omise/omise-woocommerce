@@ -39,7 +39,7 @@ trait MockPaymentGateways
                         }
 
                         public function get_secure_form_config() {
-                            return ['secure_form_enabled' => false];
+                            return [];
                         }
 
                         public function get_view_data() {

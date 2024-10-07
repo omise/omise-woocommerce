@@ -58,92 +58,9 @@
 			}
 
 			if (0 === $('input.omise_token').length) {
-				(Boolean(omise_params.secure_form_enabled))
-					? requestCardToken()
-					: traditionalForm();
-				return false;
-			}
-		}
-	}
-
-	function omiseInstallmentFormHandler() {
-		function getSelectedCardId() {
-			const $selected_card_id = $("input[name='card_id']:checked");
-			if ($selected_card_id.length > 0) {
-				return $selected_card_id.val();
-			}
-
-			return "";
-		}
-
-		if ($('#payment_method_omise_installment').is(':checked')) {
-			if (getSelectedCardId() !== "") {
-				//submit the form right away if the card_id is not blank
-				return true;
-			}
-
-			if (0 === $('input.omise_token').length && 0 === $('input.omise_source').length) {
 				requestCardToken();
 				return false;
 			}
-			return true;
-		}
-		return true;
-	}
-
-	function traditionalForm() {
-		$form.block({
-			message: null,
-			overlayCSS: {
-				background: '#fff url(' + wc_checkout_params.ajax_loader_url + ') no-repeat center',
-				backgroundSize: '16px 16px',
-				opacity: 0.6
-			}
-		});
-
-		let errors = [],
-			omise_card = {},
-			omise_card_number_field = 'number',
-			omise_card_fields = {
-				'name' : $('#omise_card_name'),
-				'number' : $('#omise_card_number'),
-				'expiration_month' : $('#omise_card_expiration_month'),
-				'expiration_year' : $('#omise_card_expiration_year'),
-				'security_code' : $('#omise_card_security_code')
-			};
-
-		$.each(omise_card_fields, function(index, field) {
-			omise_card[index] = (index === omise_card_number_field) ? field.val().replace(/\s/g, '') : field.val();
-			if ("" === omise_card[index]) {
-				errors.push(omise_params['required_card_' + index]);
-			}
-		});
-
-		if (errors.length > 0) {
-			showError(errors);
-			$form.unblock();
-			return false;
-		}
-
-		hideError();
-
-		if(Omise) {
-			Omise.setPublicKey(omise_params.key);
-			Omise.createToken("card", omise_card, function (statusCode, response) {
-				if (statusCode == 200) {
-					$.each(omise_card_fields, function(index, field) {
-						field.val('');
-					});
-
-					$form.append('<input type="hidden" class="omise_token" name="omise_token" value="' + response.id + '"/>');
-					$form.submit();
-				} else {
-					handleTokensApiError(response);
-				};
-			});
-		} else {
-			showError(omise_params.cannot_load_omisejs + '<br/>' + omise_params.check_internet_connection);
-			$form.unblock();
 		}
 	}
 

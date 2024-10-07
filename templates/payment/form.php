@@ -26,40 +26,19 @@
 			</label>
 		<?php endif; ?>
 
-		<?php if ($viewData['secure_form_enabled']): ?>
-			<div class="omise-new-card-form <?php echo $showExistingCards ? 'card-exists' : ''; ?>">
-				<div id="omise-card" style="width:100%; max-width: 400px;"></div>
-				<input type="hidden" name="omise_save_customer_card" class="omise_save_customer_card" />
-				<div class="clear"></div>
-			</div>
-		<?php else: ?>
-			<fieldset class="omise-new-card-form <?php echo $showExistingCards ? 'card-exists' : ''; ?>">
-
-				<?php require_once('form-creditcard.php'); ?>
-
-				<div class="clear"></div>
-
-				<?php if ($viewData['user_logged_in']) : ?>
-					<div class="omise-form-child omise-remember-card">
-						<input type="checkbox" name="omise_save_customer_card" id="omise_save_customer_card" />
-						<label for="omise_save_customer_card" class="inline">
-							<?php _e('Remember this card', 'omise'); ?>
-						</label>
-					</div>
-				<?php endif; ?>
-
-				<div class="clear"></div>
-			</fieldset>
-		<?php endif; ?>
+		<div class="omise-new-card-form <?php echo $showExistingCards ? 'card-exists' : ''; ?>">
+			<div id="omise-card" style="width:100%; max-width: 400px;"></div>
+			<input type="hidden" name="omise_save_customer_card" class="omise_save_customer_card" />
+			<div class="clear"></div>
+		</div>
 	</div>
 </div>
-<?php if($viewData['secure_form_enabled']): ?>
-	<script>
-		window.CARD_FORM_THEME = "<?php echo $viewData['card_form_theme'] ?>";
-		window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($viewData['card_icons']) ?>`);
-		window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['form_design']) ?>`);
-		window.LOCALE = `<?php echo get_locale(); ?>`;
-		window.HIDE_REMEMBER_CARD = `<?php echo $hideRememberCard ?>` == 'yes' ? true : false;
-		window.OMISE_CUSTOM_FONT_OTHER = 'Other';
-	</script>
-<?php endif; ?>
+
+<script>
+	window.CARD_FORM_THEME = "<?php echo $viewData['card_form_theme'] ?>";
+	window.CARD_BRAND_ICONS = JSON.parse(`<?php echo json_encode($viewData['card_icons']) ?>`);
+	window.FORM_DESIGN = JSON.parse(`<?php echo json_encode($viewData['form_design']) ?>`);
+	window.LOCALE = `<?php echo get_locale(); ?>`;
+	window.HIDE_REMEMBER_CARD = `<?php echo $hideRememberCard ?>` == 'yes' ? true : false;
+	window.OMISE_CUSTOM_FONT_OTHER = 'Other';
+</script>

@@ -80,13 +80,8 @@ class Omise
 	public function embedded_form_notice()
 	{
 		$this->omiseCardGateway = new Omise_Payment_Creditcard();
-		$secure_form_enabled = $this->omiseCardGateway->get_option('secure_form_enabled');
-
-		// hide if user enables the embedded form.
-		if (!(bool)$secure_form_enabled) {
-			$translation = __('Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection.', 'omise');
-			echo "<div class='notice notice-warning is-dismissible'><p><strong>Opn Payments:</strong> $translation</p></div>";
-		}
+		$translation = __('Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection.', 'omise');
+		echo "<div class='notice notice-warning is-dismissible'><p><strong>Opn Payments:</strong> $translation</p></div>";
 	}
 
 	/**
