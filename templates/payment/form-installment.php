@@ -1,6 +1,6 @@
 <?php 
 // @codeCoverageIgnoreStart
-if ( ! empty( $viewData['installment_backends'] ) ) : ?>
+if ( ! empty( $viewData['installments_enabled'] ) ) : ?>
 	<div id="omise-installment" style="width:100%; max-width: 400px;"></div>
 	<script>
 		window.LOCALE = `<?php echo get_locale(); ?>`;

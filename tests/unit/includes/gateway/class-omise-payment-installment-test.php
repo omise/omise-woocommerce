@@ -130,6 +130,25 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $this->assertArrayHasKey('installment_min_limit', $result);
     }
 
+    public function testGetParamsForJS()
+    {
+        $clazz = new stdClass();
+        $clazz->cart = new stdClass();
+        $clazz->cart->total = 999999;
+
+        Monkey\Functions\expect('WC')->andReturn($clazz);
+        Monkey\Functions\expect('add_action');
+        $mock = Mockery::mock('overload:Omise_Payment_Offsite');
+        $instance = new Omise_Payment_Installment($mock);
+        $result = $instance->getParamsForJS();
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('key', $result);
+        $this->assertArrayHasKey('amount', $result);
+        $this->assertEquals('pkey_test_123', $result['key']);
+        $this->assertEquals(99999900, $result['amount']);
+    }
+
     public function testConvertToCents()
     {
         Monkey\Functions\expect('add_action');

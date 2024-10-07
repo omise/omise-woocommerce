@@ -42,7 +42,6 @@ class Omise_Block_Installment_Test extends TestCase
         $result = $property->getValue($this->obj);
 
         $this->assertIsArray($result);
-        // $this->assertArrayHasKey('is_zero_interest', $result);
         $this->assertArrayHasKey('installment_min_limit', $result);
         $this->assertArrayHasKey('installments_enabled', $result);
         $this->assertArrayHasKey('total_amount', $result);

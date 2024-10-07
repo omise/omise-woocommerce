@@ -61,8 +61,8 @@ const InstallmentPaymentMethod = (props) => {
                                 type: emitResponse.responseTypes.SUCCESS,
                                 meta: {
                                     paymentMethodData: {
-                                        "source": wlbInstallmentRef.current.source,
-                                        "token": wlbInstallmentRef.current.token,
+                                        "omise_source": wlbInstallmentRef.current.source,
+                                        "omise_token": wlbInstallmentRef.current.token,
                                     }
                                 }
                             };

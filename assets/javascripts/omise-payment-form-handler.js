@@ -64,6 +64,31 @@
 		}
 	}
 
+	function omiseInstallmentFormHandler() {
+		function getSelectedCardId() {
+			const $selected_card_id = $("input[name='card_id']:checked");
+			if ($selected_card_id.length > 0) {
+				return $selected_card_id.val();
+			}
+
+			return "";
+		}
+
+		if ($('#payment_method_omise_installment').is(':checked')) {
+			if (getSelectedCardId() !== "") {
+				//submit the form right away if the card_id is not blank
+				return true;
+			}
+
+			if (0 === $('input.omise_token').length && 0 === $('input.omise_source').length) {
+				requestCardToken();
+				return false;
+			}
+			return true;
+		}
+		return true;
+	}
+
 	function googlePay() {
 		window.addEventListener('loadpaymentdata', event => {
 			document.getElementById('place_order').style.display = 'inline-block';
@@ -206,7 +231,7 @@
 
 	function initializeSecureCardForm() {
 		const omiseCardElement = document.getElementById('omise-card');
-		if (omiseCardElement && Boolean(omise_params.secure_form_enabled) && $('#payment_method_omise').is(':checked')) {
+		if (omiseCardElement && $('#payment_method_omise').is(':checked')) {
 			showOmiseEmbeddedCardForm({
 				element: omiseCardElement,
 				publicKey: omise_params.key,
@@ -226,10 +251,31 @@
 		}
 	}
 
+	function initializeInstallmentForm() {
+		const omiseInstallmentElement = document.getElementById('omise-installment');
+		if (omiseInstallmentElement && $('#payment_method_omise_installment').is(':checked')){
+			showOmiseInstallmentForm({
+				element: omiseInstallmentElement,
+				publicKey: omise_installment_params.key,
+				amount: omise_installment_params.amount,
+				locale: LOCALE,
+				onSuccess: handleCreateOrder,
+				onError: (error) => {
+					showError(error)
+					$form.unblock()
+				}
+			})
+		} else {
+			OmiseCard.destroy();
+		}
+	}
+
 	function setupOmiseForm() {
 		var selectedPaymentMethod = $('input[name="payment_method"]:checked').val();
 			if (selectedPaymentMethod === 'omise') {
 				initializeSecureCardForm();
+			} else if (selectedPaymentMethod === 'omise_installment') {
+				initializeInstallmentForm();
 			} else {
 				OmiseCard.destroy();
 			}

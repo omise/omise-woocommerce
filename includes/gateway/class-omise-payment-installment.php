@@ -130,8 +130,8 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			$this->id . "_callback"
 		);
 		$requestData['description'] = 'staging';
-		$requestData['source'] = isset($_POST['source']) ? wc_clean($_POST['source']) : '';
-		$requestData['card'] = isset($_POST['token']) ? wc_clean($_POST['token']) : '';
+		$requestData['source'] = isset($_POST['omise_source']) ? wc_clean($_POST['omise_source']) : '';
+		$requestData['card'] = isset($_POST['omise_token']) ? wc_clean($_POST['omise_token']) : '';
 		return OmiseCharge::create($requestData);
 	}
 
@@ -151,7 +151,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	 * @codeCoverageIgnore
 	 */
 	public function omise_scripts() {
-		if ( is_checkout() && $this->is_available() ) {
+		if ( is_checkout()) {
 			wp_enqueue_script(
 				'omise-js',
 				Omise::OMISE_JS_LINK,
@@ -175,6 +175,20 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
 				true
 			);
+
+			wp_localize_script(
+				'omise-payment-form-handler',
+				'omise_installment_params',
+				$this->getParamsForJS()
+			);
 		}
+	}
+
+	public function getParamsForJS()
+	{
+		return [
+			'key' => $this->public_key(),
+			'amount' => $this->convert_to_cents($this->get_total_amount()),
+		];
 	}
 }
