@@ -2,7 +2,6 @@
 defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
-	const SECURE_FORM_ENABLED = true;
 
 	public function __construct()
 	{
@@ -29,8 +28,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 		$this->description          = $this->get_option( 'description' );
 		$this->payment_action       = $this->get_option( 'payment_action' );
 		$this->restricted_countries = array( 'TH', 'JP', 'SG', 'MY' );
-
-		$this->register_omise_credit_card_scripts();
 
 		add_action( 'woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute' );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -86,17 +83,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					),
 					'desc_tip'    => true
 				),
-				'secure_form_enabled' => [
-					'title'       => __( 'Secure form', 'omise' ),
-					'type'        => 'select',
-					'description' => __( 'Try the new secure form to accept card payments. The new form features additional controls to ensure PCI-DSS compliance.<br /><strong><em>Using this form will be mandatory in a future release</em></strong>.', 'omise' ),
-					'default'     => !self::SECURE_FORM_ENABLED,
-					'options' => array(
-						!self::SECURE_FORM_ENABLED => __( 'No', 'omise' ),
-						self::SECURE_FORM_ENABLED => __( 'Yes', 'omise' )
-					)
-				],
-
 				'card_form_theme' => [
 					'title'       => __( 'Secure form theme', 'omise' ),
 					'type'        => 'select',
@@ -156,16 +142,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 		);
 	}
 
-	private function register_omise_credit_card_scripts() {
-		wp_enqueue_script(
-			'omise-credit-card',
-			plugins_url( '../assets/javascripts/omise-payment-credit-card.js', dirname( __FILE__ ) ),
-			array( 'jquery' ),
-			WC_VERSION,
-			true
-		);
-	}
-
 	/**
 	 * @see WC_Payment_Gateway::payment_fields()
 	 * @see woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
@@ -200,13 +176,9 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 	}
 
 	public function get_secure_form_config() {
-		$data['secure_form_enabled'] = (boolean)$this->get_option('secure_form_enabled');
-
-		if ($data['secure_form_enabled'] === self::SECURE_FORM_ENABLED) {
-			$data['card_form_theme'] = $this->get_option('card_form_theme');
-			$data['card_icons'] = $this->get_card_icons();
-			$data['form_design'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
-		}
+		$data['card_form_theme'] = $this->get_option('card_form_theme');
+		$data['card_icons'] = $this->get_card_icons();
+		$data['form_design'] = Omise_Page_Card_From_Customization::get_instance()->get_design_setting();
 
 		return $data;
 	}
