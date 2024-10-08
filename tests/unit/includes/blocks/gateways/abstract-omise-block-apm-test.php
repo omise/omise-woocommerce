@@ -65,6 +65,7 @@ class Omise_Block_Apm_Test extends TestCase
      */
     public function get_payment_method_data()
     {
+        Monkey\Functions\expect('get_locale')->andReturn('en');
         // Calling initialize() to set $gateway value
         $reflection = new \ReflectionClass($this->obj);
         $name_property = $reflection->getProperty('name');

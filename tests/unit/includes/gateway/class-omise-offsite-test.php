@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/bootstrap-test-setup.php';
 
+use Brain\Monkey;
+
 abstract class Omise_Offsite_Test extends Bootstrap_Test_Setup
 {
     public $sourceType;
@@ -15,6 +17,10 @@ abstract class Omise_Offsite_Test extends Bootstrap_Test_Setup
         $offsite->shouldReceive('init_settings');
         $offsite->shouldReceive('get_option');
         $offsite->shouldReceive('get_provider');
+        $offsite->shouldReceive('public_key')
+            ->andReturn('pkey_test_123');
+        $offsite->shouldReceive('is_available')
+            ->andReturn(true);
         $offsite->shouldReceive('build_charge_request')
             ->andReturn([
                 'source' => [ 'type' => $this->sourceType ]
@@ -25,6 +31,9 @@ abstract class Omise_Offsite_Test extends Bootstrap_Test_Setup
     {
         $expectedAmount = 999999;
         $expectedCurrency = 'thb';
+
+        Monkey\Functions\expect('wc_clean')->andReturn($expectedAmount);
+
         $expectedRequest = [
             "object" => "charge",
             "id" => "chrg_test_no1t4tnemucod0e51mo",

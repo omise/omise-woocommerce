@@ -77,6 +77,7 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
             'supports'    => array_filter($this->gateway->supports, [$this->gateway, 'supports']),
             'data'        => $this->additional_data,
             'is_active'   => $this->is_active(),
+            'locale'      => get_locale(),
         ];
     }
 

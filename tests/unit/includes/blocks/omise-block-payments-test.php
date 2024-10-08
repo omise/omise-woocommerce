@@ -23,6 +23,7 @@ class Omise_Block_Payments_Test extends TestCase
         $container = \Automattic\WooCommerce\Blocks\Package::container();
 
         Monkey\Functions\expect('add_action')->andReturn(null);
+        Monkey\Functions\expect('get_locale')->andReturn('en');
 
         $obj = new Omise_Block_Payments($container);
 

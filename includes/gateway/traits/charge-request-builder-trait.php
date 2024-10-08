@@ -17,8 +17,11 @@ trait Charge_Request_Builder
 			'currency'    => $currency,
 			'description' => $description,
 			'metadata'    => $this->get_metadata($order_id),
-			'source' 	  => [ 'type' => $source_type ]
 		];
+
+		if ($source_type) {
+			$request['source'] = [ 'type' => $source_type ];
+		}
 
 		$omise_settings = Omise_Setting::instance();
 
