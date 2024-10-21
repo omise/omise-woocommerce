@@ -13,7 +13,7 @@ const Label = ( props ) => {
 
 const InstallmentPaymentMethod = (props) => {
     const {eventRegistration, emitResponse} = props;
-    const {onPaymentSetup, onCheckoutValidation} = eventRegistration;
+    const {onPaymentSetup, onCheckoutValidation, onCheckoutFail} = eventRegistration;
     const description = decodeEntities( settings.description || '' )
     const { installments_enabled, total_amount, public_key } = settings.data;
     const noPaymentMethods = __( 'Purchase Amount is lower than the monthly minimum payment amount.', 'omise' );
@@ -21,7 +21,7 @@ const InstallmentPaymentMethod = (props) => {
     const wlbInstallmentRef = useRef(null);
     const cardFormErrors = useRef(null);
 
-    useEffect(() => {
+    const loadInstallmentForm = () => {
         if (installments_enabled) {
             let locale = settings.locale.toLowerCase();
             let supportedLocales = ['en', 'th', 'ja'];
@@ -40,15 +40,29 @@ const InstallmentPaymentMethod = (props) => {
                 },
             });
         }
+    }
+
+    useEffect(() => {
+        loadInstallmentForm();
 	}, [installments_enabled])
 
-    useEffect( () => {
-        const unsubscribe = onCheckoutValidation( () => {
+    useEffect(() => {
+        const unsubscribe = onCheckoutValidation(() => {
             OmiseCard.requestCardToken()
             return true;
         } );
         return unsubscribe;
-	}, [ onCheckoutValidation ] );
+	}, [onCheckoutValidation]);
+
+    useEffect(() => {
+        const unsubscribe = onCheckoutFail(() => {
+            // reset source and token on failure
+            wlbInstallmentRef.current = null;
+            loadInstallmentForm()
+            return true;
+        })
+        return unsubscribe
+    }, [onCheckoutFail])
 
     useEffect(() => {
         const unsubscribe = onPaymentSetup(async () => {

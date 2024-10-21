@@ -475,6 +475,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         }
 
         wc_add_notice( sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ), 'error' );
+        throw new \Exception(sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ));
     }
 
     /**
