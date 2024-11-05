@@ -1,5 +1,5 @@
 <?php if ( ! empty( $viewData['mobile_banking_backends'] ) ) : ?>
-	<fieldset id="omise-form-mobliebanking">
+	<fieldset id="omise-form-mobilebanking">
 		<ul class="omise-banks-list">
 			<?php foreach ( $viewData['mobile_banking_backends'] as $backend ) : ?>
 				<li class="item mobile-banking">

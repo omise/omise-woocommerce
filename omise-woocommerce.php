@@ -4,12 +4,12 @@
  * Plugin Name: Opn Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
- * Version:     5.9.0
+ * Version:     6.0.0
  * Author:      Opn Payments and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
  * WC requires at least: 3.3.4
- * WC tested up to: 8.1.1
+ * WC tested up to: 9.3.3
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
  */
@@ -23,7 +23,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '5.9.0';
+	public $version = '6.0.0';
 
 	/**
 	 * The Omise Instance.
@@ -52,6 +52,7 @@ class Omise
 		add_action('plugins_loaded', array($this, 'check_dependencies'));
 		add_action('woocommerce_init', array($this, 'init'));
 		do_action('omise_initiated');
+		add_action( 'woocommerce_blocks_loaded', [ $this, 'block_init' ] );
 	}
 
 	/**
@@ -64,6 +65,12 @@ class Omise
 				__FILE__, 
 				true
 			);
+
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+				'cart_checkout_blocks',
+				__FILE__,
+				true
+			);
 		}
 	}
 
@@ -72,12 +79,9 @@ class Omise
 	 */
 	public function embedded_form_notice()
 	{
-		$this->omiseCardGateway = new Omise_Payment_Creditcard();
-		$secure_form_enabled = $this->omiseCardGateway->get_option('secure_form_enabled');
-
-		// hide if user enables the embedded form.
-		if (!(bool)$secure_form_enabled) {
-			$translation = __('Update your plugin to the latest version to enable Secure Form and maximize the security of your customers’ information. You will need to re-customize the credit card checkout form after the upgrade. <a target="_blank" href="https://www.omise.co/woocommerce-plugin">Learn how to enable Secure Form</a>.', 'omise');
+		$screen = get_current_screen();
+		if (strpos($screen->id, 'omise')) {
+			$translation = __('Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection.', 'omise');
 			echo "<div class='notice notice-warning is-dismissible'><p><strong>Opn Payments:</strong> $translation</p></div>";
 		}
 	}
@@ -132,6 +136,45 @@ class Omise
 			add_action('admin_notices', [$this, 'embedded_form_notice']);
 			return;
 		}
+	}
+
+	public function block_init()
+	{
+		require_once __DIR__ . '/includes/blocks/omise-block.php';
+		require_once __DIR__ . '/includes/blocks/omise-block-config.php';
+		require_once __DIR__ . '/includes/blocks/omise-block-payments.php';
+		require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-apm.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-credit-card.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-promptpay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-hk.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-cn.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-dana.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-gcash.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-kakaopay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-touch-n-go.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-bill-payment-lotus.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-shopeepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-wechat-pay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-grabpay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-paynow.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-ocbc-digital.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-boost.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-maybank-qr.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-qr.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-paypay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-rabbit-linepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-mobilebanking.php';
+		require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-payment.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-installment.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-fpx.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-obw.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-konbini.php';
+		Omise_Block::init();
 	}
 
 	/**

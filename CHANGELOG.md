@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [v6.0.0 _(Nov 5, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.0)
+- Support WooCommerce block. (PR: [#470](https://github.com/omise/omise-woocommerce/pull/470))
+- Fix the loading issue in WooCommerce block cart. (PR: [#477](https://github.com/omise/omise-woocommerce/pull/477))
+- Update banner message. (PR: [#479](https://github.com/omise/omise-woocommerce/pull/479))
+- Make secure form mandatory. (PR: [#480](https://github.com/omise/omise-woocommerce/pull/480))
+- Fix the issue of installment form not loading after an error. (PR: [#482](https://github.com/omise/omise-woocommerce/pull/482))
+
 ## [v5.9.0 _(Jul 24, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v5.9.0)
 - Resolve dynamic property deprecation error for PHP 8.2 and above. (PR: [#465](https://github.com/omise/omise-woocommerce/pull/465))
 

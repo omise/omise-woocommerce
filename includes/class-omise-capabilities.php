@@ -87,9 +87,38 @@ class Omise_Capabilities {
 		// If endpoint url is `order-received`, it mean thank you page.
 		$isPaymentPage = is_checkout() && !is_wc_endpoint_url( 'order-received' );
 
-		return $isPaymentPage || $isOmiseSettingPage;
+		return $isPaymentPage || $isOmiseSettingPage || self::isFromCheckoutPage();
 	}
 
+	public static function isFromCheckoutPage()
+	{
+		global $wp;
+
+		if (!$wp) {
+			return false;
+		}
+
+		$endpoints = ['checkout', 'batch'];
+
+		foreach($endpoints as $endpoint) {
+			if (trim($wp->request) !== '') {
+				$len = strlen($wp->request);
+				if (strpos($wp->request, $endpoint) === $len - strlen($endpoint)) {
+					return true;
+				}
+			}
+
+			if (isset($wp->query_vars['rest_route'])) {
+				$route = $wp->query_vars['rest_route'];
+				$len = strlen($route);
+				if (strpos($route, $endpoint) === $len - strlen($endpoint)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * @param string|null $pKey
@@ -175,23 +204,16 @@ class Omise_Capabilities {
 	}
 
 	/**
-	 * Retrieves details of Touch n Go payment backends from capabilities.
-	 *
-	 * @return string
-	 */
-	public function getTouchNGoBackends()
-	{
-		return $this->getBackendByType('touch_n_go');
-	}
-
-	/**
 	 * Retrieves backend by type
 	 */
 	public function getBackendByType($sourceType)
 	{
 		$params = [];
 		$params[] = $this->capabilities->backendFilter['type']($sourceType);
-		return $this->capabilities->getBackends($params);
+		$backed = $this->capabilities->getBackends($params);
+		// Only variables hould be passed
+		// https://www.php.net/reset
+		return reset($backed);
 	}
 
 	/**

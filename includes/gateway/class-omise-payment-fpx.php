@@ -64,8 +64,6 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 	public function payment_fields()
 	{
 		parent::payment_fields();
-		$currency   = get_woocommerce_currency();
-		$cart_total = WC()->cart->total;
 
 		Omise_Util::render_view(
 			'templates/payment/form-fpx.php',
@@ -80,14 +78,20 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 	 */
 	public function charge($order_id, $order)
 	{
-		$requestData = $this->build_charge_request(
-			$order_id, $order, $this->source_type, $this->id . "_callback"
+		$request_data = $this->build_charge_request(
+			$order_id,
+			$order,
+			$this->source_type,
+			$this->id . "_callback"
 		);
-		$source_bank = isset($_POST['source']['bank']) ? $_POST['source']['bank'] : '';
-		$requestData['source'] = array_merge($requestData['source'], [
+		// Prior to WC blocks, we get bank in source array. With WC blocks, bank is now a string.
+		$source_bank = isset($_POST['bank'])
+			? $_POST['bank']
+			: (isset($_POST['source']) ? $_POST['source']['bank'] : '');
+		$request_data['source'] = array_merge($request_data['source'], [
 			'bank' => sanitize_text_field($source_bank),
 		]);
-		return OmiseCharge::create($requestData);
+		return OmiseCharge::create($request_data);
 	}
 
 	/**

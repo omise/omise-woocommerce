@@ -14,7 +14,7 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 	/**
 	 * setup add_action and do_action before the test run
 	 */
-	public function setUp(): void
+	protected function setUp(): void
 	{
 		parent::setUp();
 
@@ -108,6 +108,35 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 	public function truemoney_source_provider()
 	{
 		return [ ['abc', false], ['truemoney', true], ['truemoney_jumpapp', true] ];
+	}
+
+	/**
+	 * @dataProvider ajax_call_to_store_api_provider
+	 * @covers Omise_Capabilities
+	 */
+	public function test_ajax_call_to_store_api_calls_omise_capability_api($request, $query_vars, $expected)
+	{
+		if ($request || $query_vars) {
+			$wp = new stdClass();
+			$wp->request = $request;
+			$wp->query_vars = $query_vars;
+			$GLOBALS['wp'] = $wp;
+		}
+
+		$capabilities = new Omise_Capabilities;
+		$result = $capabilities::isFromCheckoutPage();
+		$this->assertEquals($expected, $result);
+	}
+
+	public function ajax_call_to_store_api_provider()
+	{
+		return [
+			[null, null, false], // empty to test empty wp
+			['wp-json/wc/store/v1/batch', [], true],
+			['wp-json/wc/store/v1/batch', ['rest_route' => '/wc/store/v1/batch'], true],
+			['', ['rest_route' => '/wc/store/v1/batch'], true],
+			['', '', false]
+		];
 	}
 }
 
