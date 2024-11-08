@@ -257,7 +257,7 @@
 			showOmiseInstallmentForm({
 				element: omiseInstallmentElement,
 				publicKey: omise_installment_params.key,
-				amount: omise_installment_params.amount,
+				amount: OMISE_UPDATED_CART_AMOUNT,
 				locale: LOCALE,
 				onSuccess: handleCreateOrder,
 				onError: (error) => {
