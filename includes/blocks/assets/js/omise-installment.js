@@ -23,18 +23,26 @@ const InstallmentPaymentMethod = (props) => {
     const el = useRef(null);
     const wlbInstallmentRef = useRef(null);
     const cardFormErrors = useRef(null);
-    const [totalAmount, setTotalAmount] = useState(total_amount)
+    const totalAmount = useRef(null);
 
     const loadInstallmentForm = () => {
         if (installments_enabled) {
+            // Getting the new total price that might be updated when shipping method
+            // was updated while other payment method was selected
+            const cart = select( cartStoreKey ).getCartData();
+            totalAmount.current = cart.totals.total_price
+
             let locale = settings.locale.toLowerCase();
             let supportedLocales = ['en', 'th', 'ja'];
             locale = supportedLocales.includes(locale) ? locale : 'en';
 
+            // removing previous iframe if there is any
+            el.current.innerHTML = "";
+
             showOmiseInstallmentForm({
                 element: el.current,
                 publicKey: public_key,
-                amount: totalAmount,
+                amount: totalAmount.current,
                 locale,
                 onSuccess: (payload) => {
                     wlbInstallmentRef.current = payload;
@@ -49,7 +57,8 @@ const InstallmentPaymentMethod = (props) => {
     // Update total amount on cart update. We need this to send the update amount to the source API
     const onCartChange = () => {
         const cart = select( cartStoreKey ).getCartData();
-        setTotalAmount(cart.totals.total_price);
+        totalAmount.current = cart.totals.total_price;
+        loadInstallmentForm()
     }
 
     useEffect(() => {
