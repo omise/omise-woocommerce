@@ -63,7 +63,7 @@ const DuitNowOBWPaymentMethod = (props) => {
                 >
                     <option value="" disabled={true}>-- Select your option --</option> 
                     {
-                        banks.map((bank) => (
+                        Object.values(banks).map((bank) => (
                             <option
                                 key={bank['code']}
                                 className={bank['code']}
