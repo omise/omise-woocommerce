@@ -50,6 +50,13 @@ trait MockPaymentGateways
                                 'currency' => 'thb',
                             ];
                         }
+
+                        public function get_bank_list() {
+                            return [
+                                'bank1',
+                                'bank2',
+                            ];
+                        }
                     };
 
                     $gateway->backend = new class {
