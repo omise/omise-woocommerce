@@ -1,4 +1,4 @@
-import {useEffect, useRef} from '@wordpress/element';
+import {useEffect, useRef, useState} from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
@@ -11,6 +11,9 @@ const Label = ( props ) => {
     return <PaymentMethodLabel text={ label } />
 }
 
+const {select, subscribe} = window.wp.data;
+const cartStoreKey = window.wc.wcBlocksData.CART_STORE_KEY;
+
 const InstallmentPaymentMethod = (props) => {
     const {eventRegistration, emitResponse} = props;
     const {onPaymentSetup, onCheckoutValidation, onCheckoutFail} = eventRegistration;
@@ -20,17 +23,26 @@ const InstallmentPaymentMethod = (props) => {
     const el = useRef(null);
     const wlbInstallmentRef = useRef(null);
     const cardFormErrors = useRef(null);
+    const totalAmount = useRef(null);
 
     const loadInstallmentForm = () => {
         if (installments_enabled) {
+            // Getting the new total price that might be updated when shipping method
+            // was updated while other payment method was selected
+            const cart = select( cartStoreKey ).getCartData();
+            totalAmount.current = cart.totals.total_price
+
             let locale = settings.locale.toLowerCase();
             let supportedLocales = ['en', 'th', 'ja'];
             locale = supportedLocales.includes(locale) ? locale : 'en';
 
+            // removing previous iframe if there is any
+            el.current.innerHTML = "";
+
             showOmiseInstallmentForm({
                 element: el.current,
                 publicKey: public_key,
-                amount: total_amount,
+                amount: totalAmount.current,
                 locale,
                 onSuccess: (payload) => {
                     wlbInstallmentRef.current = payload;
@@ -41,6 +53,18 @@ const InstallmentPaymentMethod = (props) => {
             });
         }
     }
+
+    // Update total amount on cart update. We need this to send the update amount to the source API
+    const onCartChange = () => {
+        const cart = select( cartStoreKey ).getCartData();
+        totalAmount.current = cart.totals.total_price;
+        loadInstallmentForm()
+    }
+
+    useEffect(() => {
+        const unsubscribe = subscribe( onCartChange, cartStoreKey );
+        return unsubscribe;
+    }, [cartStoreKey])
 
     useEffect(() => {
         loadInstallmentForm();

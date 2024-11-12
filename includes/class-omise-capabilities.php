@@ -98,7 +98,7 @@ class Omise_Capabilities {
 			return false;
 		}
 
-		$endpoints = ['checkout', 'batch'];
+		$endpoints = ['checkout', 'batch', 'cart', 'cart/select-shipping-rate'];
 
 		foreach($endpoints as $endpoint) {
 			if (trim($wp->request) !== '') {

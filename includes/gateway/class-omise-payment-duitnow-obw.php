@@ -21,8 +21,6 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 		$this->restricted_countries = array('MY');
 		$this->source_type          = 'duitnow_obw';
 
-		$this->init_payment_config();
-
 		add_action('woocommerce_api_' . $this->id . '_callback', 'Omise_Callback::execute');
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
 		add_action('woocommerce_order_action_' . $this->id . '_sync_payment', array($this, 'sync_payment'));
@@ -58,11 +56,82 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 		);
 	}
 
-	public function init_payment_config() {
-		$capabilities = Omise_Capabilities::retrieve();
-		$this->backend = $capabilities
-			? $capabilities->getBackendByType($this->source_type)
-			: null;
+	public function get_bank_list()
+	{
+		return [
+			'affin' => [
+				'code' => 'affin',
+				'name' => 'Affin Bank'
+			],
+			'alliance' => [
+				'code' => 'alliance',
+				'name' => 'Alliance Bank'
+			],
+			'agro' => [
+				'code' => 'agro',
+				'name' => 'Agrobank'
+			],
+			'ambank' => [
+				'code' => 'ambank',
+				'name' => 'AmBank'
+			],
+			'cimb' => [
+				'code' => 'cimb',
+				'name' => 'CIMB Bank'
+			],
+			'islam' => [
+				'code' => 'islam',
+				'name' => 'Bank Islam'
+			],
+			'rakyat' => [
+				'code' => 'rakyat',
+				'name' => 'Bank Rakyat'
+			],
+			'muamalat' => [
+				'code' => 'muamalat',
+				'name' => 'Bank Muamalat'
+			],
+			'bsn' => [
+				'code' => 'bsn',
+				'name' => 'Bank Simpanan Nasional'
+			],
+			'hongleong' => [
+				'code' => 'hongleong',
+				'name' => 'Hong Leong'
+			],
+			'hsbc' => [
+				'code' => 'hsbc',
+				'name' => 'HSBC Bank'
+			],
+			'kfh' => [
+				'code' => 'kfh',
+				'name' => 'Kuwait Finance House'
+			],
+			'maybank2u' => [
+				'code' => 'maybank2u',
+				'name' => 'Maybank'
+			],
+			'ocbc' => [
+				'code' => 'ocbc',
+				'name' => 'OCBC'
+			],
+			'public' => [
+				'code' => 'public',
+				'name' => 'Public Bank'
+			],
+			'rhb' => [
+				'code' => 'rhb',
+				'name' => 'RHB Bank'
+			],
+			'sc' => [
+				'code' => 'sc',
+				'name' => 'Standard Chartered'
+			],
+			'uob' => [
+				'code' => 'uob',
+				'name' => 'United Overseas Bank'
+			],
+		];
 	}
 
 	/**
@@ -73,7 +142,7 @@ class Omise_Payment_DuitNow_OBW extends Omise_Payment_Offsite
 		parent::payment_fields();
 		Omise_Util::render_view(
 			'templates/payment/form-duitnow-obw.php',
-			[ 'duitnow_obw_banklist' => !$this->backend ? $this->backend->banks : [] ]
+			[ 'duitnow_obw_banklist' => $this->get_bank_list() ]
 		);
 	}
 

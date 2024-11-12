@@ -3,6 +3,7 @@
 if ( ! empty( $viewData['installments_enabled'] ) ) : ?>
 	<div id="omise-installment" style="width:100%; max-width: 400px;"></div>
 	<script>
+		window.OMISE_UPDATED_CART_AMOUNT= `<?php echo $viewData['total_amount']; ?>`;
 		window.LOCALE = `<?php echo get_locale(); ?>`;
 		window.OMISE_CUSTOM_FONT_OTHER = 'Other';
 	</script>
