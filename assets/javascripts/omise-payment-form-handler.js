@@ -65,27 +65,15 @@
 	}
 
 	function omiseInstallmentFormHandler() {
-		function getSelectedCardId() {
-			const $selected_card_id = $("input[name='card_id']:checked");
-			if ($selected_card_id.length > 0) {
-				return $selected_card_id.val();
-			}
-
-			return "";
-		}
-
-		if ($('#payment_method_omise_installment').is(':checked')) {
-			if (getSelectedCardId() !== "") {
-				//submit the form right away if the card_id is not blank
-				return true;
-			}
-
-			if (0 === $('input.omise_token').length && 0 === $('input.omise_source').length) {
-				requestCardToken();
-				return false;
-			}
+		if (!$('#payment_method_omise_installment').is(':checked')) {
 			return true;
 		}
+
+		if (0 === $('input.omise_token').length && 0 === $('input.omise_source').length) {
+			requestCardToken();
+			return false;
+		}
+
 		return true;
 	}
 
@@ -272,13 +260,13 @@
 
 	function setupOmiseForm() {
 		var selectedPaymentMethod = $('input[name="payment_method"]:checked').val();
-			if (selectedPaymentMethod === 'omise') {
-				initializeSecureCardForm();
-			} else if (selectedPaymentMethod === 'omise_installment') {
-				initializeInstallmentForm();
-			} else {
-				OmiseCard.destroy();
-			}
+		if (selectedPaymentMethod === 'omise') {
+			initializeSecureCardForm();
+		} else if (selectedPaymentMethod === 'omise_installment') {
+			initializeInstallmentForm();
+		} else {
+			OmiseCard.destroy();
+		}
 	}
 
 	$(function () {

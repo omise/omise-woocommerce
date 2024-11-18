@@ -12,7 +12,7 @@ const Label = ( props ) => {
 }
 
 const {select, subscribe} = window.wp.data;
-const cartStoreKey = window.wc.wcBlocksData.CART_STORE_KEY;
+const cartStoreKey = window.wc.wcBlocksData ? window.wc.wcBlocksData.CART_STORE_KEY : '';
 
 const InstallmentPaymentMethod = (props) => {
     const {eventRegistration, emitResponse} = props;
