@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v6.0.1 _(Nov 12, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.1)
+- Resolve issue of payment failing on installment when total amount is updated after selecting payment. (PR: [#485](https://github.com/omise/omise-woocommerce/pull/485))
+- Fix Duitnow bank list issue. (PR: [#486](https://github.com/omise/omise-woocommerce/pull/486))
+- Resolve the issue where no payment methods are displayed when the browser's back button is clicked from an issuer page. (PR: [#487](https://github.com/omise/omise-woocommerce/pull/487))
+
 ## [v6.0.0 _(Nov 5, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.0)
 - Support WooCommerce block. (PR: [#470](https://github.com/omise/omise-woocommerce/pull/470))
 - Fix the loading issue in WooCommerce block cart. (PR: [#477](https://github.com/omise/omise-woocommerce/pull/477))

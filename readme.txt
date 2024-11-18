@@ -3,7 +3,7 @@ Contributors: Opn Payments
 Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney, woocommerce payment
 Requires at least: 4.3.1
 Tested up to: 6.6.2
-Stable tag: 6.0.0
+Stable tag: 6.0.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,12 @@ From there:
 3. Opn Payments Checkout Form
 
 == Changelog ==
+
+= 6.0.1 =
+
+- Resolve issue of payment failing on installment when total amount is updated after selecting payment. (PR: [#485](https://github.com/omise/omise-woocommerce/pull/485))
+- Fix Duitnow bank list issue. (PR: [#486](https://github.com/omise/omise-woocommerce/pull/486))
+- Resolve the issue where no payment methods are displayed when the browser's back button is clicked from an issuer page. (PR: [#487](https://github.com/omise/omise-woocommerce/pull/487))
 
 = 6.0.0 =
 
