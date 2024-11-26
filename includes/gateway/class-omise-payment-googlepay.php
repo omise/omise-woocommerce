@@ -219,7 +219,7 @@ class Omise_Payment_GooglePay extends Omise_Payment_Base_Card {
                         merchantId: '" . $this->googlepay_config['merchant_id'] . "',
                     },
                     transactionInfo: {
-                        totalPriceStatus: " . $this->googlepay_config['price_status'] . ",
+                        totalPriceStatus: '" . $this->googlepay_config['price_status'] . "',
                         currencyCode: '" . $this->googlepay_config['currency'] . "',
                     },
                 }
