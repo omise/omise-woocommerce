@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v6.0.2 _(Nov 20, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.2)
+- Resolved installment issue when card is saved in shortcode setup. (PR: [#490](https://github.com/omise/omise-woocommerce/pull/490))
+
 ## [v6.0.1 _(Nov 12, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.1)
 - Resolve issue of payment failing on installment when total amount is updated after selecting payment. (PR: [#485](https://github.com/omise/omise-woocommerce/pull/485))
 - Fix Duitnow bank list issue. (PR: [#486](https://github.com/omise/omise-woocommerce/pull/486))
