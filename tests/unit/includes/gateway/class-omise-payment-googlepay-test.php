@@ -129,7 +129,7 @@ class Omise_Payment_GooglePay_Test extends TestCase
                         merchantId: '',
                     },
                     transactionInfo: {
-                        totalPriceStatus: NOT_CURRENTLY_KNOWN,
+                        totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
                         currencyCode: 'thb',
                     },
                 }
