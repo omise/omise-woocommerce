@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v6.0.3 _(Nov 27, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.3)
+- Fix the issue of GooglePay not showing in shortcode. (PR: [#493](https://github.com/omise/omise-woocommerce/pull/493))
+
 ## [v6.0.2 _(Nov 20, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.2)
 - Resolved installment issue when card is saved in shortcode setup. (PR: [#490](https://github.com/omise/omise-woocommerce/pull/490))
 
