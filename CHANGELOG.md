@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v6.0.4 _(Jan 13, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.4)
+- Fix the issue of missing TrueMoney payment methods. (PR: [#496](https://github.com/omise/omise-woocommerce/pull/496))
+
 ## [v6.0.3 _(Nov 27, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.3)
 - Fix the issue of GooglePay not showing in shortcode. (PR: [#493](https://github.com/omise/omise-woocommerce/pull/493))
 
