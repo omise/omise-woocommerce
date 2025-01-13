@@ -29,6 +29,7 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
 
     public function test_get_charge_request()
     {
+        $this->omise_capability_mock->shouldReceive('retrieve')->once();
         // set source type to truemoney wallet
         $obj = new Omise_Payment_Truemoney();
         $obj->source_type = 'truemoney';
