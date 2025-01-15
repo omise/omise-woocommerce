@@ -106,6 +106,18 @@ class Omise_Capabilities {
 				if (strpos($wp->request, $endpoint) === $len - strlen($endpoint)) {
 					return true;
 				}
+			} else {
+				$request_uri = $_SERVER['REQUEST_URI'];
+				$home_url = home_url();
+
+				$request_uri = strtok($request_uri, '?');
+				$home_url_path = rtrim(parse_url($home_url, PHP_URL_PATH), '/');
+				$path = trim(str_replace($home_url_path, '', $request_uri), '/');
+
+				$len = strlen($path);
+				if (strpos($path, $endpoint) === $len - strlen($endpoint)) {
+					return true;
+				}
 			}
 
 			if (isset($wp->query_vars['rest_route'])) {

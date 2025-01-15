@@ -4,7 +4,7 @@
  * Plugin Name: Opn Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
- * Version:     6.0.4
+ * Version:     6.0.5
  * Author:      Opn Payments and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
@@ -23,7 +23,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '6.0.4';
+	public $version = '6.0.5';
 
 	/**
 	 * The Omise Instance.

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v6.0.5 _(Jan 15, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.5)
+- Fix the issue of TrueMoney wallet not showing in payment options. (PR: [#500](https://github.com/omise/omise-woocommerce/pull/500))
+
 ## [v6.0.4 _(Jan 13, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.4)
 - Fix the issue of missing TrueMoney payment methods. (PR: [#496](https://github.com/omise/omise-woocommerce/pull/496))
 
