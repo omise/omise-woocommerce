@@ -124,6 +124,8 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 		}
 		Brain\Monkey\Functions\expect('home_url')
 			->andReturn('/');
+		Brain\Monkey\Functions\expect('wp_doing_ajax')
+			->andReturn(false);
 
 		$_SERVER['REQUEST_URI'] = '/';
 		if ($server_request_uri) {

@@ -98,6 +98,10 @@ class Omise_Capabilities {
 			return false;
 		}
 
+		if (wp_doing_ajax() && $_GET['wc-ajax'] == 'update_order_review') {
+			return true;
+		}
+		
 		$endpoints = ['checkout', 'batch', 'cart', 'cart/select-shipping-rate'];
 
 		foreach($endpoints as $endpoint) {
