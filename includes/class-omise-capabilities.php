@@ -97,8 +97,8 @@ class Omise_Capabilities {
 		if (!$wp) {
 			return false;
 		}
-
-		if (wp_doing_ajax() && $_GET['wc-ajax'] == 'update_order_review') {
+		$ajaxActions = ['update_order_review', 'checkout'];
+		if (wp_doing_ajax() && in_array($_GET['wc-ajax'], $ajaxActions)) {
 			return true;
 		}
 		
