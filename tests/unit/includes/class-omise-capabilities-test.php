@@ -114,13 +114,20 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 	 * @dataProvider ajax_call_to_store_api_provider
 	 * @covers Omise_Capabilities
 	 */
-	public function test_ajax_call_to_store_api_calls_omise_capability_api($request, $query_vars, $expected)
+	public function test_ajax_call_to_store_api_calls_omise_capability_api($request, $query_vars, $server_request_uri, $expected)
 	{
-		if ($request || $query_vars) {
+		if ($request || $query_vars || $server_request_uri) {
 			$wp = new stdClass();
 			$wp->request = $request;
 			$wp->query_vars = $query_vars;
 			$GLOBALS['wp'] = $wp;
+		}
+		Brain\Monkey\Functions\expect('home_url')
+			->andReturn('/');
+
+		$_SERVER['REQUEST_URI'] = '/';
+		if ($server_request_uri) {
+			$_SERVER['REQUEST_URI'] = $server_request_uri;
 		}
 
 		$capabilities = new Omise_Capabilities;
@@ -131,11 +138,13 @@ class Omise_Capabilities_Test extends Bootstrap_Test_Setup
 	public function ajax_call_to_store_api_provider()
 	{
 		return [
-			[null, null, false], // empty to test empty wp
-			['wp-json/wc/store/v1/batch', [], true],
-			['wp-json/wc/store/v1/batch', ['rest_route' => '/wc/store/v1/batch'], true],
-			['', ['rest_route' => '/wc/store/v1/batch'], true],
-			['', '', false]
+			[null, null, null, false], // empty to test empty wp
+			['wp-json/wc/store/v1/batch', [], null, true],
+			['wp-json/wc/store/v1/batch', ['rest_route' => '/wc/store/v1/batch'], null, true],
+			['', ['rest_route' => '/wc/store/v1/batch'], null, true],
+			['', '', '/other/checkout', true],
+			['', '', '/checkout/other', false],
+			['', '', '/checkout?ewe=323', true],
 		];
 	}
 }
