@@ -77,7 +77,7 @@ const FpxPaymentMethod = (props) => {
                             </select>
                         </div>
                         <div className="fpx-terms-and-conditions-block">
-                            <span>By clicking on the <b>"Place Order"</b> button, you agree to FPX's 
+                            <span>By clicking on the <b>"Place Order"</b> button, you agree to FPX's{' '}
                                 <a href="https://www.mepsfpx.com.my/FPXMain/termsAndConditions.jsp" target="_blank">
                                     Terms and Conditions
                                 </a>
