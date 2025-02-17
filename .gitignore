@@ -9,3 +9,4 @@ vendor
 composer.lock
 .nvmrc
 wp-content
+.vscode
