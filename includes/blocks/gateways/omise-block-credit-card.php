@@ -54,7 +54,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
             if (is_checkout()) {
                 wp_enqueue_script(
                     'embedded-js',
-                    plugins_url( '../../assets/javascripts/omise-embedded-card.js', __FILE__ ),
+                    plugins_url( '../../../assets/javascripts/omise-embedded-card.js', __FILE__ ),
                     ['omise-js'],
                     OMISE_WOOCOMMERCE_PLUGIN_VERSION,
                     true
