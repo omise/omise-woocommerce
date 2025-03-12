@@ -20,7 +20,7 @@ abstract class Omise_Payment_Offsite extends Omise_Payment
 		}
 
 		if (self::STATUS_PENDING === $charge['status']) {
-			$order->add_order_note(sprintf(__('Opn Payments: Redirecting buyer to %s', 'omise'), esc_url($charge['authorize_uri'])));
+			$order->add_order_note(sprintf(__('Omise: Redirecting buyer to %s', 'omise'), esc_url($charge['authorize_uri'])));
 
 			return array(
 				'result'   => 'success',

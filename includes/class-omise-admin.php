@@ -50,8 +50,8 @@ if (!class_exists('Omise_Admin')) {
 		public function wordpress_hook_admin_menu()
 		{
 			add_menu_page(
-				__('Opn Payments Settings', 'omise'),
-				'Opn Payments',
+				__('Omise Settings', 'omise'),
+				'Omise',
 				'manage_options',
 				'omise',
 				[$this, 'page_settings']
@@ -117,10 +117,10 @@ if (!class_exists('Omise_Admin')) {
 			$payment_method = version_compare( WC()->version, '3.0.0', '>=' ) ? $theorder->get_payment_method() : $theorder->payment_method;
 
 			if ( $theorder->get_meta( 'is_awaiting_capture' ) === 'yes' ) {
-				$order_actions[ $payment_method . '_charge_capture'] = __( 'Opn Payments: Capture this order', 'omise' );
+				$order_actions[ $payment_method . '_charge_capture'] = __( 'Omise: Capture this order', 'omise' );
 			}
 
-			$order_actions[ $payment_method . '_sync_payment'] = __( 'Opn Payments: Manual sync payment status', 'omise' );
+			$order_actions[ $payment_method . '_sync_payment'] = __( 'Omise: Manual sync payment status', 'omise' );
 
 			return $order_actions;
 		}

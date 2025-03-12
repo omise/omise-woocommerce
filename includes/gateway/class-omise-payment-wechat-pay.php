@@ -9,9 +9,9 @@ class Omise_Payment_Wechat_Pay extends Omise_Payment_Offsite
 
 		$this->id                 = 'omise_wechat_pay';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn Payments WeChat Pay', 'omise' );
+		$this->method_title       = __( 'Omise WeChat Pay', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payment through <strong>WeChat Pay</strong> via Opn Payments payment gateway.', 'omise' ),
+			__( 'Accept payment through <strong>WeChat Pay</strong> via Omise payment gateway.', 'omise' ),
 			['strong' => []]
 		);
 
@@ -38,7 +38,7 @@ class Omise_Payment_Wechat_Pay extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __('Enable/Disable', 'omise'),
 				'type'    => 'checkbox',
-				'label'   => __('Enable Opn Payments WeChat Pay', 'omise'),
+				'label'   => __('Enable Omise WeChat Pay', 'omise'),
 				'default' => 'no'
 			),
 

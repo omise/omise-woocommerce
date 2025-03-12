@@ -1,9 +1,9 @@
 {
-    "name": "opn-payments",
-    "title": "opn-payments",
+    "name": "omise-woocommerce",
+    "title": "omise-woocommerce",
     "version": "1.0.0",
-    "description": "OPN payments",
-    "author": "OPN payments",
+    "description": "Omise",
+    "author": "Omise",
     "keywords": [],
     "engines": {
         "node": ">=12.20.1",
