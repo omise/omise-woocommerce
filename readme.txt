@@ -7,7 +7,7 @@ Stable tag: 6.0.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Omise plugin is the official payment extension which provides support for Omise payment gateway for store builders working on the WooCommerce platform
+Omise WooCommerce plugin is the official payment extension which provides support for Omise payment gateway for store builders working on the WooCommerce platform
 
 == Description ==
 

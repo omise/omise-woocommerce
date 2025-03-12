@@ -1,7 +1,7 @@
 <!--- KEEP START --->
-[![Omise](https://www.opn.ooo/assets/svg/logo-opn-full.svg)](https://www.opn.ooo)
+[![Omise](assets/images/omise.png)](https://www.omise.co)
 
-[Omise](https://www.opn.ooo) is a payment service provider operating in Thailand, Japan, and Singapore. 
+[Omise](https://www.omise.co) is a payment service provider operating in Thailand, Japan, and Singapore. 
 Omise provides a set of APIs that help merchants of any size accept payments online.  
 <!--- KEEP END --->
 
