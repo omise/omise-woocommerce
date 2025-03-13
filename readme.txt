@@ -1,13 +1,13 @@
 === Omise ===
 Contributors: Omise
-Tags: payment, payment gateway, woocommerce plugin, omise, installment, internet banking, alipay, paynow, truemoney, woocommerce payment
+Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.6.2
 Stable tag: 6.0.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Omise WooCommerce plugin is the official payment extension which provides support for Omise payment gateway for store builders working on the WooCommerce platform
+Omise WooCommerce is the payment extension which provides support for Omise Payment Gateway for store builders working on the WooCommerce platform.
 
 == Description ==
 
