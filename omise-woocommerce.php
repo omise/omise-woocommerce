@@ -41,7 +41,7 @@ class Omise
 	 */
 	protected static $can_initiate = false;
 
-	CONST OMISE_JS_LINK = 'https://cdn.staging-omise.co/omise.js';
+	CONST OMISE_JS_LINK = 'https://cdn.omise.co/omise.js';
 
 	/**
 	 * @since  3.0
