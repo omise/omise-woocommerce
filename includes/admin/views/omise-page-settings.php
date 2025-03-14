@@ -24,7 +24,7 @@
 		<?php
 		echo sprintf(
 			wp_kses(
-				__( 'All of your keys can be found at your Opn Payments dashboard, check <a target="_blank" href="%s">here link</a> for the keys. (login required)', 'omise' ),
+				__( 'All of your keys can be found at your Omise dashboard, check <a target="_blank" href="%s">here link</a> for the keys. (login required)', 'omise' ),
 				array(
 					'a'  => array( 'href' => array(), 'target' => array() )
 				)
@@ -61,7 +61,7 @@
 						<fieldset>
 							<label for="sandbox">
 								<input name="sandbox" type="checkbox" id="sandbox" value="1" <?php echo 'yes' === $settings['sandbox'] ? 'checked="checked"' : ''; ?>>
-								<?php _e( 'Enabling test mode means that all your transactions will be performed under the Opn Payments test account.', 'omise' ); ?>
+								<?php _e( 'Enabling test mode means that all your transactions will be performed under the Omise test account.', 'omise' ); ?>
 							</label>
 						</fieldset>
 					</td>
@@ -139,7 +139,7 @@
 								<?php
 									echo sprintf(
 										wp_kses(
-											__( 'Unless dynamic webhooks are enabled, you must add the URL above as a new endpoint on your <a href="%s">Opn Payments dashboard</a> (HTTPS only).', 'omise' ),
+											__( 'Unless dynamic webhooks are enabled, you must add the URL above as a new endpoint on your <a href="%s">Omise dashboard</a> (HTTPS only).', 'omise' ),
 											[
 												'a' => ['href' => []],
 											],
@@ -158,7 +158,7 @@
 		<h3><?php _e( 'Payment Methods', 'omise' ); ?></h3>
 		<?php if ($settings['account_country']) : ?>
 			<!--  account_country exists when API key is valid -->
-			<p><?php _e( 'The table below is a list of available payment methods for this Opn Payments account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
+			<p><?php _e( 'The table below is a list of available payment methods for this Omise account that you can enable in your WooCommerce store.', 'omise' ); ?></p>
 			<table class="form-table">
 				<tbody>
 					<tr>

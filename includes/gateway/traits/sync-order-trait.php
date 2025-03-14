@@ -47,12 +47,12 @@ trait Sync_Order
                     break;
                 default:
                     throw new Exception(
-                        __('Cannot read the payment status. Please try sync again or contact Opn Payments support team at support@omise.co if you have any questions.', 'omise')
+                        __('Cannot read the payment status. Please try sync again or contact Omise support team at support@omise.co if you have any questions.', 'omise')
                     );
                     break;
             }
         } catch (Exception $e) {
-            $message = $this->allow_br('Opn Payments: Sync failed (manual sync).<br/>%s.');
+            $message = $this->allow_br('Omise: Sync failed (manual sync).<br/>%s.');
             $order->add_order_note(sprintf($message, $e->getMessage()));
         }
     }
@@ -86,7 +86,7 @@ trait Sync_Order
 
         $this->order->add_order_note(
             sprintf(
-                $this->allow_br('Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).'),
+                $this->allow_br('Omise: Payment successful.<br/>An amount %1$s %2$s has been paid (manual sync).'),
                 $total_amount,
                 $currency
             )
@@ -107,7 +107,7 @@ trait Sync_Order
         $this->update_order_status(Omise_Payment::STATUS_REFUNDED);
         $this->order->add_order_note(
             sprintf(
-                $this->allow_br('Opn Payments: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
+                $this->allow_br('Omise: Payment refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
                 $amount,
                 $currency
             )
@@ -121,7 +121,7 @@ trait Sync_Order
     {
         $this->order->add_order_note(
             sprintf(
-                $this->allow_br('Opn Payments: Payment partially refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
+                $this->allow_br('Omise: Payment partially refunded.<br/>An amount %1$s %2$s has been refunded (manual sync).'),
                 Omise_Money::convert_currency_unit($amount, $currency),
                 $currency
             )
@@ -136,7 +136,7 @@ trait Sync_Order
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
             sprintf(
-                $this->allow_br('Opn Payments: Payment failed.<br/>%s (code: %s) (manual sync).'),
+                $this->allow_br('Omise: Payment failed.<br/>%s (code: %s) (manual sync).'),
                 Omise()->translate($charge['failure_message']),
                 $charge['failure_code']
             )
@@ -150,9 +150,9 @@ trait Sync_Order
     private function handle_pending_charge()
     {
         $message = $this->allow_br(
-            'Opn Payments: Payment is still in progress.<br/>
+            'Omise: Payment is still in progress.<br/>
             You might wait for a moment before click sync the status again 
-            or contact Opn Payments support team at support@omise.co 
+            or contact Omise support team at support@omise.co 
             if you have any questions (manual sync).'
         );
         $this->order()->add_order_note($message);
@@ -165,7 +165,7 @@ trait Sync_Order
     {
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
-            $this->allow_br('Opn Payments: Payment expired. (manual sync).')
+            $this->allow_br('Omise: Payment expired. (manual sync).')
         );
         $this->update_order_status(Omise_Payment::STATUS_CANCELLED);
     }
@@ -177,7 +177,7 @@ trait Sync_Order
     {
         $this->delete_capture_metadata();
         $this->order()->add_order_note(
-            $this->allow_br('Opn Payments: Payment reversed. (manual sync).')
+            $this->allow_br('Omise: Payment reversed. (manual sync).')
         );
         $this->update_order_status(Omise_Payment::STATUS_CANCELLED);
     }

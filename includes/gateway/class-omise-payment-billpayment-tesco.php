@@ -10,9 +10,9 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 
 		$this->id                 = 'omise_billpayment_tesco';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn Payments Lotus\'s Bill Payment', 'omise' );
+		$this->method_title       = __( 'Omise Lotus\'s Bill Payment', 'omise' );
 		$this->method_description = wp_kses(
-			__( 'Accept payments through <strong>Lotus\'s Bill Payment</strong> via Opn Payments payment gateway.', 'omise' ),
+			__( 'Accept payments through <strong>Lotus\'s Bill Payment</strong> via Omise payment gateway.', 'omise' ),
 			array( 'strong' => array() )
 		);
 
@@ -40,7 +40,7 @@ class Omise_Payment_Billpayment_Tesco extends Omise_Payment_Offline {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments Lotus\'s Bill Payment', 'omise' ),
+				'label'   => __( 'Enable Omise Lotus\'s Bill Payment', 'omise' ),
 				'default' => 'no'
 			),
 

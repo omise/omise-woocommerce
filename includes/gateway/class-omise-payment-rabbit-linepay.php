@@ -10,7 +10,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_rabbit_linepay';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn Payments Rabbit LINE Pay', 'omise' );
+		$this->method_title       = __( 'Omise Rabbit LINE Pay', 'omise' );
 		$this->method_description = __( 'Accept payment through Rabbit LINE Pay', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
@@ -39,7 +39,7 @@ class Omise_Payment_RabbitLinePay extends Omise_Payment_Offsite {
 				'enabled' => array(
 					'title'   => __( 'Enable/Disable', 'omise' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable Opn Payments Rabbit LINE Pay Payment', 'omise' ),
+					'label'   => __( 'Enable Omise Rabbit LINE Pay Payment', 'omise' ),
 					'default' => 'no'
 				),
 

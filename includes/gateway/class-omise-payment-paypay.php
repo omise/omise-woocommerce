@@ -7,8 +7,8 @@ class Omise_Payment_PayPay extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_paypay';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn Payments PayPay', 'omise' );
-		$this->method_description = __( 'Accept payment through <strong>PayPay</strong> via Opn Payments payment gateway.', 'omise' );
+		$this->method_title       = __( 'Omise PayPay', 'omise' );
+		$this->method_description = __( 'Accept payment through <strong>PayPay</strong> via Omise payment gateway.', 'omise' );
 		$this->supports           = array( 'products', 'refunds' );
 
 		$this->init_form_fields();
@@ -33,7 +33,7 @@ class Omise_Payment_PayPay extends Omise_Payment_Offsite {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments PayPay Payment', 'omise' ),
+				'label'   => __( 'Enable Omise PayPay Payment', 'omise' ),
 				'default' => 'no'
 			),
 

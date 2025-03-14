@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Plugin Name: Opn Payments
+ * Plugin Name: Omise Payments
  * Plugin URI:  https://www.omise.co/woocommerce
- * Description: Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
+ * Description: Omise Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
  * Version:     6.0.5
- * Author:      Opn Payments and contributors
+ * Author:      Omise and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
  * WC requires at least: 3.3.4
@@ -82,7 +82,7 @@ class Omise
 		$screen = get_current_screen();
 		if (strpos($screen->id, 'omise')) {
 			$translation = __('Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection.', 'omise');
-			echo "<div class='notice notice-warning is-dismissible'><p><strong>Opn Payments:</strong> $translation</p></div>";
+			echo "<div class='notice notice-warning is-dismissible'><p><strong>Omise:</strong> $translation</p></div>";
 		}
 	}
 
@@ -186,7 +186,7 @@ class Omise
 	{
 ?>
 		<div class="error">
-			<p><?php echo __('Opn Payments WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise'); ?></p>
+			<p><?php echo __('Omise WooCommerce plugin requires <strong>WooCommerce</strong> to be activated.', 'omise'); ?></p>
 		</div>
 <?php
 	}
@@ -359,10 +359,10 @@ class Omise
 			'omise_charge_items',
 			array(
 				'supports' => array('title', 'custom-fields'),
-				'label'    => 'Opn Payments Charge Items',
+				'label'    => 'Omise Charge Items',
 				'labels'   => array(
-					'name'          => 'Opn Payments Charge Items',
-					'singular_name' => 'Opn Payments Charge Item'
+					'name'          => 'Omise Charge Items',
+					'singular_name' => 'Omise Charge Item'
 				)
 			)
 		);
