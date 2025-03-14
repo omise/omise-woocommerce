@@ -1,4 +1,4 @@
-=== Omise ===
+=== Omise Payments ===
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
@@ -11,7 +11,7 @@ Omise WooCommerce is the payment extension which provides support for Omise Paym
 
 == Description ==
 
-Omise is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
+Omise Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
 
 == Installation ==
 
