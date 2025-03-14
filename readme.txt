@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.6.2
-Stable tag: 6.0.5
+Stable tag: 6.1.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,12 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 6.1.0 =
+
+- Rebrand Opn Payments to Omise. (PR: [#509](https://github.com/omise/omise-woocommerce/pull/509))
+- Fix Boost payment method is not visible on the checkout page. (PR: [#507](https://github.com/omise/omise-woocommerce/pull/507))
+- Fix credit card block does not show on WooCommerce 9.5.0. (PR: [#508](https://github.com/omise/omise-woocommerce/pull/508))
 
 = 6.0.5 =
 
