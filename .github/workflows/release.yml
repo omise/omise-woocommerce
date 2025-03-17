@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Validate composer.json and composer.lock
       run: composer validate
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -37,7 +37,7 @@ jobs:
       tag: ${{ steps.release-version.outputs.tag }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Get release version
       id: release-version
       run: echo ::set-output name=tag::$(echo $GITHUB_REF | cut -c 12-)
@@ -50,7 +50,7 @@ jobs:
     needs: [build, validate]
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Install SVN
       run: |
         sudo apt-get update
