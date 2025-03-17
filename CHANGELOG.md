@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [v6.1.1 _(Mar 18, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.1.1)
+- Reorganize logo and screenshots assets for automated deployment. (PR: [#513](https://github.com/omise/omise-woocommerce/pull/513))
+
 ## [v6.1.0 _(Mar 17, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.1.0)
 - Rebrand Opn Payments to Omise. (PR: [#509](https://github.com/omise/omise-woocommerce/pull/509))
 - Fix Boost payment method is not visible on the checkout page. (PR: [#507](https://github.com/omise/omise-woocommerce/pull/507))

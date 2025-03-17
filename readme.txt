@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.6.2
-Stable tag: 6.1.0
+Stable tag: 6.1.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,10 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 6.1.1 =
+
+- Reorganize logo and screenshots assets for automated deployment. (PR: [#513](https://github.com/omise/omise-woocommerce/pull/513))
 
 = 6.1.0 =
 
