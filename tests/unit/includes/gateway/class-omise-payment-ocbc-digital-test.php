@@ -39,7 +39,7 @@ class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
      */
     public function methodTitleIsCorrect()
     {
-        $this->assertEquals('Opn Payments OCBC Digital', $this->obj->method_title);
+        $this->assertEquals('Omise OCBC Digital', $this->obj->method_title);
     }
 
     /**

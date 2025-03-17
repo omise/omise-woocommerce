@@ -82,7 +82,7 @@ class Omise_Event_Charge_Complete extends Omise_Event
 		}
 
 		$this->order->add_order_note(
-			$this->allow_br('Opn Payments: Received charge.complete webhook event.'));
+			$this->allow_br('Omise: Received charge.complete webhook event.'));
 
 		switch ($this->data['status']) {
 			case 'failed':
@@ -118,7 +118,7 @@ class Omise_Event_Charge_Complete extends Omise_Event
 
 		$this->order->add_order_note(
 			sprintf(
-				$this->allow_br('Opn Payments: Payment failed.<br/>%s'),
+				$this->allow_br('Omise: Payment failed.<br/>%s'),
 				$failure_message
 			)
 		);
@@ -136,7 +136,7 @@ class Omise_Event_Charge_Complete extends Omise_Event
 		}
 		$this->order->add_order_note(
 			sprintf(
-				$this->allow_br('Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid'),
+				$this->allow_br('Omise: Payment successful.<br/>An amount %1$s %2$s has been paid'),
 				$this->order->get_total(),
 				$this->order->get_currency()
 			)

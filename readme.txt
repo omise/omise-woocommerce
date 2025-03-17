@@ -1,38 +1,44 @@
-=== Opn Payments ===
-Contributors: Opn Payments
-Tags: opn payments, payment, payment gateway, woocommerce plugin, omise, opn, installment, internet banking, alipay, paynow, truemoney, woocommerce payment
+=== Omise Payments ===
+Contributors: Omise
+Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.6.2
-Stable tag: 6.0.5
+Stable tag: 6.1.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Opn Payments plugin is the official payment extension which provides support for Opn Payments payment gateway for store builders working on the WooCommerce platform
+Omise WooCommerce is the payment extension which provides support for Omise Payment Gateway for store builders working on the WooCommerce platform.
 
 == Description ==
 
-Opn Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Opn Payments Payment Gateway's payment methods to WooCommerce.
+Omise Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
 
 == Installation ==
 
 After getting the source code, either downloading as a zip or git clone, put it in WordPress plugins folder (i.e. mv omise /wp-content/plugins/ or upload a zip via WordPress admin Plugins section, just like the other WordPress plugins).
 
-Then, Opn Payments WordPress plugin should be appeared in WordPress admin page, under the Plugins menu.
+Then, Omise WordPress plugin should be appeared in WordPress admin page, under the Plugins menu.
 From there:
 1. Activate the plugin
 2. Go to WooCommerce -> Settings
 3. Select the Payments tab on top.
-4. Enable the payment methods that starts with Opn Payments.
+4. Enable the payment methods that starts with Omise.
 5. Click on Set up to if you like to add description.
-6. Optionally, if you\'d like to have Opn Payments as a default payment gateway, you can check Default.
+6. Optionally, if you\'d like to have Omise as a default payment gateway, you can check Default.
 7. Click the Settings button and adjust the options.
 
 == Screenshots ==
-1. Opn Payments Dashboard
-2. Opn Payments Setting Page
-3. Opn Payments Checkout Form
+1. Omise Setting Page
+2. Omise Checkout Form
+3. Omise Dashboard
 
 == Changelog ==
+
+= 6.1.0 =
+
+- Rebrand Opn Payments to Omise. (PR: [#509](https://github.com/omise/omise-woocommerce/pull/509))
+- Fix Boost payment method is not visible on the checkout page. (PR: [#507](https://github.com/omise/omise-woocommerce/pull/507))
+- Fix credit card block does not show on WooCommerce 9.5.0. (PR: [#508](https://github.com/omise/omise-woocommerce/pull/508))
 
 = 6.0.5 =
 

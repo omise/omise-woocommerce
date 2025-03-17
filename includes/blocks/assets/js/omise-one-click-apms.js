@@ -7,6 +7,7 @@ const apms = [
     'omise_alipay_data',
     'omise_alipay_cn_data',
     'omise_alipay_hk_data',
+    'omise_boost_data',
     'omise_dana_data',
     'omise_gcash_data',
     'omise_kakaopay_data',

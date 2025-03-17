@@ -43,7 +43,7 @@ class Omise_Event_Charge_Capture extends Omise_Event {
 	 * For on-store capture, it will be handled by Omise_Payment::process_capture.
 	 */
 	public function resolve() {
-		$this->order->add_order_note( __( 'Opn Payments: Received charge.capture webhook event.', 'omise' ) );
+		$this->order->add_order_note( __( 'Omise: Received charge.capture webhook event.', 'omise' ) );
 		$this->order->delete_meta_data( 'is_awaiting_capture');
 		$this->order->save();
 
@@ -53,7 +53,7 @@ class Omise_Event_Charge_Capture extends Omise_Event {
 					return;
 				}
 
-				$message         = __( 'Opn Payments: Payment failed.<br/>%s', 'omise' );
+				$message         = __( 'Omise: Payment failed.<br/>%s', 'omise' );
 				$failure_message = Omise()->translate( $this->data['failure_message'] ) . ' (code: ' . $this->data['failure_code'] . ')';
 				$this->order->add_order_note(
 					sprintf(
@@ -65,7 +65,7 @@ class Omise_Event_Charge_Capture extends Omise_Event {
 				break;
 
 			case 'successful':
-				$message = __( 'Opn Payments: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' );
+				$message = __( 'Omise: Payment successful.<br/>An amount %1$s %2$s has been paid', 'omise' );
 
 				$this->order->add_order_note(
 					sprintf(

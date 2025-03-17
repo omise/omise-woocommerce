@@ -12,9 +12,9 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 
 		$this->id                 = 'omise_installment';
 		$this->has_fields         = true;
-		$this->method_title       = __('Opn Payments Installments', 'omise');
+		$this->method_title       = __('Omise Installments', 'omise');
 		$this->method_description = wp_kses(
-			__('Accept <strong>installment payments</strong> via Opn Payments payment gateway.', 'omise'),
+			__('Accept <strong>installment payments</strong> via Omise payment gateway.', 'omise'),
 			array('strong' => array())
 		);
 		$this->supports           = array('products', 'refunds');
@@ -44,7 +44,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			'enabled' => array(
 				'title'   => __('Enable/Disable', 'omise'),
 				'type'    => 'checkbox',
-				'label'   => __('Enable Opn Payments Installment Payments', 'omise'),
+				'label'   => __('Enable Omise Installment Payments', 'omise'),
 				'default' => 'no'
 			),
 

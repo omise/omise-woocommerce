@@ -1,11 +1,11 @@
 <!--- KEEP START --->
-[![Opn Payments](https://www.opn.ooo/assets/svg/logo-opn-full.svg)](https://www.opn.ooo)
+[![Omise](assets/images/omise.png)](https://www.omise.co)
 
-[Opn Payments](https://www.opn.ooo) is a payment service provider operating in Thailand, Japan, and Singapore. 
-Opn Payments provides a set of APIs that help merchants of any size accept payments online.  
+[Omise](https://www.omise.co) is a payment service provider operating in Thailand, Japan, and Singapore. 
+Omise provides a set of APIs that help merchants of any size accept payments online.  
 <!--- KEEP END --->
 
-**Omise WooCommerce** is our official plugin providing support for processing payments on WooCommerce through Opn Payments.
+**Omise WooCommerce** is our official plugin providing support for processing payments on WooCommerce through Omise.
 
 ## Security Warning
 
@@ -15,7 +15,7 @@ Opn Payments provides a set of APIs that help merchants of any size accept payme
 
 ## Usage
 
-See our [official docs](https://docs.opn.ooo/woocommerce-plugin) for details on installation and configuration.
+See our [official docs](https://docs.omise.co/woocommerce-plugin) for details on installation and configuration.
 
 ## Contributing
 

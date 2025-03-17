@@ -12,9 +12,9 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
 
         $this->id                 = 'omise_atome';
         $this->has_fields         = true;
-        $this->method_title       = __('Opn Payments Atome', 'omise');
+        $this->method_title       = __('Omise Atome', 'omise');
         $this->method_description = wp_kses(
-            __('Accept payments through <strong>Atome</strong> via Opn Payments payment gateway.', 'omise'),
+            __('Accept payments through <strong>Atome</strong> via Omise payment gateway.', 'omise'),
             ['strong' => []]
         );
 
@@ -45,7 +45,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             'enabled' => array(
                 'title'   => __('Enable/Disable', 'omise'),
                 'type'    => 'checkbox',
-                'label'   => __('Enable Opn Payments Atome Payment', 'omise'),
+                'label'   => __('Enable Omise Atome Payment', 'omise'),
                 'default' => 'no'
             ),
 

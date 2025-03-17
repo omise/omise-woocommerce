@@ -7,8 +7,8 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 
 		$this->id                 = 'omise_ocbc';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Opn Payments OCBC Digital', 'omise' );
-		$this->method_description = __( 'Accept payment through <strong>OCBC Digital</strong> via Opn Payments payment gateway.', 'omise' );
+		$this->method_title       = __( 'Omise OCBC Digital', 'omise' );
+		$this->method_description = __( 'Accept payment through <strong>OCBC Digital</strong> via Omise payment gateway.', 'omise' );
 		$this->supports           = [ 'products', 'refunds' ];
 
 		$this->init_form_fields();
@@ -33,7 +33,7 @@ class Omise_Payment_OCBC_Digital extends Omise_Payment_Offsite {
 			'enabled' => [
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Opn Payments OCBC Digital', 'omise' ),
+				'label'   => __( 'Enable Omise OCBC Digital', 'omise' ),
 				'default' => 'no'
             ],
 
