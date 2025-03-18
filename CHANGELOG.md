@@ -1,9 +1,17 @@
 # CHANGELOG
 
-## [v6.0.5 _(Jan 15, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.5)
+## [v6.1.1 _(Mar 18, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.1.1)
+- Reorganize logo and screenshots assets for automated deployment. (PR: [#513](https://github.com/omise/omise-woocommerce/pull/513))
+
+## [v6.1.0 _(Mar 17, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.1.0)
+- Rebrand Opn Payments to Omise. (PR: [#509](https://github.com/omise/omise-woocommerce/pull/509))
+- Fix Boost payment method is not visible on the checkout page. (PR: [#507](https://github.com/omise/omise-woocommerce/pull/507))
+- Fix credit card block does not show on WooCommerce 9.5.0. (PR: [#508](https://github.com/omise/omise-woocommerce/pull/508))
+
+## [v6.0.5 _(Jan 15, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.5)
 - Fix the issue of TrueMoney wallet not showing in payment options. (PR: [#500](https://github.com/omise/omise-woocommerce/pull/500))
 
-## [v6.0.4 _(Jan 13, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.4)
+## [v6.0.4 _(Jan 13, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.4)
 - Fix the issue of missing TrueMoney payment methods. (PR: [#496](https://github.com/omise/omise-woocommerce/pull/496))
 
 ## [v6.0.3 _(Nov 27, 2024)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.0.3)
