@@ -1,5 +1,19 @@
 # CHANGELOG
 
+### [v2.18.0 _(Jul 09, 2024)_](https://github.com/omise/omise-php/releases/tag/v2.18.0)
+
+- Fix the latest version link in README. ([#157](https://github.com/omise/omise-php/pull/167))
+- Add #[AllowDynamicProperties] to not emit deprecation notice. ([#157](https://github.com/omise/omise-php/pull/168))
+
+### [v2.17.0 _(Sept 06, 2023)_](https://github.com/omise/omise-php/releases/tag/v2.17.0)
+
+- Added support for partial capture ([#157](https://github.com/omise/omise-php/pull/157))
+
+### [v2.16.1 _(April 20, 2023)_](https://github.com/omise/omise-php/releases/tag/v2.16.1)
+- Removed the predefined installment minimum value ([#151](https://github.com/omise/omise-php/pull/151))
+- Bug fixed on `OmiseSearch::scope` public key and secret key override as null ([#149](https://github.com/omise/omise-php/pull/149))
+- Sonarcloud integration for code coverage ([#148](https://github.com/omise/omise-php/pull/148))
+  
 ### [v2.16.0 _(August 25, 2022)_](https://github.com/omise/omise-php/releases/tag/v2.16.0)
 - Made compatible with PHP 5.6 to 8.1 ([#141](https://github.com/omise/omise-php/pull/144))
 

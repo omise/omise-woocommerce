@@ -79,6 +79,7 @@ class OmiseCapabilities extends OmiseApiResource
             },
             $this['payment_backends']
         );
+
         // return backends (filtered if requested)
         return ($filters = func_get_args()) ? array_filter($backends, self::combineFilters(self::argsToVariadic($filters))) : $backends;
     }
@@ -124,7 +125,7 @@ class OmiseCapabilities extends OmiseApiResource
         $defMax = $this['limits']['charge_amount']['max'];
 
         return function ($backend) use ($amount, $defMin, $defMax) {
-            if ($backend->type === 'installment' && get_woocommerce_currency() === 'THB') {
+            if ($backend->type === 'installment') {
                 $min = $this['limits']['installment_amount']['min'];
             } else {
                 $min = empty($backend->amount['min']) ? $defMin : $backend->amount['min'];
@@ -173,15 +174,5 @@ class OmiseCapabilities extends OmiseApiResource
     private static function getUrl()
     {
         return OMISE_API_URL . self::ENDPOINT;
-    }
-
-    /**
-     * Returns the public key.
-     *
-     * @return string
-     */
-    protected static function getResourceKey()
-    {
-        return parent::getResourceKey();
     }
 }

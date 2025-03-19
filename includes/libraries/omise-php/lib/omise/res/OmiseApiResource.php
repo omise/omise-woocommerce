@@ -1,6 +1,6 @@
 <?php
 
-define('OMISE_PHP_LIB_VERSION', '2.16.0');
+define('OMISE_PHP_LIB_VERSION', '2.18.0');
 define('OMISE_API_URL', 'https://api.omise.co/');
 define('OMISE_VAULT_URL', 'https://vault.omise.co/');
 
@@ -37,14 +37,20 @@ class OmiseApiResource extends OmiseObject
      */
     protected static function getInstance($publickey = null, $secretkey = null)
     {
-        $resource = new static($publickey, $secretkey); // @phpstan-ignore-line
+        $resource = new static($publickey, $secretkey);
         $className = get_class($resource);
-
         if (!isset(self::$instances[$className])) {
             static::$instances[$className] = $resource;
+
+            return static::$instances[$className];
         }
 
-        return static::$instances[$className];
+        $resource = static::$instances[$className];
+
+        $resource->setPublicKey($publickey);
+        $resource->setSecretKey($secretkey);
+
+        return $resource;
     }
 
     /**
@@ -60,7 +66,7 @@ class OmiseApiResource extends OmiseObject
     protected static function g_retrieve($url, $publickey = null, $secretkey = null)
     {
         $resource = self::getInstance($publickey, $secretkey);
-        $result = $resource->execute($url, self::REQUEST_GET, $resource->getResourceKey());
+        $result = $resource->execute($url, self::REQUEST_GET, self::getResourceKey($resource));
         $resource->refresh($result);
 
         return $resource;
@@ -81,7 +87,7 @@ class OmiseApiResource extends OmiseObject
     protected static function g_create($url, $params, $publickey = null, $secretkey = null)
     {
         $resource = self::getInstance($publickey, $secretkey);
-        $result = $resource->execute($url, self::REQUEST_POST, $resource->getResourceKey(), $params);
+        $result = $resource->execute($url, self::REQUEST_POST, self::getResourceKey($resource), $params);
         $resource->refresh($result);
 
         return $resource;
@@ -98,7 +104,7 @@ class OmiseApiResource extends OmiseObject
     protected static function g_update($url, $params = null)
     {
         $resource = self::getInstance();
-        $result = $resource->execute($url, self::REQUEST_PATCH, $resource->getResourceKey(), $params);
+        $result = $resource->execute($url, self::REQUEST_PATCH, self::getResourceKey($resource), $params);
         $resource->refresh($result);
     }
 
@@ -112,7 +118,7 @@ class OmiseApiResource extends OmiseObject
     protected static function g_expire($url)
     {
         $resource = self::getInstance();
-        $result = $resource->execute($url, self::REQUEST_POST, $resource->getResourceKey());
+        $result = $resource->execute($url, self::REQUEST_POST, self::getResourceKey($resource));
         $resource->refresh($result, true);
     }
 
@@ -126,7 +132,7 @@ class OmiseApiResource extends OmiseObject
     protected static function g_destroy($url)
     {
         $resource = self::getInstance();
-        $result = $resource->execute($url, self::REQUEST_DELETE, $resource->getResourceKey());
+        $result = $resource->execute($url, self::REQUEST_DELETE, self::getResourceKey($resource));
         $resource->refresh($result, true);
     }
 
@@ -140,7 +146,7 @@ class OmiseApiResource extends OmiseObject
     protected static function g_revoke($url)
     {
         $resource = self::getInstance();
-        $result = $resource->execute($url, self::REQUEST_POST, $resource->getResourceKey());
+        $result = $resource->execute($url, self::REQUEST_POST, self::getResourceKey($resource));
         $resource->refresh($result, true);
     }
 
@@ -154,7 +160,7 @@ class OmiseApiResource extends OmiseObject
     protected static function g_reload($url)
     {
         $resource = self::getInstance();
-        $result = $resource->execute($url, self::REQUEST_GET, $resource->getResourceKey());
+        $result = $resource->execute($url, self::REQUEST_GET, self::getResourceKey($resource));
         $resource->refresh($result);
     }
 
@@ -171,7 +177,11 @@ class OmiseApiResource extends OmiseObject
      */
     protected function execute($url, $requestMethod, $key, $params = null)
     {
-        $result = $this->_executeCurl($url, $requestMethod, $key, $params);
+        if (preg_match('/phpunit/', $_SERVER['SCRIPT_NAME']) && getenv('TEST_TYPE') == 'unit') {
+            $result = $this->_executeTest($url, $requestMethod, $key, $params);
+        } else {
+            $result = $this->_executeCurl($url, $requestMethod, $key, $params);
+        }
 
         // Decode the JSON response as an associative array.
         $array = json_decode($result, true);
@@ -198,6 +208,58 @@ class OmiseApiResource extends OmiseObject
     protected static function isValidAPIResponse($array)
     {
         return $array && count($array) && isset($array['object']);
+    }
+
+    /**
+     * @param  string $url
+     * @param  string $requestMethod
+     * @param  array  $params
+     *
+     * @throws OmiseException
+     *
+     * @return string
+     */
+    private function _executeTest($url, $requestMethod, $key, $params = null)
+    {
+        // Extract only hostname and URL path without trailing slash.
+        $parsed = parse_url($url);
+        $request_url = $parsed['host'] . rtrim($parsed['path'], '/');
+
+        // Convert query string into filename friendly format.
+        if (!empty($parsed['query'])) {
+            $query = base64_encode($parsed['query']);
+            $query = str_replace(['+', '/', '='], ['-', '_', ''], $query);
+            $request_url = $request_url . '-' . $query;
+        }
+
+        // Finally.
+        $request_url = dirname(__FILE__) . '/../../../tests/fixtures/' . $request_url . '-' . strtolower($requestMethod) . '.json';
+
+        // Make a request from Curl if json file was not exists.
+        if (!file_exists($request_url)) {
+            // Get a directory that's file should contain.
+            $request_dir = explode('/', $request_url);
+            unset($request_dir[count($request_dir) - 1]);
+            $request_dir = implode('/', $request_dir);
+
+            // Create directory if it not exists.
+            if (!file_exists($request_dir)) {
+                mkdir($request_dir, 0777, true);
+            }
+
+            $result = $this->_executeCurl($url, $requestMethod, $key, $params);
+
+            $f = fopen($request_url, 'w');
+            if ($f) {
+                fwrite($f, $result);
+
+                fclose($f);
+            }
+        } else { // Or get response from json file.
+            $result = file_get_contents($request_url);
+        }
+
+        return $result;
     }
 
     /**
@@ -306,9 +368,12 @@ class OmiseApiResource extends OmiseObject
      *
      * @return string
      */
-    protected static function getResourceKey()
+    protected static function getResourceKey($resource = null)
     {
-        $resource = self::getInstance();
+        if (!$resource) {
+            $resource = self::getInstance();
+        }
+
         if (in_array(get_class($resource), self::$classesToUsePublicKey)) {
             return $resource->_publickey;
         }
