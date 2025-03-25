@@ -11,6 +11,10 @@
 	stopOnRisky="false"
 	verbose="true">
 	<testsuites>
+		<testsuite name="Test">
+      <file>./tests/unit/class-omise-unit-test.php</file>
+      <file>./tests/unit/includes/class-omise-capability-test.php</file>
+		</testsuite>
 		<testsuite name="Omise WooCommerce Test Suite">
 			<directory suffix="-test.php">tests/unit</directory>
 		</testsuite>
@@ -31,5 +35,6 @@
 		<server name="HTTP_FORWARDED_FOR" value="192.168.1.4"/>
 		<server name="HTTP_FORWARDED" value="192.168.1.5"/>
 		<server name="REMOTE_ADDR" value="192.168.1.6"/>
+		<ini name="error_reporting" value="E_ALL" />
 	</php>
 </phpunit>
