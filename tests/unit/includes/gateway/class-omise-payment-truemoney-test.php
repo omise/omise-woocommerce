@@ -24,7 +24,7 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
         Monkey\Functions\expect('wp_kses');
         Monkey\Functions\expect('add_action');
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-truemoney.php';
-        $this->omise_capability_mock = Mockery::mock('alias:Omise_Capabilities');
+        $this->omise_capability_mock = Mockery::mock('alias:Omise_Capability');
     }
 
     public function test_get_charge_request()
@@ -80,7 +80,7 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
     {
         $this->omise_capability_mock->shouldReceive('retrieve')
             ->andReturn(new class() {
-                public function get_truemoney_backend($source_type) {
+                public function get_truemoney_method($source_type) {
                     if ('truemoney' === $source_type) {
                         return (object)[
                             'truemoney' => [
@@ -109,7 +109,7 @@ class Omise_Payment_Truemoney_Test extends Omise_Offsite_Test
     {
         $this->omise_capability_mock->shouldReceive('retrieve')
             ->andReturn(new class() {
-                public function get_truemoney_backend($source_type) {
+                public function get_truemoney_method($source_type) {
                     if ('truemoney' === $source_type) {
                         return (object)[
                             'truemoney' => [

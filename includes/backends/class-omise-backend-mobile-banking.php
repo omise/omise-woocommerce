@@ -40,15 +40,15 @@ class Omise_Backend_Mobile_Banking extends Omise_Backend {
 	 */
 	public function get_available_providers( $currency ) {
 		$mobile_banking_providers = array();
-		$capabilities = $this->capabilities();
+		$capability = $this->capability();
 
-		if ( $capabilities ){
-			$providers = $capabilities->getBackends( $currency );
+		if ( $capability ){
+			$providers = $capability->getPaymentMethods( $currency );
 
 			foreach ( $providers as &$provider ) {
-				if(isset(self::$providers[ $provider->_id ])){
+				if(isset(self::$providers[ $provider->name ])){
 
-					$provider_detail = self::$providers[ $provider->_id ];
+					$provider_detail = self::$providers[ $provider->name ];
 					$provider->provider_name   = $provider_detail['title'];
 					$provider->provider_logo   = $provider_detail['logo'];
 

@@ -235,7 +235,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
     /**
      * Check if the gateway is available for customer on checkout page.
-     * 
+     *
      * @see    WC_Payment_Gateway::is_available()
      * @see    woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
      *
@@ -246,13 +246,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             return false;
         }
 
-        $capabilities = Omise_Capabilities::retrieve();
+        $capability = Omise_Capability::retrieve();
 
-        if ( !$capabilities ) {
+        if ( !$capability ) {
             return false;
         }
 
-        return $this->is_capability_support($capabilities->get_available_payment_methods());
+        return $this->is_capability_support($capability->get_available_payment_methods());
     }
 
     /**

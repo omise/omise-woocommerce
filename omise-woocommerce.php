@@ -203,7 +203,7 @@ class Omise
 		defined('OMISE_WOOCOMMERCE_PLUGIN_VERSION') || define('OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version);
 		defined('OMISE_PUBLIC_KEY') || define('OMISE_PUBLIC_KEY', $this->settings()->public_key());
 		defined('OMISE_SECRET_KEY') || define('OMISE_SECRET_KEY', $this->settings()->secret_key());
-		defined('OMISE_API_VERSION') || define('OMISE_API_VERSION', '2017-11-02');
+		defined('OMISE_API_VERSION') || define('OMISE_API_VERSION', '2019-05-29');
 		defined('OMISE_USER_AGENT_SUFFIX') || define(
 			'OMISE_USER_AGENT_SUFFIX', 
 			sprintf(

@@ -27,8 +27,8 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 			$data['account_email']   = $account['email'];
 			$data['account_country'] = $account['country'];
 
-			$capabilities = Omise_Capabilities::retrieve( $public_key, $secret_key );
-			$backends = $capabilities->getBackends();
+			$capability = Omise_Capability::retrieve( $public_key, $secret_key );
+			$backends = $capability->getPaymentMethods();
 			$data['backends'] = $backends;
 
 			$this->update_settings( $data );
@@ -55,13 +55,13 @@ class Omise_Page_Settings extends Omise_Admin_Page {
 		}
 
 		$settings = $page->get_settings();
-		
+
 		// Although this variable looks like unused, it will be available in the view.
 		$available_payment_methods = [];
-		$capabilities = Omise_Capabilities::retrieve();
+		$capability = Omise_Capability::retrieve();
 
-		if ( $capabilities ){
-			$available_payment_methods = $capabilities->get_available_payment_methods();
+		if ( $capability ){
+			$available_payment_methods = $capability->get_available_payment_methods();
 		}
 
 		/**

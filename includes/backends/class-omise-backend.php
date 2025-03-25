@@ -17,9 +17,9 @@ class Omise_Backend {
 	}
 
 	/**
-	 * @return Omise_Capabilities  Instant.
+	 * @return Omise_Capability  Instant.
 	 */
-	public function capabilities() {
-		return Omise_Capabilities::retrieve();
+	public function capability() {
+		return Omise_Capability::retrieve();
 	}
 }

@@ -132,15 +132,15 @@ class Omise_Payment_Truemoney extends Omise_Payment_Offsite
 	 */
 	public function get_source()
 	{
-		$capabilities = Omise_Capabilities::retrieve();
+		$capability = Omise_Capability::retrieve();
 
-		if (!$capabilities) {
+		if (!$capability) {
 			$this->has_fields = false;
 			return self::JUMPAPP;
 		}
 
-		$is_jumpapp_enabled = $capabilities->get_truemoney_backend(self::JUMPAPP);
-		$is_wallet_enabled = $capabilities->get_truemoney_backend(self::WALLET);
+		$is_jumpapp_enabled = $capability->get_truemoney_method(self::JUMPAPP);
+		$is_wallet_enabled = $capability->get_truemoney_method(self::WALLET);
 
 		if (!empty($is_wallet_enabled) && empty($is_jumpapp_enabled)) {
 			return self::WALLET;
