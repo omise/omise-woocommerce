@@ -11,8 +11,6 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 {
 	private $omiseSettingMock;
 
-	private $omiseHttpExecutorMock;
-
 	/**
 	 * setup add_action and do_action before the test run
 	 */
@@ -25,8 +23,8 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		require_once __DIR__ . '/../../../includes/libraries/omise-php/lib/omise/res/OmiseApiResource.php';
 		require_once __DIR__ . '/../../../includes/class-omise-capability.php';
 		require_once __DIR__ . '/../../../includes/gateway/class-omise-payment-truemoney.php';
+		require_once __DIR__ . '/../../../includes/gateway/class-omise-payment-shopeepay.php';
 		$this->omiseSettingMock = Mockery::mock('alias:Omise_Setting');
-		$this->omiseHttpExecutorMock = Mockery::mock('overload:OmiseHttpExecutor');
 
 		$this->omiseSettingMock->shouldReceive('instance')->andReturn($this->omiseSettingMock);
 		$this->omiseSettingMock->shouldReceive('public_key')->andReturn('pkey_xxx');
@@ -48,13 +46,10 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		$_GET['page'] = $adminPageName;
 
 		Brain\Monkey\Functions\expect('is_admin')
-			->with('123')
 			->andReturn($GLOBALS['isAdmin']);
 		Brain\Monkey\Functions\expect('is_checkout')
-			->with('123')
 			->andReturn($GLOBALS['isCheckout']);
 		Brain\Monkey\Functions\expect('is_wc_endpoint_url')
-			->with('123')
 			->andReturn($GLOBALS['isThankYouPage']);
 
 		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
@@ -90,33 +85,117 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		];
 	}
 
+	public function test_get_installment_methods_returns_payment_methods_with_name_starts_with_installment()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$installmentMethods = Omise_Capability::retrieve()->getInstallmentMethods();
+
+		$this->assertIsArray($installmentMethods);
+		$this->assertNotEmpty($installmentMethods);
+		foreach ($installmentMethods as $method) {
+			$this->assertStringStartsWith('installment_', $method->name);
+		}
+	}
+
+	public function test_get_installment_methods_filtered_by_curreny_and_charge_amount()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$installmentMethods = Omise_Capability::retrieve()->getInstallmentMethods('THB', 10000);
+
+		$this->assertIsArray($installmentMethods);
+		$this->assertEmpty($installmentMethods);
+	}
+
+	public function test_get_payment_methods_returns_all_available_payment_methods()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$paymentMethods = Omise_Capability::retrieve()->getPaymentMethods();
+
+		$this->assertIsArray($paymentMethods);
+		$this->assertCount(45, $paymentMethods);
+
+		$paymentMethod = $paymentMethods[0];
+		$this->assertObjectHasProperty('object', $paymentMethod);
+		$this->assertObjectHasProperty('name', $paymentMethod);
+		$this->assertObjectHasProperty('currencies', $paymentMethod);
+		$this->assertObjectHasProperty('card_brands', $paymentMethod);
+		$this->assertObjectHasProperty('installment_terms', $paymentMethod);
+		$this->assertObjectHasProperty('banks', $paymentMethod);
+		$this->assertObjectHasProperty('provider', $paymentMethod);
+	}
+
+	public function test_get_fpx_banks_returns_correct_method()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$fpx = Omise_Capability::retrieve()->getFPXBanks();
+
+		$this->assertFalse($fpx);
+	}
+
+	public function test_get_tokenization_returns_correct_value()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$tokenizationMethods = Omise_Capability::retrieve()->getTokenizationMethods();
+
+		$this->assertIsArray($tokenizationMethods);
+		$this->assertCount(2, $tokenizationMethods);
+		$this->assertContains('googlepay', $tokenizationMethods);
+		$this->assertContains('applepay', $tokenizationMethods);
+	}
+
+	public function test_is_zero_interest_returns_correct_value()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$isZroInterest = Omise_Capability::retrieve()->is_zero_interest();
+
+		$this->assertFalse($isZroInterest);
+	}
+
+	public function test_get_installment_min_limit_returns_correct_value()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$installmentMinLimit = Omise_Capability::retrieve()->getInstallmentMinLimit();
+
+		$this->assertEquals(200000, $installmentMinLimit);
+	}
+
+	/**
+	 * @dataProvider shopee_source_provider
+	 */
+	public function test_get_shopee_method_returns_correct_value($name, $expected)
+	{
+		$this->mockCapabilityRetrieve();
+
+		$result = Omise_Capability::retrieve()->getShopeeMethod($name);
+
+		if ($expected) {
+			$this->assertIsObject($result);
+			$this->assertEquals($name, $result->name);
+		} else {
+			$this->assertNull($result);
+		}
+	}
+
+	public function shopee_source_provider()
+	{
+		return [['abc', false], ['shopeepay', true], ['shopeepay_jumpapp', true]];
+	}
+
 	/**
 	 * @dataProvider truemoney_source_provider
 	 */
 	public function test_get_truemoney_method_returns_correct_value($name, $expected)
 	{
-		require_once __DIR__ . '/../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
+		$this->mockCapabilityRetrieve();
 
-		Brain\Monkey\Functions\expect('is_admin')
-			->with('123')
-			->andReturn(true);
-
-		Brain\Monkey\Functions\expect('is_checkout')
-			->with('123')
-			->andReturn(true);
-
-		Brain\Monkey\Functions\expect('is_wc_endpoint_url')
-			->with('123')
-			->andReturn(false);
-
-		$this->omiseHttpExecutorMock
-			->shouldReceive('execute')
-			->once()
-			->andReturn(load_fixture('omise-capability-get'));
-
-		$capability = Omise_Capability::retrieve();
-
-		$result = $capability->get_truemoney_method($name);
+		$result = Omise_Capability::retrieve()->get_truemoney_method($name);
 
 		if ($expected) {
 			$this->assertIsObject($result);
@@ -128,7 +207,7 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 
 	public function truemoney_source_provider()
 	{
-		return [ ['abc', false], ['truemoney', true], ['truemoney_jumpapp', true] ];
+		return [['abc', false], ['truemoney', true], ['truemoney_jumpapp', true]];
 	}
 
 	/**
@@ -171,15 +250,39 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		];
 	}
 
-	private function refresh($instance, $values, $clear = false)
+	private function mockCapabilityRetrieve()
 	{
-			if ($clear) {
-					$instance->_values = [];
-			}
+		$this->enableApiCall(true);
 
-			$instance->_values = $instance->_values ?: [];
-			$values = $values ?: [];
+		$omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
+		$omiseHttpExecutorMock
+			->shouldReceive('execute')
+			->once()
+			->andReturn(load_fixture('omise-capability-get'));
+	}
 
-			$instance->_values = array_merge($instance->_values, $values);
+	private function mockOmiseHttpExecutor()
+	{
+		require_once __DIR__ . '/../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
+
+		return Mockery::mock('overload:' . OmiseHttpExecutor::class);
+	}
+
+	/**
+	 * Allow test to call the APIs
+	 * @param bool $isEnabled
+	 * @return void
+	 */
+	private function enableApiCall($isEnabled)
+	{
+		if (!$isEnabled) {
+			Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
+			Brain\Monkey\Functions\expect('is_checkout')->andReturn(false);
+			Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
+		} else {
+			Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
+			Brain\Monkey\Functions\expect('is_checkout')->andReturn(true);
+			Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
+		}
 	}
 }

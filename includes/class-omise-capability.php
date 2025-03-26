@@ -188,7 +188,7 @@ class Omise_Capability {
 	/**
 	 * Retrieves details of installment payment methods from capability.
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function getInstallmentMethods( $currency = '', $amount = null ) {
 
@@ -208,7 +208,7 @@ class Omise_Capability {
 	/**
 	 * Retrieves details of payment methods from capability.
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function getPaymentMethods( $currency = '' ) {
 		$params = array();
@@ -217,19 +217,6 @@ class Omise_Capability {
 		}
 
 		return $this->capability->getPaymentMethods( $params );
-	}
-
-	/**
-	 * Retrieves payment method by name
-	 */
-	public function getPaymentMethodByName($sourceType)
-	{
-		$params = [];
-		$params[] = $this->capability->filterPaymentMethod['exactName']($sourceType);
-		$methods = $this->capability->getPaymentMethods($params);
-		// Only variables hould be passed
-		// https://www.php.net/reset
-		return reset($methods);
 	}
 
 	/**
@@ -304,5 +291,19 @@ class Omise_Capability {
 		}
 
 		return $this->getPaymentMethodByName($sourceType);
+	}
+
+	/**
+	 * Retrieves payment method by name
+	 * @return object A first payment method that matched with the given name
+	 */
+	private function getPaymentMethodByName($sourceType)
+	{
+		$params = [];
+		$params[] = $this->capability->filterPaymentMethod['exactName']($sourceType);
+		$methods = $this->capability->getPaymentMethods($params);
+		// Only variables hould be passed
+		// https://www.php.net/reset
+		return reset($methods);
 	}
 }
