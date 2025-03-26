@@ -79,13 +79,13 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 			[true, false, false, '', true],
 			// checkout page and also thank you page
 			[true, true, false, '', false],
-			// // omise setting page
+			// omise setting page
 			[true, true, true, 'omise', true],
-			// // other admin page
+			// other admin page
 			[true, true, true, 'other-page', false],
-			// // non checkout page and also no-admin page
+			// non checkout page and also no-admin page
 			[false, false, false, 'other-page', false],
-			// // non checkout page, non admin page
+			// non checkout page, non admin page
 			[false, false, false, '', false],
 		];
 	}
@@ -183,4 +183,3 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 			$instance->_values = array_merge($instance->_values, $values);
 	}
 }
-

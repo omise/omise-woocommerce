@@ -19,8 +19,6 @@ class OmiseException extends Exception
      */
     public static function getInstance($array)
     {
-        print_r($array);
-
         switch ($array['code']) {
             case 'authentication_failure':
                 return new OmiseAuthenticationFailureException($array['message'], $array);

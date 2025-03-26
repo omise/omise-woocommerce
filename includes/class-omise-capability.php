@@ -101,7 +101,7 @@ class Omise_Capability {
 		if (wp_doing_ajax() && in_array($_GET['wc-ajax'], $ajaxActions)) {
 			return true;
 		}
-		
+
 		$endpoints = ['checkout', 'batch', 'cart', 'cart/select-shipping-rate'];
 
 		foreach($endpoints as $endpoint) {
