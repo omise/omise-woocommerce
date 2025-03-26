@@ -9,8 +9,6 @@ require_once __DIR__ . '/gateway/bootstrap-test-setup.php';
  */
 class Omise_Capability_Test extends Bootstrap_Test_Setup
 {
-	private $omiseSettingMock;
-
 	/**
 	 * setup add_action and do_action before the test run
 	 */
@@ -24,11 +22,6 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		require_once __DIR__ . '/../../../includes/class-omise-capability.php';
 		require_once __DIR__ . '/../../../includes/gateway/class-omise-payment-truemoney.php';
 		require_once __DIR__ . '/../../../includes/gateway/class-omise-payment-shopeepay.php';
-		$this->omiseSettingMock = Mockery::mock('alias:Omise_Setting');
-
-		$this->omiseSettingMock->shouldReceive('instance')->andReturn($this->omiseSettingMock);
-		$this->omiseSettingMock->shouldReceive('public_key')->andReturn('pkey_xxx');
-		$this->omiseSettingMock->shouldReceive('secret_key')->andReturn('skey_xxx');
 	}
 
 	/**
@@ -37,6 +30,8 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 	 */
 	public function test_retrieve_should_return_value_when_it_should_call_api($isCheckout, $isThankYouPage, $isAdmin, $adminPageName, $expected)
 	{
+		$this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
+
 		// assigning to global variable, so that we can use in child functions
 		$GLOBALS['isCheckout'] = $isCheckout;
 		$GLOBALS['isThankYouPage'] = $isThankYouPage;
@@ -85,6 +80,44 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		];
 	}
 
+	public function test_retrieve_returns_existing_instance_without_extra_api_call_if_keys_not_changed()
+	{
+		$this->enableApiCall(true);
+		$this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
+
+		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
+		$omiseCapabilityMock->shouldReceive('retrieve')->once();
+
+		Omise_Capability::retrieve();
+		Omise_Capability::retrieve();
+	}
+
+	public function test_retrieve_returns_existing_instance_and_fetch_new_capability_if_keys_changed()
+	{
+		$this->enableApiCall(true);
+		$this->mockOmiseSetting(['pkey_xxx', 'pkey_new'], ['pkey_xxx', 'skey_new']);
+
+		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
+		$omiseCapabilityMock->shouldReceive('retrieve')->twice();
+
+		Omise_Capability::retrieve();
+		Omise_Capability::retrieve();
+	}
+
+	public function test_retrieve_returns_null_when_keys_not_set()
+	{
+		$this->enableApiCall(true);
+		$this->mockOmiseSetting([''], ['']);
+
+		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
+		$omiseCapabilityMock->shouldNotReceive('retrieve');
+
+		$omiseCapability = Omise_Capability::retrieve();
+
+		$this->assertNull($omiseCapability);
+	}
+
+
 	public function test_get_installment_methods_returns_payment_methods_with_name_starts_with_installment()
 	{
 		$this->mockCapabilityRetrieve();
@@ -125,6 +158,17 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		$this->assertObjectHasProperty('installment_terms', $paymentMethod);
 		$this->assertObjectHasProperty('banks', $paymentMethod);
 		$this->assertObjectHasProperty('provider', $paymentMethod);
+	}
+
+	public function test_get_payment_methods_filtered_by_currency()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$paymentMethods = Omise_Capability::retrieve()->getPaymentMethods('JPY');
+
+		$this->assertIsArray($paymentMethods);
+		$this->assertCount(1, $paymentMethods);
+		$this->assertEquals('card', $paymentMethods[0]->name);
 	}
 
 	public function test_get_available_payment_methods_returns_all_available_payment_methods_with_tokenization()
@@ -264,8 +308,20 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		];
 	}
 
+	private function mockOmiseSetting($pkey, $skey)
+	{
+		$omiseSettingMock = Mockery::mock('alias:Omise_Setting');
+
+		$omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
+		$omiseSettingMock->shouldReceive('public_key')->andReturn(...$pkey);
+		$omiseSettingMock->shouldReceive('secret_key')->andReturn(...$skey);
+
+		return $omiseSettingMock;
+	}
+
 	private function mockCapabilityRetrieve()
 	{
+		$this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
 		$this->enableApiCall(true);
 
 		$omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
