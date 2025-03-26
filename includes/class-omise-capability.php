@@ -172,7 +172,7 @@ class Omise_Capability {
 			! isset( $_POST['omise_setting_page_nonce'] ) ||
 			! wp_verify_nonce( $_POST['omise_setting_page_nonce'], 'omise-setting' )
 		) {
-			wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
+			return wp_die( __( 'You are not allowed to modify the settings from a suspicious source.', 'omise' ) );
 		}
 
 		return [

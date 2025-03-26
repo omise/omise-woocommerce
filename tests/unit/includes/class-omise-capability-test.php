@@ -28,7 +28,7 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 	 * @dataProvider retrieve_data_provider
 	 * @covers Omise_Capability
 	 */
-	public function test_retrieve_should_return_value_when_it_should_call_api($isCheckout, $isThankYouPage, $isAdmin, $adminPageName, $expected)
+	public function test_retrieve_returns_value_when_it_should_call_api($isCheckout, $isThankYouPage, $isAdmin, $adminPageName, $expected)
 	{
 		$this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
 
@@ -80,6 +80,77 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		];
 	}
 
+	public function test_retrieve_returns_null_when_retrieve_capability_fails()
+	{
+		$this->enableApiCall(true);
+		$this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
+
+		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
+		$omiseCapabilityMock->shouldReceive('retrieve')->once()->andThrows(new Exception('Request failed'));
+		Brain\Monkey\Functions\expect('error_log')->once()->with('Request failed');
+
+		$result = Omise_Capability::retrieve();
+
+		$this->assertNull($result);
+	}
+
+	/**
+	 * @dataProvider retrieve_keys_data_provider
+	 */
+	public function test_retrieve_using_new_setting_keys_if_user_submit_form($sandbox)
+	{
+		$_POST = [
+			'submit' => 'Save Settings',
+			'omise_setting_page_nonce' => 1,
+			'sandbox' => true,
+			'test_public_key' => 'pkey_test_xxx',
+			'test_private_key' => 'skey_test_xxx',
+			'live_public_key' => 'pkey_xxx',
+			'live_private_key' => 'skey_xxx',
+		];
+
+		if (!$sandbox) {
+			unset($_POST['sandbox']);
+		}
+
+		Brain\Monkey\Functions\expect('wp_verify_nonce')->andReturn(true);
+		Brain\Monkey\Functions\when('sanitize_text_field')->returnArg();
+		$this->enableApiCall(true);
+
+		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
+
+		if ($sandbox) {
+			$omiseCapabilityMock->shouldReceive('retrieve')->once()->with('pkey_test_xxx', 'skey_test_xxx');
+		} else {
+			$omiseCapabilityMock->shouldReceive('retrieve')->once()->with('pkey_xxx', 'skey_xxx');
+		}
+
+		Omise_Capability::retrieve();
+	}
+
+	public function retrieve_keys_data_provider()
+	{
+		return [[true], [false]];
+	}
+
+	public function test_retrieve_exits_when_new_setting_keys_are_from_suspicious_source()
+	{
+		$_POST = [
+			'submit' => 'Save Settings',
+			'live_public_key' => 'pkey_xxx',
+			'live_private_key' => 'skey_xxx',
+		];
+
+		Brain\Monkey\Functions\expect('wp_verify_nonce')->andReturn(false);
+		Brain\Monkey\Functions\expect('wp_die')->once();
+		$this->enableApiCall(true);
+
+		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
+		$omiseCapabilityMock->shouldNotReceive('retrieve');
+
+		Omise_Capability::retrieve();
+	}
+
 	public function test_retrieve_returns_existing_instance_without_extra_api_call_if_keys_not_changed()
 	{
 		$this->enableApiCall(true);
@@ -104,10 +175,22 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		Omise_Capability::retrieve();
 	}
 
+	public function test_retrieve_returns_null_when_it_should_not_call_api()
+	{
+		$this->enableApiCall(false);
+
+		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
+		$omiseCapabilityMock->shouldNotReceive('retrieve');
+
+		$omiseCapability = Omise_Capability::retrieve();
+
+		$this->assertNull($omiseCapability);
+	}
+
 	public function test_retrieve_returns_null_when_keys_not_set()
 	{
 		$this->enableApiCall(true);
-		$this->mockOmiseSetting([''], ['']);
+		$this->mockOmiseSetting([''], skey: ['']);
 
 		$omiseCapabilityMock = Mockery::mock('alias:OmiseCapability');
 		$omiseCapabilityMock->shouldNotReceive('retrieve');
