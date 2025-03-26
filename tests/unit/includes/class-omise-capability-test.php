@@ -127,6 +127,20 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		$this->assertObjectHasProperty('provider', $paymentMethod);
 	}
 
+	public function test_get_available_payment_methods_returns_all_available_payment_methods_with_tokenization()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$availablePaymentMethods = Omise_Capability::retrieve()->get_available_payment_methods();
+
+		$this->assertIsArray($availablePaymentMethods);
+		// Extra 2 methods from the tokenization method
+		$this->assertCount(47, $availablePaymentMethods);
+		$this->assertContains('card', $availablePaymentMethods);
+		$this->assertContains('googlepay', $availablePaymentMethods);
+		$this->assertContains('applepay', $availablePaymentMethods);
+	}
+
 	public function test_get_fpx_banks_returns_correct_method()
 	{
 		$this->mockCapabilityRetrieve();

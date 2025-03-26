@@ -251,7 +251,6 @@ class Omise_Capability {
 	public function get_available_payment_methods()
 	{
 		$methods = $this->getPaymentMethods();
-		$methods = json_decode(json_encode($methods), true);
 		$token_methods = $this->getTokenizationMethods();
 		return array_merge(array_column($methods, 'name'), $token_methods);
 	}
