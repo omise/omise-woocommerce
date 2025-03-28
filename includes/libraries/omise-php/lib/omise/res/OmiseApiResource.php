@@ -1,6 +1,6 @@
 <?php
 
-define('OMISE_PHP_LIB_VERSION', '2.18.0');
+define('OMISE_PHP_LIB_VERSION', '3.0.0');
 define('OMISE_API_URL', 'https://api.omise.co/');
 define('OMISE_VAULT_URL', 'https://vault.omise.co/');
 
@@ -38,7 +38,12 @@ class OmiseApiResource extends OmiseObject
         $className = get_class($resource);
         if (!isset(self::$instances[$className])) {
             static::$instances[$className] = $resource;
-            static::$httpExecutor = defined('OMISE_HTTP_EXECUTOR') && !empty(OMISE_HTTP_EXECUTOR) ? OMISE_HTTP_EXECUTOR : new OmiseHttpExecutor();
+
+            if (preg_match('/phpunit/', $_SERVER['SCRIPT_NAME']) && getenv('TEST_TYPE') == 'unit') {
+                static::$httpExecutor = OMISE_HTTP_TEST_EXECUTOR;
+            } else {
+                static::$httpExecutor = new OmiseHttpExecutor();
+            }
 
             return static::$instances[$className];
         }
