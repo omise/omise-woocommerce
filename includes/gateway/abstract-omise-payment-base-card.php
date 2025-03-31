@@ -234,7 +234,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 		}
 
 		if ( ! $success ) {
-			return $this->payment_failed(null, __(
+			return $this->payment_failed( null, __(
 				'Note that your payment may have already been processed. Please contact our support team if you have any questions.',
 				'omise'
 			));

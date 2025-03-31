@@ -26,10 +26,6 @@ if (!class_exists('OmisePluginWcOrderNote')) {
         $detail = '<br/><b>Advice:</b> ' . $charge['merchant_advice'];
       }
 
-      if (!empty($charge['missing_3ds_fields'])) {
-        $detail = '<br/><b>Missing 3DS Fields:</b> ' . join($charge['missing_3ds_fields'], ', ');
-      }
-
       return Omise_Charge::get_error_message($charge) . $detail;
     }
   }
