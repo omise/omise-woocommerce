@@ -294,14 +294,14 @@ class Omise_Capability {
 
 	/**
 	 * Retrieves payment method by name
-	 * @return object A first payment method that matched with the given name
+	 * @return object The first payment method that matched with the given name
 	 */
 	private function getPaymentMethodByName($sourceType)
 	{
 		$params = [];
 		$params[] = $this->capability->filterPaymentMethod['exactName']($sourceType);
 		$methods = $this->capability->getPaymentMethods($params);
-		// Only variables hould be passed
+		// Only variables should be passed
 		// https://www.php.net/reset
 		return reset($methods);
 	}
