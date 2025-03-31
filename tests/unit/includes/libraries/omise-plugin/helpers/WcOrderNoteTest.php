@@ -29,7 +29,7 @@ class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup {
   }
 
   public function testGetPaymentFailedNoteWithStringMessage() {
-    $note = OmisePluginHelperWcOrderNote::getPaymentFailedNote('Something went wrong');
+    $note = OmisePluginHelperWcOrderNote::getPaymentFailedNote(null, 'Something went wrong');
 
     $this->assertEquals($note, 'Omise: Payment failed.<br/>Something went wrong');
   }

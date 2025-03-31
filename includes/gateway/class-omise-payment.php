@@ -135,7 +135,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
     /**
      * get pending status
-     * 
+     *
      * This function is crate to get value for pending status,
      * since we cannot mock constant values for unit test.
      */
@@ -257,8 +257,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
     /**
      * check if payment method is support by omise capability api version 2017
-     * 
-     * @param  array of backends source_type 
+     *
+     * @param  array of backends source_type
      *
      * @return bool
      */
@@ -464,13 +464,15 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
     }
 
     /**
+     * @param OmiseCharge|null $charge
      * @param string $reason
      */
-    protected function payment_failed( $reason ) {
+    protected function payment_failed( $charge, $reason = '' ) {
         $message = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
+        $reason = $reason ? $reason : Omise_Charge::get_error_message( $charge );
 
         if ( $this->order() ) {
-            $this->order()->add_order_note( sprintf( __( 'Omise: Payment failed, %s', 'omise' ), $reason ) );
+            $this->order()->add_order_note( OmisePluginHelperWcOrderNote::getPaymentFailedNote( $charge, $reason ) );
             $this->order()->update_status( 'failed' );
         }
 

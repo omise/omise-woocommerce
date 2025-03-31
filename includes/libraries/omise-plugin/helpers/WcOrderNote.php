@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('OmisePluginWcOrderNote')) {
+if (!class_exists('OmisePluginWcOrderNote')) {
   class OmisePluginHelperWcOrderNote
   {
     protected static $allowed_html = [
@@ -7,17 +7,27 @@ if (! class_exists('OmisePluginWcOrderNote')) {
       'b' => [],
     ];
 
-    public static function getPaymentFailedNote($charge_or_msg) {
-      $reason = is_string($charge_or_msg) ? $charge_or_msg : self::getFailureReason($charge_or_msg);
-      $message = sprintf(__( 'Omise: Payment failed.<br/>%s', 'omise' ), $reason);
+    /**
+     * @param OmiseCharge|null $charge
+     * @param string $reason
+     */
+    public static function getPaymentFailedNote($charge, $reason = '')
+    {
+      $reason = $charge ? self::getFailureReason($charge) : $reason;
+      $message = sprintf(__('Omise: Payment failed.<br/>%s', 'omise'), $reason);
 
       return wp_kses($message, self::$allowed_html);
     }
 
-    private static function getFailureReason($charge) {
+    private static function getFailureReason($charge)
+    {
       $detail = '';
       if (!empty($charge['merchant_advice'])) {
-        $detail = '<br/><b>Advice:</b> '. $charge['merchant_advice'];
+        $detail = '<br/><b>Advice:</b> ' . $charge['merchant_advice'];
+      }
+
+      if (!empty($charge['missing_3ds_fields'])) {
+        $detail = '<br/><b>Missing 3DS Fields:</b> ' . join($charge['missing_3ds_fields'], ', ');
       }
 
       return Omise_Charge::get_error_message($charge) . $detail;
