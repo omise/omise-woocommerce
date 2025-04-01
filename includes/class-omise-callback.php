@@ -209,7 +209,7 @@ class Omise_Callback {
 			' (code: ' . $this->charge['failure_code'] . ')'
 			: ' (code: Payment failed)'; // for shopeepay
 
-		$this->order->add_order_note( sprintf( OmisePluginHelperWcOrderNote::getPaymentFailedNote( null, $failure_message )) );
+		$this->order->add_order_note( OmisePluginHelperWcOrderNote::getPaymentFailedNote( null, $failure_message ) );
 		$this->order->update_status( 'failed' );
 		$this->order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
 		$this->order->save();
