@@ -203,7 +203,7 @@ class Omise
 		defined('OMISE_WOOCOMMERCE_PLUGIN_VERSION') || define('OMISE_WOOCOMMERCE_PLUGIN_VERSION', $this->version);
 		defined('OMISE_PUBLIC_KEY') || define('OMISE_PUBLIC_KEY', $this->settings()->public_key());
 		defined('OMISE_SECRET_KEY') || define('OMISE_SECRET_KEY', $this->settings()->secret_key());
-		defined('OMISE_API_VERSION') || define('OMISE_API_VERSION', '2017-11-02');
+		defined('OMISE_API_VERSION') || define('OMISE_API_VERSION', '2019-05-29');
 		defined('OMISE_USER_AGENT_SUFFIX') || define(
 			'OMISE_USER_AGENT_SUFFIX', 
 			sprintf(
@@ -272,7 +272,7 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-ajax-actions.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-callback.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-capabilities.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-capability.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-events.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-localization.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-money.php';

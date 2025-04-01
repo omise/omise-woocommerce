@@ -96,7 +96,7 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
 
     public function test_get_view_data()
     {
-        $capability = Mockery::mock('alias:Omise_Capabilities');
+        $capability = Mockery::mock('alias:Omise_Capability');
         $capability->shouldReceive('retrieve')
             ->andReturn(new class {
                 public function getInstallmentMinLimit() {
@@ -107,7 +107,7 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
                     return true;
                 }
 
-                public function getInstallmentBackends() {
+                public function getInstallmentMethods() {
                     return [];
                 }
             });

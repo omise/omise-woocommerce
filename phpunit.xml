@@ -20,8 +20,11 @@
             <directory suffix=".php">./*</directory>
         </include>
         <exclude>
-            <directory suffix=".php">tests</directory>
-            <directory suffix=".php">vendor</directory>
+            <directory>tests</directory>
+            <directory>vendor</directory>
+            <directory>node_modules</directory>
+            <directory>wp-content</directory>
+            <directory>includes/libraries/omise-php</directory>
         </exclude>
     </coverage>
 	<php>

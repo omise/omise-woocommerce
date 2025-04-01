@@ -1,5 +1,6 @@
 <?php
-define( 'ABSPATH', '' );
+
+define( 'ABSPATH', value: '' );
 
 class Omise_Unit_Test {
 	public static function include_class( $path ): void {
@@ -25,4 +26,8 @@ function __( $text, $domain = 'default' ) {
  */
 function _x( $text, $context, $domain = 'default' ) {
 	return $text;
+}
+
+function load_fixture($name) {
+	return file_get_contents(__DIR__ . "/../fixtures/{$name}.json");
 }

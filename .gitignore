@@ -10,3 +10,4 @@ composer.lock
 .nvmrc
 wp-content
 .vscode
+coverage
