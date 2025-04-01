@@ -20,12 +20,19 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     Monkey\Functions\expect('do_action');
     Monkey\Functions\stubs(
       [
+        'is_admin' => false,
+        'is_checkout',
+        'is_wc_endpoint_url' => false,
         'wp_kses' => null,
-      ]
+      ],
+      true
     );
     $this->mockOmiseSetting('pkey_xxx', 'skey_xxx');
 
-
+    require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/res/obj/OmiseObject.php';
+    require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/res/OmiseApiResource.php';
+    require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
+    require_once __DIR__ . '/../../../../includes/class-omise-capability.php';
     require_once __DIR__ . '/../../../../includes/gateway/traits/sync-order-trait.php';
     require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment.php';
     require_once __DIR__ . '/../../../../includes/class-omise-localization.php';
@@ -40,11 +47,11 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
       {
         $this->wcOrder = \Mockery::mock();
       }
-      public function charge($order_id, $order)
+      public function charge($_order_id, $_order)
       {
         // Do Nothing
       }
-      public function result($order_id, $order, $charge)
+      public function result($_order_id, $_order, $_charge)
       {
         // Do Nothing
       }
@@ -58,6 +65,39 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
         return $this->wcOrder;
       }
     };
+  }
+
+  /**
+   * @dataProvider is_available_data_provider
+   */
+  public function test_is_available_returns_boolean_whether_method_is_supported_from_capability($sourceType, $expected)
+  {
+    $omiseHttpExecutorMock = \Mockery::mock('overload:' . OmiseHttpExecutor::class);
+    $omiseHttpExecutorMock
+      ->shouldReceive('execute')
+      ->once()
+      ->andReturn(load_fixture('omise-capability-get'));
+
+    $this->method = new class ($sourceType) extends Omise_Payment {
+      public function __construct($sourceType)
+      {
+        $this->source_type = $sourceType;
+      }
+      public function charge($_order_id, $_order) {}
+      public function result($_order_id, $_order, $_charge) {}
+    };
+
+    $result = $this->method->is_available();
+
+    $this->assertEquals($expected, $result);
+  }
+
+  public function is_available_data_provider()
+  {
+    return [
+      ['card', true],
+      ['fpx', false],
+    ];
   }
 
   public function test_payment_failed_updates_the_order_and_throws_exception()
@@ -104,6 +144,8 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     $omiseSettingMock = Mockery::mock('alias:' . Omise_Setting::class);
 
     $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
+    $omiseSettingMock->shouldReceive('public_key')->andReturn('pkey_xxx');
+    $omiseSettingMock->shouldReceive('secret_key')->andReturn('skey_xxx');
     $omiseSettingMock->shouldReceive('get_settings')->andReturn([]);
 
     return $omiseSettingMock;

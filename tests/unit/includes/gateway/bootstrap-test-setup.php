@@ -9,6 +9,10 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
  */
 abstract class WC_Payment_Gateway
 {
+    public function is_available()
+    {
+        return true;
+    }
 }
 
 // @runInSeparateProcess
