@@ -2,10 +2,6 @@
 
 require_once __DIR__ . '/../../class-omise-unit-test.php';
 require_once __DIR__ . '/bootstrap-test-setup.php';
-require_once __DIR__ . '/../../../../includes/gateway/traits/sync-order-trait.php';
-require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment.php';
-require_once __DIR__ . '/../../../../includes/class-omise-localization.php';
-require_once __DIR__ . '/../../../../includes/classes/class-omise-charge.php';
 
 use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
@@ -34,6 +30,11 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     );
     $this->mockOmiseSetting('pkey_xxx', 'skey_xxx');
 
+
+    require_once __DIR__ . '/../../../../includes/gateway/traits/sync-order-trait.php';
+    require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment.php';
+    require_once __DIR__ . '/../../../../includes/class-omise-localization.php';
+    require_once __DIR__ . '/../../../../includes/classes/class-omise-charge.php';
     require_once __DIR__ . '/../../../../omise-woocommerce.php';
 
     $this->mockOrderNoteHelper = \Mockery::mock('alias:' . OmisePluginHelperWcOrderNote::class);

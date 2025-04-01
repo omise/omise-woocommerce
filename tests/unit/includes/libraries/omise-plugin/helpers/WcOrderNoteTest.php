@@ -9,10 +9,12 @@ require_once __DIR__ . '/../../../gateway/bootstrap-test-setup.php';
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup {
+class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup
+{
   private $projectRoot = __DIR__ . '/../../../../../..';
 
-  public function setUp(): void {
+  public function setUp(): void
+  {
     parent::setUp();
 
     Monkey\Functions\expect('add_action')->andReturn(null);
@@ -28,16 +30,42 @@ class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup {
 
   }
 
-  public function testGetPaymentFailedNoteWithStringMessage() {
+  public function testGetChargeCreatedNote()
+  {
+    $charge = [
+      'id' => 'chrg_638p9dqptlmwrrtdp8n',
+      'missing_3ds_fields' => [],
+    ];
+
+    $note = OmisePluginHelperWcOrderNote::getChargeCreatedNote($charge);
+
+    $this->assertEquals($note, 'Omise: Charge (ID: chrg_638p9dqptlmwrrtdp8n) has been created');
+  }
+
+  public function testGetChargeCreatedNoteWithMissing3DSFields()
+  {
+    $charge = [
+      'id' => 'chrg_638p9dqptlmwrrtdp8n',
+      'missing_3ds_fields' => ['email', 'phone_number'],
+    ];
+
+    $note = OmisePluginHelperWcOrderNote::getChargeCreatedNote($charge);
+
+    $this->assertEquals($note, 'Omise: Charge (ID: chrg_638p9dqptlmwrrtdp8n) has been created<br/><b>Missing 3DS Fields:</b> email, phone_number');
+  }
+
+  public function testGetPaymentFailedNoteWithStringMessage()
+  {
     $note = OmisePluginHelperWcOrderNote::getPaymentFailedNote(null, 'Something went wrong');
 
     $this->assertEquals($note, 'Omise: Payment failed.<br/>Something went wrong');
   }
 
-  public function testGetPaymentFailedNoteWithCharge() {
+  public function testGetPaymentFailedNoteWithCharge()
+  {
     $charge = [
       'failure_code' => 'insufficient_fund',
-      'failure_message' =>  'insufficient funds in the account or the card has reached the credit limit'
+      'failure_message' => 'insufficient funds in the account or the card has reached the credit limit'
     ];
 
     $note = OmisePluginHelperWcOrderNote::getPaymentFailedNote($charge);
@@ -45,10 +73,11 @@ class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup {
     $this->assertEquals('Omise: Payment failed.<br/>(insufficient_fund) insufficient funds in the account or the card has reached the credit limit', $note);
   }
 
-  public function testGetPaymentFailedNoteWithChargeMerchantAdvice() {
+  public function testGetPaymentFailedNoteWithChargeMerchantAdvice()
+  {
     $charge = [
       'failure_code' => 'insufficient_fund',
-      'failure_message' =>  'insufficient funds in the account or the card has reached the credit limit',
+      'failure_message' => 'insufficient funds in the account or the card has reached the credit limit',
       'merchant_code' => '9003',
       'merchant_advice' => 'Do not retry the transaction with the same card',
     ];

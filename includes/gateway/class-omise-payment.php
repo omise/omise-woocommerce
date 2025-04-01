@@ -288,10 +288,10 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         try {
             $charge = $this->charge( $order_id, $this->order );
         } catch ( Exception $e ) {
-            return $this->payment_failed( $e->getMessage() );
+            return $this->payment_failed( null, $e->getMessage() );
         }
 
-        $this->order->add_order_note( sprintf( __( 'Omise: Charge (ID: %s) has been created', 'omise' ), $charge['id'] ) );
+        $this->order->add_order_note( OmisePluginHelperWcOrderNote::getChargeCreatedNote($charge) );
         $this->set_order_transaction_id( $charge['id'] );
 
         return $this->result( $order_id, $this->order, $charge );
