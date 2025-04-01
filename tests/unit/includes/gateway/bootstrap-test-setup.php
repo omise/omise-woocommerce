@@ -4,6 +4,13 @@ use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
+/**
+ * Mock abstract WooCommerce's gateway
+ */
+abstract class WC_Payment_Gateway
+{
+}
+
 // @runInSeparateProcess
 abstract class Bootstrap_Test_Setup extends TestCase
 {

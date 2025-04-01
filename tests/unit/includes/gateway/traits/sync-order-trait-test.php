@@ -1,15 +1,20 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 
-final class SyncOrderTraitTest extends TestCase
+require_once __DIR__ . '/../../../class-omise-unit-test.php';
+require_once __DIR__ . '/../bootstrap-test-setup.php';
+
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
+final class SyncOrderTraitTest extends Bootstrap_Test_Setup
 {
   public function setUp(): void
   {
     parent::setUp();
 
-    Monkey\setUp();
     Monkey\Functions\expect('add_action')->andReturn(null);
     Monkey\Functions\stubs([
       'wp_kses' => null,
@@ -21,12 +26,6 @@ final class SyncOrderTraitTest extends TestCase
     require_once __DIR__ . '/../../../../../includes/classes/class-omise-charge.php';
     require_once __DIR__ . '/../../../../../includes/class-omise-localization.php';
     require_once __DIR__ . '/../../../../../omise-woocommerce.php';
-  }
-
-  protected function tearDown(): void
-  {
-    Brain\Monkey\tearDown();
-    Mockery::close();
   }
 
   public function testSyncPaymentWithFailedCharge()
@@ -51,7 +50,7 @@ final class SyncOrderTraitTest extends TestCase
 
     // Expectations for failed charge
     $syncOrderTrait->shouldReceive('delete_capture_metadata')->once();
-    $mockOrder->shouldReceive('add_order_note')->with('Omise: Payment failed.<br/>(invalid_charge) invalid charge (manual sync)')->once();
+    $mockOrder->shouldReceive('add_order_note')->with('Omise: Payment failed.<br/><b>Error Description:</b> (invalid_charge) invalid charge (manual sync)')->once();
     $mockOrder->shouldReceive('update_status')->with('failed')->once();
 
     $syncOrderTrait->sync_payment($mockOrder);

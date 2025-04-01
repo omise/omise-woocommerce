@@ -3,12 +3,7 @@
 require_once __DIR__ . '/../../class-omise-unit-test.php';
 require_once __DIR__ . '/bootstrap-test-setup.php';
 
-use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
-
-abstract class WC_Payment_Gateway
-{
-}
 
 /**
  * @runTestsInSeparateProcesses

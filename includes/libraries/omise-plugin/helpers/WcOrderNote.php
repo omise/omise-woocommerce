@@ -28,7 +28,7 @@ if (!class_exists('OmisePluginWcOrderNote')) {
     public static function getPaymentFailedNote($charge, $reason = '')
     {
       $reason = $charge ? Omise_Charge::get_error_message($charge) . self::getMerchantAdvice($charge) : $reason;
-      $message = sprintf(__('Omise: Payment failed.<br/>%s', 'omise'), $reason);
+      $message = sprintf(__('Omise: Payment failed.<br/><b>Error Description:</b> %s', 'omise'), $reason);
 
       return wp_kses($message, self::$allowed_html);
     }

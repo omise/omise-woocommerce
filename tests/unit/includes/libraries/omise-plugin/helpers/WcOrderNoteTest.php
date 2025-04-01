@@ -58,7 +58,7 @@ class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup
   {
     $note = OmisePluginHelperWcOrderNote::getPaymentFailedNote(null, 'Something went wrong');
 
-    $this->assertEquals($note, 'Omise: Payment failed.<br/>Something went wrong');
+    $this->assertEquals($note, 'Omise: Payment failed.<br/><b>Error Description:</b> Something went wrong');
   }
 
   public function testGetPaymentFailedNoteWithCharge()
@@ -70,7 +70,7 @@ class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup
 
     $note = OmisePluginHelperWcOrderNote::getPaymentFailedNote($charge);
 
-    $this->assertEquals('Omise: Payment failed.<br/>(insufficient_fund) insufficient funds in the account or the card has reached the credit limit', $note);
+    $this->assertEquals('Omise: Payment failed.<br/><b>Error Description:</b> (insufficient_fund) insufficient funds in the account or the card has reached the credit limit', $note);
   }
 
   public function testGetPaymentFailedNoteWithChargeMerchantAdvice()
@@ -84,6 +84,6 @@ class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup
 
     $note = OmisePluginHelperWcOrderNote::getPaymentFailedNote($charge);
 
-    $this->assertEquals('Omise: Payment failed.<br/>(insufficient_fund) insufficient funds in the account or the card has reached the credit limit<br/><b>Advice:</b> Do not retry the transaction with the same card', $note);
+    $this->assertEquals('Omise: Payment failed.<br/><b>Error Description:</b> (insufficient_fund) insufficient funds in the account or the card has reached the credit limit<br/><b>Advice:</b> Do not retry the transaction with the same card', $note);
   }
 }
