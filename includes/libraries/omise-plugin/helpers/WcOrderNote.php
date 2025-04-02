@@ -2,7 +2,7 @@
 if (!class_exists('OmisePluginWcOrderNote')) {
   class OmisePluginHelperWcOrderNote
   {
-    protected static $allowed_html = [
+    protected static $allowedHtml = [
       'br' => [],
       'b' => [],
     ];
@@ -12,12 +12,11 @@ if (!class_exists('OmisePluginWcOrderNote')) {
      */
     public static function getChargeCreatedNote($charge)
     {
-      return wp_kses(
+      return self::sanitize(
         sprintf(
           __('Omise: Charge (ID: %s) has been created', 'omise'),
           $charge['id']
-        ) . self::getMissing3dsFields($charge),
-        self::$allowed_html
+        ) . self::getMissing3dsFields($charge)
       );
     }
 
@@ -30,7 +29,12 @@ if (!class_exists('OmisePluginWcOrderNote')) {
       $reason = $charge ? Omise_Charge::get_error_message($charge) . self::getMerchantAdvice($charge) : $reason;
       $message = sprintf(__('Omise: Payment failed.<br/><b>Error Description:</b> %s', 'omise'), $reason);
 
-      return wp_kses($message, self::$allowed_html);
+      return self::sanitize($message);
+    }
+
+    private static function sanitize($message)
+    {
+      return wp_kses($message, self::$allowedHtml);
     }
 
     private static function getMerchantAdvice($charge)
