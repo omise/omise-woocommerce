@@ -21,11 +21,10 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     Monkey\Functions\stubs(
       [
         'is_admin' => false,
-        'is_checkout',
+        'is_checkout' => true,
         'is_wc_endpoint_url' => false,
         'wp_kses' => null,
-      ],
-      true
+      ]
     );
     $this->mockOmiseSetting('pkey_xxx', 'skey_xxx');
 
@@ -72,13 +71,14 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
    */
   public function test_is_available_returns_boolean_whether_method_is_supported_from_capability($sourceType, $expected)
   {
-    $omiseHttpExecutorMock = \Mockery::mock('overload:' . OmiseHttpExecutor::class);
-    $omiseHttpExecutorMock
+    WC_Payment_Gateway::$is_available = true;
+
+    Mockery::mock('overload:' . OmiseHttpExecutor::class)
       ->shouldReceive('execute')
       ->once()
       ->andReturn(load_fixture('omise-capability-get'));
 
-    $this->method = new class ($sourceType) extends Omise_Payment {
+    $method = new class ($sourceType) extends Omise_Payment {
       public function __construct($sourceType)
       {
         $this->source_type = $sourceType;
@@ -87,7 +87,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
       public function result($_order_id, $_order, $_charge) {}
     };
 
-    $result = $this->method->is_available();
+    $result = $method->is_available();
 
     $this->assertEquals($expected, $result);
   }
@@ -98,6 +98,44 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
       ['card', true],
       ['fpx', false],
     ];
+  }
+
+  public function test_is_available_returns_false_if_gateway_is_not_enabled()
+  {
+    WC_Payment_Gateway::$is_available = false;
+
+    $method = new class extends Omise_Payment {
+      public function __construct() { $this->source_type = 'card'; }
+      public function charge($_order_id, $_order) {}
+      public function result($_order_id, $_order, $_charge) {}
+    };
+
+    $result = $method->is_available();
+
+    $this->assertFalse($result);
+  }
+
+  public function test_is_available_returns_false_if_capability_returns_null()
+  {
+    WC_Payment_Gateway::$is_available = true;
+
+    Monkey\Functions\stubs(
+      [
+        'is_admin' => false,
+        'is_checkout' => false,
+        'is_wc_endpoint_url' => false,
+      ],
+    );
+
+    $method = new class extends Omise_Payment {
+      public function __construct() { $this->source_type = 'card'; }
+      public function charge($_order_id, $_order) {}
+      public function result($_order_id, $_order, $_charge) {}
+    };
+
+    $result = $method->is_available();
+
+    $this->assertFalse($result);
   }
 
   public function test_payment_failed_updates_the_order_and_throws_exception()
@@ -144,8 +182,8 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     $omiseSettingMock = Mockery::mock('alias:' . Omise_Setting::class);
 
     $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
-    $omiseSettingMock->shouldReceive('public_key')->andReturn('pkey_xxx');
-    $omiseSettingMock->shouldReceive('secret_key')->andReturn('skey_xxx');
+    $omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
+    $omiseSettingMock->shouldReceive('secret_key')->andReturn($skey);
     $omiseSettingMock->shouldReceive('get_settings')->andReturn([]);
 
     return $omiseSettingMock;

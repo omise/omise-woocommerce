@@ -9,13 +9,14 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
  */
 abstract class WC_Payment_Gateway
 {
+    public static $is_available = true;
+
     public function is_available()
     {
-        return true;
+        return self::$is_available;
     }
 }
 
-// @runInSeparateProcess
 abstract class Bootstrap_Test_Setup extends TestCase
 {
     // Adds Mockery expectations to the PHPUnit assertions count.
