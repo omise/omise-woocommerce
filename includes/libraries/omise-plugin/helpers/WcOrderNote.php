@@ -48,7 +48,7 @@ if (!class_exists('OmisePluginWcOrderNote')) {
 
     private static function getMissing3dsFields($charge)
     {
-      if (empty($charge['missing_3ds_fields'])) {
+      if (empty($charge['missing_3ds_fields']) || !is_array($charge['missing_3ds_fields'])) {
         return '';
       }
 

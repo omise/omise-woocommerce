@@ -23,8 +23,6 @@ class Omise_Callback_Test extends Bootstrap_Test_Setup
     require_once __DIR__ . '/../../../includes/class-omise-callback.php';
     require_once __DIR__ . '/../../../includes/class-omise-localization.php';
     require_once __DIR__ . '/../../../omise-woocommerce.php';
-
-    // $this->mockOrderNoteHelper = \Mockery::mock('alias:' . OmisePluginHelperWcOrderNote::class);
   }
 
   public function testExecutePaymentFailedOrderUpdatesOrderAndShowsNotice()

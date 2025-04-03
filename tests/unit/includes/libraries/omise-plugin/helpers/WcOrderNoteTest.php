@@ -27,7 +27,6 @@ class OmisePluginHelperWcOrderNoteTest extends Bootstrap_Test_Setup
     require_once $this->projectRoot . '/includes/classes/class-omise-charge.php';
     require_once $this->projectRoot . '/omise-woocommerce.php';
     require_once $this->projectRoot . '/includes/class-omise-localization.php';
-
   }
 
   public function testGetChargeCreatedNote()
