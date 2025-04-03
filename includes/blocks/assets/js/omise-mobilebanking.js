@@ -50,10 +50,10 @@ const MobileBankingPaymentMethod = (props) => {
                         <ul className="omise-banks-list">
                         {
                             backends.map((backend, i) => (
-                                <li key={backend['_id'] + i} className="item mobile-banking">
+                                <li key={backend['name'] + i} className="item mobile-banking">
                                     <div>
-                                        <input id={backend['_id']} type="radio" name="omise-offsite" value={backend['_id']} onChange={onMobileBankSelected}/>
-                                        <label htmlFor={backend['_id']}>
+                                        <input id={backend['name']} type="radio" name="omise-offsite" value={backend['name']} onChange={onMobileBankSelected}/>
+                                        <label htmlFor={backend['name']}>
                                             <div className={`mobile-banking-logo ${backend['provider_logo']}`}></div>
                                             <div className="mobile-banking-label">
                                                 <span className="title">{backend['provider_name']}</span><br/>
