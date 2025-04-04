@@ -4,7 +4,19 @@ use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-// @runInSeparateProcess
+/**
+ * Mock abstract WooCommerce's gateway
+ */
+abstract class WC_Payment_Gateway
+{
+    public static $is_available = true;
+
+    public function is_available()
+    {
+        return self::$is_available;
+    }
+}
+
 abstract class Bootstrap_Test_Setup extends TestCase
 {
     // Adds Mockery expectations to the PHPUnit assertions count.

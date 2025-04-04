@@ -99,7 +99,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 
 	/**
 	 * Saving card
-	 * 
+	 *
 	 * @param string $omise_customer_id
 	 * @param string $token
 	 * @param string $order_id
@@ -165,7 +165,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	 */
 	public function result( $order_id, $order, $charge ) {
 		if ( Omise_Charge::is_failed( $charge ) ) {
-			return $this->payment_failed( Omise_Charge::get_error_message( $charge ) );
+			return $this->payment_failed( $charge );
 		}
 
 		// If 3-D Secure feature is enabled, redirecting user out to a 3rd-party credit card authorization page.
@@ -229,12 +229,12 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 				if ( ! $success ) {
 					$success = Omise_Charge::is_authorized( $charge );
 				}
-					
+
 				break;
 		}
 
 		if ( ! $success ) {
-			return $this->payment_failed(__(
+			return $this->payment_failed( null, __(
 				'Note that your payment may have already been processed. Please contact our support team if you have any questions.',
 				'omise'
 			));
