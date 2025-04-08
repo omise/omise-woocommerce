@@ -584,9 +584,9 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             return null;
         }
 
-        $index = array_search($this->source_type, array_column($this->payment_settings['backends'], '_id'));
+        $index = array_search($this->source_type, array_column($this->payment_settings['backends'], 'name'));
 
-        if (!$index) {
+        if ($index === false) {
             return null;
         }
 

@@ -12,12 +12,14 @@ use Brain\Monkey;
 class Omise_Payment_Test extends Bootstrap_Test_Setup
 {
   protected $omisePayment;
+  protected $mockOmiseSetting;
   protected $mockOrderNoteHelper;
 
   protected function setUp(): void
   {
     Monkey\Functions\expect('add_action');
     Monkey\Functions\expect('do_action');
+    Monkey\Functions\expect('add_filter');
     Monkey\Functions\stubs(
       [
         'is_admin' => false,
@@ -26,7 +28,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
         'wp_kses' => null,
       ]
     );
-    $this->mockOmiseSetting('pkey_xxx', 'skey_xxx');
+    $this->mockOmiseSetting = $this->mockOmiseSetting('pkey_xxx', 'skey_xxx');
 
     require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/res/obj/OmiseObject.php';
     require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/res/OmiseApiResource.php';
@@ -44,6 +46,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
 
       public function __construct()
       {
+        parent::__construct();
         $this->wcOrder = \Mockery::mock();
       }
       public function charge($_order_id, $_order)
@@ -78,16 +81,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
       ->once()
       ->andReturn(load_fixture('omise-capability-get'));
 
-    $method = new class ($sourceType) extends Omise_Payment {
-      public function __construct($sourceType)
-      {
-        $this->source_type = $sourceType;
-      }
-      public function charge($_order_id, $_order) {}
-      public function result($_order_id, $_order, $_charge) {}
-    };
-
-    $result = $method->is_available();
+    $result = ($this->omisePaymentImpl($sourceType))->is_available();
 
     $this->assertEquals($expected, $result);
   }
@@ -104,13 +98,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
   {
     WC_Payment_Gateway::$is_available = false;
 
-    $method = new class extends Omise_Payment {
-      public function __construct() { $this->source_type = 'card'; }
-      public function charge($_order_id, $_order) {}
-      public function result($_order_id, $_order, $_charge) {}
-    };
-
-    $result = $method->is_available();
+    $result = ($this->omisePaymentImpl('card'))->is_available();
 
     $this->assertFalse($result);
   }
@@ -127,13 +115,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
       ],
     );
 
-    $method = new class extends Omise_Payment {
-      public function __construct() { $this->source_type = 'card'; }
-      public function charge($_order_id, $_order) {}
-      public function result($_order_id, $_order, $_charge) {}
-    };
-
-    $result = $method->is_available();
+    $result = ($this->omisePaymentImpl('card'))->is_available();
 
     $this->assertFalse($result);
   }
@@ -177,6 +159,50 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     $this->omisePayment->test_payment_failed($charge);
   }
 
+  public function test_get_provider_returns_null_if_no_payment_method_enabled_in_settings()
+  {
+    $this->mockOmiseSetting->shouldReceive('get_settings')->andReturn([
+      'backends' => null,
+    ]);
+
+    $provider = ($this->omisePaymentImpl('touch_n_go'))->get_provider();
+
+    $this->assertNull($provider);
+  }
+
+  public function test_get_provider_returns_null_if_the_source_type_is_not_enabled_in_settings()
+  {
+    $this->mockOmiseSetting->shouldReceive('get_settings')->andReturn([
+      'backends' => [
+        (object) [
+          'object' => 'payment_method',
+          'name' => 'card',
+        ]
+      ],
+    ]);
+
+    $provider = ($this->omisePaymentImpl('touch_n_go'))->get_provider();
+
+    $this->assertNull($provider);
+  }
+
+  public function test_get_provider_returns_the_payment_method_provider()
+  {
+    $this->mockOmiseSetting->shouldReceive('get_settings')->andReturn([
+      'backends' => [
+        (object) [
+          'object' => 'payment_method',
+          'name' => 'touch_n_go',
+          'provider' => 'Alipay_plus'
+        ]
+      ],
+    ]);
+
+    $provider = ($this->omisePaymentImpl('touch_n_go'))->get_provider();
+
+    $this->assertEquals('Alipay_plus', $provider);
+  }
+
   private function mockOmiseSetting($pkey, $skey)
   {
     $omiseSettingMock = Mockery::mock('alias:' . Omise_Setting::class);
@@ -184,8 +210,27 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
     $omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
     $omiseSettingMock->shouldReceive('secret_key')->andReturn($skey);
-    $omiseSettingMock->shouldReceive('get_settings')->andReturn([]);
+    $omiseSettingMock->shouldReceive('get_settings')->andReturn([])->byDefault();
 
     return $omiseSettingMock;
+  }
+
+  private function omisePaymentImpl($sourceType)
+  {
+    return new class ($sourceType) extends Omise_Payment {
+      public function __construct($sourceType)
+      {
+        parent::__construct();
+        $this->source_type = $sourceType;
+      }
+      public function charge($_order_id, $_order)
+      {
+        // Do Nothing
+      }
+      public function result($_order_id, $_order, $_charge)
+      {
+        // Do Nothing
+      }
+    };
   }
 }
