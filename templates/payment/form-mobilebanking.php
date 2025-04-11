@@ -4,14 +4,14 @@
 			<?php foreach ( $viewData['mobile_banking_backends'] as $backend ) : ?>
 				<li class="item mobile-banking">
 					<div>
-						<input id="<?php echo $backend->_id; ?>" type="radio" name="omise-offsite" value="<?php echo $backend->_id; ?>" />
-						<label for="<?php echo $backend->_id; ?>">
+						<input id="<?php echo $backend->name; ?>" type="radio" name="omise-offsite" value="<?php echo $backend->name; ?>" />
+						<label for="<?php echo $backend->name; ?>">
 							<div class="mobile-banking-logo <?php echo $backend->provider_logo; ?>"></div>
 							<div class="mobile-banking-label">
 								<span class="title"><?php echo $backend->provider_name; ?></span><br/>
 							</div>
 						</label>
-					</div>	
+					</div>
 				</li>
 			<?php endforeach; ?>
 		</ul>
