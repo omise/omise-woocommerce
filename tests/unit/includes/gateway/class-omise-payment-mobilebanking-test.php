@@ -55,8 +55,6 @@ class Omise_Payment_Mobilebanking_Test extends Omise_Offsite_Test
         $this->assertNotFalse($optionList->findOneOrFalse('input[value=mobile_banking_kbank]'));
         $this->assertNotFalse($optionList->findOneOrFalse('input[value=mobile_banking_ktb]'));
         $this->assertNotFalse($optionList->findOneOrFalse('input[value=mobile_banking_scb]'));
-
-        $this->assertEquals('t', 't');
     }
 
     public function testCharge()
