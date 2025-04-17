@@ -391,7 +391,7 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		];
 	}
 
-	private function mockOmiseSetting($pkey, $skey)
+	public function mockOmiseSetting($pkey, $skey)
 	{
 		$omiseSettingMock = Mockery::mock('alias:Omise_Setting');
 
@@ -404,38 +404,6 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 
 	private function mockCapabilityRetrieve()
 	{
-		$this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
-		$this->enableApiCall(true);
-
-		$omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
-		$omiseHttpExecutorMock
-			->shouldReceive('execute')
-			->once()
-			->andReturn(load_fixture('omise-capability-get'));
-	}
-
-	private function mockOmiseHttpExecutor()
-	{
-		require_once __DIR__ . '/../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
-
-		return Mockery::mock('overload:' . OmiseHttpExecutor::class);
-	}
-
-	/**
-	 * Allow test to call the APIs
-	 * @param bool $isEnabled
-	 * @return void
-	 */
-	private function enableApiCall($isEnabled)
-	{
-		if (!$isEnabled) {
-			Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
-			Brain\Monkey\Functions\expect('is_checkout')->andReturn(false);
-			Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
-		} else {
-			Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
-			Brain\Monkey\Functions\expect('is_checkout')->andReturn(true);
-			Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
-		}
+		$this->mockApiCall('omise-capability-get');
 	}
 }

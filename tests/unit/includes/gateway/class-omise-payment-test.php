@@ -203,13 +203,9 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     $this->assertEquals('Alipay_plus', $provider);
   }
 
-  private function mockOmiseSetting($pkey, $skey)
+  protected function mockOmiseSetting($pkey, $skey)
   {
-    $omiseSettingMock = Mockery::mock('alias:' . Omise_Setting::class);
-
-    $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
-    $omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
-    $omiseSettingMock->shouldReceive('secret_key')->andReturn($skey);
+    $omiseSettingMock = parent::mockOmiseSetting($pkey, $skey);
     $omiseSettingMock->shouldReceive('get_settings')->andReturn([])->byDefault();
 
     return $omiseSettingMock;

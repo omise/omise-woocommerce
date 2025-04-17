@@ -7,7 +7,8 @@
         "phpunit/phpunit": "^5.7 || ^9.5",
         "mockery/mockery": "^1.6",
         "brain/monkey": "^2.6",
-        "woocommerce/woocommerce-blocks": "^11.7"
+        "woocommerce/woocommerce-blocks": "^11.7",
+        "voku/simple_html_dom": "^4.8"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --testdox --colors",
