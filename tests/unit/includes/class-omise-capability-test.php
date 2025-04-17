@@ -391,7 +391,7 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		];
 	}
 
-	public function mockOmiseSetting($pkey, $skey)
+	protected function mockOmiseSetting($pkey, $skey)
 	{
 		$omiseSettingMock = Mockery::mock('alias:Omise_Setting');
 

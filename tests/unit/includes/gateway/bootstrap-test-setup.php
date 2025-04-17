@@ -107,46 +107,46 @@ abstract class Bootstrap_Test_Setup extends TestCase
     }
 
     protected function mockOmiseHttpExecutor()
-	{
-		require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
+    {
+        require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
 
-		return Mockery::mock('overload:' . OmiseHttpExecutor::class);
-	}
+        return Mockery::mock('overload:' . OmiseHttpExecutor::class);
+    }
 
     protected function mockOmiseSetting($pkey, $skey)
-	{
-		$omiseSettingMock = Mockery::mock('alias:Omise_Setting');
+    {
+        $omiseSettingMock = Mockery::mock('alias:Omise_Setting');
 
-		$omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
-		$omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
-		$omiseSettingMock->shouldReceive('secret_key')->andReturn($skey);
+        $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
+        $omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
+        $omiseSettingMock->shouldReceive('secret_key')->andReturn($skey);
 
-		return $omiseSettingMock;
-	}
+        return $omiseSettingMock;
+    }
 
-	protected function mockApiCall($fixture)
-	{
-		$this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
-		$this->enableApiCall(true);
+    protected function mockApiCall($fixture)
+    {
+        $this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
+        $this->enableApiCall(true);
 
-		$omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
-		$omiseHttpExecutorMock
-			->shouldReceive('execute')
-			->once()
-			->andReturn(load_fixture($fixture));
-	}
+        $omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
+        $omiseHttpExecutorMock
+            ->shouldReceive('execute')
+            ->once()
+            ->andReturn(load_fixture($fixture));
+    }
 
     protected function enableApiCall($isEnabled)
-	{
-		if (!$isEnabled) {
-			Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
-			Brain\Monkey\Functions\expect('is_checkout')->andReturn(false);
-			Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
-		} else {
-			Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
-			Brain\Monkey\Functions\expect('is_checkout')->andReturn(true);
-			Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
-		}
-	}
+    {
+        if (!$isEnabled) {
+            Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
+            Brain\Monkey\Functions\expect('is_checkout')->andReturn(false);
+            Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
+        } else {
+            Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
+            Brain\Monkey\Functions\expect('is_checkout')->andReturn(true);
+            Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
+        }
+    }
 }
 
