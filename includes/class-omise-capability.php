@@ -99,8 +99,9 @@ class Omise_Capability {
 		}
 
 		$ajaxActions = ['update_order_review', 'checkout'];
-		if (wp_doing_ajax() && in_array($_GET['wc-ajax'], $ajaxActions)) {
-			return true;
+		if (wp_doing_ajax()) {
+			$action = isset($_GET['wc-ajax']) ? $_GET['wc-ajax'] : '';
+			return in_array($action, $ajaxActions);
 		}
 
 		$path = self::getRequestPath();
