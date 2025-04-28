@@ -97,27 +97,17 @@ class Omise_Capability {
 		if (!$wp) {
 			return false;
 		}
+
 		$ajaxActions = ['update_order_review', 'checkout'];
 		if (wp_doing_ajax() && in_array($_GET['wc-ajax'], $ajaxActions)) {
 			return true;
 		}
 
+		$path = self::getRequestPath();
 		$endpoints = ['checkout', 'batch', 'cart', 'cart/select-shipping-rate'];
 
 		foreach($endpoints as $endpoint) {
-			if (trim($wp->request) !== '') {
-				$len = strlen($wp->request);
-				if (strpos($wp->request, $endpoint) === $len - strlen($endpoint)) {
-					return true;
-				}
-			} else {
-				$request_uri = $_SERVER['REQUEST_URI'];
-				$home_url = home_url();
-
-				$request_uri = strtok($request_uri, '?');
-				$home_url_path = rtrim(parse_url($home_url, PHP_URL_PATH), '/');
-				$path = trim(str_replace($home_url_path, '', $request_uri), '/');
-
+			if ($path !== '') {
 				$len = strlen($path);
 				if (strpos($path, $endpoint) === $len - strlen($endpoint)) {
 					return true;
@@ -134,6 +124,28 @@ class Omise_Capability {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get current request path
+	 * It could be retrieve from `$wp->request`.
+	 * In case if it returns nothing, extract path from `$_SERVER['REQUEST_URI']` instead.
+	 *
+	 * @return string returns current path, otherwise empty string is returned if it can't be resolved.
+	 */
+	private static function getRequestPath()
+	{
+		global $wp;
+		$path = $wp ? trim($wp->request) : '';
+
+		if (empty($path)) {
+			$serverRequestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+			if (is_string($serverRequestPath)) {
+				$path = trim($serverRequestPath, '/');
+			}
+		}
+
+		return $path;
 	}
 
 	/**
