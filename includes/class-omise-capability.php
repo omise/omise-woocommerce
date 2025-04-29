@@ -132,8 +132,8 @@ class Omise_Capability {
 
 	/**
 	 * Get current request path
-	 * It could be retrieve from `$wp->request`.
-	 * In case if it returns nothing, extract path from `$_SERVER['REQUEST_URI']` instead.
+	 * The current path can be retrieved from `$wp->request`.
+	 * In case if it returns nothing, extract the path from `$_SERVER['REQUEST_URI']` instead.
 	 *
 	 * @return string returns current path, otherwise empty string is returned if it can't be resolved.
 	 */
