@@ -98,13 +98,16 @@ class Omise_Capability {
 			return false;
 		}
 
+		/**
+		 * Check Ajax actions to handle the capability call on shortcode component.
+		 */
 		$ajaxActions = ['update_order_review', 'checkout'];
 		if (wp_doing_ajax()) {
 			$action = isset($_GET['wc-ajax']) ? $_GET['wc-ajax'] : '';
 			return in_array($action, $ajaxActions);
 		}
 
-		$path = self::getRequestPath();
+		$path = self::getRequestPath($wp);
 		$endpoints = ['checkout', 'batch', 'cart', 'cart/select-shipping-rate'];
 
 		foreach($endpoints as $endpoint) {
@@ -134,13 +137,13 @@ class Omise_Capability {
 	 *
 	 * @return string returns current path, otherwise empty string is returned if it can't be resolved.
 	 */
-	private static function getRequestPath()
+	private static function getRequestPath($wp)
 	{
-		global $wp;
-		$path = $wp ? trim($wp->request) : '';
+		$path = trim($wp->request);
 
 		if (empty($path)) {
 			$serverRequestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
 			if (is_string($serverRequestPath)) {
 				$path = trim($serverRequestPath, '/');
 			}
