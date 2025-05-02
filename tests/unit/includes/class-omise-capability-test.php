@@ -352,10 +352,10 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 	}
 
 	/**
-	 * @dataProvider ajax_call_to_store_api_provider
+	 * @dataProvider request_to_store_api_provider
 	 * @covers Omise_Capability
 	 */
-	public function test_ajax_call_to_store_api_calls_omise_capability_api($request, $query_vars, $server_request_uri, $expected)
+	public function test_request_to_store_api_calls_omise_capability_api($request, $query_vars, $server_request_uri, $expected)
 	{
 		if ($request || $query_vars || $server_request_uri) {
 			$wp = new stdClass();
@@ -363,8 +363,7 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 			$wp->query_vars = $query_vars;
 			$GLOBALS['wp'] = $wp;
 		}
-		Brain\Monkey\Functions\expect('home_url')
-			->andReturn('/');
+
 		Brain\Monkey\Functions\expect('wp_doing_ajax')
 			->andReturn(false);
 
@@ -378,7 +377,7 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		$this->assertEquals($expected, $result);
 	}
 
-	public function ajax_call_to_store_api_provider()
+	public function request_to_store_api_provider()
 	{
 		return [
 			[null, null, null, false], // empty to test empty wp
@@ -388,6 +387,35 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 			['', '', '/other/checkout', true],
 			['', '', '/checkout/other', false],
 			['', '', '/checkout?ewe=323', true],
+		];
+	}
+
+	/**
+	 * @dataProvider ajax_call_to_store_api_provider
+	 */
+	public function test_ajax_call_to_store_api_calls_omise_capability_api($query_vars, $expected)
+	{
+		$wp = new stdClass();
+		$GLOBALS['wp'] = $wp;
+		foreach ($query_vars as $key => $value) {
+			$_GET[$key] = $value;
+		}
+
+		Brain\Monkey\Functions\expect('wp_doing_ajax')
+			->andReturn(true);
+
+		$result = Omise_Capability::isFromCheckoutPage();
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public function ajax_call_to_store_api_provider()
+	{
+		return [
+			[['wc-ajax' => 'update_order_review'], true],
+			[['wc-ajax' => 'checkout'], true],
+			[['wc-ajax' => 'remove_from_cart'], false],
+			[[], false],
 		];
 	}
 
