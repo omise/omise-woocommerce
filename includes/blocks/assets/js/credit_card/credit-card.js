@@ -4,7 +4,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { SavedCard } from './saved-cards';
 
 const CreditCardPaymentMethod = (props) => {
-    const { settings } = props;
+  const { settings } = props;
 	const { existing_cards, description } = settings;
 	const el = useRef(null);
 	const saveCardRef = useRef(false);
@@ -21,7 +21,7 @@ const CreditCardPaymentMethod = (props) => {
 				element: el.current,
 				publicKey: settings.public_key,
 				hideRememberCard: !settings.user_logged_in,
-				locale: settings.lcoale,
+				locale: settings.locale,
 				theme: settings.card_form_theme ?? 'light',
 				design: settings.form_design,
 				brandIcons: settings.card_brand_icons,
