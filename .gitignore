@@ -1,13 +1,21 @@
+# IDEs
 .buildpath
 .project
 .settings/
 .DS_Store
-node_modules/
 .idea
+.vscode
+
+# Dependencies
+node_modules/
 vendor
-.phpunit.result.cache
 composer.lock
 .nvmrc
 wp-content
-.vscode
+
+# Tests
+.phpunit.result.cache
 coverage
+
+# Block's hot reload module build files
+includes/blocks/assets/js/build/**/*.hot-update.*
