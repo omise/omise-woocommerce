@@ -13,7 +13,7 @@ const CreditCardPaymentMethod = (props) => {
 	const cardFormErrors = useRef(null);
 	const [hideCardForm, setHideCardForm] = useState(existing_cards && existing_cards.length > 0);
 	const {eventRegistration, emitResponse} = props;
-    const {onPaymentSetup, onCheckoutValidation} = eventRegistration;
+  const {onPaymentSetup, onCheckoutValidation} = eventRegistration;
 
 	useEffect(() => {
 		if (!hideCardForm) {
