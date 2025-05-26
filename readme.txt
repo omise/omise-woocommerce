@@ -2,7 +2,7 @@
 Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
-Tested up to: 6.6.2
+Tested up to: 6.8.1
 Stable tag: 6.1.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -251,12 +251,12 @@ From there:
 #### 👾 Bug Fixes
 - Fixed issue of page broken when activate plugin version 4.23.0 (PR [#293](https://github.com/omise/omise-woocommerce/pull/293))
 
-= 4.23.0 = 
+= 4.23.0 =
 
 #### 🚀 Enhancements
 - Added Boost, DuitNow QR, DuitNow Online Banking/Wallets, Maybank QRPay and ShopeePay payment methods. Update Touch 'n Go to support non Alipay+. (PR [#287](https://github.com/omise/omise-woocommerce/pull/287))
 
-= 4.22.0 = 
+= 4.22.0 =
 
 #### 🚀 Enhancements
 - Allow GrabPay payment in Thailand (PR [#282](https://github.com/omise/omise-woocommerce/pull/282))
