@@ -41,7 +41,7 @@ class Omise
 	 */
 	protected static $can_initiate = false;
 
-	CONST OMISE_JS_LINK = 'https://cdn.omise.co/omise.js';
+	CONST OMISE_JS_LINK = 'https://cdn.staging-omise.co/omise.js';
 
 	/**
 	 * @since  3.0
@@ -61,8 +61,8 @@ class Omise
 	public function enable_hpos() {
 		if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-				'custom_order_tables', 
-				__FILE__, 
+				'custom_order_tables',
+				__FILE__,
 				true
 			);
 
@@ -79,19 +79,12 @@ class Omise
 	 */
 	public function omise_admin_notice()
 	{
-		error_log('init admin notice');
 		$screen = get_current_screen();
-		if (strpos($screen->id, 'omise')) {
-			$messages = [
-				['warning', __('<strong>Omise:</strong> Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection.', 'omise')],
-				['warning', __('<strong>🔔 IMPORTANT:</strong> Our plugin now fully supports the WooCommerce Blocks! We will be discontinuing support for the older WooCommerce version (Shortcodes) in future updates. To ensure continued functionality, better security, and a seamless checkout experience, please switch to the WooCommerce Blocks. Need help? Contact <a href="mailto:support@omise.co">support@omise.co</a>.', 'omise')],
-			];
 
-			$notices = array_map(function ($message) {
-				return "<div class='notice notice-$message[0] is-dismissible'><p>$message[1]</p></div>";
-			}, $messages);
+		if ($screen && strpos($screen->id, 'omise')) {
+			$message = __('<strong>🔔 IMPORTANT:</strong> Our plugin now fully supports the WooCommerce Blocks! We will be discontinuing support for the older WooCommerce version (Shortcodes) in future updates. To ensure continued functionality, better security, and a seamless checkout experience, please switch to the WooCommerce Blocks. Need help? Contact <a href="mailto:support@omise.co">support@omise.co</a>.', 'omise');
 
-			echo join('', $notices);
+			echo "<div class='notice notice-warning is-dismissible'><p>$message</p></div>";
 		}
 	}
 
@@ -214,11 +207,11 @@ class Omise
 		defined('OMISE_SECRET_KEY') || define('OMISE_SECRET_KEY', $this->settings()->secret_key());
 		defined('OMISE_API_VERSION') || define('OMISE_API_VERSION', '2019-05-29');
 		defined('OMISE_USER_AGENT_SUFFIX') || define(
-			'OMISE_USER_AGENT_SUFFIX', 
+			'OMISE_USER_AGENT_SUFFIX',
 			sprintf(
-				'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', 
-				OMISE_WOOCOMMERCE_PLUGIN_VERSION, 
-				$wp_version, 
+				'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s',
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				$wp_version,
 				WC()->version
 			)
 		);

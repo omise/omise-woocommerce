@@ -51,4 +51,39 @@ class Omise_Test extends TestCase
 		$this->model->enable_hpos();
 		$this->assertTrue(class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class));
 	}
+
+	public function test_omise_admin_notice_outputs_notice_element_on_omise_screen()
+	{
+		Monkey\Functions\stubs(
+			[
+				'get_current_screen' => ((object) [
+					'id' => 'toplevel_page_omise',
+				]),
+			]
+		);
+
+		ob_start();
+		$this->model->omise_admin_notice();
+		$output = ob_get_clean();
+
+		$this->assertMatchesRegularExpression('/<div class=\'notice notice-warning is-dismissible\'>.*<\/div>/', $output);
+		$this->assertMatchesRegularExpression('/Our plugin now fully supports the WooCommerce Blocks!/', $output);
+	}
+
+	public function test_omise_admin_notice_does_not_output_anything_on_non_omise_screen()
+	{
+		Monkey\Functions\stubs(
+			[
+				'get_current_screen' => ((object) [
+					'id' => 'dashboard',
+				]),
+			]
+		);
+
+		ob_start();
+		$this->model->omise_admin_notice();
+		$output = ob_get_clean();
+
+		$this->assertEmpty($output);
+	}
 }
