@@ -81,7 +81,7 @@ class Omise
 	{
 		$screen = get_current_screen();
 
-		if ($screen && strpos($screen->id, 'omise')) {
+		if ($screen && strpos($screen->id, 'omise') !== false) {
 			$message = __('<strong>🔔 IMPORTANT:</strong> Our plugin now fully supports the WooCommerce Blocks! We will be discontinuing support for the older WooCommerce version (Shortcodes) in future updates. To ensure continued functionality, better security, and a seamless checkout experience, please switch to the WooCommerce Blocks. Need help? Contact <a href="mailto:support@omise.co">support@omise.co</a>.', 'omise');
 
 			echo "<div class='notice notice-warning is-dismissible'><p>$message</p></div>";
