@@ -61,8 +61,8 @@ class Omise
 	public function enable_hpos() {
 		if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
 			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-				'custom_order_tables', 
-				__FILE__, 
+				'custom_order_tables',
+				__FILE__,
 				true
 			);
 
@@ -75,14 +75,16 @@ class Omise
 	}
 
 	/**
-	 * Notice for users informing about embedded form
+	 * Notice for plugin users
 	 */
-	public function embedded_form_notice()
+	public function omise_admin_notice()
 	{
 		$screen = get_current_screen();
-		if (strpos($screen->id, 'omise')) {
-			$translation = __('Critical plugin update released: Now compatible with WooCommerce block, and enforces mandatory secure form checkout. Upgrade immediately and re-customize your credit card form to ensure compliance and enhanced customer data protection.', 'omise');
-			echo "<div class='notice notice-warning is-dismissible'><p><strong>Omise:</strong> $translation</p></div>";
+
+		if ($screen && strpos($screen->id, 'omise') !== false) {
+			$message = __('<strong>🔔 IMPORTANT:</strong> Our plugin now fully supports the WooCommerce Blocks! We will be discontinuing support for the older WooCommerce version (Shortcodes) in future updates. To ensure continued functionality, better security, and a seamless checkout experience, please switch to the WooCommerce Blocks. Need help? Contact <a href="mailto:support@omise.co">support@omise.co</a>.', 'omise');
+
+			echo "<div class='notice notice-warning is-dismissible'><p>$message</p></div>";
 		}
 	}
 
@@ -133,7 +135,7 @@ class Omise
 		// adding action after all dependencies are loaded.
 		if (static::$can_initiate) {
 			// Moving here because the class used in the function could not be found on uninstall
-			add_action('admin_notices', [$this, 'embedded_form_notice']);
+			add_action('admin_notices', [$this, 'omise_admin_notice']);
 			return;
 		}
 	}
@@ -205,11 +207,11 @@ class Omise
 		defined('OMISE_SECRET_KEY') || define('OMISE_SECRET_KEY', $this->settings()->secret_key());
 		defined('OMISE_API_VERSION') || define('OMISE_API_VERSION', '2019-05-29');
 		defined('OMISE_USER_AGENT_SUFFIX') || define(
-			'OMISE_USER_AGENT_SUFFIX', 
+			'OMISE_USER_AGENT_SUFFIX',
 			sprintf(
-				'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s', 
-				OMISE_WOOCOMMERCE_PLUGIN_VERSION, 
-				$wp_version, 
+				'OmiseWooCommerce/%s WordPress/%s WooCommerce/%s',
+				OMISE_WOOCOMMERCE_PLUGIN_VERSION,
+				$wp_version,
 				WC()->version
 			)
 		);
