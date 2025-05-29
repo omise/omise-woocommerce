@@ -2,6 +2,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * When completing 3DS payment, Omise will send a 'charge.complete' event.
+ * Here we handling the event to update the order based on charge's status.
+ *
+ */
 class Omise_Event_Charge_Complete extends Omise_Event_Charge {
 	/**
 	 * @var string  of an event name.
@@ -9,11 +14,14 @@ class Omise_Event_Charge_Complete extends Omise_Event_Charge {
 	const EVENT_NAME = 'charge.complete';
 
 	public function is_resolvable() {
-	{
 		if ( 'yes' === $this->order->get_meta( 'is_omise_payment_resolved' ) || $this->is_attempt_limit_exceeded() ) {
 			return true;
 		}
 
+		/**
+		 * To prevent race condition between webhook and callback.
+		 * Ref: https://github.com/omise/omise-woocommerce/pull/179
+		 */
 		$schedule_action = 'omise_async_webhook_event_handler';
 		$schedule_group  = 'omise_async_webhook';
 		$data            = array(
