@@ -52,6 +52,7 @@ class Omise_Events {
 		 */
 		do_action( 'omise_before_handle_event_' . $event_hook_name, $data );
 
+		$result = null;
 		$event = new $this->events[ $event_key ]( $data );
 		if ( $event->validate() ) {
 			$result = $event->resolve();

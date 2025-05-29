@@ -16,7 +16,15 @@
     <exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
     <exclude name="Generic.Commenting.DocComment.MissingShort" />
 
+    <exclude name="Squiz.Commenting.ClassComment.Missing" />
     <exclude name="Squiz.Commenting.FileComment.Missing" />
+    <exclude name="Squiz.Commenting.FunctionComment.Missing" />
+    <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+
+    <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+    <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+
+    <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
   </rule>
 
   <rule ref="Generic.WhiteSpace.ScopeIndent">
