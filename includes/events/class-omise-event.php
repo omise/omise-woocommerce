@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * @since 4.0
  */
-class Omise_Event extends Omise_Queueable {
+abstract class Omise_Event extends Omise_Queueable {
 	/**
 	 * @var array  of Omise event's payload.
 	 */
@@ -19,7 +19,7 @@ class Omise_Event extends Omise_Queueable {
 	public function __construct( $data ) {
 		$this->data = $data;
 	}
-	
+
 	/**
 	 * @return boolean
 	 */

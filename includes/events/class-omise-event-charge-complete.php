@@ -2,33 +2,12 @@
 
 defined('ABSPATH') || exit;
 
-class Omise_Event_Charge_Complete extends Omise_Event
+class Omise_Event_Charge_Complete extends Omise_Event_Charge
 {
 	/**
 	 * @var string  of an event name.
 	 */
 	const EVENT_NAME = 'charge.complete';
-
-	/**
-	 * @inheritdoc
-	 */
-	public function validate()
-	{
-		if ('charge' !== $this->data['object'] || !isset($this->data['metadata']['order_id'])) {
-			return false;
-		}
-
-		if (!$this->order = wc_get_order($this->data['metadata']['order_id'])) {
-			return false;
-		}
-
-		// Making sure that an event's charge id is identical with an order transaction id.
-		if ($this->order->get_transaction_id() !== $this->data['id']) {
-			return false;
-		}
-
-		return true;
-	}
 
 	public function is_resolvable()
 	{

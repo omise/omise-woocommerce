@@ -40,29 +40,13 @@ defined( 'ABSPATH' ) || exit;
  *     [status: 'pending'], [authorized: 'false'], [paid: 'false']
  *     [status: 'failed'], [authorized: 'false'], [paid: 'false']
  */
-class Omise_Event_Charge_Create extends Omise_Event {
+class Omise_Event_Charge_Create extends Omise_Event_Charge {
 	/**
 	 * @var string  of an event name.
 	 */
 	const EVENT_NAME = 'charge.create';
 
-	/**
-	 * @inheritdoc
-	 */
-	public function validate() {
-		if ( 'charge' !== $this->data['object'] || ! isset( $this->data['metadata']['order_id'] ) ) {
-			return false;
-		}
-
-		if ( ! $this->order = wc_get_order( $this->data['metadata']['order_id'] ) ) {
-			return false;
-		}
-
-		// Making sure that an event's charge id is identical with an order transaction id.
-		if ( $this->order->get_transaction_id() !== $this->data['id'] ) {
-			return false;
-		}
-
-		return true;
-	}
+	// TODO: Confirm if this event is resolvable or not.
+	// The original implementation is to add order note
+	// https://github.com/omise/omise-woocommerce/commit/cdc264198cbc0e55fa998d867ca5c40b2bb6177e#diff-c1679266e5ca9820ab663ec1b0308c9634bcecb0a340405b6f1dce520fb33945R65
 }
