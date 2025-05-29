@@ -1,0 +1,28 @@
+<ruleset name="Omise WooCommerce">
+  <description>Custom ruleset for Omise WooComemrce</description>
+
+  <arg name="extensions" value="php"/>
+
+  <exclude-pattern>./build/*</exclude-pattern>
+  <exclude-pattern>./coverage/*</exclude-pattern>
+  <exclude-pattern>./vendor/*</exclude-pattern>
+  <exclude-pattern>./node_modules/*</exclude-pattern>
+  <exclude-pattern>./wp-content/*</exclude-pattern>
+  <exclude-pattern>./templates/*</exclude-pattern>
+  <exclude-pattern>.*/assets/*</exclude-pattern>
+
+  <rule ref="WordPress">
+    <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+    <exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+    <exclude name="Generic.Commenting.DocComment.MissingShort" />
+
+    <exclude name="Squiz.Commenting.FileComment.Missing" />
+  </rule>
+
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="4" />
+      <property name="tabIndent" value="false" />
+    </properties>
+  </rule>
+</ruleset>

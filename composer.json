@@ -8,17 +8,20 @@
         "mockery/mockery": "^1.6",
         "brain/monkey": "^2.6",
         "woocommerce/woocommerce-blocks": "^11.7",
-        "voku/simple_html_dom": "^4.8"
+        "voku/simple_html_dom": "^4.8",
+        "wp-coding-standards/wpcs": "^3.0"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --testdox --colors",
         "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover=coverage/coverage.xml --coverage-html=coverage",
-        "test:coverage:xml": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover=coverage/coverage.xml"
+        "test:coverage:xml": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover=coverage/coverage.xml",
+        "lint": "vendor/bin/phpcs --colors -s"
     },
     "config": {
         "allow-plugins": {
             "composer/installers": true,
-            "automattic/jetpack-autoloader": true
+            "automattic/jetpack-autoloader": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
