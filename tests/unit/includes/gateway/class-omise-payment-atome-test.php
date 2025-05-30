@@ -15,6 +15,7 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
         Monkey\Functions\expect('wp_enqueue_script');
         Monkey\Functions\expect('wp_kses');
         Monkey\Functions\expect('plugins_url');
+        Monkey\Functions\expect('add_action');
 
         // dummy version
         if (!defined('WC_VERSION')) {
@@ -44,7 +45,6 @@ class Omise_Payment_Atome_Test extends Omise_Offsite_Test
 
     public function testCharge()
     {
-        Monkey\Functions\expect('add_action');
         $_POST['omise_atome_phone_default'] = true;
         $obj = new Omise_Payment_Atome();
         $this->getChargeTest($obj);

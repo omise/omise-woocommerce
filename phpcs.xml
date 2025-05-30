@@ -13,13 +13,13 @@
 
   <rule ref="WordPress">
     <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
-    <exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
     <exclude name="Generic.Commenting.DocComment.MissingShort" />
 
     <exclude name="Squiz.Commenting.ClassComment.Missing" />
     <exclude name="Squiz.Commenting.FileComment.Missing" />
     <exclude name="Squiz.Commenting.FunctionComment.Missing" />
     <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+    <exclude name="Squiz.Commenting.VariableComment.Missing" />
 
     <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
     <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
@@ -29,8 +29,8 @@
 
   <rule ref="Generic.WhiteSpace.ScopeIndent">
     <properties>
-      <property name="indent" value="4" />
-      <property name="tabIndent" value="false" />
+      <property name="indent" value="2" />
+      <property name="tabIndent" value="true" />
     </properties>
   </rule>
 </ruleset>
