@@ -3,7 +3,6 @@ require_once __DIR__ . '/../../class-omise-unit-test.php';
 require_once __DIR__ . '/../gateway/bootstrap-test-setup.php';
 
 class Omise_Event_Test extends Bootstrap_Test_Setup {
-
 	private $instance = null;
 
 	protected function setUp(): void {

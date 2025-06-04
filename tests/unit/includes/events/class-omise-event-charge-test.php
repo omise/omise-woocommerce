@@ -39,8 +39,7 @@ class Omise_Event_Charge_Test extends Bootstrap_Test_Setup {
 		Monkey\Functions\expect( 'wc_get_order' )
 			->with( '100' )
 			->andReturn( $order );
-		$order
-			->shouldReceive( 'get_transaction_id' )
+		$order->shouldReceive( 'get_transaction_id' )
 			->andReturn( 'chrg_test_no1t4tnemucod0e51mo' );
 		$this->mockApiCall( 'omise-charge-get' );
 
@@ -77,8 +76,7 @@ class Omise_Event_Charge_Test extends Bootstrap_Test_Setup {
 		Monkey\Functions\expect( 'wc_get_order' )
 			->with( '100' )
 			->andReturn( $order );
-		$order
-			->shouldReceive( 'get_transaction_id' )
+		$order->shouldReceive( 'get_transaction_id' )
 			->andReturn( 'chrg_test_12345' );
 
 		$instance = new class($charge_event) extends Omise_Event_Charge {};
@@ -96,8 +94,7 @@ class Omise_Event_Charge_Test extends Bootstrap_Test_Setup {
 		Monkey\Functions\expect( 'wc_get_order' )
 			->with( '100' )
 			->andReturn( $order );
-		$order
-			->shouldReceive( 'get_transaction_id' )
+		$order->shouldReceive( 'get_transaction_id' )
 			->andReturn( 'chrg_test_no1t4tnemucod0e51mo' );
 		$this->mockApiCall( 'omise-error-authentication-failure' );
 

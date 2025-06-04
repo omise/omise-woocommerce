@@ -5,8 +5,11 @@ use Brain\Monkey;
 require_once __DIR__ . '/../../class-omise-unit-test.php';
 require_once __DIR__ . '/../gateway/bootstrap-test-setup.php';
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
-
+	private $wc_order = null;
 	private $base_event_data = [
 		'object' => 'charge',
 		'id' => 'chrg_test_no1t4tnemucod0e51mo',
@@ -18,7 +21,6 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 			'order_id' => '100',
 		],
 	];
-	private $wc_order = null;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -44,14 +46,10 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 		Monkey\Functions\expect( 'wc_get_order' )
 			->with( '100' )
 			->andReturn( $this->wc_order );
-		$this->wc_order
-			->shouldReceive( 'get_transaction_id' )
+		$this->wc_order->shouldReceive( 'get_transaction_id' )
 			->andReturn( 'chrg_test_no1t4tnemucod0e51mo' );
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 */
 	public function test_resolve_successful_charge_order() {
 		$charge_event = $this->mock_event_data();
 		$this->mockApiCall(
@@ -65,7 +63,7 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->allows()->get_total()->andReturn( '120.00' );
 		$this->wc_order->allows()->get_currency()->andReturn( 'THB' );
 
-		// Expectation of successful charge order
+		// Expectation of successful charge order.
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Received charge.capture webhook event.' );
@@ -77,12 +75,10 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Payment successful.<br/>An amount 120.00 THB has been paid' );
-		$this->wc_order
-			->shouldReceive( 'has_status' )
+		$this->wc_order->shouldReceive( 'has_status' )
 			->with( 'processing' )
 			->andReturn( false );
-		$this->wc_order
-			->shouldReceive( 'update_status' )
+		$this->wc_order->shouldReceive( 'update_status' )
 			->once()
 			->with( 'processing' );
 
@@ -91,9 +87,6 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 		$charge_capture_event->resolve();
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 */
 	public function test_resolve_failed_charge_order() {
 		$charge_event = $this->mock_event_data();
 		$this->mockApiCall(
@@ -105,7 +98,7 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 			]
 		);
 
-		// Expectation of failed charge order
+		// Expectation of failed charge order.
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Received charge.capture webhook event.' );
@@ -117,12 +110,10 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Payment failed.<br/>capture failed (code: failed_capture)' );
-		$this->wc_order
-			->shouldReceive( 'has_status' )
+		$this->wc_order->shouldReceive( 'has_status' )
 			->with( 'failed' )
 			->andReturn( false );
-		$this->wc_order
-			->shouldReceive( 'update_status' )
+		$this->wc_order->shouldReceive( 'update_status' )
 			->once()
 			->with( 'failed' );
 
@@ -132,7 +123,6 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 	}
 
 	/**
-	 * @runInSeparateProcess
 	 * @dataProvider unexpected_statuses_provider
 	 */
 	public function test_resolve_throws_exception_if_status_is_in_unexpected_statuses( $status ) {

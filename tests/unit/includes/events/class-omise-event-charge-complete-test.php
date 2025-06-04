@@ -9,7 +9,8 @@ require_once __DIR__ . '/../gateway/bootstrap-test-setup.php';
  * @runTestsInSeparateProcesses
  */
 class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
-
+	private $wc_order = null;
+	private $omise_queue = null;
 	private $base_event_data = [
 		'object' => 'charge',
 		'id' => 'chrg_test_no1t4tnemucod0e51mo',
@@ -21,8 +22,6 @@ class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
 			'order_id' => '100',
 		],
 	];
-	private $wc_order = null;
-	private $omise_queue = null;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -51,12 +50,11 @@ class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
 		Monkey\Functions\expect( 'wc_get_order' )
 			->with( '100' )
 			->andReturn( $this->wc_order );
-		$this->wc_order
-			->shouldReceive( 'get_transaction_id' )
+		$this->wc_order->shouldReceive( 'get_transaction_id' )
 			->andReturn( 'chrg_test_no1t4tnemucod0e51mo' );
 	}
 
-	public function test_resolve_schedules_action_to_process_later_if_callback_has_not_processed() {
+	public function test_resolve_schedules_action_to_process_later_if_callback_has_not_been_processed() {
 		$this->mockApiCall( 'omise-charge-get' );
 		$this->wc_order->shouldReceive( 'get_meta' )
 			->with( 'is_omise_payment_resolved' )
@@ -112,6 +110,7 @@ class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Received charge.complete webhook event.' );
+		$this->wc_order->shouldNotReceive( 'payment_complete' );
 
 		$complete_charge_event->validate();
 		$complete_charge_event->resolve();
@@ -163,6 +162,7 @@ class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Received charge.complete webhook event.' );
+		$this->wc_order->shouldNotReceive( 'update_status' );
 
 		$complete_charge_event->validate();
 		$complete_charge_event->resolve();
@@ -188,8 +188,9 @@ class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Received charge.complete webhook event.' );
-		$this->wc_order->shouldReceive( 'add_order_note' )->never();
-		$this->wc_order->shouldReceive( 'update_status' )->never();
+		$this->wc_order->shouldNotReceive( 'add_order_note' );
+		$this->wc_order->shouldNotReceive( 'update_status' );
+		$this->wc_order->shouldNotReceive( 'save' );
 
 		$complete_charge_event->validate();
 		$complete_charge_event->resolve();
@@ -242,8 +243,8 @@ class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Received charge.complete webhook event.' );
-		$this->wc_order->shouldReceive( 'add_order_note' )->never();
-		$this->wc_order->shouldReceive( 'update_status' )->never();
+		$this->wc_order->shouldNotReceive( 'add_order_note' );
+		$this->wc_order->shouldNotReceive( 'update_status' );
 
 		$complete_charge_event->validate();
 		$complete_charge_event->resolve();
@@ -264,9 +265,9 @@ class Omise_Event_Charge_Complete_Test extends Bootstrap_Test_Setup {
 		$this->wc_order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise: Received charge.complete webhook event.' );
-		$this->wc_order->shouldReceive( 'add_order_note' )->never();
-		$this->wc_order->shouldReceive( 'update_status' )->never();
-		$this->wc_order->shouldReceive( 'payment_complete' )->never();
+		$this->wc_order->shouldNotReceive( 'add_order_note' );
+		$this->wc_order->shouldNotReceive( 'update_status' );
+		$this->wc_order->shouldNotReceive( 'payment_complete' );
 
 		$complete_charge_event->validate();
 		$complete_charge_event->resolve();
