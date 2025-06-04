@@ -16,10 +16,6 @@ class Omise_Event_Charge_Capture extends Omise_Event_Charge {
 	 */
 	const EVENT_NAME = 'charge.capture';
 
-	public function validate() {
-		return parent::validate() && $this->charge['paid'] === true;
-	}
-
 	/**
 	 * This `charge.capture` event is only being used
 	 * to catch a manual-capture action that happens on 'Omise Dashboard'.

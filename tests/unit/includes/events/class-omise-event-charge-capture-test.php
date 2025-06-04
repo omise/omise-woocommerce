@@ -52,31 +52,6 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup {
 	/**
 	 * @runInSeparateProcess
 	 */
-	public function test_validate_returns_true_if_charge_paid() {
-		$charge_event = $this->mock_event_data();
-		$this->mockApiCall( 'omise-charge-get', [ 'paid' => true ] );
-
-		$instance = new Omise_Event_Charge_Capture( $charge_event );
-
-		$this->assertTrue( $instance->validate() );
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 */
-	public function test_validate_returns_false_if_charge_not_paid() {
-		$charge_event = $this->mock_event_data();
-		// Rely on the charge result from the Charge API instead of the event data.
-		$this->mockApiCall( 'omise-charge-get', [ 'paid' => false ] );
-
-		$charge_capture_event = new Omise_Event_Charge_Capture( $charge_event );
-
-		$this->assertFalse( $charge_capture_event->validate() );
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 */
 	public function test_resolve_successful_charge_order() {
 		$charge_event = $this->mock_event_data();
 		$this->mockApiCall(
