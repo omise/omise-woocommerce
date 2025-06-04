@@ -29,12 +29,6 @@ class Omise_Event_Charge_Test extends Bootstrap_Test_Setup {
 		require_once __DIR__ . '/../../../../includes/events/class-omise-event-charge.php';
 	}
 
-	protected function tearDown(): void {
-		parent::tearDown();
-
-		OmiseApiResource::resetInstance();
-	}
-
 	/**
 	 * @runInSeparateProcess
 	 */
@@ -107,10 +101,9 @@ class Omise_Event_Charge_Test extends Bootstrap_Test_Setup {
 			->andReturn('chrg_test_no1t4tnemucod0e51mo');
 		$this->mockApiCall('omise-error-authentication-failure');
 
-		$instance = new class($charge_event) extends Omise_Event_Charge {};
-
 		$this->expectException(exception: OmiseException::class);
 
+		$instance = new class($charge_event) extends Omise_Event_Charge {};
 		$instance->validate();
 	}
 

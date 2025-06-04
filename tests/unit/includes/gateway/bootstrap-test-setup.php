@@ -125,9 +125,13 @@ abstract class Bootstrap_Test_Setup extends TestCase
         return $omiseSettingMock;
     }
 
+    /**
+     * When using this, `runInSeparateProcess` must be set to true
+     * to avoid the OmiseHttpExecutor being cached.
+     */
     protected function mockApiCall($fixture, $customAttrs = null)
     {
-        $this->mockOmiseSetting(pkey: ['pkey_xxx'], skey: ['skey_xxx']);
+        $this->mockOmiseSetting(['pkey_xxx'], ['skey_xxx']);
         $this->enableApiCall(true);
 
         $response = load_fixture($fixture);
@@ -139,7 +143,6 @@ abstract class Bootstrap_Test_Setup extends TestCase
             $response = json_encode($responseAttrs);
         }
 
-        // error_log($response);
         $omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
         $omiseHttpExecutorMock
             ->shouldReceive('execute')
