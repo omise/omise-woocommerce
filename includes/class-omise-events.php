@@ -20,7 +20,6 @@ class Omise_Events {
 	public static $event_classes = array(
 		'Omise_Event_Charge_Capture',
 		'Omise_Event_Charge_Complete',
-		'Omise_Event_Charge_Create'
 	);
 
 	public function __construct() {
