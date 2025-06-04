@@ -11,7 +11,7 @@ class Omise_Event_Charge_Test extends Bootstrap_Test_Setup {
 			'id' => 'chrg_test_no1t4tnemucod0e51mo',
 			'amount' => 1000,
 			'currency' => 'THB',
-			'status' => 'paid',
+			'status' => 'successful',
 			'metadata' => [
 				'order_id' => '100',
 			],

@@ -95,7 +95,7 @@ class Omise_Event_Charge_Complete extends Omise_Event_Charge {
 		}
 
 		$failure_message = sprintf(
-			'%s  (code: %s)',
+			'%s (code: %s)',
 			Omise()->translate( $this->charge['failure_message'] ),
 			$this->charge['failure_code']
 		);

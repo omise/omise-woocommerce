@@ -12,7 +12,7 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup
 		'id' => 'chrg_test_no1t4tnemucod0e51mo',
 		'amount' => 1000,
 		'currency' => 'THB',
-		'status' => 'paid',
+		'status' => 'successful',
 		'paid' => true,
 		'metadata' => [
 			'order_id' => '100',
@@ -44,7 +44,6 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup
 		$this->wc_order
 			->shouldReceive('get_transaction_id')
 			->andReturn('chrg_test_no1t4tnemucod0e51mo');
-		// $this->wc_order = $order;
 	}
 
 	/**
@@ -74,6 +73,9 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup
 		$this->assertFalse($charge_capture_event->validate());
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 */
 	public function test_resolve_successful_charge_order()
 	{
 		$charge_event = $this->mock_event_data();
@@ -101,16 +103,52 @@ class Omise_Event_Charge_Capture_Test extends Bootstrap_Test_Setup
 		$this->wc_order
 			->shouldReceive('has_status')
 			->with('processing')
-			->andReturn(true);
+			->andReturn(false);
+		$this->wc_order
+			->shouldReceive('update_status')
+			->once()
+			->with('processing');
 
 		$charge_capture_event = new Omise_Event_Charge_Capture($charge_event);
 		$charge_capture_event->validate();
 		$charge_capture_event->resolve();
 	}
 
-	public function test_resolve_failed_charge_order()
+	// TODO: To confirm if failed charge order should be handled.
+	// public function test_resolve_failed_charge_order() {}
+
+	/**
+	 * @runInSeparateProcess
+	 * @dataProvider unexpected_statuses_provider
+	 */
+	public function test_resolve_throws_exception_if_status_is_in_unexpected_statuses($status)
 	{
-		// TODO: To confirm if failed charge order should be handled.
+		$charge_event = $this->mock_event_data();
+		$this->mockApiCall('omise-charge-get', ['status' => $status]);
+
+		$this->wc_order->shouldReceive('add_order_note')
+			->once()
+			->with('Omise: Received charge.capture webhook event.');
+		$this->wc_order->shouldReceive('delete_meta_data')
+			->once()
+			->with('is_awaiting_capture');
+		$this->wc_order->shouldReceive('save')->once();
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('invalid charge status');
+
+		$charge_capture_event = new Omise_Event_Charge_Capture($charge_event);
+		$charge_capture_event->validate();
+		$charge_capture_event->resolve();
+	}
+
+	public function unexpected_statuses_provider(): array
+	{
+		return [
+			'pending status' => ['pending'],
+			'expired status' => ['expired'],
+			'reversed status' => ['reversed'],
+		];
 	}
 
 	private function mock_event_data(array $event_data = [])
