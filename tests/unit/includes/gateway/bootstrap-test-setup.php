@@ -116,7 +116,7 @@ abstract class Bootstrap_Test_Setup extends TestCase
 
     protected function mockOmiseSetting($pkey, $skey)
     {
-        $omiseSettingMock = Mockery::mock('overload:Omise_Setting');
+        $omiseSettingMock = Mockery::mock('alias:Omise_Setting');
 
         $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
         $omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
