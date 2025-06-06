@@ -36,20 +36,13 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
      */
     public function get_total_amount_from_admin_order_page()
     {
-        // mocking built-in WooCommerce function
-        if (!function_exists('wc_get_order')) {
-            function wc_get_order() {
-                $class = new class {
-                    public function get_total() { 
-                        return 999999;
-                    }
-                };
-                return $class;
-            }
-        }
-
         Monkey\Functions\expect('add_action');
 
+        $order = Mockery::mock('WC_Order');
+        Monkey\Functions\expect('wc_get_order')->andReturn($order);
+        $order
+            ->shouldReceive('get_total')
+            ->andReturn(999999);
 
         // mocking the WP global variable $wp
         $wp = new stdClass();

@@ -20,7 +20,6 @@ class Omise_Events {
 	public static $event_classes = array(
 		'Omise_Event_Charge_Capture',
 		'Omise_Event_Charge_Complete',
-		'Omise_Event_Charge_Create'
 	);
 
 	public function __construct() {
@@ -52,6 +51,7 @@ class Omise_Events {
 		 */
 		do_action( 'omise_before_handle_event_' . $event_hook_name, $data );
 
+		$result = null;
 		$event = new $this->events[ $event_key ]( $data );
 		if ( $event->validate() ) {
 			$result = $event->resolve();
