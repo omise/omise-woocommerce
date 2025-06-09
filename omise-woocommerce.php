@@ -41,7 +41,7 @@ class Omise
 	 */
 	protected static $can_initiate = false;
 
-	CONST OMISE_JS_LINK = 'https://cdn.omise.co/omise.js';
+	CONST OMISE_JS_LINK = 'https://cdn.staging-omise.co/omise.js';
 
 	/**
 	 * @since  3.0
@@ -147,36 +147,37 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/omise-block-config.php';
 		require_once __DIR__ . '/includes/blocks/omise-block-payments.php';
 		require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-apm.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-credit-card.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-promptpay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-hk.php';
-		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-cn.php';
-		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-dana.php';
-		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-gcash.php';
-		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-kakaopay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-touch-n-go.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-bill-payment-lotus.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-shopeepay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-wechat-pay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-grabpay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-paynow.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-ocbc-digital.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-boost.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-maybank-qr.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-qr.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-paypay.php';
+		require_once __DIR__ . '/includes/blocks/gateways/omise-block-checkout-page.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-credit-card.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-promptpay.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-hk.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-alipay-cn.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-dana.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-gcash.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-kakaopay.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/alipay/omise-block-touch-n-go.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-bill-payment-lotus.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-shopeepay.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-wechat-pay.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-grabpay.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-paynow.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-ocbc-digital.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-boost.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-maybank-qr.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-qr.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-paypay.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-rabbit-linepay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-mobilebanking.php';
-		require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-payment.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-installment.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-fpx.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-obw.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-konbini.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-mobilebanking.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/abstract-omise-block-payment.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-installment.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-fpx.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-obw.php';
+		// require_once __DIR__ . '/includes/blocks/gateways/omise-block-konbini.php';
 		Omise_Block::init();
 	}
 
@@ -271,6 +272,7 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-atome.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-paypay.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-wechat-pay.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-checkout-page.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-php/lib/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/libraries/omise-plugin/Omise.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-ajax-actions.php';
@@ -360,7 +362,7 @@ class Omise
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $methods ) {
-				return array_merge( $methods, $this->payment_methods() );
+				return array_merge( $methods, ['Omise_Payment_Checkout_Page'] );
 			}
 		);
 	}
