@@ -4,12 +4,12 @@
  * Plugin Name: Omise Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Omise Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
- * Version:     6.1.1
+ * Version:     6.2.0
  * Author:      Omise and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
  * WC requires at least: 3.3.4
- * WC tested up to: 9.3.3
+ * WC tested up to: 9.5.2
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
  */
@@ -23,7 +23,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '6.1.1';
+	public $version = '6.2.0';
 
 	/**
 	 * The Omise Instance.
