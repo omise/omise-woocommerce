@@ -78,12 +78,12 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		$currency   = get_woocommerce_currency();
 		$cart_total = $this->get_total_amount();
 
-		$capabilities = $this->backend->capabilities();
-		$installmentMinLimit = $capabilities->getInstallmentMinLimit();
+		$capability = $this->backend->capability();
+		$installmentMinLimit = $capability->getInstallmentMinLimit();
 
 		return [
 			'installments_enabled' => $this->backend->get_available_providers($currency, $cart_total),
-			'is_zero_interest'     => $capabilities ? $capabilities->is_zero_interest() : false,
+			'is_zero_interest'     => $capability ? $capability->is_zero_interest() : false,
 			'installment_min_limit' => Omise_Money::convert_currency_unit($installmentMinLimit, $currency),
 			'currency' => $currency,
 			'total_amount' => Omise_Money::to_subunit($cart_total, $currency),
@@ -137,8 +137,8 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 
 	/**
 	 * check if payment method is support by omise capability api version 2017
-	 * 
-	 * @param  array of backends source_type 
+	 *
+	 * @param  array of backends source_type
 	 *
 	 * @return array|false
 	 */

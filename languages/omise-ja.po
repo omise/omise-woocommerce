@@ -306,6 +306,10 @@ msgstr "決済結果を確認できませんでした。再度同期をお試し
 msgid "Omise: Sync failed (manual sync).<br/>%s (manual sync)."
 msgstr "Omise: 同期に失敗しました（マニュアル同期）。<br/>%s (マニュアル同期)。"
 
+#: omise-woocommerce.php:85
+msgid "<strong>🔔 IMPORTANT:</strong> Our plugin now fully supports the WooCommerce Blocks! We will be discontinuing support for the older WooCommerce version (Shortcodes) in future updates. To ensure continued functionality, better security, and a seamless checkout experience, please switch to the WooCommerce Blocks. Need help? Contact <a href=\"mailto:support@omise.co\">support@omise.co</a>."
+msgstr "<strong>🔔 重要:</strong> OmiseでWooCommerce Blocksをご利用いただけるようになりました！今後のアップデートでは、旧バージョンのWooCommerce (Shortcodes）のサポートを終了する予定です。今後も安定した機能と強化されたセキュリティ、スムーズな決済体験をご利用いただけるよう、WooCommerce Blocksへの移行をお願いいたします。ご不明な点がございましたら、<a href=\"mailto:support@omise.co\">support@omise.co</a> までお問い合わせください。"
+
 #: omise-woocommerce.php:111
 msgid "Omise: Capture this order"
 msgstr "Omise: 注文のキャプチャ"

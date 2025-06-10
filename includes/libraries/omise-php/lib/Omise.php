@@ -3,6 +3,8 @@
 // Cores and utilities.
 require_once __DIR__ . '/omise/res/obj/OmiseObject.php';
 require_once __DIR__ . '/omise/res/OmiseApiResource.php';
+require_once __DIR__ . '/omise/http/OmiseHttpExecutorInterface.php';
+require_once __DIR__ . '/omise/http/OmiseHttpExecutor.php';
 
 // Errors
 require_once __DIR__ . '/omise/exception/OmiseExceptions.php';
@@ -10,7 +12,7 @@ require_once __DIR__ . '/omise/exception/OmiseExceptions.php';
 // API Resources.
 require_once __DIR__ . '/omise/OmiseAccount.php';
 require_once __DIR__ . '/omise/OmiseBalance.php';
-require_once __DIR__ . '/omise/OmiseCapabilities.php';
+require_once __DIR__ . '/omise/OmiseCapability.php';
 require_once __DIR__ . '/omise/OmiseCard.php';
 require_once __DIR__ . '/omise/OmiseCardList.php';
 require_once __DIR__ . '/omise/OmiseCharge.php';

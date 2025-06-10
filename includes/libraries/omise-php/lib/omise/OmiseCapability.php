@@ -1,6 +1,6 @@
 <?php
 
-class OmiseCapabilities extends OmiseApiResource
+class OmiseCapability extends OmiseApiResource
 {
     const ENDPOINT = 'capability';
 
@@ -8,7 +8,7 @@ class OmiseCapabilities extends OmiseApiResource
      * @var array  of the filterable keys.
      */
     public static $filters = [
-        'backend' => ['currency', 'type', 'chargeAmount']
+        'paymentMethod' => ['currency', 'exactName', 'name', 'chargeAmount']
     ];
 
     public function __construct($publickey = null, $secretkey = null)
@@ -19,18 +19,18 @@ class OmiseCapabilities extends OmiseApiResource
 
     /**
      * Sets up 'shortcuts' to filters so they may be used thus:
-     *    $capabilities->backendFilter['currency']('THB')
+     *    $capability->filterPaymentMethod['currency']('THB')
      * As well as the original:
-     *    $capabilities->makeBackendFilterCurrency('THB')
+     *    $capability->filterPaymentMethodCurrency('THB')
      */
     protected function setupFilterShortcuts()
     {
         foreach (self::$filters as $filterSubject => $availableFilters) {
-            $filterArrayName = $filterSubject . 'Filter';
+            $filterArrayName = 'filter' . ucfirst($filterSubject);
             $this->$filterArrayName = [];
             $tempArr = &$this->$filterArrayName;
             foreach ($availableFilters as $type) {
-                $funcName = 'make' . ucfirst($filterSubject) . 'Filter' . $type;
+                $funcName = 'filter' . ucfirst($filterSubject) . ucfirst($type);
                 $tempArr[$type] = function () use ($funcName) {
                     return call_user_func_array([$this, $funcName], func_get_args());
                 };
@@ -39,12 +39,12 @@ class OmiseCapabilities extends OmiseApiResource
     }
 
     /**
-     * Retrieves capabilities.
+     * Retrieves capability.
      *
      * @param  string $publickey
      * @param  string $secretkey
      *
-     * @return OmiseCapabilities
+     * @return OmiseCapability
      */
     public static function retrieve($publickey = null, $secretkey = null)
     {
@@ -62,76 +62,83 @@ class OmiseCapabilities extends OmiseApiResource
     }
 
     /**
-     * Retrieves array of payment backends. Optionally pass in as many filter functions as you want
+     * Retrieves array of payment methods. Optionally pass in as many filter functions as you want
      * (muliple arguments, or a single array)
      *
      * @param [func1,fun2,...] OR func1, func2,...
      *
      * @return array
      */
-    public function getBackends()
+    public function getPaymentMethods()
     {
-        $backends = array_map(
-            function ($backend) {
-                $new = (object)(array_merge(reset($backend), ['_id' => array_keys($backend)[0]]));
+        $methods = array_map(function ($method) {
+            return (object) $method;
+        }, $this['payment_methods']);
 
-                return $new;
-            },
-            $this['payment_backends']
-        );
-        // return backends (filtered if requested)
-        return ($filters = func_get_args()) ? array_filter($backends, self::combineFilters(self::argsToVariadic($filters))) : $backends;
+        return ($filters = func_get_args()) ? array_filter($methods, self::combineFilters(self::argsToVariadic($filters))) : $methods;
     }
 
     /**
-     * Makes a filter function to check supported currency for backend.
+     * Makes a filter function to check supported currency of payment method.
      *
      * @param  string $currency
      *
      * @return function
      */
-    public function makeBackendFilterCurrency($currency)
+    public function filterPaymentMethodCurrency($currency)
     {
-        return function ($backend) use ($currency) {
-            return in_array(strtolower($currency), array_map('strtolower', $backend->currencies));
+        return function ($method) use ($currency) {
+            return in_array(strtolower($currency), array_map('strtolower', $method->currencies));
         };
     }
 
     /**
-     * Makes a filter function to check type of backend.
+     * Makes a filter function to check exact name of payment method.
      *
      * @param  string $type
      *
      * @return function
      */
-    public function makeBackendFilterType($type)
+    public function filterPaymentMethodExactName($name)
     {
-        return function ($backend) use ($type) {
-            return $backend->type === $type;
+        return function ($method) use ($name) {
+            return $method->name === $name;
         };
     }
 
     /**
-     * Makes a filter function to check if backends can handle given amount.
+     * Makes a filter function to check name of payment method.
+     *
+     * @param  string $type
+     *
+     * @return function
+     */
+    public function filterPaymentMethodName($name)
+    {
+        return function ($method) use ($name) {
+            return strpos($method->name, $name) !== false;
+        };
+    }
+
+    /**
+     * Makes a filter function to check if payment method can handle given amount.
      *
      * @param  int $amount
      *
      * @return function
      */
-    public function makeBackendFilterChargeAmount($amount)
+    public function filterPaymentMethodChargeAmount($amount)
     {
-        $defMin = $this['limits']['charge_amount']['min'];
-        $defMax = $this['limits']['charge_amount']['max'];
+        $chargeLimit = $this['limits']['charge_amount'];
+        $installmentMin = $this['limits']['installment_amount']['min'];
+        $installmentMax = isset($this['limits']['installment_amount']['max']) ? $this['limits']['installment_amount']['max'] : PHP_INT_MAX;
 
-        return function ($backend) use ($amount, $defMin, $defMax) {
-            if ($backend->type === 'installment' && get_woocommerce_currency() === 'THB') {
-                $min = $this['limits']['installment_amount']['min'];
+        return function ($method) use ($amount, $chargeLimit, $installmentMin, $installmentMax) {
+            if (self::isInstallmentPaymentMethod($method)) {
+                return $amount >= $installmentMin && $amount <= $installmentMax;
             } else {
-                $min = empty($backend->amount['min']) ? $defMin : $backend->amount['min'];
+                return $amount >= $chargeLimit['min'] && $amount <= $chargeLimit['max'];
             }
-            $max = empty($backend->amount['max']) ? $defMax : $backend->amount['max'];
-
-            return $amount >= $min && $amount <= $max;
         };
     }
 
@@ -176,12 +183,13 @@ class OmiseCapabilities extends OmiseApiResource
     }
 
     /**
-     * Returns the public key.
-     *
-     * @return string
+     * Check if the payment method is the installment
+     * @return boolean
      */
-    protected static function getResourceKey()
+    private static function isInstallmentPaymentMethod($paymentMethod)
     {
-        return parent::getResourceKey();
+        $installmentPrefix = 'installment';
+
+        return strncmp($paymentMethod->name, $installmentPrefix, strlen($installmentPrefix)) === 0;
     }
 }

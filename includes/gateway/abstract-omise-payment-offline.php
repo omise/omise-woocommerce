@@ -30,7 +30,7 @@ abstract class Omise_Payment_Offline extends Omise_Payment
 	 */
 	public function result( $order_id, $order, $charge ) {
 		if ( self::STATUS_FAILED === $charge['status'] ) {
-			return $this->payment_failed( Omise()->translate( $charge['failure_message'] ) . ' (code: ' . $charge['failure_code'] . ')' );
+			return $this->payment_failed( $charge );
 		}
 
 		if ( self::STATUS_PENDING === $charge['status'] ) {
@@ -44,7 +44,7 @@ abstract class Omise_Payment_Offline extends Omise_Payment
 			);
 		}
 
-		return $this->payment_failed(
+		return $this->payment_failed( null,
 			sprintf(
 				__( 'Please feel free to try submitting your order again, or contact our support team if you have any questions (Your temporary order id is \'%s\')', 'omise' ),
 				$order_id

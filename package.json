@@ -10,9 +10,18 @@
         "npm": ">=6.14.0"
     },
     "devDependencies": {
+        "@babel/preset-env": "^7.27.2",
+        "@babel/preset-react": "^7.27.1",
         "@google-pay/button-react": "^3.1.0",
+        "@testing-library/dom": "^10.4.0",
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.3.0",
         "@woocommerce/dependency-extraction-webpack-plugin": "^1.7.0",
-        "@wordpress/scripts": "^27.9.0"
+        "@wordpress/element": "^6.22.0",
+        "@wordpress/html-entities": "^4.22.0",
+        "@wordpress/jest-preset-default": "^12.22.0",
+        "@wordpress/scripts": "^27.9.0",
+        "husky": "^9.1.7"
     },
     "scripts": {
         "start": "wp-scripts start",
@@ -23,6 +32,8 @@
         "lint:js": "wp-scripts lint-js resources/js",
         "lint:js-fix": "eslint resources/js --ext=js,jsx,ts,tsx --fix",
         "lint:js:report": "npm run lint:js -- --output-file eslint_report.json --ext=js,ts,tsx --format json",
-        "packages-update": "wp-scripts packages-update"
+        "test:unit": "wp-scripts test-unit-js",
+        "packages-update": "wp-scripts packages-update",
+        "prepare": "husky"
     }
 }

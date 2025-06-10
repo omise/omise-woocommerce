@@ -4,7 +4,19 @@ use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-// @runInSeparateProcess
+/**
+ * Mock abstract WooCommerce's gateway
+ */
+abstract class WC_Payment_Gateway
+{
+    public static $is_available = true;
+
+    public function is_available()
+    {
+        return self::$is_available;
+    }
+}
+
 abstract class Bootstrap_Test_Setup extends TestCase
 {
     // Adds Mockery expectations to the PHPUnit assertions count.
@@ -92,6 +104,49 @@ abstract class Bootstrap_Test_Setup extends TestCase
         $result = $classObj->charge($orderId, $orderMock);
         $this->assertEquals($expectedAmount, $result['amount']);
         $this->assertEquals($expectedCurrency, $result['currency']);
+    }
+
+    protected function mockOmiseHttpExecutor()
+    {
+        require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
+
+        return Mockery::mock('overload:' . OmiseHttpExecutor::class);
+    }
+
+    protected function mockOmiseSetting($pkey, $skey)
+    {
+        $omiseSettingMock = Mockery::mock('alias:Omise_Setting');
+
+        $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
+        $omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
+        $omiseSettingMock->shouldReceive('secret_key')->andReturn($skey);
+
+        return $omiseSettingMock;
+    }
+
+    protected function mockApiCall($fixture)
+    {
+        $this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
+        $this->enableApiCall(true);
+
+        $omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
+        $omiseHttpExecutorMock
+            ->shouldReceive('execute')
+            ->once()
+            ->andReturn(load_fixture($fixture));
+    }
+
+    protected function enableApiCall($isEnabled)
+    {
+        if (!$isEnabled) {
+            Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
+            Brain\Monkey\Functions\expect('is_checkout')->andReturn(false);
+            Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
+        } else {
+            Brain\Monkey\Functions\expect('is_admin')->andReturn(false);
+            Brain\Monkey\Functions\expect('is_checkout')->andReturn(true);
+            Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
+        }
     }
 }
 

@@ -13,6 +13,7 @@
 	<testsuites>
 		<testsuite name="Omise WooCommerce Test Suite">
 			<directory suffix="-test.php">tests/unit</directory>
+			<directory suffix="Test.php">tests/unit</directory>
 		</testsuite>
 	</testsuites>
     <coverage>
@@ -20,8 +21,11 @@
             <directory suffix=".php">./*</directory>
         </include>
         <exclude>
-            <directory suffix=".php">tests</directory>
-            <directory suffix=".php">vendor</directory>
+            <directory>tests</directory>
+            <directory>vendor</directory>
+            <directory>node_modules</directory>
+            <directory>wp-content</directory>
+            <directory>includes/libraries/omise-php</directory>
         </exclude>
     </coverage>
 	<php>

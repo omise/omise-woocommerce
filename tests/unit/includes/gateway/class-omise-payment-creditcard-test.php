@@ -64,8 +64,8 @@ class Omise_Payment_CreditCard_Test extends TestCase
     public function test_class_is_initialized_properly()
     {
         $creditCard = new Omise_Payment_Creditcard;
-        
-        $this->assertEquals('credit_card', $creditCard->source_type);
+
+        $this->assertEquals('card', $creditCard->source_type);
         $this->assertEquals(
             'Accept payment through <strong>Credit / Debit Card</strong> via Opn Payments.',
             $creditCard->method_description,

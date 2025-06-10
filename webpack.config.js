@@ -4,12 +4,14 @@ const path = require('path');
 
 const wcDepMap = {
 	'@woocommerce/blocks-registry': ['wc', 'wcBlocksRegistry'],
-	'@woocommerce/settings'       : ['wc', 'wcSettings']
+	'@woocommerce/settings'       : ['wc', 'wcSettings'],
+	'@woocommerce/block-data'     : ['wc', 'wcBlocksData'],
 };
 
 const wcHandleMap = {
 	'@woocommerce/blocks-registry': 'wc-blocks-registry',
-	'@woocommerce/settings'       : 'wc-settings'
+	'@woocommerce/settings'       : 'wc-settings',
+	'@woocommerce/block-data'     : 'wc-blocks-data-store',
 };
 
 const requestToExternal = (request) => {

@@ -66,14 +66,14 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 	 */
 	private function getSource()
 	{
-		$capabilities = Omise_Capabilities::retrieve();
+		$capability = Omise_Capability::retrieve();
 
-		if (!$capabilities) {
+		if (!$capability) {
 			return self::ID;
 		}
 
-		$isShopeepayJumpAppEnabled = $capabilities->getShopeeBackend(self::JUMPAPP_ID);
-		$isShopeepayEnabled = $capabilities->getShopeeBackend(self::ID);
+		$isShopeepayJumpAppEnabled = $capability->getShopeeMethod(self::JUMPAPP_ID);
+		$isShopeepayEnabled = $capability->getShopeeMethod(self::ID);
 
 		// If user is in mobile and jump app is enabled then return shopeepay_jumpapp as source
 		if (Omise_Util::isMobilePlatform() && !empty($isShopeepayJumpAppEnabled)) {
