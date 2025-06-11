@@ -130,6 +130,7 @@ class Omise
 		$this->register_payment_methods();
 		$this->register_hooks();
 		$this->register_ajax_actions();
+		$this->register_custom_pages();
 
 		prepare_omise_myaccount_panel();
 
@@ -228,6 +229,7 @@ class Omise
 
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-queue-runner.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-queueable.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-checkout-page.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/backends/class-omise-backend.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/backends/class-omise-backend-installment.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/backends/class-omise-backend-mobile-banking.php';
@@ -288,6 +290,16 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-admin-page.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-page-card-form-customization.php';
+	}
+
+	private function register_custom_pages()
+	{
+		Omise_Checkout_Page::get_instance()->init();
+
+		// TODO: Need to find a way for users that already have the plugin activated.
+		// or else they need to manually flush the rewrite rules.
+		register_activation_hook( __FILE__, function() { flush_rewrite_rules(); });
+		register_deactivation_hook( __FILE__, function() { flush_rewrite_rules(); });
 	}
 
 	/**
@@ -362,7 +374,7 @@ class Omise
 		add_filter(
 			'woocommerce_payment_gateways',
 			function ( $methods ) {
-				return array_merge( $methods, ['Omise_Payment_Checkout_Page'] );
+				return array_merge( $methods, ['Omise_Payment_RabbitLinePay', 'Omise_Payment_Checkout_Page'] );
 			}
 		);
 	}

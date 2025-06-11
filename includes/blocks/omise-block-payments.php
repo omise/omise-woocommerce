@@ -45,7 +45,6 @@ class Omise_Block_Payments {
 
     private function add_payment_methods() {
         foreach($this->payment_methods as $payment_method) {
-            error_log( 'Adding payment methods to the container' . $payment_method);
             $this->container->register($payment_method, function () use ($payment_method) {
                 return new $payment_method;
             } );

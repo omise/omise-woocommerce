@@ -22,6 +22,8 @@ class Omise_Payment_Checkout_Page extends Omise_Payment {
 	 * Omise_Payment constructor.
 	 */
 	public function __construct() {
+		parent::__construct();
+
 		$this->id                 = 'omise_checkout_page';
 		$this->has_fields         = false;
 		$this->method_title       = __( 'Omise Checkout Page', 'omise' );
@@ -56,17 +58,17 @@ class Omise_Payment_Checkout_Page extends Omise_Payment {
 		}
 
 		$response = $this->make_http_request(
-			'http://localhost:50001/api/sessions',
+			'http://host.docker.internal:50001/api/sessions',
 			'POST',
 			$this->secret_key() . ':',
 			[
 				'amount' => Omise_Money::to_subunit( $order->get_total(), $order->get_currency() ),
 				'currency' => $order->get_currency(),
 				'redirect_urls' => [
-					'complete_url' => 'TODO',
-					'cancel_url' => 'TODO',
+					'complete_url' => 'http://www.google.com',
+					'cancel_url' => 'http://www.google.com',
 				],
-				'locale' => get_locale(),
+				'locale' => 'en',
 				'payment_methods' => [
 					// TODO: List enabled payment methods.
 					"installment",
@@ -80,12 +82,19 @@ class Omise_Payment_Checkout_Page extends Omise_Payment {
 			]
 		);
 
-		$this->order->update_meta_data( 'checkout_session_id', $response['id'] );
+		error_log( print_r( $response, true ) );
+
+		$session_id = $response['id'];
+		if ( ! $session_id ) {
+			throw new Exception( 'Failed to create Omise Checkout Page session.' );
+		}
+
+		$this->order->update_meta_data( 'checkout_session_id', $session_id );
 		$this->order->save();
 
 		return [
 			'result' => 'success',
-			'redirect' => $response['redirect_url'],
+			'redirect' => home_url('/') . Omise_Checkout_Page::$PATH . '/' . $session_id,
 		];
 	}
 
@@ -104,7 +113,7 @@ class Omise_Payment_Checkout_Page extends Omise_Payment {
 
 		// Close.
 		curl_close( $ch );
-		$json_result = json_decode($result);
+		$json_result = json_decode($result, true);
 
 		if ($json_result === null) {
 			$error = json_last_error_msg();
@@ -118,7 +127,12 @@ class Omise_Payment_Checkout_Page extends Omise_Payment {
 		$options = [
 			// Set the HTTP version to 1.1.
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_HTTPHEADER => [
+				'Content-Type: application/json',
+				'Accept: application/json',
+			],
 			// Set the request method.
+			CURLOPT_POST => true,
 			CURLOPT_CUSTOMREQUEST => $method,
 			// Make php-curl returns the data as string.
 			CURLOPT_RETURNTRANSFER => true,
@@ -142,10 +156,14 @@ class Omise_Payment_Checkout_Page extends Omise_Payment {
 
 		// Also merge POST parameters with the option.
 		if ( is_array( $params ) && count( $params ) > 0 ) {
-			$http_query = http_build_query( $params );
-			$http_query = preg_replace( '/%5B\d+%5D/simU', '%5B%5D', $http_query );
+			// $http_query = http_build_query( $params );
+			// $http_query = preg_replace( '/%5B\d+%5D/simU', '%5B%5D', $http_query );
+			// error_log(print_r($options, true));
+			// error_log($http_query);
 
-			$options += [ CURLOPT_POSTFIELDS => $http_query ];
+			$data = json_encode( $params );
+
+			$options += [ CURLOPT_POSTFIELDS => $data ];
 		}
 
 		return $options;

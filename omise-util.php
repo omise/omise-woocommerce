@@ -8,7 +8,7 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 		 * @param string $viewPath
 		 * @param array $viewData
 		 */
-		public static function render_view( $viewPath, $viewData ) {
+		public static function render_view( $viewPath, $viewData = null) {
 			require_once( plugin_dir_path( __FILE__ ) . $viewPath );
 		}
 
