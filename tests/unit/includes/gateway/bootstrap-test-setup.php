@@ -109,6 +109,7 @@ abstract class Bootstrap_Test_Setup extends TestCase
     protected function mockOmiseHttpExecutor()
     {
         require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/OmiseCapability.php';
+        require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/OmiseCharge.php';
 
         return Mockery::mock('overload:' . OmiseHttpExecutor::class);
     }
@@ -124,16 +125,29 @@ abstract class Bootstrap_Test_Setup extends TestCase
         return $omiseSettingMock;
     }
 
-    protected function mockApiCall($fixture)
+    /**
+     * When using this, `runInSeparateProcess` must be set to true
+     * to avoid the OmiseHttpExecutor being cached.
+     */
+    protected function mockApiCall($fixture, $customAttrs = null)
     {
-        $this->mockOmiseSetting(['pkey_xxx'], skey: ['skey_xxx']);
+        $this->mockOmiseSetting(['pkey_xxx'], ['skey_xxx']);
         $this->enableApiCall(true);
+
+        $response = load_fixture($fixture);
+
+        if ($customAttrs) {
+            $responseAttrs = json_decode($response, true);
+            $responseAttrs = array_replace_recursive($responseAttrs, $customAttrs);
+
+            $response = json_encode($responseAttrs);
+        }
 
         $omiseHttpExecutorMock = $this->mockOmiseHttpExecutor();
         $omiseHttpExecutorMock
             ->shouldReceive('execute')
             ->once()
-            ->andReturn(load_fixture($fixture));
+            ->andReturn($response);
     }
 
     protected function enableApiCall($isEnabled)

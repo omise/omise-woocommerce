@@ -4,7 +4,7 @@
  * Plugin Name: Omise Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Omise Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
- * Version:     6.2.0
+ * Version:     6.2.1
  * Author:      Omise and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
@@ -23,7 +23,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '6.2.0';
+	public $version = '6.2.1';
 
 	/**
 	 * The Omise Instance.
@@ -236,9 +236,9 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-customer.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/classes/class-omise-customer-card.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-capture.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-complete.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/events/class-omise-event-charge-create.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/traits/sync-order-trait.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/traits/charge-request-builder-trait.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/abstract-omise-payment-offline.php';
