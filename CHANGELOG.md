@@ -1,13 +1,17 @@
 # CHANGELOG
 
+## [v6.2.1 _(Jun 16, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.2.1)
+
+- Improve webhook rest route. (PR: [#526](https://github.com/omise/omise-woocommerce/pull/526))
+
 ## [v6.2.0 _(Jun 9, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.2.0)
 
 - Update OmisePHP library to support API 2019-05-29. (PR: [#516](https://github.com/omise/omise-woocommerce/pull/516))
-- Show merchant advice and missing 3DS fields on order note (PR: [#517](https://github.com/omise/omise-woocommerce/pull/517))
-- Fix PHP error when fetch capability (PR: [#521](https://github.com/omise/omise-woocommerce/pull/521))
-- Fix WooCommerce Block installment payment (PR: [#522](https://github.com/omise/omise-woocommerce/pull/522))
-- Support other languages on secure form (PR: [#524](https://github.com/omise/omise-woocommerce/pull/524))
-- Make WooCommerce Blocks announcement (PR: [#525](https://github.com/omise/omise-woocommerce/pull/525))
+- Show merchant advice and missing 3DS fields on order note. (PR: [#517](https://github.com/omise/omise-woocommerce/pull/517))
+- Fix PHP error when fetch capability. (PR: [#521](https://github.com/omise/omise-woocommerce/pull/521))
+- Fix WooCommerce Block installment payment. (PR: [#522](https://github.com/omise/omise-woocommerce/pull/522))
+- Support other languages on secure form. (PR: [#524](https://github.com/omise/omise-woocommerce/pull/524))
+- Make WooCommerce Blocks announcement. (PR: [#525](https://github.com/omise/omise-woocommerce/pull/525))
 
 ## [v6.1.1 _(Mar 18, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.1.1)
 - Reorganize logo and screenshots assets for automated deployment. (PR: [#513](https://github.com/omise/omise-woocommerce/pull/513))

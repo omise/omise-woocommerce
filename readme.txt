@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 6.2.0
+Stable tag: 6.2.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -34,14 +34,18 @@ From there:
 
 == Changelog ==
 
+= 6.2.1 =
+
+- Improve webhook rest route. (PR: [#526](https://github.com/omise/omise-woocommerce/pull/526))
+
 = 6.2.0 =
 
 - Update OmisePHP library to support API 2019-05-29. (PR: [#516](https://github.com/omise/omise-woocommerce/pull/516))
-- Show merchant advice and missing 3DS fields on order note (PR: [#517](https://github.com/omise/omise-woocommerce/pull/517))
-- Fix PHP error when fetch capability (PR: [#521](https://github.com/omise/omise-woocommerce/pull/521))
-- Fix WooCommerce Block installment payment (PR: [#522](https://github.com/omise/omise-woocommerce/pull/522))
-- Support other languages on secure form (PR: [#524](https://github.com/omise/omise-woocommerce/pull/524))
-- Make WooCommerce Blocks announcement (PR: [#525](https://github.com/omise/omise-woocommerce/pull/525))
+- Show merchant advice and missing 3DS fields on order note. (PR: [#517](https://github.com/omise/omise-woocommerce/pull/517))
+- Fix PHP error when fetch capability. (PR: [#521](https://github.com/omise/omise-woocommerce/pull/521))
+- Fix WooCommerce Block installment payment. (PR: [#522](https://github.com/omise/omise-woocommerce/pull/522))
+- Support other languages on secure form. (PR: [#524](https://github.com/omise/omise-woocommerce/pull/524))
+- Make WooCommerce Blocks announcement. (PR: [#525](https://github.com/omise/omise-woocommerce/pull/525))
 
 = 6.1.1 =
 
