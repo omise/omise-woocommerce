@@ -94,6 +94,14 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 		$qrcode    = $charge['source']['scannable_code']['image']['download_uri'];
 
 		if ( 'view' === $context ) : ?>
+			<?php
+				$fetchOrderStatusUrl = admin_url( 'admin-ajax.php' );
+				$fetchOrderStatusBody = http_build_query([
+					'action' => 'fetch_order_status',
+					'order_id' => $order->get_id(),
+					'nonce' => wp_create_nonce( OmisePluginHelperWcOrder::get_order_key_by_id( $order ) ),
+				]);
+			?>
 			<div class="omise omise-paynow-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
 				<div class="omise omise-paynow-logo"></div>
 				<p>
@@ -116,28 +124,28 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 				</div>
 			</div>
 			<script type="text/javascript">
-				var xhr_param_name          = "?order_id="+"<?php echo $this->order->get_id() ?>";
-				    refresh_status_url      = "<?php echo get_rest_url( null, 'omise/paynow-payment-status' ); ?>"+xhr_param_name;
-				    class_payment_pending   = document.getElementsByClassName("pending");
-				    class_payment_completed = document.getElementsByClassName("completed");
-					class_payment_timeout   = document.getElementsByClassName("timeout");
-					class_qr_image          = document.querySelector(".omise.omise-paynow-qrcode > img");
+				<!--
+				var classPaymentPending   = document.getElementsByClassName("pending");
+				    classPaymentCompleted = document.getElementsByClassName("completed");
+						classPaymentTimeout   = document.getElementsByClassName("timeout");
+						classQrImage          = document.querySelector(".omise.omise-paynow-qrcode > img");
 
-				var refresh_payment_status = function(intervalIterator) {
+				var refreshPaymentStatus = function(intervalIterator) {
 					var xmlhttp = new XMLHttpRequest();
 					xmlhttp.addEventListener("load", function() {
 						if (this.status == 200) {
 							var chargeState = JSON.parse(this.responseText);
-							if(chargeState.status == "processing") {
-								class_qr_image.style.display = "none";
-								class_payment_pending[0].style.display = "none";
-								class_payment_completed[0].style.display = "block";
+							if (chargeState.data.order_status == "processing") {
+								classQrImage.style.display = "none";
+								classPaymentPending[0].style.display = "none";
+								classPaymentCompleted[0].style.display = "block";
 								clearInterval(intervalIterator);
 							}
 						}
 					});
-					xmlhttp.open("GET", refresh_status_url, true);
-					xmlhttp.send();
+					xmlhttp.open('POST', '<?php echo $fetchOrderStatusUrl ?>', true);
+					xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+					xmlhttp.send('<?php echo $fetchOrderStatusBody ?>');
 				},
 				intervalTime = function(duration, display) {
 					var timer    = duration, minutes, seconds;
@@ -151,12 +159,12 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 							timer = duration;
 						}
 						if((timer % 5) == 0 && timer >= 5) {
-							refresh_payment_status(intervalIterator);
+							refreshPaymentStatus(intervalIterator);
 						}
 						if(timer == 0) {
-							class_payment_pending[0].style.display = "none";
-							class_payment_timeout[0].style.display = "block";
-							class_qr_image.style.display = "none";
+							classPaymentPending[0].style.display = "none";
+							classPaymentTimeout[0].style.display = "block";
+							classQrImage.style.display = "none";
 							clearInterval(intervalIterator);
 						}
 					}, 1000);
@@ -167,6 +175,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 					    display  = document.querySelector('#timer');
 					intervalTime(duration, display);
 				};
+			//-->
 			</script>
 		<?php elseif ( 'email' === $context && !$order->has_status('failed')) : ?>
 			<p>
