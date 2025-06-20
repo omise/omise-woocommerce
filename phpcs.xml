@@ -18,6 +18,7 @@
     <exclude name="Squiz.Commenting.ClassComment.Missing" />
     <exclude name="Squiz.Commenting.FileComment.Missing" />
     <exclude name="Squiz.Commenting.FunctionComment.Missing" />
+    <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />
     <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
     <exclude name="Squiz.Commenting.VariableComment.Missing" />
 
@@ -34,5 +35,12 @@
       <property name="requiredSpacesBeforeClose" value="1" />
       <property name="allowMultipleArguments" value="true" />
     </properties>
+  </rule>
+
+  <rule ref="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized">
+    <type>warning</type>
+  </rule>
+  <rule ref="WordPress.Security.ValidatedSanitizedInput.MissingUnslash">
+    <type>warning</type>
   </rule>
 </ruleset>

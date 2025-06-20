@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
+defined( 'ABSPATH' ) || die( 'No direct script access allowed.' );
 
 if ( class_exists( 'Omise_Rest_Webhooks_Controller' ) ) {
 	return;
@@ -21,7 +21,7 @@ class Omise_Rest_Webhooks_Controller {
 	/**
 	 * @var string
 	 */
-	const PAYNOW_CHARGE_STATUS_ENDPOINT = 'paynow-payment-status';
+	const ENDPOINT_ORDER_STATUS = 'order-status';
 
 	/**
 	 * @var string
@@ -44,11 +44,11 @@ class Omise_Rest_Webhooks_Controller {
 
 		register_rest_route(
 			self::ENDPOINT_NAMESPACE,
-			'/' . self::PAYNOW_CHARGE_STATUS_ENDPOINT,
+			'/' . self::ENDPOINT_ORDER_STATUS,
 			array(
 				'methods' => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'callback_paynow_payment_status' ),
-				'permission_callback' => self::RETURN_TRUE
+				'callback' => array( $this, 'callback_get_order_status' ),
+				'permission_callback' => self::RETURN_TRUE,
 			)
 		);
 	}
@@ -80,15 +80,21 @@ class Omise_Rest_Webhooks_Controller {
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function callback_paynow_payment_status($request) {
-		$order_id = $request->get_param('order_id');
-		$data['status'] =  false;
-		if(isset( $order_id )) {
-			$order = new WC_Order( $order_id );
-			if(isset($order)) {
-				$data['status'] =  $order->get_status();
-			}
+	public function callback_get_order_status( $request ) {
+		$nonce = $request->get_param( '_nonce' );
+		$order_key = $request->get_param( 'key' );
+
+		if ( ! wp_verify_nonce( $nonce, 'get_order_status_' . $order_key ) ) {
+			return new WP_Error( 'omise_rest_invalid_nonce', __( 'Invalid nonce.', 'omise' ), [ 'status' => 403 ] );
 		}
-		return rest_ensure_response( $data );
+
+		$order_id = wc_get_order_id_by_order_key( $order_key );
+		$order = wc_get_order( $order_id );
+
+		if ( ! $order ) {
+			return new WP_Error( 'omise_rest_order_not_found', __( 'Order not found.', 'omise' ), [ 'status' => 404 ] );
+		}
+
+		return rest_ensure_response( [ 'status' => $order->get_status() ] );
 	}
 }
