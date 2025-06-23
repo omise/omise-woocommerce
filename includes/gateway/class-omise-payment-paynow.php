@@ -137,7 +137,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 					xmlhttp.addEventListener("load", function() {
 						if (this.status == 200) {
 							var chargeState = JSON.parse(this.responseText);
-							if (chargeState.data.order_status == "processing") {
+							if (chargeState.status == "processing") {
 								classQrImage.style.display = "none";
 								classPaymentPending[0].style.display = "none";
 								classPaymentCompleted[0].style.display = "block";
