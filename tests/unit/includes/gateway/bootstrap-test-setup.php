@@ -134,9 +134,12 @@ abstract class Bootstrap_Test_Setup extends TestCase
     {
         $omiseSettingMock = Mockery::mock('alias:Omise_Setting');
 
-        $omiseSettingMock->shouldReceive('instance')->andReturn($omiseSettingMock);
-        $omiseSettingMock->shouldReceive('public_key')->andReturn($pkey);
-        $omiseSettingMock->shouldReceive('secret_key')->andReturn($skey);
+        $omiseSettingMock->allows([
+            'instance' => $omiseSettingMock,
+            'public_key' => $pkey,
+            'secret_key' => $skey,
+        ]);
+        $omiseSettingMock->shouldReceive('get_settings')->andReturn([])->byDefault();
 
         return $omiseSettingMock;
     }
