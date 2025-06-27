@@ -89,9 +89,13 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 				},
 			]
 		);
+		Monkey\Functions\expect( 'wp_create_nonce' )->twice();
 		Monkey\Functions\expect( 'wp_create_nonce' )
 			->with( 'get_order_status_wc_order_kSwj6Gcnut4dU' )
 			->andReturn( 'abcde12345' );
+		Monkey\Functions\expect( 'wp_create_nonce' )
+			->with( 'wp_rest' )
+			->andReturn( 'fghij67890' );
 
 		ob_start();
 		$this->omise_paynow->display_qrcode( $this->order->get_id() );
@@ -136,9 +140,6 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 				},
 			]
 		);
-		Monkey\Functions\expect( 'wp_create_nonce' )
-			->with( 'get_order_status_wc_order_kSwj6Gcnut4dU' )
-			->andReturn( 'abcde12345' );
 
 		ob_start();
 		$this->omise_paynow->display_qrcode( $this->order->get_id() );
@@ -165,6 +166,7 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 				'source' => $this->paynow_source,
 			]
 		);
+		Monkey\Functions\expect( 'wp_create_nonce' )->never();
 
 		ob_start();
 		$this->omise_paynow->email_qrcode( $this->order, sent_to_admin: false );

@@ -100,6 +100,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 					[
 						'key' => $order_key,
 						'_nonce' => wp_create_nonce( 'get_order_status_' . $order_key ),
+						'_wpnonce' => wp_create_nonce('wp_rest'),
 					],
 					get_rest_url( null, 'omise/order-status')
 				);
@@ -143,6 +144,8 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 								classPaymentCompleted[0].style.display = "block";
 								clearInterval(intervalIterator);
 							}
+						} else if (this.status == 403) {
+							clearInterval(intervalIterator);
 						}
 					});
 					xmlhttp.open('GET', '<?php echo $get_order_status_url ?>', true);

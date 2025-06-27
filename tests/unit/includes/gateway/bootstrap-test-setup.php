@@ -21,16 +21,19 @@ abstract class WC_Payment_Gateway
  * Temporary mock for WP_* class
  * In the future, we should move to use WP_UnitTestCase
  */
-class WP_Error {
+class WP_Error
+{
     public function __construct(
         public $code = '',
         public $message = '',
-        public $data = '') {
+        public $data = ''
+    ) {
     }
 }
-class WP_REST_Server_Stub {
-	const EDITABLE = 'POST';
-	const READABLE = 'GET';
+class WP_REST_Server_Stub
+{
+    const EDITABLE = 'POST';
+    const READABLE = 'GET';
 }
 
 abstract class Bootstrap_Test_Setup extends TestCase
