@@ -13,6 +13,11 @@ abstract class Omise_Payment_Offline extends Omise_Payment
 
 	protected $enabled_processing_notification = true;
 
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
 	/**
 	 * @inheritdoc
 	 */
