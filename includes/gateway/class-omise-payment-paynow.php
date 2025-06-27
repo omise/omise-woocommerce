@@ -129,9 +129,9 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 			<script type="text/javascript">
 				<!--
 				var classPaymentPending   = document.getElementsByClassName("pending");
-				    classPaymentCompleted = document.getElementsByClassName("completed");
-						classPaymentTimeout   = document.getElementsByClassName("timeout");
-						classQrImage          = document.querySelector(".omise.omise-paynow-qrcode > img");
+				var classPaymentCompleted = document.getElementsByClassName("completed");
+				var classPaymentTimeout   = document.getElementsByClassName("timeout");
+				var classQrImage          = document.querySelector(".omise.omise-paynow-qrcode > img");
 
 				var refreshPaymentStatus = function(intervalIterator) {
 					var xmlhttp = new XMLHttpRequest();
