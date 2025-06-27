@@ -64,7 +64,6 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 				'get_id' => 123,
 				'get_order_key' => 'wc_order_kSwj6Gcnut4dU',
 				'get_transaction_id' => 'chrg_test_1234567890',
-
 			]
 		);
 		$this->mockApiCall(
