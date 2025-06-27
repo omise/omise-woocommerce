@@ -121,9 +121,10 @@ fieldset.card-exists,
 
 .omise-paynow-payment-status .green-check {
 	background: url('../images/green-check.svg') no-repeat;
-	height: 150px;
-	width: 116px;
-	margin: auto;
+	background-size: contain;
+	background-position: center;
+	height: 50px;
+	margin: 10px auto;
 }
 
 /**
