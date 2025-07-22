@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v6.2.2 _(Jul 22, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.2.2)
+
+- Add authentication to Paynow status endpoint. (PR: [#530](https://github.com/omise/omise-woocommerce/issues/530))
+
 ## [v6.2.1 _(Jun 16, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.2.1)
 
 - Improve webhook rest route. (PR: [#526](https://github.com/omise/omise-woocommerce/pull/526))
