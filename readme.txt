@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 6.2.1
+Stable tag: 6.2.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,10 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 6.2.2 =
+
+- Add authentication to Paynow status endpoint. (PR: [#530](https://github.com/omise/omise-woocommerce/issues/530))
 
 = 6.2.1 =
 
