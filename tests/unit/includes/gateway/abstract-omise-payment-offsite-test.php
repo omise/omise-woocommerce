@@ -6,7 +6,7 @@ use Brain\Monkey;
 
 abstract class Omise_Payment_Offsite_Test extends Bootstrap_Test_Setup {
 
-	public $sourceType;
+	protected $return_uri = 'https://abc.com/order/complete';
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -31,39 +31,35 @@ abstract class Omise_Payment_Offsite_Test extends Bootstrap_Test_Setup {
 		);
 
 		$this->mockOmiseSetting( 'pkey_xxx', 'skey_xxx' );
-		$this->mockRedirectUrl( 'https://abc.com/order/complete' );
+		$this->mockRedirectUrl( $this->return_uri );
 		load_plugin();
 	}
 
-	// TODO: Update this test steps
-	public function getChargeTest( $classObj ) {
-		$expectedAmount = 999999;
-		$expectedCurrency = 'thb';
+	public function testCharge( $instance ) {
+		$expected_amount = 999999;
+		$expected_currency = 'thb';
 
-		Monkey\Functions\expect( 'wc_clean' )->andReturn( $expectedAmount );
-
-		$expectedRequest = [
+		$charge = [
 			'object' => 'charge',
 			'id' => 'chrg_test_no1t4tnemucod0e51mo',
 			'location' => '/charges/chrg_test_no1t4tnemucod0e51mo',
-			'amount' => $expectedAmount,
-			'currency' => $expectedCurrency,
+			'amount' => $expected_amount,
+			'currency' => $expected_currency,
 		];
+		$order = $this->getOrderMock( $expected_amount, $expected_currency );
 
 		// Create a mock for OmiseCharge
-		$chargeMock = Mockery::mock( 'overload:OmiseCharge' );
-		$chargeMock->shouldReceive( 'create' )->once()->andReturn( $expectedRequest );
+		$charge_api_mock = Mockery::mock( 'overload:OmiseCharge' );
+		$charge_api_mock->shouldReceive( 'create' )->once()->andReturn( $charge );
 
-		$orderMock = $this->getOrderMock( $expectedAmount, $expectedCurrency );
-
-		$wcProduct = Mockery::mock( 'overload:WC_Product' );
-		$wcProduct->shouldReceive( 'get_sku' )
+		// Create a mock for WC_Product
+		$wc_product = Mockery::mock( 'overload:WC_Product' );
+		$wc_product->shouldReceive( 'get_sku' )
 			->once()
 			->andReturn( 'sku_1234' );
 
-		$orderId = 'order_123';
-		$result = $classObj->charge( $orderId, $orderMock );
-		$this->assertEquals( $expectedAmount, $result['amount'] );
-		$this->assertEquals( $expectedCurrency, $result['currency'] );
+		$result = $instance->charge( 'order_123', $order );
+
+		$this->assertEquals( $charge, $result );
 	}
 }

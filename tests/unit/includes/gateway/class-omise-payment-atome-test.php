@@ -18,27 +18,50 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_get_charge_request() {
-		$expectedAmount = 999999;
-		$expectedCurrency = 'thb';
-		$orderId = 'order_123';
-		$orderMock = $this->getOrderMock( $expectedAmount, $expectedCurrency );
+		$order_amount = 4566;
+		$order_currency = 'thb';
+		$order_id = 'order_123';
+		$order_mock = $this->getOrderMock( $order_amount, $order_currency );
 
-		$wcProduct = Mockery::mock( 'overload:WC_Product' );
-		$wcProduct->shouldReceive( 'get_sku' )
+		$wc_product = Mockery::mock( 'overload:WC_Product' );
+		$wc_product->shouldReceive( 'get_sku' )
 			->once()
 			->andReturn( 'sku_1234' );
 
 		$_POST['omise_atome_phone_default'] = true;
 
-		$result = $this->omise_atome->get_charge_request( $orderId, $orderMock );
+		$result = $this->omise_atome->get_charge_request( $order_id, $order_mock );
 
-		// TODO: Update this assertion
-		$this->assertEquals( $this->sourceType, $result['source']['type'] );
+		$this->assertEquals( 456600, $result['amount'] );
+		$this->assertEquals( $order_currency, $result['currency'] );
+		$this->assertEquals( $order_id, $result['metadata']['order_id'] );
+		$this->assertEquals( $this->return_uri, $result['return_uri'] );
+
+		$expected_source = [
+			'type' => 'atome',
+			'phone_number' => $order_mock->get_billing_phone(),
+			'items' => [
+				[
+					'name' => 'T Shirt',
+          'amount' => 60000,
+          'quantity' => 1,
+					'sku' => 'sku_1234',
+				]
+			],
+			'shipping' => [
+				'country' => 'Thailand',
+				'city' => 'Bangkok',
+				'postal_code' => '10110',
+				'state' => 'Bangkok',
+				'street1' => 'Sukumvit Road'
+			]
+		];
+		$this->assertEquals( $expected_source, $result['source'] );
 	}
 
 	public function test_atome_charge() {
 		$_POST['omise_atome_phone_default'] = true;
-		$obj = new Omise_Payment_Atome();
-		$this->getChargeTest( $obj );
+
+		$this->testCharge( $this->omise_atome );
 	}
 }
