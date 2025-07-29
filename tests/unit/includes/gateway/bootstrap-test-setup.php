@@ -83,6 +83,7 @@ abstract class Bootstrap_Test_Setup extends Omise_Test_Case
             'instance' => $omiseSettingMock,
             'public_key' => $pkey,
             'secret_key' => $skey,
+            'is_dynamic_webhook_enabled' => false,
         ]);
         $omiseSettingMock->shouldReceive('get_settings')->andReturn([])->byDefault();
 
@@ -125,6 +126,14 @@ abstract class Bootstrap_Test_Setup extends Omise_Test_Case
             Brain\Monkey\Functions\expect('is_checkout')->andReturn(true);
             Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
         }
+    }
+
+    protected function mockRedirectUrl($redirectUrl = 'https://abc.com/order/complete') {
+        $redirectUrlMock = Mockery::mock('alias:RedirectUrl');
+        $redirectUrlMock->shouldReceive('create')->andReturn($redirectUrl);
+        $redirectUrlMock->shouldReceive('getToken')->andReturn('token123');
+
+        return $redirectUrlMock;
     }
 }
 

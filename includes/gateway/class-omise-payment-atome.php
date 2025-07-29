@@ -195,8 +195,6 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             'items' => $this->getItems($order, $order->get_currency())
 		]);
 
-        error_log(print_r($requestData, true));
-
         return $requestData;
     }
 

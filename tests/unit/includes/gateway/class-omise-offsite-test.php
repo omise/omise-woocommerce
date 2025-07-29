@@ -4,6 +4,9 @@ require_once __DIR__ . '/bootstrap-test-setup.php';
 
 use Brain\Monkey;
 
+/**
+ * @deprecated Please use Omise_Payment_Offsite_Test instead.
+ */
 abstract class Omise_Offsite_Test extends Bootstrap_Test_Setup
 {
     public $sourceType;
