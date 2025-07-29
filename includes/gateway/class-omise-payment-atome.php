@@ -102,43 +102,62 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             ]
         ];
 
-        $currency = strtolower(get_woocommerce_currency());
         $cart = WC()->cart;
+        $cart_subtotal = $cart->subtotal;
+        $cart_total = $cart->total;
+        $cart_currency = strtolower(get_woocommerce_currency());
 
-        if ($cart->subtotal === 0) {
+        // For Pay for Order Page
+        if (is_checkout_pay_page()) {
+            global $wp_query;
+            $order_id = $wp_query->query_vars['order-pay'];
+            if (!$order_id) {
+                return [
+                    'status' => false,
+                    'message' => 'Invalid order ID.'
+                ];
+            }
+            $order = wc_get_order($order_id);
+
+            $cart_subtotal = $order->get_subtotal();
+            $cart_total = $order->get_total();
+            $cart_currency = strtolower($order->get_currency());
+        }
+
+        if ($cart_subtotal === 0) {
             return [
                 'status' => false,
                 'message' => 'Complimentary products cannot be billed.'
             ];
         }
 
-        if (!isset($limits[$currency])) {
+        if (!isset($limits[$cart_currency])) {
             return [
                 'status' => false,
                 'message' => 'Currency not supported'
             ];
         }
 
-        $limit = $limits[$currency];
+        $limit = $limits[$cart_currency];
 
-        if ($cart->total < $limit['min']) {
+        if ($cart_total < $limit['min']) {
             return [
                 'status' => false,
                 'message' => sprintf(
                     "Amount must be greater than %u %s",
                     number_format($limit['min'], 2),
-                    strtoupper($currency)
+                    strtoupper($cart_currency)
                 )
             ];
         }
 
-        if ($cart->total > $limit['max']) {
+        if ($cart_total > $limit['max']) {
             return [
                 'status' => false,
-                'message' => __(
+                'message' => sprintf(
                     'Amount must be less than %1 %2',
                     number_format($limit['max'], 2),
-                    strtoupper($currency)
+                    strtoupper($cart_currency)
                 )
             ];
         }
@@ -163,7 +182,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
 			$this->source_type,
 			$this->id . "_callback"
 		);
-        
+
         $default_phone_selected = isset($_POST['omise_atome_phone_default']) ?
             $_POST['omise_atome_phone_default']
             : false;
