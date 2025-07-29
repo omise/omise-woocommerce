@@ -1,9 +1,5 @@
 <?php
 
-define( 'ABSPATH', value: '' );
-define( 'OMISE_PUBLIC_KEY', 'pkey_test_12345');
-define( 'OMISE_SECRET_KEY', 'skey_test_12345');
-
 class Omise_Unit_Test {
 	public static function include_class( $path ): void {
 		require_once __DIR__ . '/../../includes/' . $path;

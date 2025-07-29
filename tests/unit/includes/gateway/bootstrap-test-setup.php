@@ -1,64 +1,6 @@
 <?php
-
-use PHPUnit\Framework\TestCase;
-use Brain\Monkey;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
-/**
- * Mock abstract WooCommerce's gateway
- */
-abstract class WC_Payment_Gateway
+abstract class Bootstrap_Test_Setup extends Omise_Test_Case
 {
-    public static $is_available = true;
-
-    public function is_available()
-    {
-        return self::$is_available;
-    }
-}
-
-/**
- * Temporary mock for WP_* class
- * In the future, we should move to use WP_UnitTestCase
- */
-class WP_Error
-{
-    public function __construct(
-        public $code = '',
-        public $message = '',
-        public $data = ''
-    ) {
-    }
-}
-class WP_REST_Server_Stub
-{
-    const EDITABLE = 'POST';
-    const READABLE = 'GET';
-}
-
-abstract class Bootstrap_Test_Setup extends TestCase
-{
-    // Adds Mockery expectations to the PHPUnit assertions count.
-    use MockeryPHPUnitIntegration;
-
-    public $sourceType;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        Monkey\setUp();
-    }
-
-    /**
-     * close mockery after tests are done
-     */
-    protected function tearDown(): void
-    {
-        Monkey\tearDown();
-        Mockery::close();
-        parent::tearDown();
-    }
-
     public function getOrderMock($expectedAmount, $expectedCurrency)
     {
         // Create a mock of the $order object
