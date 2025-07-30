@@ -109,8 +109,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
 
         // For Pay for Order Page
         if ( is_checkout_pay_page() ) {
-            global $wp_query;
-            $order_id = $wp_query->query_vars['order-pay'];
+            $order_id = get_query_var('order-pay');
             $order = wc_get_order( $order_id );
             if ( ! $order ) {
                 throw new Exception( 'Order not found.' );

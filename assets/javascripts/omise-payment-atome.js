@@ -55,7 +55,7 @@
 	}
 
 	$(function () {
-		$('form.checkout, form#order_review').on('checkout_place_order', function (e) {
+		$('form.checkout, form#order_review').on('checkout_place_order', function () {
 			return omiseFormHandler();
 		});
 	})

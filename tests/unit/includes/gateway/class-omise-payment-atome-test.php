@@ -119,11 +119,8 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
 		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( true );
+		Monkey\Functions\expect( 'get_query_var' )->with( 'order-pay' )->andReturn( 456 );
 		Monkey\Functions\expect( 'wc_get_order' )->with( 456 )->andReturn( $order_mock );
-
-		$wp_query = new stdClass();
-		$wp_query->query_vars = [ 'order-pay' => 456 ];
-		$GLOBALS['wp_query'] = $wp_query;
 
 		ob_start();
 		$this->omise_atome->payment_fields();
@@ -219,11 +216,8 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
 		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( true );
+		Monkey\Functions\expect( 'get_query_var' )->with( 'order-pay' )->andReturn( 456 );
 		Monkey\Functions\expect( 'wc_get_order' )->with( 456 )->andReturn( false );
-
-		$wp_query = new stdClass();
-		$wp_query->query_vars = [ 'order-pay' => 456 ];
-		$GLOBALS['wp_query'] = $wp_query;
 
 		$this->expectException( Exception::class );
 		$this->expectExceptionMessage( 'Order not found.' );
