@@ -15,6 +15,8 @@ abstract class WC_Payment_Gateway {
 	public function is_available() {
 		return self::$is_available;
 	}
+
+	public function payment_fields() {}
 }
 
 /**

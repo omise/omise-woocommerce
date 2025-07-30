@@ -26,6 +26,16 @@ function _x( $text, $context, $domain = 'default' ) {
 	return $text;
 }
 
+/**
+ * Mock WordPress _e() function.
+ *
+ * @see wp-includes/l10n.php
+ * @see https://developer.wordpress.org/reference/functions/_e
+ */
+function _e( $text, $context, $domain = 'default' ) {
+	echo $text;
+}
+
 function load_fixture($name) {
 	return file_get_contents(__DIR__ . "/../fixtures/{$name}.json");
 }

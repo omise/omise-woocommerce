@@ -12,5 +12,6 @@ abstract class Omise_Test_Case extends TestCase {
 	protected function tearDown(): void {
 		Brain\Monkey\tearDown();
 		Mockery::close();
+		parent::tearDown();
 	}
 }

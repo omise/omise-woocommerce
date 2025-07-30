@@ -111,13 +111,10 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
         if ( is_checkout_pay_page() ) {
             global $wp_query;
             $order_id = $wp_query->query_vars['order-pay'];
-            if ( ! $order_id ) {
-                return [
-                    'status' => false,
-                    'message' => 'Invalid order ID.',
-                ];
-            }
             $order = wc_get_order( $order_id );
+            if ( ! $order ) {
+                throw new Exception( 'Order not found.' );
+            }
 
             $cart_subtotal = $order->get_subtotal();
             $cart_total = $order->get_total();
@@ -144,7 +141,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             return [
                 'status' => false,
                 'message' => sprintf(
-                    'Amount must be greater than %u %s',
+                    'Amount must be greater than %s %s',
                     number_format( $limit['min'], 2 ),
                     strtoupper($cart_currency),
                 ),
@@ -155,7 +152,7 @@ class Omise_Payment_Atome extends Omise_Payment_Offsite
             return [
                 'status' => false,
                 'message' => sprintf(
-                    'Amount must be less than %1 %2',
+                    'Amount must be less than %s %s',
                     number_format( $limit['max'], 2 ),
                     strtoupper( $cart_currency ),
                 ),
