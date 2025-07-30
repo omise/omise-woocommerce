@@ -44,7 +44,7 @@ const PLUGIN_PATH = __DIR__ . '/../..';
 // == Omise WooCommerce == //
 // ======================= //
 // FIXME: Start including payment gateway classes here for better test organization.
-// In the future, we can move to PSR-4 autoloading.
+// In the future, we can check if it is possible to use autoloader.
 // Helpers
 require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/charge.php';
 require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/wc_order.php';

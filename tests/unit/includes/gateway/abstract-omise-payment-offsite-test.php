@@ -27,6 +27,7 @@ abstract class Omise_Payment_Offsite_Test extends Bootstrap_Test_Setup {
 				'wp_kses',
 				'plugins_url',
 				'add_action',
+        'sanitize_text_field' => null,
 				'plugin_dir_path' => __DIR__ . '/../../../../',
 			]
 		);
@@ -36,7 +37,7 @@ abstract class Omise_Payment_Offsite_Test extends Bootstrap_Test_Setup {
 		load_plugin();
 	}
 
-	public function performChargeTest( $instance ) {
+	public function perform_charge_test( $instance ) {
 		$expected_amount = 999999;
 		$expected_currency = 'thb';
 

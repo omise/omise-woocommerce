@@ -62,10 +62,32 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 		$this->assertEquals( $expected_source, $result['source'] );
 	}
 
+	public function test_atome_get_charge_request_with_custom_phone_number() {
+		$order_amount = 4566;
+		$order_currency = 'thb';
+		$order_id = 'order_123';
+		$order_mock = $this->getOrderMock( $order_amount, $order_currency );
+
+		$wc_product = Mockery::mock( 'overload:WC_Product' );
+		$wc_product->shouldReceive( 'get_sku' )
+			->once()
+			->andReturn( 'sku_1234' );
+
+		$_POST['omise_atome_phone_default'] = false;
+		$_POST['omise_atome_phone_number'] = '+66123456789';
+
+		$result = $this->omise_atome->get_charge_request( $order_id, $order_mock );
+
+		$this->assertEquals( 456600, $result['amount'] );
+		$this->assertEquals( $order_currency, $result['currency'] );
+		$this->assertEquals( 'atome', $result['source']['type'] );
+		$this->assertEquals( '+66123456789', $result['source']['phone_number'] );
+	}
+
 	public function test_atome_charge() {
 		$_POST['omise_atome_phone_default'] = true;
 
-		$this->performChargeTest( $this->omise_atome );
+		$this->perform_charge_test( $this->omise_atome );
 	}
 
 	public function test_atome_payment_fields_renders_atome_form_on_checkout_page() {
