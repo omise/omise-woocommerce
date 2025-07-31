@@ -38,7 +38,7 @@
             }
 
             const phoneNumber = $('#omise_atome_phone_number').val();
-			
+
             if (!phoneNumber) {
                 return omiseHandleError('Phone number is required in Atome');
             }
@@ -55,7 +55,7 @@
 	}
 
 	$(function () {
-		$('form.checkout').on('checkout_place_order', function (e) {
+		$('form.checkout, form#order_review').on('checkout_place_order', function () {
 			return omiseFormHandler();
 		});
 	})

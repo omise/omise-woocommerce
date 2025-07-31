@@ -13,6 +13,13 @@ abstract class Omise_Payment_Offsite extends Omise_Payment
 	/**
 	 * @inheritdoc
 	 */
+	public function payment_fields() {
+		parent::payment_fields();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function result($order_id, $order, $charge)
 	{
 		if (self::STATUS_FAILED === $charge['status']) {

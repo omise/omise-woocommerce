@@ -7,7 +7,6 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
     public $mockOrder;
     public $mockWcDateTime;
     public $mockLocalizeScript;
-    public $mockOmisePluginHelper;
     public $mockOmisePaymentOffline;
     public $mockOmiseCharge;
     public $mockFileGetContent;
@@ -22,7 +21,6 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockOrder = Mockery::mock();
         $this->mockLocalizeScript = Mockery::mock();
         $this->mockWcDateTime = Mockery::mock('overload:WC_DateTime');
-        $this->mockOmisePluginHelper = Mockery::mock('overload:OmisePluginHelperWcOrder')->shouldIgnoreMissing();
         $this->mockOmisePaymentOffline = Mockery::mock('overload:Omise_Payment_Offline');
         $this->mockOmiseCharge = Mockery::mock('overload:OmiseCharge');
         $this->mockFileGetContent = Mockery::mock('overload:File_Get_Contents_Wrapper');
@@ -77,6 +75,11 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         function wp_localize_script($scriptName, $object, $params) {
             return $GLOBALS['mock_wp_localize_script']->call($scriptName, $object, $params);
         }
+
+        Monkey\Functions\when('wc_get_order')->justReturn($this->mockOrder);
+        $this->mockOrder->shouldReceive('get_order_key')
+            ->once()
+            ->andReturn('wc_order_12345');
 
         $obj = new Omise_Payment_Promptpay();
         $result = $obj->display_qrcode($this->mockOrder, 'view');
