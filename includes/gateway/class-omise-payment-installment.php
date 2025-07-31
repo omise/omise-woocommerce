@@ -129,9 +129,14 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			null,
 			$this->id . "_callback"
 		);
-		$requestData['description'] = 'staging';
 		$requestData['source'] = isset($_POST['omise_source']) ? wc_clean($_POST['omise_source']) : '';
 		$requestData['card'] = isset($_POST['omise_token']) ? wc_clean($_POST['omise_token']) : '';
+
+		$wlb_suffix = getenv('WLB_ORDER_DESC_SUFFIX');
+		if (!empty( $wlb_suffix ) && !empty( $requestData['card'])) {
+			$requestData['description'] .= ' ' . $wlb_suffix;
+		}
+
 		return OmiseCharge::create($requestData);
 	}
 

@@ -11,18 +11,14 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	private $omise_atome;
 
 	protected function setUp(): void {
-		$this->sourceType = 'atome';
 		parent::setUp();
 
-		$this->omise_atome = Mockery::mock( Omise_Payment_Atome::class )->makePartial();
-		$this->omise_atome->shouldReceive( 'init_settings' );
-		$this->omise_atome->shouldReceive( 'get_option' );
-		$this->omise_atome->__construct();
+		$this->omise_atome = $this->mock_payment_class( Omise_Payment_Atome::class );
 	}
 
 	public function test_atome_get_charge_request() {
 		$order_amount = 4566;
-		$order_currency = 'thb';
+		$order_currency = 'THB';
 		$order_id = 'order_123';
 		$order_mock = $this->getOrderMock( $order_amount, $order_currency );
 
@@ -64,7 +60,7 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 
 	public function test_atome_get_charge_request_with_custom_phone_number() {
 		$order_amount = 4566;
-		$order_currency = 'thb';
+		$order_currency = 'THB';
 		$order_id = 'order_123';
 		$order_mock = $this->getOrderMock( $order_amount, $order_currency );
 
@@ -85,9 +81,10 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_charge() {
+		$order = $this->getOrderMock( 999999, 'THB' );
 		$_POST['omise_atome_phone_default'] = true;
 
-		$this->perform_charge_test( $this->omise_atome );
+		$this->perform_charge_test( $this->omise_atome, $order );
 	}
 
 	public function test_atome_payment_fields_renders_atome_form_on_checkout_page() {

@@ -1,14 +1,18 @@
 <?php
 abstract class Bootstrap_Test_Setup extends Omise_Test_Case
 {
-    public function getOrderMock($expectedAmount, $expectedCurrency)
+    public function getOrderMock($expectedAmount, $expectedCurrency, $properties = [])
     {
         // Create a mock of the $order object
         $orderMock = Mockery::mock('WC_Order');
 
         // Define expectations for the mock
+        $orderMock->allows([
+            'get_id' => $properties['id'] ?? 123,
+            'get_order_key' => $properties['key'] ?? 'order_kfeERDv',
+        ]);
         $orderMock->shouldReceive('get_currency')
-            ->andReturn($expectedCurrency);
+            ->andReturn(strtoupper($expectedCurrency));
         $orderMock->shouldReceive('get_total')
             ->andReturn($expectedAmount);  // in units
         $orderMock->shouldReceive('add_meta_data');
