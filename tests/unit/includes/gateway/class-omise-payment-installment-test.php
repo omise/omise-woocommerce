@@ -5,7 +5,7 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
 use Brain\Monkey;
 
 /**
- * @runInSeparateProcess
+ * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
 class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
