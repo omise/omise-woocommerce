@@ -54,7 +54,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_charge()
     {
-        putenv('WLB_ORDER_DESC_SUFFIX=- test');
+        putenv('CUSTOM_WLB_ORDER_DESC=test');
 
         $order = $this->getOrderMock(4353, 'THB', [ 'id' => 1293 ]);
         $_POST['omise_source'] = 'source_test_12345';
@@ -78,7 +78,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_wlb_charge()
     {
-        putenv('WLB_ORDER_DESC_SUFFIX');
+        putenv('CUSTOM_WLB_ORDER_DESC');
 
         $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
         $_POST['omise_source'] = 'source_test_12345';
@@ -101,9 +101,9 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
     }
 
-    public function test_installment_wlb_charge_with_description_suffix()
+    public function test_installment_wlb_charge_with_custom_description()
     {
-        putenv('WLB_ORDER_DESC_SUFFIX=- test');
+        putenv('CUSTOM_WLB_ORDER_DESC={description} - test');
 
         $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
         $_POST['omise_source'] = 'source_test_12345';
@@ -111,6 +111,21 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
         $test_charge_fn = function ($actual) {
             return $actual['description'] == 'WooCommerce Order id 400 - test';
+        };
+
+        $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
+    }
+
+    public function test_installment_wlb_charge_with_custom_description_fully_overridden()
+    {
+        putenv('CUSTOM_WLB_ORDER_DESC=My order description');
+
+        $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
+        $_POST['omise_source'] = 'source_test_12345';
+        $_POST['omise_token'] = 'tokn_test_67890';
+
+        $test_charge_fn = function ($actual) {
+            return $actual['description'] == 'My order description';
         };
 
         $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
