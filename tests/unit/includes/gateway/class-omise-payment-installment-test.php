@@ -17,7 +17,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
     {
         parent::setUp();
 
-        $this->installment = $this->omise_atome = $this->mock_payment_class( Omise_Payment_Installment::class );
+        $this->installment = $this->mock_payment_class( Omise_Payment_Installment::class );
         $this->backend_installment_mock = Mockery::mock('Omise_Backend_Installment');
     }
 

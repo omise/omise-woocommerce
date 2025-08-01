@@ -134,6 +134,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 
 		$custom_wlb_desc = getenv('OMISE_CUSTOM_WLB_ORDER_DESC');
 		if (!empty($custom_wlb_desc) && !empty($requestData['card'])) {
+			$custom_wlb_desc = sanitize_text_field($custom_wlb_desc);
 			$requestData['description'] = str_replace('{description}', $requestData['description'], $custom_wlb_desc);
 		}
 
