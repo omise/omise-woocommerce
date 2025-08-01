@@ -5,39 +5,24 @@ require_once __DIR__ . '/class-omise-offsite-test.php';
 use Brain\Monkey;
 
 /**
- * @runInSeparateProcess
+ * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-
-class Omise_Payment_Installment_Test extends Omise_Offsite_Test
+class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 {
     protected $backend_installment_mock;
+    private $installment;
 
     protected function setUp(): void
     {
-        $this->sourceType = 'installment_ktc';
         parent::setUp();
 
-        Monkey\Functions\expect('wp_kses');
-        Omise_Unit_Test::include_class('backends/class-omise-backend.php');
-		Omise_Unit_Test::include_class('backends/class-omise-backend-installment.php');
-
+        $this->installment = $this->mock_payment_class( Omise_Payment_Installment::class );
         $this->backend_installment_mock = Mockery::mock('Omise_Backend_Installment');
-        require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
     }
 
-    protected function tearDown(): void
+    public function test_installment_get_total_amount_from_admin_order_page()
     {
-        parent::tearDown();
-    }
-
-    /**
-     * @test
-     */
-    public function get_total_amount_from_admin_order_page()
-    {
-        Monkey\Functions\expect('add_action');
-
         $order = Mockery::mock('WC_Order');
         Monkey\Functions\expect('wc_get_order')->andReturn($order);
         $order
@@ -49,45 +34,104 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $wp->query_vars = ['order-pay' => 123];
         $GLOBALS['wp'] = $wp;
 
-        $installment = new Omise_Payment_Installment();
-        $total = $installment->get_total_amount();
+        $total = $this->installment->get_total_amount();
 
         $this->assertEquals($total, 999999);
     }
 
-    /**
-     * @test
-     */
-    public function get_total_amount_from_cart()
+    public function test_installment_get_total_amount_from_cart()
     {
-        Monkey\Functions\expect('add_action');
-
         $clazz = new stdClass();
         $clazz->cart = new stdClass();
         $clazz->cart->total = 999999;
 
         Monkey\Functions\expect('WC')->andReturn($clazz);
 
-        $installment = new Omise_Payment_Installment();
-        $total = $installment->get_total_amount();
+        $total = $this->installment->get_total_amount();
 
         $this->assertEquals($total, 999999);
     }
 
-    public function test_charge()
+    public function test_installment_charge()
     {
-        $this->backend_installment_mock->shouldReceive('get_provider');
+        putenv('OMISE_CUSTOM_WLB_ORDER_DESC=test');
 
-        Monkey\Functions\expect('add_action');
+        $order = $this->getOrderMock(4353, 'THB', [ 'id' => 1293 ]);
+        $_POST['omise_source'] = 'source_test_12345';
 
-        $_POST['source'] = ['type' => $this->sourceType];
-        $_POST[$this->sourceType . '_installment_terms'] = 3;
+        $test_charge_fn = function ($actual) {
+            return $actual == [
+                'amount' => 435300,
+                'currency' => 'THB',
+                'description' => 'WooCommerce Order id 1293',
+                'return_uri' => $this->return_uri,
+                'source' => 'source_test_12345',
+                'card' => '',
+                'metadata' => [
+                    'order_id' => 1293,
+                ],
+            ];
+        };
 
-        $obj = new Omise_Payment_Installment();
-        $this->getChargeTest($obj);
+        $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
     }
 
-    public function test_get_view_data()
+    public function test_installment_wlb_charge()
+    {
+        putenv('OMISE_CUSTOM_WLB_ORDER_DESC');
+
+        $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
+        $_POST['omise_source'] = 'source_test_12345';
+        $_POST['omise_token'] = 'tokn_test_67890';
+
+        $test_charge_fn = function ($actual) {
+            return $actual == [
+                'amount' => 25050,
+                'currency' => 'THB',
+                'description' => 'WooCommerce Order id 400',
+                'return_uri' => $this->return_uri,
+                'source' => 'source_test_12345',
+                'card' => 'tokn_test_67890',
+                'metadata' => [
+                    'order_id' => 400,
+                ],
+            ];
+        };
+
+        $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
+    }
+
+    public function test_installment_wlb_charge_with_custom_description()
+    {
+        putenv('OMISE_CUSTOM_WLB_ORDER_DESC={description} - test');
+
+        $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
+        $_POST['omise_source'] = 'source_test_12345';
+        $_POST['omise_token'] = 'tokn_test_67890';
+
+        $test_charge_fn = function ($actual) {
+            return $actual['description'] == 'WooCommerce Order id 400 - test';
+        };
+
+        $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
+    }
+
+    public function test_installment_wlb_charge_with_custom_description_fully_overridden()
+    {
+        putenv('OMISE_CUSTOM_WLB_ORDER_DESC=My order description');
+
+        $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
+        $_POST['omise_source'] = 'source_test_12345';
+        $_POST['omise_token'] = 'tokn_test_67890';
+
+        $test_charge_fn = function ($actual) {
+            return $actual['description'] == 'My order description';
+        };
+
+        $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
+    }
+
+    public function test_installment_get_view_data()
     {
         $capability = Mockery::mock('alias:Omise_Capability');
         $capability->shouldReceive('retrieve')
@@ -108,44 +152,35 @@ class Omise_Payment_Installment_Test extends Omise_Offsite_Test
         $this->backend_installment_mock->shouldReceive('get_available_providers');
         Monkey\Functions\expect('get_woocommerce_currency')->andReturn('thb');
 
-        $clazz = new stdClass();
-        $clazz->cart = new stdClass();
-        $clazz->cart->total = 999999;
+        $cart = $this->getCartMock(['total' => 999999]);
+        $wc = $this->getWcMock($cart);
+        Monkey\Functions\expect('WC')->andReturn($wc);
 
-        Monkey\Functions\expect('WC')->andReturn($clazz);
-        Monkey\Functions\expect('add_action');
-
-        $obj = new Omise_Payment_Installment();
-        $result = $obj->get_view_data();
+        $result = $this->installment->get_view_data();
 
         $this->assertArrayHasKey('installments_enabled', $result);
         $this->assertArrayHasKey('is_zero_interest', $result);
         $this->assertArrayHasKey('installment_min_limit', $result);
     }
 
-    public function testGetParamsForJS()
+    public function test_installment_get_params_for_js()
     {
-        $clazz = new stdClass();
-        $clazz->cart = new stdClass();
-        $clazz->cart->total = 999999;
+        $cart = $this->getCartMock(['total' => 999999]);
+        $wc = $this->getWcMock($cart);
+        Monkey\Functions\expect('WC')->andReturn($wc);
 
-        Monkey\Functions\expect('WC')->andReturn($clazz);
-        Monkey\Functions\expect('add_action');
-        $mock = Mockery::mock('overload:Omise_Payment_Offsite');
-        $instance = new Omise_Payment_Installment($mock);
-        $result = $instance->getParamsForJS();
+        $result = $this->installment->getParamsForJS();
 
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('key', $result);
-        $this->assertArrayHasKey('amount', $result);
-        $this->assertEquals('pkey_test_123', $result['key']);
-        $this->assertEquals(99999900, $result['amount']);
+        $this->assertEquals([
+            'key' => 'pkey_test_123',
+            'amount' => 99999900,
+        ], $result);
     }
 
-    public function testConvertToCents()
+    public function test_installment_convert_to_cents()
     {
-        Monkey\Functions\expect('add_action');
-        $instance = new Omise_Payment_Installment();
+        $instance = $this->installment;
+
         $this->assertEquals(100, $instance->convert_to_cents(1.00));
         $this->assertEquals(150, $instance->convert_to_cents(1.50));
         $this->assertEquals(0, $instance->convert_to_cents(0.00));

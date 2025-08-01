@@ -33,11 +33,6 @@ class Omise_Payment_CreditCard_Test extends TestCase
         $omiseCardImage->shouldReceive('get_discover_image')->once();
         $omiseCardImage->shouldReceive('get_discover_default_display')->once();
 
-        // dummy version
-        if (!defined('WC_VERSION')) {
-            define('WC_VERSION', '1.0.0');
-        }
-
         Monkey\Functions\expect('add_action')->andReturn(null);
         Monkey\Functions\expect('wp_kses')
             ->times(3)
