@@ -51,8 +51,8 @@ class Omise_Block_Credit_Card_Test extends Omise_Test_Case {
 			);
 
 		$this->obj->initialize();
-
 		$is_active = $this->obj->is_active();
+
 		$this->assertTrue( $is_active );
 	}
 
