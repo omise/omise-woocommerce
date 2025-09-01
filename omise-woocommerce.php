@@ -351,7 +351,7 @@ class Omise
 	 *                  with WooCommerce's order id together in a
 	 *                  customed-post-type, 'omise_charge_items'.
 	 *
-	 *                  Since Omise-WooCoomerce v3.0, now the plugin stores
+	 *                  Since Omise-WooCommerce v3.0, now the plugin stores
 	 *                  Omise's charge id as a 'customed-post-meta' in the
 	 *                  WooCommerce's 'order' post-type instead.
 	 */

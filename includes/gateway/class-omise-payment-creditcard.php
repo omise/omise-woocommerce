@@ -63,6 +63,14 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					'type'        => 'textarea',
 					'description' => __( 'This controls the description the user sees during checkout.', 'omise' )
 				),
+
+				'is_passkey_enabled' => array(
+					'title'			 => __( 'Authentication', 'omise' ),
+					'type'        => 'checkbox',
+					'label'       => __( 'Enable Passkey Authentication', 'omise' ),
+					'default'     => 'no',
+					'description' => __( 'This option will enable Passkey authentication for card payments on checkout page when available.', 'omise' ),
+				),
 			),
 			array(
 				'advanced' => array(
