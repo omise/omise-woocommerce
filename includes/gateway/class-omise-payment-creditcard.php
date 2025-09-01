@@ -65,7 +65,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 				),
 
 				'is_passkey_enabled' => array(
-					'title'			 => __( 'Authentication', 'omise' ),
+					'title'       => __( 'Authentication', 'omise' ),
 					'type'        => 'checkbox',
 					'label'       => __( 'Enable Passkey Authentication', 'omise' ),
 					'default'     => 'no',
