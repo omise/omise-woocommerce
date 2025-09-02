@@ -44,7 +44,7 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 	function init_form_fields() {
 		$passkey_settings = array();
 
-		if (getenv('OMISE_FEATURE_PASSKEY') === 'true') {
+		if (defined('OMISE_FEATURE_PASSKEY') && OMISE_FEATURE_PASSKEY) {
 			$passkey_settings = array(
 				'is_passkey_enabled' => array(
 					'title'       => __( 'Authentication', 'omise' ),

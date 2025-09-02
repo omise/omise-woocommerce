@@ -21,7 +21,7 @@ class Omise_Block_Credit_Card_Test extends Omise_Test_Case {
 		Monkey\Functions\stubs(
 			[
 				'wc_string_to_bool' => function ( $val ) {
-					return $val === 'yes' ? true : false;
+					return $val === 'yes';
 				},
 			]
 		);

@@ -127,7 +127,7 @@ class Omise_Payment_CreditCard_Test extends TestCase
     }
 
     public function test_form_fields_include_passkey_setting_when_passkey_feature_is_enabled() {
-        putenv('OMISE_FEATURE_PASSKEY=true');
+        define('OMISE_FEATURE_PASSKEY', true);
 
         $credit_card = new Omise_Payment_Creditcard;
 
