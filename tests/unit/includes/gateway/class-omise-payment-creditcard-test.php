@@ -107,6 +107,33 @@ class Omise_Payment_CreditCard_Test extends TestCase
         $this->assertArrayHasKey('user_logged_in', $data);
     }
 
+    public function test_form_fields() {
+        $credit_card = new Omise_Payment_Creditcard;
+
+        $this->assertEquals([
+            'enabled',
+            'title',
+            'description',
+            'advanced',
+            'payment_action',
+            'card_form_theme',
+            'accept_visa',
+            'accept_mastercard',
+            'accept_jcb',
+            'accept_diners',
+            'accept_discover',
+            'accept_amex',
+        ], array_keys($credit_card->form_fields));
+    }
+
+    public function test_form_fields_include_passkey_setting_when_passkey_feature_is_enabled() {
+        putenv('OMISE_FEATURE_PASSKEY=true');
+
+        $credit_card = new Omise_Payment_Creditcard;
+
+        $this->assertArrayHasKey('is_passkey_enabled', $credit_card->form_fields);
+    }
+
     public function get_existing_cards_for_user_not_logged_in() {
         Monkey\Functions\expect('is_user_logged_in')->andReturn(false);
 
