@@ -2,6 +2,9 @@ import {useState, useEffect, useRef} from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import { SavedCard } from './saved-cards';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
+
+const { select } = window.wp.data;
 
 const CreditCardPaymentMethod = (props) => {
   const { settings } = props;
@@ -42,7 +45,21 @@ const CreditCardPaymentMethod = (props) => {
 	useEffect( () => {
 		if (!hideCardForm) {
 			const unsubscribe = onCheckoutValidation( () => {
-				OmiseCard.requestCardToken()
+				const { billingAddress } = select( CART_STORE_KEY ).getCartData();
+				const cardholderData = {
+					email: billingAddress.email,
+					billingAddress: {
+						street1: billingAddress.address_1,
+						street2: billingAddress.address_2,
+						city: billingAddress.city,
+						country: billingAddress.country,
+						state: billingAddress.state,
+						postal_code: billingAddress.postcode,
+						phone_number: billingAddress.phone,
+					}
+				}
+
+				OmiseCard.requestCardToken(cardholderData)
 				return true;
 			} );
 			return unsubscribe;
