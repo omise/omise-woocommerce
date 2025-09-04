@@ -98,6 +98,7 @@ if ( ! class_exists( 'Omise_MyAccount' ) ) {
 		{
 			return [
 				'key'                            => Omise()->settings()->public_key(),
+				'account_email'                  => wp_get_current_user()->user_email,
 				'ajax_url'                       => admin_url( 'admin-ajax.php' ),
 				'ajax_loader_url'                => plugins_url( '/assets/images/ajax-loader@2x.gif', dirname( __FILE__ ) ),
 				'required_card_name'             => __( "Cardholder's name is a required field", 'omise' ),
