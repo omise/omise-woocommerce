@@ -97,6 +97,16 @@ class Omise_Payment_CreditCard_Test extends Omise_Test_Case
         $this->assertArrayHasKey('existing_cards', $data);
     }
 
+    public function test_get_existing_cards_for_user_not_logged_in() {
+        Monkey\Functions\expect('is_user_logged_in')->andReturn(false);
+
+        $creditCard = new Omise_Payment_Creditcard;
+        $data = $creditCard->get_existing_cards();
+
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey('user_logged_in', $data);
+    }
+
     public function test_form_fields() {
         $credit_card = new Omise_Payment_Creditcard;
 
@@ -122,15 +132,5 @@ class Omise_Payment_CreditCard_Test extends Omise_Test_Case
         $credit_card = new Omise_Payment_Creditcard;
 
         $this->assertArrayHasKey('is_passkey_enabled', $credit_card->form_fields);
-    }
-
-    public function test_get_existing_cards_for_user_not_logged_in() {
-        Monkey\Functions\expect('is_user_logged_in')->andReturn(false);
-
-        $creditCard = new Omise_Payment_Creditcard;
-        $data = $creditCard->get_existing_cards();
-
-        $this->assertIsArray($data);
-        $this->assertArrayHasKey('user_logged_in', $data);
     }
 }
