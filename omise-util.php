@@ -28,7 +28,7 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 			if ( preg_match( "/(Android)/i", $userAgent ) ) {
 				return "ANDROID";
 			}
-			
+
 			if ( preg_match( "/(iPad|iPhone|iPod)/i", $userAgent ) ) {
 				return 'IOS';
 			}
