@@ -57,7 +57,7 @@ const CreditCardPaymentMethod = (props) => {
 						postal_code: billingAddress.postcode,
 						phone_number: billingAddress.phone,
 					}
-				}
+				};
 
 				OmiseCard.requestCardToken(cardholderData)
 				return true;
