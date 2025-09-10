@@ -64,7 +64,7 @@
 
 		OmiseCard.requestCardToken({
 			email: omise_params.account_email,
-			// TODO: Recheck on Omise.js if we should add additional check
+			// TODO: Remove this after updating OmiseCard to accept email without billing address.
 			billingAddress: {},
 		})
 	}
