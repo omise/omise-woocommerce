@@ -4,8 +4,8 @@ use Brain\Monkey;
 use voku\helper\HtmlDomParser;
 
 /**
-* @runTestsInSeparateProcesses
-*/
+ * @runTestsInSeparateProcesses
+ */
 class Omise_MyAccount_Test extends Omise_Test_Case {
 
 	private $omise_setting;
