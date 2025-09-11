@@ -1,5 +1,7 @@
 (function ($) {
 	const $form = $('form.checkout, form#order_review');
+	const $formCheckout = $('form.checkout'); // Form in Normal Checkout Page
+	const $formOrderReview = $('form#order_review'); // Form in Pay for Order Page
 
 	function hideError() {
 		$(".woocommerce-error").remove();
@@ -275,27 +277,34 @@
 			$('.omise_source').remove();
 		});
 
-		$('form.checkout').unbind('checkout_place_order_omise');
-		$('form.checkout').on('checkout_place_order_omise', function () {
+		$($formCheckout).unbind('checkout_place_order_omise');
+		$($formCheckout).on('checkout_place_order_omise', function () {
 			return omiseFormHandler();
 		});
-		$('form.checkout').unbind('checkout_place_order_omise_installment');
-		$('form.checkout').on('checkout_place_order_omise_installment', function () {
+		$($formCheckout).unbind('checkout_place_order_omise_installment');
+		$($formCheckout).on('checkout_place_order_omise_installment', function () {
 			return omiseInstallmentFormHandler();
 		});
 
-		/* Pay Page Form */
-		$('form#order_review').on('submit', function () {
-			return omiseFormHandler();
+		/* Pay for Order Page Form */
+		$($formOrderReview).on('submit', function () {
+			var selectedPaymentMethod = $('input[name="payment_method"]:checked').val();
+
+			switch (selectedPaymentMethod) {
+				case 'omise':
+					return omiseFormHandler();
+				case 'omise_installment':
+					return omiseInstallmentFormHandler();
+			}
 		});
 
 		/* Both Forms */
-		$('form.checkout, form#order_review').on('change', '#omise_cc_form input', function() {
+		$($form).on('change', '#omise_cc_form input', function() {
 			$('.omise_token').remove();
 			$('.omise_source').remove();
 		});
 
-		$('form.checkout').on('change', 'input[name="payment_method"]', function() {
+		$($form).on('change', 'input[name="payment_method"]', function() {
 			setupOmiseForm();
 		});
 

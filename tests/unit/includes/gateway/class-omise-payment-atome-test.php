@@ -1,52 +1,224 @@
 <?php
 
-require_once __DIR__ . '/class-omise-offsite-test.php';
-
 use Brain\Monkey;
+use voku\helper\HtmlDomParser;
 
-class Omise_Payment_Atome_Test extends Omise_Offsite_Test
-{
-    protected function setUp(): void
-    {
-        $this->sourceType = 'atome';
-        parent::setUp();
-        require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-atome.php';
+/**
+ * @runTestsInSeparateProcesses
+ */
+class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 
-        Monkey\Functions\expect('wp_enqueue_script');
-        Monkey\Functions\expect('wp_kses');
-        Monkey\Functions\expect('plugins_url');
-        Monkey\Functions\expect('add_action');
+	private $omise_atome;
 
-        // dummy version
-        if (!defined('WC_VERSION')) {
-            define('WC_VERSION', '1.0.0');
-        }
-    }
+	protected function setUp(): void {
+		parent::setUp();
 
-    public function testGetChargeRequest()
-    {
-        $expectedAmount = 999999;
-        $expectedCurrency = 'thb';
-        $orderId = 'order_123';
-        $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
+		$this->omise_atome = $this->mock_payment_class( Omise_Payment_Atome::class );
+	}
 
-        $wcProduct = Mockery::mock('overload:WC_Product');
-        $wcProduct->shouldReceive('get_sku')
-            ->once()
-            ->andReturn('sku_1234');
+	public function test_atome_get_charge_request() {
+		$order_amount = 4566;
+		$order_currency = 'THB';
+		$order_id = 'order_123';
+		$order_mock = $this->getOrderMock( $order_amount, $order_currency );
 
-        $_POST['omise_atome_phone_default'] = true;
+		$wc_product = Mockery::mock( 'overload:WC_Product' );
+		$wc_product->shouldReceive( 'get_sku' )
+			->once()
+			->andReturn( 'sku_1234' );
 
-        $obj = new Omise_Payment_Atome();
-        $result = $obj->get_charge_request($orderId, $orderMock);
+		$_POST['omise_atome_phone_default'] = true;
 
-        $this->assertEquals($this->sourceType, $result['source']['type']);
-    }
+		$result = $this->omise_atome->get_charge_request( $order_id, $order_mock );
 
-    public function testCharge()
-    {
-        $_POST['omise_atome_phone_default'] = true;
-        $obj = new Omise_Payment_Atome();
-        $this->getChargeTest($obj);
-    }
+		$this->assertEquals( 456600, $result['amount'] );
+		$this->assertEquals( $order_currency, $result['currency'] );
+		$this->assertEquals( $order_id, $result['metadata']['order_id'] );
+		$this->assertEquals( $this->return_uri, $result['return_uri'] );
+
+		$expected_source = [
+			'type' => 'atome',
+			'phone_number' => $order_mock->get_billing_phone(),
+			'items' => [
+				[
+					'name' => 'T Shirt',
+					'amount' => 60000,
+					'quantity' => 1,
+					'sku' => 'sku_1234',
+				],
+			],
+			'shipping' => [
+				'country' => 'Thailand',
+				'city' => 'Bangkok',
+				'postal_code' => '10110',
+				'state' => 'Bangkok',
+				'street1' => 'Sukumvit Road',
+			],
+		];
+		$this->assertEquals( $expected_source, $result['source'] );
+	}
+
+	public function test_atome_get_charge_request_with_custom_phone_number() {
+		$order_amount = 4566;
+		$order_currency = 'THB';
+		$order_id = 'order_123';
+		$order_mock = $this->getOrderMock( $order_amount, $order_currency );
+
+		$wc_product = Mockery::mock( 'overload:WC_Product' );
+		$wc_product->shouldReceive( 'get_sku' )
+			->once()
+			->andReturn( 'sku_1234' );
+
+		$_POST['omise_atome_phone_default'] = false;
+		$_POST['omise_atome_phone_number'] = '+66123456789';
+
+		$result = $this->omise_atome->get_charge_request( $order_id, $order_mock );
+
+		$this->assertEquals( 456600, $result['amount'] );
+		$this->assertEquals( $order_currency, $result['currency'] );
+		$this->assertEquals( 'atome', $result['source']['type'] );
+		$this->assertEquals( '+66123456789', $result['source']['phone_number'] );
+	}
+
+	public function test_atome_charge() {
+		$order = $this->getOrderMock( 999999, 'THB' );
+		$_POST['omise_atome_phone_default'] = true;
+
+		$this->perform_charge_test( $this->omise_atome, $order );
+	}
+
+	public function test_atome_payment_fields_renders_atome_form_on_checkout_page() {
+		$cart = $this->getCartMock(
+			[
+				'subtotal' => 300,
+				'total' => 380,
+			]
+		);
+		$wc = $this->getWcMock( $cart );
+
+		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
+		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
+		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( false );
+
+		ob_start();
+		$this->omise_atome->payment_fields();
+		$output = ob_get_clean();
+
+		$page = HtmlDomParser::str_get_html( $output );
+		$this->assertMatchesRegularExpression( '/Atome phone number/', $page->findOne( '#omise-form-atome' )->innertext );
+	}
+
+	public function test_atome_payment_fields_renders_atome_form_on_pay_for_order_page() {
+		$wc = $this->getWcMock();
+		$order_mock = $this->getOrderMock( 380, 'THB' );
+		$order_mock->shouldReceive( 'get_subtotal' )->andReturn( 300 );
+
+		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
+		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
+		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( true );
+		Monkey\Functions\expect( 'get_query_var' )->with( 'order-pay' )->andReturn( 456 );
+		Monkey\Functions\expect( 'wc_get_order' )->with( 456 )->andReturn( $order_mock );
+
+		ob_start();
+		$this->omise_atome->payment_fields();
+		$output = ob_get_clean();
+
+		$page = HtmlDomParser::str_get_html( $output );
+		$this->assertMatchesRegularExpression( '/Atome phone number/', $page->findOne( '#omise-form-atome' )->innertext );
+	}
+
+	public function test_atome_payment_fields_returns_error_if_subtotal_is_zero() {
+		$cart = $this->getCartMock(
+			[
+				'subtotal' => 0,
+				'total' => 100,
+			]
+		);
+		$wc = $this->getWcMock( $cart );
+
+		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
+		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
+		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( false );
+
+		ob_start();
+		$this->omise_atome->payment_fields();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'Complimentary products cannot be billed.', trim( $output ) );
+	}
+
+	public function test_atome_payment_fields_returns_error_if_currency_not_support() {
+		$cart = $this->getCartMock(
+			[
+				'subtotal' => 100,
+				'total' => 100,
+			]
+		);
+		$wc = $this->getWcMock( $cart );
+
+		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
+		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'USD' );
+		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( false );
+
+		ob_start();
+		$this->omise_atome->payment_fields();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'Currency not supported', trim( $output ) );
+	}
+
+	public function test_atome_payment_fields_returns_error_if_amount_less_than_min_limit() {
+		$cart = $this->getCartMock(
+			[
+				'subtotal' => 1.4,
+				'total' => 1.4,
+			]
+		);
+		$wc = $this->getWcMock( $cart );
+
+		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
+		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'SGD' );
+		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( false );
+
+		ob_start();
+		$this->omise_atome->payment_fields();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'Amount must be greater than 1.50 SGD', trim( $output ) );
+	}
+
+	public function test_atome_payment_fields_returns_error_if_amount_greater_than_max_limit() {
+		$cart = $this->getCartMock(
+			[
+				'subtotal' => 20001,
+				'total' => 20001,
+			]
+		);
+		$wc = $this->getWcMock( $cart );
+
+		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
+		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'SGD' );
+		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( false );
+
+		ob_start();
+		$this->omise_atome->payment_fields();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'Amount must be less than 20,000.00 SGD', trim( $output ) );
+	}
+
+	public function test_atome_payment_fields_throws_exception_if_pay_for_order_not_found() {
+		$wc = $this->getWcMock();
+
+		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
+		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
+		Monkey\Functions\expect( 'is_checkout_pay_page' )->andReturn( true );
+		Monkey\Functions\expect( 'get_query_var' )->with( 'order-pay' )->andReturn( 456 );
+		Monkey\Functions\expect( 'wc_get_order' )->with( 456 )->andReturn( false );
+
+		$this->expectException( Exception::class );
+		$this->expectExceptionMessage( 'Order not found.' );
+
+		$this->omise_atome->payment_fields();
+	}
 }

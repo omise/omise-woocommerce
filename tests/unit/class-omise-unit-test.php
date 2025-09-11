@@ -1,9 +1,5 @@
 <?php
 
-define( 'ABSPATH', value: '' );
-define( 'OMISE_PUBLIC_KEY', 'pkey_test_12345');
-define( 'OMISE_SECRET_KEY', 'skey_test_12345');
-
 class Omise_Unit_Test {
 	public static function include_class( $path ): void {
 		require_once __DIR__ . '/../../includes/' . $path;
@@ -28,6 +24,16 @@ function __( $text, $domain = 'default' ) {
  */
 function _x( $text, $context, $domain = 'default' ) {
 	return $text;
+}
+
+/**
+ * Mock WordPress _e() function.
+ *
+ * @see wp-includes/l10n.php
+ * @see https://developer.wordpress.org/reference/functions/_e
+ */
+function _e( $text, $context, $domain = 'default' ) {
+	echo $text;
 }
 
 function load_fixture($name) {

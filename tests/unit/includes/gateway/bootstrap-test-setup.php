@@ -1,72 +1,18 @@
 <?php
-
-use PHPUnit\Framework\TestCase;
-use Brain\Monkey;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
-/**
- * Mock abstract WooCommerce's gateway
- */
-abstract class WC_Payment_Gateway
+abstract class Bootstrap_Test_Setup extends Omise_Test_Case
 {
-    public static $is_available = true;
-
-    public function is_available()
-    {
-        return self::$is_available;
-    }
-}
-
-/**
- * Temporary mock for WP_* class
- * In the future, we should move to use WP_UnitTestCase
- */
-class WP_Error
-{
-    public function __construct(
-        public $code = '',
-        public $message = '',
-        public $data = ''
-    ) {
-    }
-}
-class WP_REST_Server_Stub
-{
-    const EDITABLE = 'POST';
-    const READABLE = 'GET';
-}
-
-abstract class Bootstrap_Test_Setup extends TestCase
-{
-    // Adds Mockery expectations to the PHPUnit assertions count.
-    use MockeryPHPUnitIntegration;
-
-    public $sourceType;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        Monkey\setUp();
-    }
-
-    /**
-     * close mockery after tests are done
-     */
-    protected function tearDown(): void
-    {
-        Monkey\tearDown();
-        Mockery::close();
-        parent::tearDown();
-    }
-
-    public function getOrderMock($expectedAmount, $expectedCurrency)
+    public function getOrderMock($expectedAmount, $expectedCurrency, $properties = [])
     {
         // Create a mock of the $order object
         $orderMock = Mockery::mock('WC_Order');
 
         // Define expectations for the mock
+        $orderMock->allows([
+            'get_id' => $properties['id'] ?? 123,
+            'get_order_key' => $properties['key'] ?? 'order_kfeERDv',
+        ]);
         $orderMock->shouldReceive('get_currency')
-            ->andReturn($expectedCurrency);
+            ->andReturn(strtoupper($expectedCurrency));
         $orderMock->shouldReceive('get_total')
             ->andReturn($expectedAmount);  // in units
         $orderMock->shouldReceive('add_meta_data');
@@ -93,7 +39,24 @@ abstract class Bootstrap_Test_Setup extends TestCase
         return $orderMock;
     }
 
+    public function getCartMock($cartProperties = []) {
+        $cart = Mockery::mock('WC_Cart');
+        $cart->subtotal = $cartProperties['subtotal'] ?? 0;
+        $cart->total = $cartProperties['total'] ?? 0;
+
+        return $cart;
+    }
+
+    public function getWcMock($cart = null) {
+        $wc = Mockery::mock('WooCommerce');
+        $wc->cart = $cart ? $cart : $this->getCartMock();
+
+        return $wc;
+    }
+
     /**
+     * FIXME: Only used in Omise_Payment_Konbini_Test.
+     * We can refactor this into offline payment test class or the test itself.
      * @runInSeparateProcess
      */
     public function getChargeTest($classObj)
@@ -141,6 +104,7 @@ abstract class Bootstrap_Test_Setup extends TestCase
             'instance' => $omiseSettingMock,
             'public_key' => $pkey,
             'secret_key' => $skey,
+            'is_dynamic_webhook_enabled' => false,
         ]);
         $omiseSettingMock->shouldReceive('get_settings')->andReturn([])->byDefault();
 
@@ -183,6 +147,14 @@ abstract class Bootstrap_Test_Setup extends TestCase
             Brain\Monkey\Functions\expect('is_checkout')->andReturn(true);
             Brain\Monkey\Functions\expect('is_wc_endpoint_url')->andReturn(false);
         }
+    }
+
+    protected function mockRedirectUrl($redirectUrl = 'https://abc.com/order/complete') {
+        $redirectUrlMock = Mockery::mock('alias:RedirectUrl');
+        $redirectUrlMock->shouldReceive('create')->andReturn($redirectUrl);
+        $redirectUrlMock->shouldReceive('getToken')->andReturn('token123');
+
+        return $redirectUrlMock;
     }
 }
 

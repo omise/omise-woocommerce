@@ -16,11 +16,6 @@ class Omise_Payment_GooglePay_Test extends TestCase
         Monkey\Functions\expect('plugins_url')->andReturn('');
         Monkey\Functions\expect('get_woocommerce_currency')->andReturn('thb');
 
-        // dummy version
-        if (!defined('WC_VERSION')) {
-            define('WC_VERSION', '1.0.0');
-        }
-        
         $omisePaymentMock = Mockery::mock('overload:Omise_Payment');
         $omisePaymentMock->shouldReceive('init_settings');
         $omisePaymentMock->shouldReceive('get_option');

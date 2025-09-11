@@ -116,6 +116,13 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
     }
 
     /**
+     * Displayed payment fields.
+     */
+    public function payment_fields() {
+        parent::payment_fields();
+    }
+
+    /**
      * Protect the metadata that is included in the return URI. The token is used to
      * validate the session for the order.
      *
