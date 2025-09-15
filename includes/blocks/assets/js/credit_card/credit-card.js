@@ -16,6 +16,11 @@ const CreditCardPaymentMethod = (props) => {
 	const {eventRegistration, emitResponse} = props;
   const {onPaymentSetup, onCheckoutValidation} = eventRegistration;
 
+	function getSelectedStateName(stateCode) {
+		const billingStateField = document.getElementById('billing-state');
+		return billingStateField?.querySelector(`option[value="${stateCode}"]`)?.innerText;
+	}
+
 	useEffect(() => {
 		if (!hideCardForm) {
 			showOmiseEmbeddedCardForm({
@@ -42,10 +47,10 @@ const CreditCardPaymentMethod = (props) => {
 
 	useEffect( () => {
 		if (!hideCardForm) {
-			const { select } = window.wp.data;
-
 			const unsubscribe = onCheckoutValidation( () => {
+				const { select } = window.wp.data;
 				const { billingAddress } = select( CART_STORE_KEY ).getCartData();
+
 				if (billingAddress instanceof Object) {
 					OmiseCard.requestCardToken({
 						email: billingAddress.email,
@@ -54,7 +59,7 @@ const CreditCardPaymentMethod = (props) => {
 							street2: billingAddress.address_2,
 							city: billingAddress.city,
 							country: billingAddress.country,
-							state: billingAddress.state,
+							state: getSelectedStateName(billingAddress.state),
 							postal_code: billingAddress.postcode,
 							phone_number: billingAddress.phone,
 						}
