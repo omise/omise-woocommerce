@@ -116,7 +116,7 @@ describe('Credit Card', () => {
       country: 'TH',
       email: 'john@example.com',
       phone: '0891234567',
-    }
+    };
     const getCartData = jest.fn().mockReturnValue({ billingAddress });
     const select = jest.fn().mockReturnValue({ getCartData });
     const originalOmiseCard = window.OmiseCard;

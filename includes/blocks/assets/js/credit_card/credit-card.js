@@ -58,14 +58,14 @@ const CreditCardPaymentMethod = (props) => {
 							postal_code: billingAddress.postcode,
 							phone_number: billingAddress.phone,
 						}
-					})
+					});
 				}	else {
 					/**
 					 * Expect billingAddress to always returned as an object.
 					 * In case if it's not, fallback to request card token without address.
 					 * https://github.com/woocommerce/woocommerce/blob/1601aa341e4f1bb6f785d39696d8f25448a7372d/plugins/woocommerce/client/blocks/assets/js/types/type-defs/cart.ts#L47
 					 */
-					OmiseCard.requestCardToken()
+					OmiseCard.requestCardToken();
 				}
 
 				return true;
