@@ -4,8 +4,6 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { SavedCard } from './saved-cards';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 
-const { select } = window.wp.data;
-
 const CreditCardPaymentMethod = (props) => {
   const { settings } = props;
 	const { existing_cards, description } = settings;
@@ -44,22 +42,32 @@ const CreditCardPaymentMethod = (props) => {
 
 	useEffect( () => {
 		if (!hideCardForm) {
+			const { select } = window.wp.data;
+
 			const unsubscribe = onCheckoutValidation( () => {
 				const { billingAddress } = select( CART_STORE_KEY ).getCartData();
-				const cardholderData = {
-					email: billingAddress.email,
-					billingAddress: {
-						street1: billingAddress.address_1,
-						street2: billingAddress.address_2,
-						city: billingAddress.city,
-						country: billingAddress.country,
-						state: billingAddress.state,
-						postal_code: billingAddress.postcode,
-						phone_number: billingAddress.phone,
-					}
-				};
+				if (billingAddress instanceof Object) {
+					OmiseCard.requestCardToken({
+						email: billingAddress.email,
+						billingAddress: {
+							street1: billingAddress.address_1,
+							street2: billingAddress.address_2,
+							city: billingAddress.city,
+							country: billingAddress.country,
+							state: billingAddress.state,
+							postal_code: billingAddress.postcode,
+							phone_number: billingAddress.phone,
+						}
+					})
+				}	else {
+					/**
+					 * Expect billingAddress to always returned as an object.
+					 * In case if it's not, fallback to request card token without address.
+					 * https://github.com/woocommerce/woocommerce/blob/1601aa341e4f1bb6f785d39696d8f25448a7372d/plugins/woocommerce/client/blocks/assets/js/types/type-defs/cart.ts#L47
+					 */
+					OmiseCard.requestCardToken()
+				}
 
-				OmiseCard.requestCardToken(cardholderData)
 				return true;
 			} );
 			return unsubscribe;

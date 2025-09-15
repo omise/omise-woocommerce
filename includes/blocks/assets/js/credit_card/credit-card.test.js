@@ -101,4 +101,59 @@ describe('Credit Card', () => {
       })
     );
   });
+
+  it('creates card token with billing address when onCheckoutValidation is triggered', () => {
+    const settings = omiseSettingFactory.build();
+    const billingAddress = {
+      first_name: 'John',
+      last_name: 'Doe',
+      company: '',
+      address_1: '123 Street',
+      address_2: '',
+      city: 'Bang Kapi',
+      state: 'Bangkok',
+      postcode: '10240',
+      country: 'TH',
+      email: 'john@example.com',
+      phone: '0891234567',
+    }
+    const getCartData = jest.fn().mockReturnValue({ billingAddress });
+    const select = jest.fn().mockReturnValue({ getCartData });
+    const originalOmiseCard = window.OmiseCard;
+    const originalWp = window.wp;
+
+    window.OmiseCard = { requestCardToken: jest.fn() };
+    window.wp = {
+      data: { select },
+    };
+
+    render(
+      <CreditCardPaymentMethod
+        {...wcBlockProps}
+        settings={settings}
+      />
+    );
+
+    expect(wcBlockProps.eventRegistration.onCheckoutValidation).toHaveBeenCalledTimes(1);
+    const validationCallback = wcBlockProps.eventRegistration.onCheckoutValidation.mock.calls[0][0];
+    validationCallback();
+
+    expect(select).toHaveBeenCalledWith('wc/store/cart');
+    expect(getCartData).toHaveBeenCalled();
+    expect(window.OmiseCard.requestCardToken).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      billingAddress: {
+        street1: '123 Street',
+        street2: '',
+        city: 'Bang Kapi',
+        state: 'Bangkok',
+        country: 'TH',
+        postal_code: '10240',
+        phone_number: '0891234567',
+      }
+    });
+
+    window.OmiseCard = originalOmiseCard;
+    window.wp = originalWp;
+  });
 });
