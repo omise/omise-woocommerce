@@ -62,11 +62,7 @@
 
 		hideError();
 
-		OmiseCard.requestCardToken({
-			email: omise_params.account_email,
-			// TODO: Remove this after updating OmiseCard to accept email without billing address.
-			billingAddress: {},
-		})
+		OmiseCard.requestCardToken({ email: omise_params.account_email })
 	}
 
 	$(".delete_card").click(function(event){
