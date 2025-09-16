@@ -65,8 +65,8 @@
 	window.onload = function () {
 		const display = document.querySelector('#timer');
 		const isExpired = '<?php echo $viewData['is_qrcode_expired']; ?>' === 'true';
-		const refreshIntervalInSeconds = 10; // refresh every 10 seconds
-		const maxIntervalTimeInSeconds = 10 * 60; // stop refreshing after 10 minutes
+		const refreshIntervalInSeconds = 10; // Refresh every 10 seconds
+		const maxIntervalTimeInSeconds = 10 * 60; // Stop refreshing after 10 minutes
 
 		if ( isExpired ) {
 			displayTimeout();
@@ -77,7 +77,7 @@
 		setTimeout( () => clearInterval(interval), maxIntervalTimeInSeconds * 1000 );
 
 		window.addEventListener('beforeunload', function() {
-		clearInterval(interval);
+			clearInterval(interval);
 		});
 	};
 </script>
