@@ -1,5 +1,5 @@
 <?php
-$is_qrcode_expired = $viewData['is_qrcode_expired'] === 'true' ? true : false;
+$is_qrcode_expired = $viewData['is_qrcode_expired'] === 'true';
 
 function display_class( $visible ) {
 	return $visible ? 'display:block' : 'display:none';
@@ -60,11 +60,6 @@ function display_class( $visible ) {
 	const refreshPaymentInterval = function (intervalTimeInSeconds) {
 		const interval = setInterval(function () {
 			refreshPaymentStatus(interval);
-
-			if (timer == 0) {
-				displayTimeout();
-				clearInterval(interval);
-			}
 		}, intervalTimeInSeconds * 1000);
 
 		return interval;
