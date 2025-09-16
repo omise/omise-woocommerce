@@ -44,7 +44,13 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-paynow.php';
 		require_once __DIR__ . '/../../../../omise-woocommerce.php';
 
-		Monkey\Functions\stubs( [ 'wp_kses' => null ] );
+		Monkey\Functions\stubs(
+			[
+				'wp_kses' => null,
+				'plugins_url' => null,
+				'plugin_dir_path' => __DIR__ . '/../../../../',
+			]
+		);
 
 		$this->mockOmiseSetting( 'pkey_xxx', 'skey_xxx' );
 		$this->order = Mockery::mock( 'WC_Order' );
@@ -70,6 +76,7 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 			'omise-charge-get',
 			[
 				'status' => 'pending',
+				'expires_at' => '2025-09-22T16:20:14Z',
 				'source' => $this->paynow_source,
 			]
 		);
@@ -88,6 +95,21 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 				},
 			]
 		);
+		Monkey\Functions\expect( 'wp_enqueue_script' )
+			->once()
+			->with(
+				'omise-paynow-countdown',
+				'../assets/javascripts/omise-countdown.js',
+				[], WC_VERSION, true
+			);
+		Monkey\Functions\expect( 'wp_localize_script' )
+			->once()
+			->with(
+				'omise-paynow-countdown', 'omise', [
+					'countdown_id' => 'timer',
+					'qr_expires_at' => '2025-09-22T16:20:14Z',
+				]
+			);
 		Monkey\Functions\expect( 'wp_create_nonce' )->twice();
 		Monkey\Functions\expect( 'wp_create_nonce' )
 			->with( 'get_order_status_wc_order_kSwj6Gcnut4dU' )
@@ -104,7 +126,8 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 		$expected_qrcode_img = $this->paynow_source['scannable_code']['image']['download_uri'];
 		$this->assertEquals( 'Scan the QR code to pay', $page->findOneOrFalse( '.omise-paynow-details p' )->text() );
 		$this->assertEquals( $expected_qrcode_img, $page->findOneOrFalse( '.omise-paynow-qrcode img' )->getAttribute( 'src' ) );
-		$this->assertMatchesRegularExpression( '/Payment session will time out in 10:00 minutes./', $page->findOneOrFalse( '.omise-paynow-payment-status' )->text() );
+		$this->assertMatchesRegularExpression( '/Payment session will time out in:/', $page->findOneOrFalse( '.omise-paynow-payment-status' )->text() );
+		$this->assertNotFalse( $page->findOneOrFalse( '#timer' ) );
 	}
 
 	public function test_paynow_display_qrcode_skips_if_order_not_found() {
