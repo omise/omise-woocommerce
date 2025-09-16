@@ -1,18 +1,26 @@
+<?php
+$is_qrcode_expired = $viewData['is_qrcode_expired'] === 'true' ? true : false;
+
+function display_class( $visible ) {
+	return $visible ? 'display:block' : 'display:none';
+}
+?>
+
 <div class="omise omise-paynow-details">
 	<div class="omise omise-paynow-logo"></div>
-	<div class="omise omise-paynow-qrcode">
+	<div class="omise omise-paynow-qrcode" style="<?php echo display_class( ! $is_qrcode_expired ); ?>">
 		<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
 		<img src="<?php echo $viewData['qrcode']; ?>" alt="Omise QR code ID: <?php echo $viewData['qrcode_id']; ?>">
 	</div>
 	<div class="omise-paynow-payment-status">
-		<div class="pending">
+		<div class="pending" style="<?php echo display_class( ! $is_qrcode_expired ); ?>">
 			<?php echo __( 'Payment session will time out in: <span id="timer"></span>', 'omise' ); ?>
 		</div>
 		<div class="completed" style="display:none">
 			<div class="green-check"></div>
 			<?php echo __( 'We\'ve received your payment.', 'omise' ); ?>
 		</div>
-		<div class="timeout" style="display:none">
+		<div class="timeout" style="<?php echo display_class( $is_qrcode_expired ); ?>">
 			<?php echo __( 'Payment session timed out.', 'omise' ); ?>
 		</div>
 	</div>

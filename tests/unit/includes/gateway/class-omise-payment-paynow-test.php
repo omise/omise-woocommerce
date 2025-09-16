@@ -130,6 +130,12 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 		$this->assertEquals( $expected_qrcode_img, $page->findOneOrFalse( '.omise-paynow-qrcode img' )->getAttribute( 'src' ) );
 		$this->assertMatchesRegularExpression( '/Payment session will time out in:/', $page->findOneOrFalse( '.omise-paynow-payment-status' )->text() );
 		$this->assertNotFalse( $page->findOneOrFalse( '#timer' ) );
+
+		$paynow_detail = $page->findOneOrFalse( '.omise-paynow-details' );
+		$this->assertMatchesRegularExpression( '/class="omise omise-paynow-qrcode" style="display:block"/', $paynow_detail );
+		$this->assertMatchesRegularExpression( '/class="pending" style="display:block"/', $paynow_detail );
+		$this->assertMatchesRegularExpression( '/class="completed" style="display:none"/', $paynow_detail );
+		$this->assertMatchesRegularExpression( '/class="timeout" style="display:none"/', $paynow_detail );
 	}
 
 	public function test_paynow_display_qrcode_returns_timeout_content_if_qrcode_is_expired() {
@@ -168,9 +174,13 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 		$output = ob_get_clean();
 		$page = HtmlDomParser::str_get_html( $output );
 
-		// Displayed content is controlled by JS script.
-		$this->assertNotFalse( $page->findOneOrFalse( '.timeout' ) );
 		$this->assertMatchesRegularExpression( '/const isExpired = \'true\'/', $page->findOneOrFalse( 'script' ) );
+
+		$paynow_detail = $page->findOneOrFalse( '.omise-paynow-details' );
+		$this->assertMatchesRegularExpression( '/class="omise omise-paynow-qrcode" style="display:none"/', $paynow_detail );
+		$this->assertMatchesRegularExpression( '/class="pending" style="display:none"/', $paynow_detail );
+		$this->assertMatchesRegularExpression( '/class="completed" style="display:none"/', $paynow_detail );
+		$this->assertMatchesRegularExpression( '/class="timeout" style="display:block"/', $paynow_detail );
 	}
 
 	public function test_paynow_display_qrcode_skips_if_order_not_found() {

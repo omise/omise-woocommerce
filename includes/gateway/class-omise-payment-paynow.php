@@ -93,7 +93,6 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 
 		$qrcode = $charge['source']['scannable_code']['image']['download_uri'];
 		$qrcode_id = $charge['source']['scannable_code']['image']['id'];
-		$qrcode_expires_at = $charge['expires_at'];
 
 		if ( 'view' === $context ) {
 			$expires_at_datetime = new DateTime( $charge['expires_at'] );
