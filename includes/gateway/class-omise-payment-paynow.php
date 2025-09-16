@@ -94,8 +94,14 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 		$qrcode = $charge['source']['scannable_code']['image']['download_uri'];
 		$qrcode_expires_at = $charge['expires_at'];
 
+		$expires_at_datetime = new DateTime( $charge['expires_at'] );
+		$qrcode_expires_at = $expires_at_datetime->format( 'c' );
+		$is_qrcode_expired = new DateTime() >= $expires_at_datetime;
+
 		if ( 'view' === $context ) {
-				$this->register_omise_countdown_script($qrcode_expires_at);
+			if ( ! $is_qrcode_expired ) {
+				$this->register_omise_countdown_script( $qrcode_expires_at );
+			}
 
 				$qrcode_id = $charge['source']['scannable_code']['image']['id'];
 				$order_key = $order->get_order_key();
@@ -114,6 +120,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 						'get_order_status_url' => $get_order_status_url,
 						'qrcode' => $qrcode,
 						'qrcode_id' => $qrcode_id,
+						'is_qrcode_expired' => $is_qrcode_expired === true ? 'true' : 'false',
 					)
 				);
 		} elseif ( 'email' === $context && ! $order->has_status( 'failed' ) ) { ?>
@@ -128,17 +135,19 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 	/**
 	 * register scripts for count down
 	 */
-	private function register_omise_countdown_script($expires_at) {
+	private function register_omise_countdown_script( $expires_at ) {
 		wp_enqueue_script(
 			'omise-paynow-countdown',
-			plugins_url( '../assets/javascripts/omise-countdown.js', dirname( __FILE__ ) ),
+			plugins_url( '../assets/javascripts/omise-countdown.js', __DIR__ ),
 			array(),
 			WC_VERSION,
 			true
 		);
-		wp_localize_script('omise-paynow-countdown', 'omise', [
-			'countdown_id' => 'timer',
-			'qr_expires_at' => $expires_at
-		]);
+		wp_localize_script(
+			'omise-paynow-countdown', 'omise', [
+				'countdown_id' => 'timer',
+				'qr_expires_at' => $expires_at,
+			]
+		);
 	}
 }

@@ -1,7 +1,7 @@
 <div class="omise omise-paynow-details">
 	<div class="omise omise-paynow-logo"></div>
-	<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
 	<div class="omise omise-paynow-qrcode">
+		<p><?php echo __( 'Scan the QR code to pay', 'omise' ); ?></p>
 		<img src="<?php echo $viewData['qrcode']; ?>" alt="Omise QR code ID: <?php echo $viewData['qrcode_id']; ?>">
 	</div>
 	<div class="omise-paynow-payment-status">
@@ -22,7 +22,7 @@
 	var classPaymentPending = document.getElementsByClassName("pending");
 	var classPaymentCompleted = document.getElementsByClassName("completed");
 	var classPaymentTimeout = document.getElementsByClassName("timeout");
-	var classQrImage = document.querySelector(".omise.omise-paynow-qrcode > img");
+	var classQrImage = document.querySelector(".omise.omise-paynow-qrcode");
 
 	const refreshPaymentStatus = function (intervalIterator) {
 		var xmlhttp = new XMLHttpRequest();
@@ -43,15 +43,18 @@
 		xmlhttp.send();
 	};
 
+	const displayTimeout = function () {
+		classPaymentPending[0].style.display = "none";
+		classPaymentTimeout[0].style.display = "block";
+		classQrImage.style.display = "none";
+	};
+
 	const refreshPaymentInterval = function (intervalTimeInSeconds) {
 		const interval = setInterval(function () {
-			console.log('Interval executed');
 			refreshPaymentStatus(interval);
 
 			if (timer == 0) {
-				classPaymentPending[0].style.display = "none";
-				classPaymentTimeout[0].style.display = "block";
-				classQrImage.style.display = "none";
+				displayTimeout();
 				clearInterval(interval);
 			}
 		}, intervalTimeInSeconds * 1000);
@@ -61,10 +64,20 @@
 
 	window.onload = function () {
 		const display = document.querySelector('#timer');
+		const isExpired = '<?php echo $viewData['is_qrcode_expired']; ?>' === 'true';
 		const refreshIntervalInSeconds = 10; // refresh every 10 seconds
 		const maxIntervalTimeInSeconds = 10 * 60; // stop refreshing after 10 minutes
 
+		if ( isExpired ) {
+			displayTimeout();
+			return;
+		}
+
 		const interval = refreshPaymentInterval(refreshIntervalInSeconds);
 		setTimeout( () => clearInterval(interval), maxIntervalTimeInSeconds * 1000 );
+
+		window.addEventListener('beforeunload', function() {
+		clearInterval(interval);
+		});
 	};
 </script>
