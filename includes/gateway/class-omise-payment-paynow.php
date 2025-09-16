@@ -122,7 +122,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 					'get_order_status_url' => $get_order_status_url,
 					'qrcode' => $qrcode,
 					'qrcode_id' => $qrcode_id,
-					'is_qrcode_expired' => $is_qrcode_expired === true ? 'true' : 'false',
+					'is_qrcode_expired' => $is_qrcode_expired ? 'true' : 'false',
 				)
 			);
 		} elseif ( 'email' === $context && ! $order->has_status( 'failed' ) ) { ?>
@@ -135,7 +135,9 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 	}
 
 	/**
-	 * register scripts for count down
+	 * Registers the countdown script for PayNow QR code expiration.
+	 *
+	 * @param string $expires_at The expiration datetime in ISO 8601 format for the QR code.
 	 */
 	private function register_omise_countdown_script( $expires_at ) {
 		wp_enqueue_script(
