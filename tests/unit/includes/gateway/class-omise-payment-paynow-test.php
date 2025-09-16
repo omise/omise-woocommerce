@@ -65,6 +65,8 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 	}
 
 	public function test_paynow_display_qrcode_returns_qrcode_content() {
+		$charge_expires_at = ( new DateTime() )->modify( '+1 hour' )->format( 'c' );
+
 		$this->order->allows(
 			[
 				'get_id' => 123,
@@ -76,7 +78,7 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 			'omise-charge-get',
 			[
 				'status' => 'pending',
-				'expires_at' => '2025-09-22T16:20:14Z',
+				'expires_at' => $charge_expires_at,
 				'source' => $this->paynow_source,
 			]
 		);
@@ -107,7 +109,7 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 			->with(
 				'omise-paynow-countdown', 'omise', [
 					'countdown_id' => 'timer',
-					'qr_expires_at' => '2025-09-22T16:20:14Z',
+					'qr_expires_at' => $charge_expires_at,
 				]
 			);
 		Monkey\Functions\expect( 'wp_create_nonce' )->twice();
@@ -128,6 +130,47 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 		$this->assertEquals( $expected_qrcode_img, $page->findOneOrFalse( '.omise-paynow-qrcode img' )->getAttribute( 'src' ) );
 		$this->assertMatchesRegularExpression( '/Payment session will time out in:/', $page->findOneOrFalse( '.omise-paynow-payment-status' )->text() );
 		$this->assertNotFalse( $page->findOneOrFalse( '#timer' ) );
+	}
+
+	public function test_paynow_display_qrcode_returns_timeout_content_if_qrcode_is_expired() {
+		$charge_expires_at = ( new DateTime( 'yesterday' ) )->format( 'c' );
+
+		$this->order->allows(
+			[
+				'get_id' => 123,
+				'get_order_key' => 'wc_order_kSwj6Gcnut4dU',
+				'get_transaction_id' => 'chrg_test_1234567890',
+			]
+		);
+		$this->mockApiCall(
+			'omise-charge-get',
+			[
+				'status' => 'pending',
+				'expires_at' => $charge_expires_at,
+				'source' => $this->paynow_source,
+			]
+		);
+
+		$order = $this->order;
+		Monkey\Functions\stubs(
+			[
+				'wc_get_order' => function ( $id ) use ( $order ) {
+					return $id === 123 ? $order : null;
+				},
+			]
+		);
+		Monkey\Functions\expect( 'wp_enqueue_script' )->never();
+		Monkey\Functions\expect( 'wp_localize_script' )->never();
+		Monkey\Functions\expect( 'wp_create_nonce' )->never();
+
+		ob_start();
+		$this->omise_paynow->display_qrcode( $this->order->get_id() );
+		$output = ob_get_clean();
+		$page = HtmlDomParser::str_get_html( $output );
+
+		// Displayed content is controlled by JS script.
+		$this->assertNotFalse( $page->findOneOrFalse( '.timeout' ) );
+		$this->assertMatchesRegularExpression( '/const isExpired = \'true\'/', $page->findOneOrFalse( 'script' ) );
 	}
 
 	public function test_paynow_display_qrcode_skips_if_order_not_found() {

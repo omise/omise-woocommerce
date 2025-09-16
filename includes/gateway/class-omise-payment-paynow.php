@@ -92,18 +92,17 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 		}
 
 		$qrcode = $charge['source']['scannable_code']['image']['download_uri'];
+		$qrcode_id = $charge['source']['scannable_code']['image']['id'];
 		$qrcode_expires_at = $charge['expires_at'];
 
-		$expires_at_datetime = new DateTime( $charge['expires_at'] );
-		$qrcode_expires_at = $expires_at_datetime->format( 'c' );
-		$is_qrcode_expired = new DateTime() >= $expires_at_datetime;
-
 		if ( 'view' === $context ) {
+			$expires_at_datetime = new DateTime( $charge['expires_at'] );
+			$qrcode_expires_at = $expires_at_datetime->format( 'c' );
+			$is_qrcode_expired = new DateTime() >= $expires_at_datetime;
+
 			if ( ! $is_qrcode_expired ) {
 				$this->register_omise_countdown_script( $qrcode_expires_at );
-			}
 
-				$qrcode_id = $charge['source']['scannable_code']['image']['id'];
 				$order_key = $order->get_order_key();
 				$get_order_status_url = add_query_arg(
 					[
@@ -113,16 +112,19 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 					],
 					get_rest_url( null, 'omise/order-status' )
 				);
+			} else {
+				$get_order_status_url = '';
+			}
 
-				Omise_Util::render_view(
-					'templates/payment/paynow/qr.php',
-					array(
-						'get_order_status_url' => $get_order_status_url,
-						'qrcode' => $qrcode,
-						'qrcode_id' => $qrcode_id,
-						'is_qrcode_expired' => $is_qrcode_expired === true ? 'true' : 'false',
-					)
-				);
+			Omise_Util::render_view(
+				'templates/payment/paynow/qr.php',
+				array(
+					'get_order_status_url' => $get_order_status_url,
+					'qrcode' => $qrcode,
+					'qrcode_id' => $qrcode_id,
+					'is_qrcode_expired' => $is_qrcode_expired === true ? 'true' : 'false',
+				)
+			);
 		} elseif ( 'email' === $context && ! $order->has_status( 'failed' ) ) { ?>
 			<p>
 				<?php echo __( 'Scan the QR code to complete', 'omise' ); ?>
