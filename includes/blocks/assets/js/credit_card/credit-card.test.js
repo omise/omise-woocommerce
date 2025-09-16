@@ -101,4 +101,105 @@ describe('Credit Card', () => {
       })
     );
   });
+
+  it('creates card token with billing address when onCheckoutValidation is triggered', () => {
+    const settings = omiseSettingFactory.build();
+    const billingAddress = {
+      first_name: 'John',
+      last_name: 'Doe',
+      company: '',
+      address_1: '123 Street',
+      address_2: '',
+      city: 'Bang Kapi',
+      state: 'TH-10', // Bangkok
+      postcode: '10240',
+      country: 'TH',
+      email: 'john@example.com',
+      phone: '0891234567',
+    };
+    const getCartData = jest.fn().mockReturnValue({ billingAddress });
+    const select = jest.fn().mockReturnValue({ getCartData });
+    const originalOmiseCard = window.OmiseCard;
+    const originalWp = window.wp;
+    const getElementByIdSpy = jest.spyOn(document, 'getElementById');
+
+    window.OmiseCard = { requestCardToken: jest.fn() };
+    window.wp = {
+      data: { select },
+    };
+
+    /**
+     * Cannot find the element when rendering it,
+     * Had to workaround by mocking the getElementById instead.
+     */
+    const mockOption = { innerText: 'Bangkok' };
+    const mockSelectElement = { querySelector: jest.fn().mockReturnValue(mockOption) };
+    getElementByIdSpy.mockImplementation((id) => (id === 'billing-state' ? mockSelectElement : null));
+
+    render(
+      <CreditCardPaymentMethod
+        {...wcBlockProps}
+        settings={settings}
+      />
+    );
+
+    expect(wcBlockProps.eventRegistration.onCheckoutValidation).toHaveBeenCalledTimes(1);
+    const validationCallback = wcBlockProps.eventRegistration.onCheckoutValidation.mock.calls[0][0];
+    validationCallback();
+
+    expect(select).toHaveBeenCalledWith('wc/store/cart');
+    expect(getCartData).toHaveBeenCalled();
+    expect(window.OmiseCard.requestCardToken).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      billingAddress: {
+        street1: '123 Street',
+        street2: '',
+        city: 'Bang Kapi',
+        state: 'Bangkok',
+        country: 'TH',
+        postal_code: '10240',
+        phone_number: '0891234567',
+      }
+    });
+
+    window.OmiseCard = originalOmiseCard;
+    window.wp = originalWp;
+    getElementByIdSpy.mockRestore();
+  });
+
+  it('creates card token with billing address without state if state\'s name cannot be resolved', () => {
+    const settings = omiseSettingFactory.build();
+    const billingAddress = { state: 'TH-10' };
+    const getCartData = jest.fn().mockReturnValue({ billingAddress });
+    const select = jest.fn().mockReturnValue({ getCartData });
+    const originalOmiseCard = window.OmiseCard;
+    const originalWp = window.wp;
+
+    window.OmiseCard = { requestCardToken: jest.fn() };
+    window.wp = {
+      data: { select },
+    };
+
+    render(
+      <CreditCardPaymentMethod
+        {...wcBlockProps}
+        settings={settings}
+      />
+    );
+
+    expect(wcBlockProps.eventRegistration.onCheckoutValidation).toHaveBeenCalledTimes(1);
+    const validationCallback = wcBlockProps.eventRegistration.onCheckoutValidation.mock.calls[0][0];
+    validationCallback();
+
+    expect(select).toHaveBeenCalledWith('wc/store/cart');
+    expect(getCartData).toHaveBeenCalled();
+    expect(window.OmiseCard.requestCardToken).toHaveBeenCalledWith(expect.objectContaining(
+      {
+        billingAddress: expect.objectContaining({ state: undefined }),
+      },
+    ));
+
+    window.OmiseCard = originalOmiseCard;
+    window.wp = originalWp;
+  });
 });

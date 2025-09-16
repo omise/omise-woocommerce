@@ -85,10 +85,6 @@ class Omise_Block_Credit_Card_Test extends Omise_Test_Case {
 	}
 
 	public function test_get_payment_method_script_handles() {
-		if ( ! defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) ) {
-			define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', '9.1.0' );
-		}
-
 		Monkey\Functions\stubs(
 			[
 				'plugins_url' => null,

@@ -96,21 +96,6 @@ abstract class Bootstrap_Test_Setup extends Omise_Test_Case
         return Mockery::mock('overload:' . OmiseHttpExecutor::class);
     }
 
-    protected function mockOmiseSetting($pkey, $skey)
-    {
-        $omiseSettingMock = Mockery::mock('alias:Omise_Setting');
-
-        $omiseSettingMock->allows([
-            'instance' => $omiseSettingMock,
-            'public_key' => $pkey,
-            'secret_key' => $skey,
-            'is_dynamic_webhook_enabled' => false,
-        ]);
-        $omiseSettingMock->shouldReceive('get_settings')->andReturn([])->byDefault();
-
-        return $omiseSettingMock;
-    }
-
     /**
      * When using this, `runInSeparateProcess` must be set to true
      * to avoid the OmiseHttpExecutor being cached.
