@@ -3,7 +3,7 @@ namespace Omise\Tests\Helpers;
 
 use Mockery;
 
-trait Omise_Wc_Helper {
+trait Omise_WC_Helper {
 	public function get_order_mock( $amount, $currency, $properties = [] ) {
 		// Create a mock of the $order object
 		$order_mock = Mockery::mock( 'WC_Order' );
