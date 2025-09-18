@@ -97,6 +97,7 @@ fieldset.card-exists,
  * Omise PayNow
  */
 .omise-paynow-details {
+	margin-top: 3em;
 	margin-bottom: 4em;
 	text-align: center;
 }
