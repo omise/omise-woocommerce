@@ -6,6 +6,10 @@ use Mockery;
 trait Omise_Setting_Helper {
 	// FIXME: Rename function name to snake case for consistency.
 	protected function mockOmiseSetting( $pkey, $skey ) {
+		return $this->mock_omise_setting( $pkey, $skey );
+	}
+
+	protected function mock_omise_setting( $pkey, $skey ) {
 		$omise_setting_mock = Mockery::mock( 'alias:Omise_Setting' );
 
 		$omise_setting_mock->allows(

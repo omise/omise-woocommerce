@@ -1,119 +1,127 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Brain\Monkey;
 
-class Omise_Payment_Base_Card_Test extends TestCase
-{
-    public $obj;
+/**
+ * @runTestsInSeparateProcesses
+ */
+class Omise_Payment_Base_Card_Test extends Omise_Test_Case {
+	protected function setUp(): void {
+		parent::setUp();
 
-    protected function setUp(): void
-    {
-        $omisePaymentMock = Mockery::mock('overload:Omise_Payment');
-        $omisePaymentMock->shouldReceive('is_test')
-            ->andReturn(true);
+		Monkey\Functions\stubs(
+			[
+				'add_action',
+				'add_filter',
+				'do_action',
+				'wc_clean' => null,
+				'wc_string_to_bool' => function ( $val ) {
+					return $val === 'yes';
+				},
+			]
+		);
 
-        $omiseCreditCardMock = Mockery::mock('overload:Omise_Payment_Creditcard');
-        $omiseCreditCardMock->shouldReceive('get_option')
-            ->andReturn(true);
+		require_once __DIR__ . '/../../../../includes/gateway/traits/sync-order-trait.php';
+		require_once __DIR__ . '/../../../../includes/gateway/traits/charge-request-builder-trait.php';
+		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment.php';
+		require_once __DIR__ . '/../../../../includes/gateway/abstract-omise-payment-base-card.php';
 
-        // Create a mock of the $order object
-        $setting = Mockery::mock('overload:Omise_Setting');
-        $setting->shouldReceive('instance')
-            ->andReturn($setting);
-        $setting->shouldReceive('is_dynamic_webhook_enabled')
-            ->andReturn(true);
+		$redirect_url_mock = Mockery::mock( 'alias:RedirectUrl' );
+		$redirect_url_mock->shouldReceive( 'create' )
+			->andReturn( 'https://abc.com/order/complete' );
+		$redirect_url_mock->shouldReceive( 'getToken' )
+			->andReturn( 'token123' );
 
-        $redirectUrlMock = Mockery::mock('alias:RedirectUrl');
-        $redirectUrlMock->shouldReceive('create')
-            ->andReturn('https://abc.com/order/complete');
-        $redirectUrlMock->shouldReceive('getToken')
-            ->andReturn('token123');
+		$setting = $this->mock_omise_setting( 'pkey_test_123', 'skey_test_123' );
+		$setting->shouldReceive( 'is_test' )->andReturn( true );
+		load_plugin();
+	}
 
-        require_once __DIR__ . '/../../../../includes/gateway/traits/charge-request-builder-trait.php';
-        require_once __DIR__ . '/../../../../includes/gateway/abstract-omise-payment-base-card.php';
+	private function new_instance( $settings = [] ) {
+		return new class($settings) extends Omise_Payment_Base_Card {
+			private $settings;
 
-        // Create a new instance from the Abstract Class
-        $this->obj = new class extends Omise_Payment_Base_Card {
-            // Just a sample public function that returns this anonymous instance
-            public function returnThis()
-            {
-                return $this;
-            }
-        };
-    }
+			public function __construct( $settings ) {
+				parent::__construct();
+				$this->settings = $settings;
+			}
 
-    /**
-     * close mockery after tests are done
-     */
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        parent::tearDown();
-    }
+			public function get_option( $key, $default = null ) {
+				return $this->settings[ $key ];
+			}
+		};
+	}
 
-    public function getOrderMock($expectedAmount, $expectedCurrency)
-    {
-        // Create a mock of the $order object
-        $orderMock = Mockery::mock('WC_Order');
+	public function test_base_card_charge() {
+		$expected_amount = 99999;
+		$expected_currency = 'thb';
+		$expected_charge = [
+			'object' => 'charge',
+			'id' => 'chrg_test_no1t4tnemucod0e51mo',
+			'location' => '/charges/chrg_test_no1t4tnemucod0e51mo',
+			'amount' => $expected_amount,
+			'currency' => $expected_currency,
+		];
+		$charge_mock = Mockery::mock( 'overload:OmiseCharge' );
+		$charge_mock->shouldReceive( 'create' )->once()->andReturn( $expected_charge );
+		$order_mock = $this->get_order_mock( $expected_amount, $expected_currency );
 
-        // Define expectations for the mock
-        $orderMock->shouldReceive('get_currency')
-            ->andReturn($expectedCurrency);
-        $orderMock->shouldReceive('get_total')
-            ->andReturn($expectedAmount);  // in units
-        $orderMock->shouldReceive('add_meta_data')
-            ->andReturn(['order_id' => 'order_123']);
-        $orderMock->shouldReceive('get_user')
-            ->andReturn((object)[
-                'ID' => 'user_123',
-                'test_omise_customer_id' => 'cust_test_123'
-            ]);
-        return $orderMock;
-    }
+		$_POST['omise_token'] = 'tokn_123';
+		$_POST['omise_save_customer_card'] = '';
 
-    /**
-     * @runInSeparateProcess
-     */
-    public function testCharge()
-    {
-        if (!function_exists('wc_clean')) {
-            function wc_clean() {
-                return 'tokn_123';
-            }
-        }
+		$klass = $this->new_instance( [ 'is_passkey_enabled' => 'no' ] );
+		$klass->payment_action = 'auto_capture';
+		$result = $klass->charge( $order_mock->get_id(), $order_mock );
 
-        if (!function_exists('get_rest_url')) {
-            function get_rest_url() {
-                return 'https://abc.com/wp-json/omise/webhooks';
-            }
-        }
+		$charge_mock->shouldHaveReceived( 'create' )->once()->with(
+			[
+				'amount' => 9999900,
+				'currency' => 'THB',
+				'description' => 'WooCommerce Order id 123',
+				'return_uri' => 'https://abc.com/order/complete',
+				'metadata' => [ 'order_id' => 123 ],
+				'card' => 'tokn_123',
+				'capture' => true,
+			]
+		);
+		$this->assertEquals( 'charge', $result['object'] );
+		$this->assertEquals( 'chrg_test_no1t4tnemucod0e51mo', $result['id'] );
+	}
 
-        $expectedAmount = 99999;
-        $expectedCurrency = 'thb';
-        $expectedChargeResponse = [
-            "object" => "charge",
-            "id" => "chrg_test_no1t4tnemucod0e51mo",
-            "location" => "/charges/chrg_test_no1t4tnemucod0e51mo",
-            "amount" => $expectedAmount,
-            "currency" => $expectedCurrency
-        ];
+	public function test_base_card_charge_with_passkey_enabled() {
+		$expected_amount = 2000;
+		$expected_currency = 'thb';
+		$expected_charge = [
+			'object' => 'charge',
+			'id' => 'chrg_test_653a3w4slkft0zv1aex',
+			'location' => '/charges/chrg_test_653a3w4slkft0zv1aex',
+			'amount' => $expected_amount,
+			'currency' => $expected_currency,
+		];
+		$charge_mock = Mockery::mock( 'overload:OmiseCharge' );
+		$charge_mock->shouldReceive( 'create' )->once()->andReturn( $expected_charge );
+		$order_mock = $this->get_order_mock( $expected_amount, $expected_currency );
 
-        $chargeMock = Mockery::mock('overload:OmiseCharge');
-        $chargeMock->shouldReceive('create')->once()->andReturn($expectedChargeResponse);
+		$_POST['omise_token'] = 'tokn_567';
+		$_POST['omise_save_customer_card'] = '';
 
-        $orderMock = $this->getOrderMock($expectedAmount, $expectedCurrency);
+		$klass = $this->new_instance( [ 'is_passkey_enabled' => 'yes' ] );
+		$klass->payment_action = 'auto_capture';
+		$result = $klass->charge( $order_mock->get_id(), $order_mock );
 
-        $_POST['omise_token'] = 'tokn_123';
-        $_POST['omise_save_customer_card'] = '';
-        $orderId = 'order_123';
-        $this->obj->payment_action = 'auto_capture';
-
-        $result = $this->obj->charge(
-            $orderId,
-            $orderMock
-        );
-
-        $this->assertEquals($expectedAmount, $result['amount']);
-        $this->assertEquals($expectedCurrency, $result['currency']);
-    }
+		$charge_mock->shouldHaveReceived( 'create' )->once()->with(
+			[
+				'amount' => 200000,
+				'currency' => 'THB',
+				'description' => 'WooCommerce Order id 123',
+				'return_uri' => 'https://abc.com/order/complete',
+				'metadata' => [ 'order_id' => 123 ],
+				'card' => 'tokn_567',
+				'capture' => true,
+				'authentication' => 'PASSKEY',
+			]
+		);
+		$this->assertEquals( 'charge', $result['object'] );
+		$this->assertEquals( 'chrg_test_653a3w4slkft0zv1aex', $result['id'] );
+	}
 }

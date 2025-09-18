@@ -80,6 +80,12 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			]);
 		}
 
+		if ( wc_string_to_bool( $this->get_option( 'is_passkey_enabled', 'no' ) ) ) {
+			// TODO: Might need to also check card brand - only mastercard is supported
+			// Right now error might be returned when card brand is not supported and token does not have email/phone
+			$data['authentication'] = 'PASSKEY';
+		}
+
 		if (!empty($omise_customer_id) && ! empty($card_id)) {
 			$data['customer'] = $omise_customer_id;
 			$data['card'] = $card_id;
