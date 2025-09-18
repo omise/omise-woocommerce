@@ -40,7 +40,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 				'title'   => __( 'Enable/Disable', 'omise' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable Omise PayNow Payment', 'omise' ),
-				'default' => 'no'
+				'default' => 'no',
 			),
 
 			'title' => array(
@@ -54,7 +54,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 				'title'       => __( 'Description', 'omise' ),
 				'type'        => 'textarea',
 				'description' => __( 'This controls the description the user sees during checkout.', 'omise' ),
-				'default'     => __( 'You will not be charged yet. The PayNow QR code will be displayed at the next page.', 'omise' )
+				'default'     => __( 'You will not be charged yet. The PayNow QR code will be displayed at the next page.', 'omise' ),
 			),
 		);
 	}
@@ -67,7 +67,7 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 	 */
 	public function email_qrcode( $order, $sent_to_admin = false ) {
 		// Avoid sending QR code if email is sent to admin or if order is processing
-		if ( $sent_to_admin || is_a($order, 'WC_Order') && $order->get_status() == 'processing') {
+		if ( $sent_to_admin || is_a( $order, 'WC_Order' ) && $order->get_status() == 'processing' ) {
 			return;
 		}
 
@@ -91,101 +91,66 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 			return;
 		}
 
-		$qrcode    = $charge['source']['scannable_code']['image']['download_uri'];
+		$qrcode = $charge['source']['scannable_code']['image']['download_uri'];
+		$qrcode_id = $charge['source']['scannable_code']['image']['id'];
 
-		if ( 'view' === $context ) : ?>
-			<?php
+		if ( 'view' === $context ) {
+			$expires_at_datetime = new DateTime( $charge['expires_at'] );
+			$qrcode_expires_at = $expires_at_datetime->format( 'c' );
+			$is_qrcode_expired = new DateTime() >= $expires_at_datetime;
+
+			if ( ! $is_qrcode_expired ) {
+				$this->register_omise_countdown_script( $qrcode_expires_at );
+
 				$order_key = $order->get_order_key();
 				$get_order_status_url = add_query_arg(
 					[
 						'key' => $order_key,
 						'_nonce' => wp_create_nonce( 'get_order_status_' . $order_key ),
-						'_wpnonce' => wp_create_nonce('wp_rest'),
+						'_wpnonce' => wp_create_nonce( 'wp_rest' ),
 					],
-					get_rest_url( null, 'omise/order-status')
+					get_rest_url( null, 'omise/order-status' )
 				);
-			?>
-			<div class="omise omise-paynow-details" <?php echo 'email' === $context ? 'style="margin-bottom: 4em; text-align:center;"' : ''; ?>>
-				<div class="omise omise-paynow-logo"></div>
-				<p>
-					<?php echo __( 'Scan the QR code to pay', 'omise' ); ?>
-				</p>
-				<div class="omise omise-paynow-qrcode">
-					<img src="<?php echo $qrcode; ?>" alt="Omise QR code ID: <?php echo $charge['source']['scannable_code']['image']['id']; ?>">
-				</div>
-				<div class="omise-paynow-payment-status">
-					<div class="pending">
-						<?php echo __( 'Payment session will time out in <span id="timer">10:00</span> minutes.', 'omise' ); ?>
-					</div>
-					<div class="completed" style="display:none">
-						<div class="green-check"></div>
-						<?php echo __( 'We\'ve received your payment.', 'omise' ); ?>
-					</div>
-					<div class="timeout" style="display:none">
-						<?php echo __( 'Payment session timed out. You can still complete QR payment by scanning the code sent to your email address.', 'omise' ); ?>
-					</div>
-				</div>
-			</div>
-			<script type="text/javascript">
-				<!--
-				var classPaymentPending   = document.getElementsByClassName("pending");
-				var classPaymentCompleted = document.getElementsByClassName("completed");
-				var classPaymentTimeout   = document.getElementsByClassName("timeout");
-				var classQrImage          = document.querySelector(".omise.omise-paynow-qrcode > img");
+			} else {
+				$get_order_status_url = '';
+			}
 
-				var refreshPaymentStatus = function(intervalIterator) {
-					var xmlhttp = new XMLHttpRequest();
-					xmlhttp.addEventListener("load", function() {
-						if (this.status == 200) {
-							var chargeState = JSON.parse(this.responseText);
-							if (chargeState.status == "processing") {
-								classQrImage.style.display = "none";
-								classPaymentPending[0].style.display = "none";
-								classPaymentCompleted[0].style.display = "block";
-								clearInterval(intervalIterator);
-							}
-						} else if (this.status == 403) {
-							clearInterval(intervalIterator);
-						}
-					});
-					xmlhttp.open('GET', '<?php echo $get_order_status_url ?>', true);
-					xmlhttp.send();
-				},
-				intervalTime = function(duration, display) {
-					var timer    = duration, minutes, seconds;
-					intervalIterator = setInterval(function () {
-						minutes      = parseInt(timer / 60, 10);
-						seconds      = parseInt(timer % 60, 10);
-						minutes = minutes < 10 ? "0" + minutes : minutes;
-						seconds = seconds < 10 ? "0" + seconds : seconds;
-						display.textContent = minutes + ":" + seconds;
-						if (--timer < 0) {
-							timer = duration;
-						}
-						if((timer % 5) == 0 && timer >= 5) {
-							refreshPaymentStatus(intervalIterator);
-						}
-						if(timer == 0) {
-							classPaymentPending[0].style.display = "none";
-							classPaymentTimeout[0].style.display = "block";
-							classQrImage.style.display = "none";
-							clearInterval(intervalIterator);
-						}
-					}, 1000);
-				};
-
-				window.onload = function () {
-					var duration = 60 * 10,
-					    display  = document.querySelector('#timer');
-					intervalTime(duration, display);
-				};
-			//-->
-			</script>
-		<?php elseif ( 'email' === $context && !$order->has_status('failed')) : ?>
+			Omise_Util::render_view(
+				'templates/payment/paynow/qr.php',
+				array(
+					'get_order_status_url' => $get_order_status_url,
+					'qrcode' => $qrcode,
+					'qrcode_id' => $qrcode_id,
+					'is_qrcode_expired' => $is_qrcode_expired ? 'true' : 'false',
+				)
+			);
+		} elseif ( 'email' === $context && ! $order->has_status( 'failed' ) ) { ?>
 			<p>
 				<?php echo __( 'Scan the QR code to complete', 'omise' ); ?>
 			</p>
 			<p><img src="<?php echo $qrcode; ?>"/></p>
-		<?php endif;
+			<?php
+		}
+	}
+
+	/**
+	 * Registers the countdown script for PayNow QR code expiration.
+	 *
+	 * @param string $expires_at The expiration datetime in ISO 8601 format for the QR code.
+	 */
+	private function register_omise_countdown_script( $expires_at ) {
+		wp_enqueue_script(
+			'omise-paynow-countdown',
+			plugins_url( '../assets/javascripts/omise-countdown.js', __DIR__ ),
+			array(),
+			WC_VERSION,
+			true
+		);
+		wp_localize_script(
+			'omise-paynow-countdown', 'omise', [
+				'countdown_id' => 'timer',
+				'qr_expires_at' => $expires_at,
+			]
+		);
 	}
 }

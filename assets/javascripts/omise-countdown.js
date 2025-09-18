@@ -16,7 +16,7 @@
     }
 
     function updateCountdown(fromInterval = true) {
-        const countdownDisplay = document.getElementById('countdown');
+        const countdownDisplay = document.getElementById(omise.countdown_id);
         if(!countdownDisplay) {
             return;
         }
