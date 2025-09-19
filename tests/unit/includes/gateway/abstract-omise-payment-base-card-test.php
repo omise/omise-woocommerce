@@ -47,7 +47,7 @@ class Omise_Payment_Base_Card_Test extends Omise_Test_Case {
 			}
 
 			public function get_option( $key, $default = null ) {
-				return $this->settings[ $key ];
+				return $this->settings[ $key ] ?? $default;
 			}
 		};
 	}

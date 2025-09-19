@@ -4,7 +4,11 @@ namespace Omise\Tests\Helpers;
 use Mockery;
 
 trait Omise_Setting_Helper {
-	// FIXME: Rename function name to snake case for consistency.
+	/**
+	 * @deprecated Use mock_omise_setting() instead.
+	 * This method is kept for backward compatibility and will be removed in the future.
+	 * FIXME: Refactor existing codebase to use snake case for consistency, then remove this function.
+	 */
 	protected function mockOmiseSetting( $pkey, $skey ) {
 		return $this->mock_omise_setting( $pkey, $skey );
 	}
