@@ -16,7 +16,7 @@ class Omise_Payment_Base_Card_Test extends Omise_Test_Case {
 				'do_action',
 				'wc_clean' => null,
 				'wc_string_to_bool' => function ( $val ) {
-					return $val === 'yes';
+					return $val === 'yes' || $val === '1';
 				},
 			]
 		);
@@ -88,26 +88,18 @@ class Omise_Payment_Base_Card_Test extends Omise_Test_Case {
 		$this->assertEquals( 'chrg_test_no1t4tnemucod0e51mo', $result['id'] );
 	}
 
-	public function test_base_card_charge_with_passkey_enabled() {
-		$expected_amount = 2000;
-		$expected_currency = 'thb';
-		$expected_charge = [
-			'object' => 'charge',
-			'id' => 'chrg_test_653a3w4slkft0zv1aex',
-			'location' => '/charges/chrg_test_653a3w4slkft0zv1aex',
-			'amount' => $expected_amount,
-			'currency' => $expected_currency,
-		];
+	public function test_base_card_charge_with_wc_block_and_passkey_enabled() {
 		$charge_mock = Mockery::mock( 'overload:OmiseCharge' );
-		$charge_mock->shouldReceive( 'create' )->once()->andReturn( $expected_charge );
-		$order_mock = $this->get_order_mock( $expected_amount, $expected_currency );
+		$charge_mock->shouldReceive( 'create' )->once()->andReturn( [ 'object' => 'charge' ] );
+		$order_mock = $this->get_order_mock( 2000, 'thb' );
 
 		$_POST['omise_token'] = 'tokn_567';
 		$_POST['omise_save_customer_card'] = '';
+		$_POST['wc_block_payment'] = '1';
 
 		$klass = $this->new_instance( [ 'is_passkey_enabled' => 'yes' ] );
 		$klass->payment_action = 'auto_capture';
-		$result = $klass->charge( $order_mock->get_id(), $order_mock );
+		$klass->charge( $order_mock->get_id(), $order_mock );
 
 		$charge_mock->shouldHaveReceived( 'create' )->once()->with(
 			[
@@ -121,7 +113,30 @@ class Omise_Payment_Base_Card_Test extends Omise_Test_Case {
 				'authentication' => 'PASSKEY',
 			]
 		);
-		$this->assertEquals( 'charge', $result['object'] );
-		$this->assertEquals( 'chrg_test_653a3w4slkft0zv1aex', $result['id'] );
+	}
+
+	public function test_base_card_charge_with_wc_shortcode_and_passkey_enabled() {
+		$charge_mock = Mockery::mock( 'overload:OmiseCharge' );
+		$charge_mock->shouldReceive( 'create' )->once()->andReturn( [ 'object' => 'charge' ] );
+		$order_mock = $this->get_order_mock( 100.50, 'thb' );
+
+		$_POST['omise_token'] = 'tokn_567';
+		$_POST['omise_save_customer_card'] = '';
+
+		$klass = $this->new_instance( [ 'is_passkey_enabled' => 'yes' ] );
+		$klass->payment_action = 'auto_capture';
+		$klass->charge( $order_mock->get_id(), $order_mock );
+
+		$charge_mock->shouldHaveReceived( 'create' )->once()->with(
+			[
+				'amount' => 10050,
+				'currency' => 'THB',
+				'description' => 'WooCommerce Order id 123',
+				'return_uri' => 'https://abc.com/order/complete',
+				'metadata' => [ 'order_id' => 123 ],
+				'card' => 'tokn_567',
+				'capture' => true,
+			]
+		);
 	}
 }

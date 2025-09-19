@@ -91,6 +91,7 @@ const CreditCardPaymentMethod = (props) => {
 								meta: {
 									paymentMethodData: {
 										"card_id": savedCardIdRef.current.value,
+										"wc_block_payment": true,
 									}
 								}
 							};
@@ -108,6 +109,7 @@ const CreditCardPaymentMethod = (props) => {
 									paymentMethodData: {
 										"omise_save_customer_card": saveCardRef.current,
 										"omise_token": cardTokenRef.current,
+										"wc_block_payment": true,
 									}
 								}
 							};

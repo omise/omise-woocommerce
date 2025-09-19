@@ -20,6 +20,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	{
 		$token = isset( $_POST['omise_token'] ) ? wc_clean( $_POST['omise_token'] ) : '';
 		$card_id = isset( $_POST['card_id'] ) ? wc_clean( $_POST['card_id'] ) : '';
+		$is_wc_block = isset( $_POST['wc_block_payment'] ) && wc_string_to_bool( $_POST['wc_block_payment'] );
 
 		if (empty($token) && empty($card_id)) {
 			throw new Exception(__( 'Please select an existing card or enter new card information.', 'omise'));
@@ -36,7 +37,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			$card_id = $cardDetails['card_id'];
 		}
 
-		$data = $this->prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token);
+		$data = $this->prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token, $is_wc_block);
 		return OmiseCharge::create($data);
 	}
 
@@ -59,7 +60,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 	 * @param string $card_id
 	 * @param string $token
 	 */
-	private function prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token)
+	private function prepareChargeData($order_id, $order, $omise_customer_id, $card_id, $token, $is_wc_block)
 	{
 		$currency = $order->get_currency();
 		$data = [
@@ -80,7 +81,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			]);
 		}
 
-		if ( wc_string_to_bool( $this->get_option( 'is_passkey_enabled', 'no' ) ) ) {
+		if ( $is_wc_block && wc_string_to_bool( $this->get_option( 'is_passkey_enabled', 'no' ) ) ) {
 			$data['authentication'] = 'PASSKEY';
 		}
 
