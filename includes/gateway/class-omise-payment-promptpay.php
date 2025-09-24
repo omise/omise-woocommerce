@@ -53,13 +53,14 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 	 */
 	private function register_omise_promptpay_count_down_script($expiresAt) {
 		wp_enqueue_script(
-			'omise-promptpay-count-down',
-			plugins_url( '../assets/javascripts/omise-promptpay-count-down.js', dirname( __FILE__ ) ),
+			'omise-promptpay-countdown',
+			plugins_url( '../assets/javascripts/omise-countdown.js', dirname( __FILE__ ) ),
 			array(),
 			WC_VERSION,
 			true
 		);
-		wp_localize_script('omise-promptpay-count-down', 'omise', [
+		wp_localize_script('omise-promptpay-countdown', 'omise', [
+			'countdown_id' => 'countdown',
 			// Format `c` is used to format as ISO string
 			'qr_expires_at' => $expiresAt->format('c')
 		]);
@@ -189,24 +190,7 @@ class Omise_Payment_Promptpay extends Omise_Payment_Offline {
 						validatePaymentResultTimerId = setInterval( validatePaymentResult, intervalTime );
 						setTimeout( function() { clearInterval( validatePaymentResultTimerId ); }, maxIntervalTime );
 
-						// 10 minutes
-						watch( 60, $( '#omise-timer' ) );
 						return validatePaymentResultTimerId;
-					}
-
-					let watch = function( duration, display ) {
-						let timer = duration, minutes, seconds;
-							timeInterval = setInterval( function () {
-								minutes = parseInt( timer / 60, 10 )
-								seconds = parseInt( timer % 60, 10 );
-
-								minutes = minutes < 10 ? "0" + minutes : minutes;
-								seconds = seconds < 10 ? "0" + seconds : seconds;
-
-								display.text( minutes + ":" + seconds );
-
-								if ( --timer < 0 ) { clearInterval(timeInterval); }
-							}, 1000);
 					}
 
 					let elementRefreshButton         = $( '#omise-offline-payment-refresh-status' ),

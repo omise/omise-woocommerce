@@ -64,9 +64,10 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
             ]
         ]);
 
-        // check that qr_expires_at is passed to `omise-promptpay-count-down` script with omise object
+        // check that qr_expires_at is passed to `omise-promptpay-countdown` script with omise object
         $this->mockLocalizeScript->shouldReceive('call')
-            ->with('omise-promptpay-count-down', 'omise', [
+            ->with('omise-promptpay-countdown', 'omise', [
+                'countdown_id' => 'countdown',
                 'qr_expires_at' => $expiresAt
             ]);
 

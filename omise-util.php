@@ -6,7 +6,7 @@ if ( ! class_exists( 'Omise_Util' ) ) {
 		/**
 		 * Renders php template
 		 * @param string $viewPath
-		 * @param Array $viewData
+		 * @param array $viewData
 		 */
 		public static function render_view( $viewPath, $viewData ) {
 			require_once( plugin_dir_path( __FILE__ ) . $viewPath );

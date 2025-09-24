@@ -12,7 +12,7 @@
 				<?php foreach( $viewData['existing_cards'] as $card ): ?>
 					<?php
 						$nonce = wp_create_nonce( 'omise_delete_card_' . $card['id'] );
-						$created_date = date_i18n( get_option( 'date_format' ), strtotime($card['created']));
+						$created_date = date_i18n( get_option( 'date_format' ), strtotime($card['created_at']));
 					?>
 					<tr>
 						<td><?= $card['name'] ?></td>
