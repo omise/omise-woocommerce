@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 6.2.2
+Stable tag: 6.3.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 6.3.0 =
+
+- Fix WLB installment order description. (PR: [#534](https://github.com/omise/omise-woocommerce/issues/534))
+- Fix payment form on Pay for Order page. (PR: [#533](https://github.com/omise/omise-woocommerce/issues/533))
 
 = 6.2.2 =
 
