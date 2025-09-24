@@ -95,6 +95,7 @@ class Omise_Block_Credit_Card extends AbstractPaymentMethodType {
             'locale'      => get_locale(),
             'public_key'  => Omise_Setting::instance()->public_key(),
             'is_active'   => $this->is_active(),
+            'is_passkey_enabled' => wc_string_to_bool($this->get_setting( 'is_passkey_enabled', 'no' )),
         ]);
     }
 }

@@ -1,21 +1,21 @@
 (function ( $, undefined ) {
 	const $omise_card_panel = $("#omise_card_panel");
 	const $form = $("#omise_cc_form");
-	
+
 	function showError(message, target) {
 		if(target === undefined){
 			target = $omise_card_panel;
 		}
-		
+
 		target.unblock();
-		
+
 		if(!message){
 			return;
 		}
 		$(".woocommerce-error, input.omise_token").remove();
-		
+
 		const $ulError = $("<ul>").addClass("woocommerce-error");
-		
+
 		if($.isArray(message)){
 			$.each(message, function(i,v){
 				$ulError.append($("<li>" + v + "</li>"));
@@ -23,22 +23,22 @@
 		}else{
 			$ulError.html("<li>" + message + "</li>");
 		}
-		
+
 		target.prepend( $ulError );
 	}
-	
+
 	function hideError(){
 		$(".woocommerce-error").remove();
 	}
-	
+
 	function delete_card(card_id, nonce){
 		const data = {
 			action: "omise_delete_card",
 			card_id: card_id,
 			omise_nonce: nonce
 		};
-		
-		$.post(omise_params.ajax_url, data, 
+
+		$.post(omise_params.ajax_url, data,
 			function(response){
 				if(response.deleted){
 					window.location.reload();
@@ -47,9 +47,9 @@
 				}
 			}, "json"
 		);
-		
+
 	}
-	
+
 	function create_card(){
 		$form.block({
 			message: null,
@@ -61,7 +61,8 @@
 		});
 
 		hideError();
-		OmiseCard.requestCardToken()
+
+		OmiseCard.requestCardToken({ email: omise_params.account_email })
 	}
 
 	$(".delete_card").click(function(event){
@@ -78,7 +79,7 @@
 			delete_card($button.data("card-id"), $button.data("delete-card-nonce"));
 		}
 	});
-	
+
 	$("#omise_add_new_card").click(function(event){
 		create_card();
 	});
@@ -89,7 +90,7 @@
 			omise_token: payload.token,
 			omise_nonce: $("#omise_add_card_nonce").val()
 		};
-		$.post(omise_params.ajax_url, data, 
+		$.post(omise_params.ajax_url, data,
 			function(wp_response){
 				if(wp_response.id){
 					window.location.reload();

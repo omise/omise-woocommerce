@@ -132,10 +132,14 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		$requestData['source'] = isset($_POST['omise_source']) ? wc_clean($_POST['omise_source']) : '';
 		$requestData['card'] = isset($_POST['omise_token']) ? wc_clean($_POST['omise_token']) : '';
 
-		$custom_wlb_desc = getenv('OMISE_CUSTOM_WLB_ORDER_DESC');
-		if (!empty($custom_wlb_desc) && !empty($requestData['card'])) {
-			$custom_wlb_desc = sanitize_text_field($custom_wlb_desc);
-			$requestData['description'] = str_replace('{description}', $requestData['description'], $custom_wlb_desc);
+		// Use OMISE_CUSTOM_WLB_ORDER_DESC to define the custom order description.
+		// '{description}' can be used as a placeholder for the original order description.
+		if (defined('OMISE_CUSTOM_WLB_ORDER_DESC') && !empty(OMISE_CUSTOM_WLB_ORDER_DESC) && !empty($requestData['card'])) {
+			$requestData['description'] = str_replace(
+				'{description}',
+				$requestData['description'],
+				sanitize_text_field(OMISE_CUSTOM_WLB_ORDER_DESC)
+			);
 		}
 
 		return OmiseCharge::create($requestData);
