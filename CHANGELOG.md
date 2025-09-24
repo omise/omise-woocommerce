@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v6.3.0 _(Sep 3, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.3.0)
+
+- Fix WLB installment order description. (PR: [#534](https://github.com/omise/omise-woocommerce/issues/534))
+- Fix payment form on Pay for Order page. (PR: [#533](https://github.com/omise/omise-woocommerce/issues/533))
+
 ## [v6.2.2 _(Jul 22, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.2.2)
 
 - Add authentication to Paynow status endpoint. (PR: [#530](https://github.com/omise/omise-woocommerce/issues/530))
