@@ -69,12 +69,13 @@ require_once PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 require_once PLUGIN_PATH . '/includes/classes/class-omise-customer.php';
 require_once PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
 require_once PLUGIN_PATH . '/includes/classes/class-omise-customer-card.php';
+require_once PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 require_once PLUGIN_PATH . '/omise-util.php';
 // Exclude classes that might conflict with test `alias` mocks.
 // To avoid this, we might need to refactor actual classes or tests to remove existing alias mocks.
 // require_once PLUGIN_PATH . '/includes/class-omise-setting.php';
 // require_once PLUGIN_PATH . '/includes/class-omise-capability.php';
-// require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/WcOrderNote.php';
+// require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/class-omise-plugin-helper-wc-order-note.php';
 // require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/RedirectUrl.php';
 // require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/file_get_contents_wrapper.php';
 

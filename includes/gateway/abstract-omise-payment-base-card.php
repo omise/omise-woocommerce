@@ -173,14 +173,9 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			return $this->payment_failed( $charge );
 		}
 
-		// If 3-D Secure feature is enabled, redirecting user out to a 3rd-party credit card authorization page.
+		// If 3-D Secure or Passkey feature is enabled, redirecting user out to a 3rd-party credit card authorization page.
 		if ( self::STATUS_PENDING === $charge['status'] && ! $charge['authorized'] && ! $charge['paid'] && ! empty( $charge['authorize_uri'] ) ) {
-			$order->add_order_note(
-				sprintf(
-					__( 'Omise: Processing a 3-D Secure payment, redirecting buyer to %s', 'omise' ),
-					esc_url( $charge['authorize_uri'] )
-				)
-			);
+			$order->add_order_note( Omise_WC_Order_Note::get_processing_authorized_uri_note( $charge ) );
 
 			return array(
 				'result'   => 'success',
@@ -202,7 +197,7 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 							$order->get_currency()
 						)
 					);
-					$this->order->update_meta_data( 'is_awaiting_capture', 'yes' );
+					$order->update_meta_data( 'is_awaiting_capture', 'yes' );
 					$order->payment_complete();
 				}
 

@@ -4,11 +4,29 @@ namespace Omise\Tests\Helpers;
 use Mockery;
 
 trait Omise_WC_Helper {
-	public function get_order_mock( $amount, $currency, $properties = [] ) {
-		// Create a mock of the $order object
-		$order_mock = Mockery::mock( 'WC_Order' );
+	public function get_cart_mock( $properties = [] ) {
+		$cart = Mockery::spy( 'WC_Cart' );
+		$cart->subtotal = $properties['subtotal'] ?? $properties['total'] ?? 0;
+		$cart->total = $properties['total'] ?? 0;
 
-		// Define expectations for the mock
+		$cart->allows(
+			[
+				'empty_cart' => null,
+			]
+		);
+
+		return $cart;
+	}
+
+	public function get_wc_mock( $cart = null ) {
+		$wc = Mockery::spy( 'WooCommerce' );
+		$wc->cart = $cart ? $cart : $this->get_cart_mock();
+
+		return $wc;
+	}
+
+	public function get_order_mock( $amount, $currency, $properties = [] ) {
+		$order_mock = Mockery::spy( 'WC_Order' );
 		$order_mock->allows(
 			[
 				'get_id' => $properties['id'] ?? 123,
@@ -37,6 +55,8 @@ trait Omise_WC_Helper {
 					'ID' => 'user_123',
 					'test_omise_customer_id' => 'cust_test_123',
 				],
+				'add_order_note' => null,
+				'payment_complete' => null,
 			]
 		);
 
