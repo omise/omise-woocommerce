@@ -21,6 +21,7 @@ class Omise_WC_Order_Note_Test extends Omise_Test_Case
     Monkey\Functions\expect('do_action')->andReturn(null);
     Monkey\Functions\stubs([
       'wp_kses' => null,
+      'esc_url' => null,
     ]);
 
     require_once $this->projectRoot . '/includes/libraries/omise-plugin/helpers/class-omise-wc-order-note.php';
@@ -84,5 +85,34 @@ class Omise_WC_Order_Note_Test extends Omise_Test_Case
     $note = Omise_WC_Order_Note::get_payment_failed_note($charge);
 
     $this->assertEquals('Omise: Payment failed.<br/><b>Error Description:</b> (insufficient_fund) insufficient funds in the account or the card has reached the credit limit<br/><b>Advice:</b> Do not retry the transaction with the same card', $note);
+  }
+
+  public function test_get_processing_authorized_uri_note_for_3ds_transaction()
+  {
+    $authorize_uri = 'https://3dsms.staging-omise.co/payments/pay2_656ej5e4knqicc36w56/authorize';
+    $charge = [
+      'status' => 'pending',
+      'authorized' => false,
+      'authorize_uri' => $authorize_uri,
+    ];
+
+    $note = Omise_WC_Order_Note::get_processing_authorized_uri_note($charge);
+
+    $this->assertEquals("Omise: Processing a 3-D Secure payment, redirecting buyer to {$authorize_uri}", $note);
+  }
+
+  public function test_get_processing_authorized_uri_note_for_passkey_transaction()
+  {
+    $authorize_uri = 'https://3dsms.staging-omise.co/payments/pay2_656eks0m6jc1g2vuqgc/authorize?signature=nOXpqgb0&sigv=1&token=5438637f';
+    $charge = [
+      'status' => 'pending',
+      'authorized' => false,
+      'authenticated_by' => 'PASSKEY',
+      'authorize_uri' => $authorize_uri,
+    ];
+
+    $note = Omise_WC_Order_Note::get_processing_authorized_uri_note($charge);
+
+    $this->assertEquals("Omise: Processing a Passkey payment, redirecting buyer to {$authorize_uri}", $note);
   }
 }

@@ -30,6 +30,20 @@ if ( ! class_exists( 'Omise_WC_Order_Note' ) ) {
 			return self::sanitize( $message );
 		}
 
+		/**
+		 * @param OmiseCharge $charge
+		 */
+		public static function get_processing_authorized_uri_note( $charge ) {
+			$authorization_method = ( isset( $charge['authenticated_by'] ) && $charge['authenticated_by'] === 'PASSKEY' ) ? 'Passkey' : '3-D Secure';
+			$message = sprintf(
+				__( 'Omise: Processing a %1$s payment, redirecting buyer to %2$s', 'omise' ),
+				$authorization_method,
+				isset( $charge['authorize_uri'] ) ? esc_url( $charge['authorize_uri'] ) : ''
+			);
+
+			return self::sanitize( $message );
+		}
+
 		private static function sanitize( $message ) {
 			return wp_kses( $message, self::$allowedHtml );
 		}
