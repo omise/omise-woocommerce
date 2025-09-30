@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v6.4.0 _(Sep 24, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.4.0)
+
+- Fix saved card page error on My Account page. (PR: [#538](https://github.com/omise/omise-woocommerce/issues/538))
+- Display actual Paynow QR expiration. (PR: [#539](https://github.com/omise/omise-woocommerce/issues/539))
+
 ## [v6.3.0 _(Sep 3, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v6.3.0)
 
 - Fix WLB installment order description. (PR: [#534](https://github.com/omise/omise-woocommerce/issues/534))

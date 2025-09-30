@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 6.3.0
+Stable tag: 6.4.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 6.4.0 =
+
+- Fix saved card page error on My Account page. (PR: [#538](https://github.com/omise/omise-woocommerce/issues/538))
+- Display actual Paynow QR expiration. (PR: [#539](https://github.com/omise/omise-woocommerce/issues/539))
 
 = 6.3.0 =
 
