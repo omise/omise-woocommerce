@@ -75,7 +75,7 @@ require_once PLUGIN_PATH . '/omise-util.php';
 // To avoid this, we might need to refactor actual classes or tests to remove existing alias mocks.
 // require_once PLUGIN_PATH . '/includes/class-omise-setting.php';
 // require_once PLUGIN_PATH . '/includes/class-omise-capability.php';
-// require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/class-omise-plugin-helper-wc-order-note.php';
+// require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/class-omise-wc-order-note.php';
 // require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/RedirectUrl.php';
 // require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/file_get_contents_wrapper.php';
 
