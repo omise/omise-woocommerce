@@ -88,13 +88,13 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_payment_fields_renders_atome_form_on_checkout_page() {
-		$cart = $this->getCartMock(
+		$cart = $this->get_cart_mock(
 			[
 				'subtotal' => 300,
 				'total' => 380,
 			]
 		);
-		$wc = $this->getWcMock( $cart );
+		$wc = $this->get_wc_mock( $cart );
 
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
@@ -109,7 +109,7 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_payment_fields_renders_atome_form_on_pay_for_order_page() {
-		$wc = $this->getWcMock();
+		$wc = $this->get_wc_mock();
 		$order_mock = $this->getOrderMock( 380, 'THB' );
 		$order_mock->shouldReceive( 'get_subtotal' )->andReturn( 300 );
 
@@ -128,13 +128,13 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_payment_fields_returns_error_if_subtotal_is_zero() {
-		$cart = $this->getCartMock(
+		$cart = $this->get_cart_mock(
 			[
 				'subtotal' => 0,
 				'total' => 100,
 			]
 		);
-		$wc = $this->getWcMock( $cart );
+		$wc = $this->get_wc_mock( $cart );
 
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );
@@ -148,13 +148,13 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_payment_fields_returns_error_if_currency_not_support() {
-		$cart = $this->getCartMock(
+		$cart = $this->get_cart_mock(
 			[
 				'subtotal' => 100,
 				'total' => 100,
 			]
 		);
-		$wc = $this->getWcMock( $cart );
+		$wc = $this->get_wc_mock( $cart );
 
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'USD' );
@@ -168,13 +168,13 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_payment_fields_returns_error_if_amount_less_than_min_limit() {
-		$cart = $this->getCartMock(
+		$cart = $this->get_cart_mock(
 			[
 				'subtotal' => 1.4,
 				'total' => 1.4,
 			]
 		);
-		$wc = $this->getWcMock( $cart );
+		$wc = $this->get_wc_mock( $cart );
 
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'SGD' );
@@ -188,13 +188,13 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_payment_fields_returns_error_if_amount_greater_than_max_limit() {
-		$cart = $this->getCartMock(
+		$cart = $this->get_cart_mock(
 			[
 				'subtotal' => 20001,
 				'total' => 20001,
 			]
 		);
-		$wc = $this->getWcMock( $cart );
+		$wc = $this->get_wc_mock( $cart );
 
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'SGD' );
@@ -208,7 +208,7 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 	}
 
 	public function test_atome_payment_fields_throws_exception_if_pay_for_order_not_found() {
-		$wc = $this->getWcMock();
+		$wc = $this->get_wc_mock();
 
 		Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 		Monkey\Functions\expect( 'get_woocommerce_currency' )->andReturn( 'THB' );

@@ -150,8 +150,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->backend_installment_mock->shouldReceive('get_available_providers');
         Monkey\Functions\expect('get_woocommerce_currency')->andReturn('thb');
 
-        $cart = $this->getCartMock(['total' => 999999]);
-        $wc = $this->getWcMock($cart);
+        $cart = $this->get_cart_mock(['total' => 999999]);
+        $wc = $this->get_wc_mock($cart);
         Monkey\Functions\expect('WC')->andReturn($wc);
 
         $result = $this->installment->get_view_data();
@@ -163,8 +163,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_get_params_for_js()
     {
-        $cart = $this->getCartMock(['total' => 999999]);
-        $wc = $this->getWcMock($cart);
+        $cart = $this->get_cart_mock(['total' => 999999]);
+        $wc = $this->get_wc_mock($cart);
         Monkey\Functions\expect('WC')->andReturn($wc);
 
         $result = $this->installment->getParamsForJS();
