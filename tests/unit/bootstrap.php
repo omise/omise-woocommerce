@@ -4,6 +4,7 @@ define( 'ABSPATH', '' );
 define( 'WC_VERSION', '1.0.0' );
 define( 'OMISE_PUBLIC_KEY', 'pkey_test_12345' );
 define( 'OMISE_SECRET_KEY', 'skey_test_12345' );
+define( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION', '9.1.0' );
 
 /**
  * Mock abstract WooCommerce's gateway
@@ -38,6 +39,12 @@ class WP_REST_Server_Stub {
 	const READABLE = 'GET';
 }
 
+class WC_HTTPS {
+	public static function force_https_url( $url ) {
+		return $url;
+	}
+}
+
 const PLUGIN_PATH = __DIR__ . '/../..';
 
 // ========================//
@@ -59,12 +66,16 @@ require_once PLUGIN_PATH . '/includes/class-omise-money.php';
 require_once PLUGIN_PATH . '/includes/class-omise-payment-factory.php';
 require_once PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 require_once PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
+require_once PLUGIN_PATH . '/includes/classes/class-omise-customer.php';
+require_once PLUGIN_PATH . '/includes/classes/class-omise-card-image.php';
+require_once PLUGIN_PATH . '/includes/classes/class-omise-customer-card.php';
+require_once PLUGIN_PATH . '/includes/classes/class-omise-charge.php';
 require_once PLUGIN_PATH . '/omise-util.php';
 // Exclude classes that might conflict with test `alias` mocks.
 // To avoid this, we might need to refactor actual classes or tests to remove existing alias mocks.
 // require_once PLUGIN_PATH . '/includes/class-omise-setting.php';
 // require_once PLUGIN_PATH . '/includes/class-omise-capability.php';
-// require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/WcOrderNote.php';
+// require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/class-omise-wc-order-note.php';
 // require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/RedirectUrl.php';
 // require_once PLUGIN_PATH . '/includes/libraries/omise-plugin/helpers/file_get_contents_wrapper.php';
 

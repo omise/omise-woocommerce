@@ -54,7 +54,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_charge()
     {
-        putenv('OMISE_CUSTOM_WLB_ORDER_DESC=test');
+        define('OMISE_CUSTOM_WLB_ORDER_DESC', 'test');
 
         $order = $this->getOrderMock(4353, 'THB', [ 'id' => 1293 ]);
         $_POST['omise_source'] = 'source_test_12345';
@@ -78,8 +78,6 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_wlb_charge()
     {
-        putenv('OMISE_CUSTOM_WLB_ORDER_DESC');
-
         $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
         $_POST['omise_source'] = 'source_test_12345';
         $_POST['omise_token'] = 'tokn_test_67890';
@@ -103,7 +101,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_wlb_charge_with_custom_description()
     {
-        putenv('OMISE_CUSTOM_WLB_ORDER_DESC={description} - test');
+        define('OMISE_CUSTOM_WLB_ORDER_DESC', '{description} - test');
 
         $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
         $_POST['omise_source'] = 'source_test_12345';
@@ -118,7 +116,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_wlb_charge_with_custom_description_fully_overridden()
     {
-        putenv('OMISE_CUSTOM_WLB_ORDER_DESC=My order description');
+        define('OMISE_CUSTOM_WLB_ORDER_DESC', 'My order description');
 
         $order = $this->getOrderMock(250.5, 'THB', [ 'id' => 400 ]);
         $_POST['omise_source'] = 'source_test_12345';
@@ -152,8 +150,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->backend_installment_mock->shouldReceive('get_available_providers');
         Monkey\Functions\expect('get_woocommerce_currency')->andReturn('thb');
 
-        $cart = $this->getCartMock(['total' => 999999]);
-        $wc = $this->getWcMock($cart);
+        $cart = $this->get_cart_mock(['total' => 999999]);
+        $wc = $this->get_wc_mock($cart);
         Monkey\Functions\expect('WC')->andReturn($wc);
 
         $result = $this->installment->get_view_data();
@@ -165,8 +163,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
     public function test_installment_get_params_for_js()
     {
-        $cart = $this->getCartMock(['total' => 999999]);
-        $wc = $this->getWcMock($cart);
+        $cart = $this->get_cart_mock(['total' => 999999]);
+        $wc = $this->get_wc_mock($cart);
         Monkey\Functions\expect('WC')->andReturn($wc);
 
         $result = $this->installment->getParamsForJS();

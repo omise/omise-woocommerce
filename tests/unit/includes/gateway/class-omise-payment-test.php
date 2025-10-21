@@ -40,7 +40,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     require_once __DIR__ . '/../../../../includes/classes/class-omise-charge.php';
     require_once __DIR__ . '/../../../../omise-woocommerce.php';
 
-    $this->mockOrderNoteHelper = \Mockery::mock('alias:' . OmisePluginHelperWcOrderNote::class);
+    $this->mockOrderNoteHelper = \Mockery::mock('alias:' . Omise_WC_Order_Note::class);
     $this->omisePayment = new class extends Omise_Payment {
       public $wcOrder = null;
 
@@ -124,7 +124,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
   {
     $orderNote = 'My note';
 
-    $this->mockOrderNoteHelper->shouldReceive('getPaymentFailedNote')->once()->with(null, 'Something went wrong')->andReturn($orderNote);
+    $this->mockOrderNoteHelper->shouldReceive('get_payment_failed_note')->once()->with(null, 'Something went wrong')->andReturn($orderNote);
     $this->omisePayment->wcOrder->shouldReceive('add_order_note')->once()->with($orderNote);
     $this->omisePayment->wcOrder->shouldReceive('update_status')->once()->with('failed');
     $this->expectException(Exception::class);
@@ -134,7 +134,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
 
   public function test_payment_failed_throws_exception_with_reason()
   {
-    $this->mockOrderNoteHelper->shouldReceive('getPaymentFailedNote')->once();
+    $this->mockOrderNoteHelper->shouldReceive('get_payment_failed_note')->once();
     $this->omisePayment->wcOrder->shouldReceive('add_order_note')->once();
     $this->omisePayment->wcOrder->shouldReceive('update_status')->once();
 
@@ -145,7 +145,7 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
 
   public function test_payment_failed_throws_exception_with_charge_failure_message()
   {
-    $this->mockOrderNoteHelper->shouldReceive('getPaymentFailedNote')->once();
+    $this->mockOrderNoteHelper->shouldReceive('get_payment_failed_note')->once();
     $this->omisePayment->wcOrder->shouldReceive('add_order_note')->once();
     $this->omisePayment->wcOrder->shouldReceive('update_status')->once();
 

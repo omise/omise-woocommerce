@@ -19,7 +19,7 @@ class Omise_Callback_Test extends Bootstrap_Test_Setup
     Monkey\Functions\expect('do_action');
 
     require_once __DIR__ . '/../../../includes/libraries/omise-plugin/helpers/request.php';
-    require_once __DIR__ . '/../../..//includes/libraries/omise-plugin/helpers/WcOrderNote.php';
+    require_once __DIR__ . '/../../..//includes/libraries/omise-plugin/helpers/class-omise-wc-order-note.php';
     require_once __DIR__ . '/../../../includes/class-omise-callback.php';
     require_once __DIR__ . '/../../../includes/class-omise-localization.php';
     require_once __DIR__ . '/../../../omise-woocommerce.php';

@@ -39,21 +39,6 @@ abstract class Bootstrap_Test_Setup extends Omise_Test_Case
         return $orderMock;
     }
 
-    public function getCartMock($cartProperties = []) {
-        $cart = Mockery::mock('WC_Cart');
-        $cart->subtotal = $cartProperties['subtotal'] ?? 0;
-        $cart->total = $cartProperties['total'] ?? 0;
-
-        return $cart;
-    }
-
-    public function getWcMock($cart = null) {
-        $wc = Mockery::mock('WooCommerce');
-        $wc->cart = $cart ? $cart : $this->getCartMock();
-
-        return $wc;
-    }
-
     /**
      * FIXME: Only used in Omise_Payment_Konbini_Test.
      * We can refactor this into offline payment test class or the test itself.
@@ -94,21 +79,6 @@ abstract class Bootstrap_Test_Setup extends Omise_Test_Case
         require_once __DIR__ . '/../../../../includes/libraries/omise-php/lib/omise/OmiseCharge.php';
 
         return Mockery::mock('overload:' . OmiseHttpExecutor::class);
-    }
-
-    protected function mockOmiseSetting($pkey, $skey)
-    {
-        $omiseSettingMock = Mockery::mock('alias:Omise_Setting');
-
-        $omiseSettingMock->allows([
-            'instance' => $omiseSettingMock,
-            'public_key' => $pkey,
-            'secret_key' => $skey,
-            'is_dynamic_webhook_enabled' => false,
-        ]);
-        $omiseSettingMock->shouldReceive('get_settings')->andReturn([])->byDefault();
-
-        return $omiseSettingMock;
     }
 
     /**

@@ -134,7 +134,7 @@ trait Sync_Order
     private function handle_failed_charge($charge)
     {
         $this->delete_capture_metadata();
-        $this->order()->add_order_note( OmisePluginHelperWcOrderNote::getPaymentFailedNote($charge) . ' (manual sync)' );
+        $this->order()->add_order_note( Omise_WC_Order_Note::get_payment_failed_note($charge) . ' (manual sync)' );
         $this->update_order_status(Omise_Payment::STATUS_FAILED);
     }
 

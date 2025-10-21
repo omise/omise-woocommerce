@@ -3,12 +3,11 @@
 use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 
-class Omise_Payment_GooglePay_Test extends TestCase
+class Omise_Payment_GooglePay_Test extends Omise_Test_Case
 {
     protected function setUp(): void
     {
         parent::setUp();
-        Monkey\setUp();
 
         Monkey\Functions\expect('add_action')->andReturn(null);
         Monkey\Functions\expect('wp_kses')->andReturn(null);
@@ -24,27 +23,13 @@ class Omise_Payment_GooglePay_Test extends TestCase
         $omisePaymentMock->shouldReceive('public_key')
             ->andReturn('pkey_123');
 
-        $omiseCardImage = Mockery::mock('alias:Omise_Card_Image');
-        $omiseCardImage->shouldReceive('get_css')->times(4);
-        $omiseCardImage->shouldReceive('get_visa_image')->once();
-        $omiseCardImage->shouldReceive('get_visa_default_display')->once();
-        $omiseCardImage->shouldReceive('get_mastercard_image')->once();
-        $omiseCardImage->shouldReceive('get_mastercard_default_display')->once();
-        $omiseCardImage->shouldReceive('get_jcb_image')->once();
-        $omiseCardImage->shouldReceive('get_jcb_default_display')->once();
-        $omiseCardImage->shouldReceive('get_amex_image')->once();
-        $omiseCardImage->shouldReceive('get_amex_default_display')->once();
+        $wc = Mockery::mock( 'WC' );
+        $wc->shouldReceive( 'plugin_url' )->andReturn( '' );
+        Monkey\Functions\expect( 'WC' )->andReturn( $wc );
 
         require_once __DIR__ . '/../../../../includes/gateway/traits/charge-request-builder-trait.php';
         require_once __DIR__ . '/../../../../includes/gateway/abstract-omise-payment-base-card.php';
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-googlepay.php';
-    }
-
-    protected function tearDown(): void
-    {
-        Monkey\tearDown();
-        Mockery::close();
-        parent::tearDown();
     }
 
     /**

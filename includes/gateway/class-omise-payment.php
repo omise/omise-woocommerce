@@ -298,7 +298,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             return $this->payment_failed( null, $e->getMessage() );
         }
 
-        $this->order->add_order_note( OmisePluginHelperWcOrderNote::getChargeCreatedNote($charge) );
+        $this->order->add_order_note( Omise_WC_Order_Note::get_charge_created_note($charge) );
         $this->set_order_transaction_id( $charge['id'] );
 
         return $this->result( $order_id, $this->order, $charge );
@@ -479,7 +479,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         $reason = $reason ? $reason : Omise_Charge::get_error_message( $charge );
 
         if ( $this->order() ) {
-            $this->order()->add_order_note( OmisePluginHelperWcOrderNote::getPaymentFailedNote( $charge, $reason ) );
+            $this->order()->add_order_note( Omise_WC_Order_Note::get_payment_failed_note( $charge, $reason ) );
             $this->order()->update_status( 'failed' );
         }
 

@@ -1,107 +1,130 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
 require_once __DIR__ . '/traits/mock-gateways.php';
 
-class Omise_Block_Credit_Card_Test extends TestCase
-{
-    // Adds Mockery expectations to the PHPUnit assertions count.
-    use MockeryPHPUnitIntegration, MockPaymentGateways;
+class Omise_Block_Credit_Card_Test extends Omise_Test_Case {
+	use MockPaymentGateways;
 
-    public $obj;
+	public $obj;
 
-    protected $omiseSettingMock;
+	protected $omise_setting_mock;
 
-    // @runInSeparateProcess
-    protected function setUp() : void
-    {
-        parent::setUp();
-        $this->mockWcGateways();
-        require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-credit-card.php';
-        $this->omiseSettingMock = Mockery::mock('alias:Omise_Setting');
-        $this->obj = new Omise_Block_Credit_Card;
-    }
+	protected function setUp(): void {
+		parent::setUp();
+		$this->mockWcGateways();
+		require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-credit-card.php';
+		$this->omise_setting_mock = Mockery::mock( 'alias:Omise_Setting' );
+		$this->obj = new Omise_Block_Credit_Card();
 
-    /**
-     * @test
-     */
-    public function initialize()
-    {
-        Monkey\Functions\expect('get_option')->andReturn(null);
+		Monkey\Functions\stubs(
+			[
+				'wc_string_to_bool' => function ( $val ) {
+					return $val === 'yes';
+				},
+			]
+		);
+	}
 
-        $this->obj->initialize();
+	public function test_initialize() {
+		Monkey\Functions\expect( 'get_option' )->andReturn( null );
 
-        $reflection = new \ReflectionClass($this->obj);
-        $gateway_property = $reflection->getProperty('gateway');
-        $gateway_property->setAccessible(true);
-        $gateway_val = $gateway_property->getValue($this->obj);
+		$this->obj->initialize();
 
-        $this->assertEquals('object', gettype($gateway_val));
-    }
+		$reflection = new \ReflectionClass( $this->obj );
+		$gateway_property = $reflection->getProperty( 'gateway' );
+		$gateway_property->setAccessible( true );
+		$gateway_val = $gateway_property->getValue( $this->obj );
 
-    /**
-     * @test
-     */ 
-    public function is_active()
-    {
-        Monkey\Functions\expect('wc_string_to_bool')->andReturn(true);
-        $this->obj->initialize();
+		$this->assertEquals( 'object', gettype( $gateway_val ) );
+	}
 
-        $is_active = $this->obj->is_active();
-        $this->assertTrue($is_active);
-    }
+	public function test_is_active() {
+		Monkey\Functions\expect( 'get_option' )
+			->once()
+			->with( 'woocommerce_omise_settings', [] )
+			->andReturn(
+				[
+					'enabled' => 'yes',
+				]
+			);
 
-    /**
-     * @test
-     */
-    public function get_payment_method_data()
-    {
-        // Calling initialize() to set $gateway value
-        $reflection = new \ReflectionClass($this->obj);
-        $name_property = $reflection->getProperty('name');
-        $name_property->setAccessible(true);
-        $name_property->setValue($this->obj, 'omise');
+		$this->obj->initialize();
+		$is_active = $this->obj->is_active();
 
-        if (!defined('OMISE_WOOCOMMERCE_PLUGIN_VERSION')) {
-            define('OMISE_WOOCOMMERCE_PLUGIN_VERSION', '9.1.0');
-        }
+		$this->assertTrue( $is_active );
+	}
 
-        Monkey\Functions\expect('wc_string_to_bool');
-        Monkey\Functions\expect('get_locale')->andReturn('thb');
+	public function test_get_payment_method_data() {
+		$mock_settings = [
+			'title' => 'Credit Card',
+			'description' => 'This is Credit Card payment method.',
+			'enabled' => 'yes',
+			'is_passkey_enabled' => 'no',
+		];
+		Monkey\Functions\expect( 'get_option' )
+			->once()
+			->with( 'woocommerce_omise_settings', [] )
+			->andReturn( $mock_settings );
+		Monkey\Functions\expect( 'get_locale' )->andReturn( 'th' );
+		$this->omise_setting_mock->shouldReceive( 'instance' )->andReturn( $this->omise_setting_mock );
+		$this->omise_setting_mock->shouldReceive( 'public_key' )->andReturn( 'pkey_xxx' );
 
-        $this->omiseSettingMock->shouldReceive('instance')->andReturn($this->omiseSettingMock);
-		$this->omiseSettingMock->shouldReceive('public_key')->andReturn('pkey_xxx');
+		$this->obj->initialize();
+		$data = $this->obj->get_payment_method_data();
 
-        $this->obj->initialize();
+		$this->assertEquals( 'omise', $data['name'] );
+		$this->assertEquals( $mock_settings['title'], $data['title'] );
+		$this->assertEquals( $mock_settings['description'], $data['description'] );
+		$this->assertEquals( 'array', gettype( $data['features'] ) );
+		$this->assertEquals( 'th', $data['locale'] );
+		$this->assertEquals( 'pkey_xxx', $data['public_key'] );
+		$this->assertEquals( true, $data['is_active'] );
+		$this->assertEquals( false, $data['is_passkey_enabled'] );
+	}
 
-        $data = $this->obj->get_payment_method_data();
+	public function test_get_payment_method_script_handles() {
+		Monkey\Functions\stubs(
+			[
+				'plugins_url' => null,
+				'plugin_dir_url' => '',
+				'is_checkout' => true,
+			]
+		);
+		Monkey\Functions\expect( 'get_option' )
+			->once()
+			->with( 'woocommerce_omise_settings', [] )
+			->andReturn(
+				[
+					'enabled' => 'yes',
+				]
+			);
+		// Expect the scripts are enqueued correctly.
+		Monkey\Functions\expect( 'wp_enqueue_script' )
+			->once()
+			->with(
+				'embedded-js',
+				'../../../assets/javascripts/omise-embedded-card.js',
+				[ 'omise-js' ],
+				'9.1.0',
+				true
+			);
+		Monkey\Functions\expect( 'wp_enqueue_script' )
+			->once()
+			->with(
+				'omise-payments-blocks',
+				'assets/js/build/credit_card.js',
+				// The dependencies are defined in the actual script.
+				// We just want to make sure 'embedded-js' is included.
+				Mockery::contains( 'embedded-js' ),
+				Mockery::any(),
+				true
+			);
 
-        $this->assertArrayHasKey('title', $data);
-        $this->assertArrayHasKey('description', $data);
-        $this->assertArrayHasKey('features', $data);
-        $this->assertEquals('array', gettype($data['features']));
-        $this->assertEquals('omise', $data['name']);
-    }
+		$this->obj->initialize();
+		$result = $this->obj->get_payment_method_script_handles();
 
-    /**
-     * @test
-     */
-    public function get_payment_method_script_handles()
-    {
-        Monkey\Functions\expect('wp_script_is');
-        Monkey\Functions\expect('wp_enqueue_script');
-        Monkey\Functions\expect('plugin_dir_url');
-        Monkey\Functions\expect('plugins_url');
-        Monkey\Functions\expect('is_checkout')->andReturn(true);
-        Monkey\Functions\expect('wc_string_to_bool')->andReturn(null);
-
-        $this->obj->initialize();
-
-        $result = $this->obj->get_payment_method_script_handles();
-
-        $this->assertEquals([ 'omise-payments-blocks' ], $result);
-    }
+		$this->assertEquals( [ 'omise-payments-blocks' ], $result );
+	}
 }

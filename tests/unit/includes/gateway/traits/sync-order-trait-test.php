@@ -22,7 +22,7 @@ final class SyncOrderTraitTest extends Bootstrap_Test_Setup
 
     require_once __DIR__ . '/../../../../../includes/gateway/traits/sync-order-trait.php';
     require_once __DIR__ . '/../../../../../includes/gateway/class-omise-payment.php';
-    require_once __DIR__ . '/../../../../../includes/libraries/omise-plugin/helpers/WcOrderNote.php';
+    require_once __DIR__ . '/../../../../../includes/libraries/omise-plugin/helpers/class-omise-wc-order-note.php';
     require_once __DIR__ . '/../../../../../includes/classes/class-omise-charge.php';
     require_once __DIR__ . '/../../../../../includes/class-omise-localization.php';
     require_once __DIR__ . '/../../../../../omise-woocommerce.php';

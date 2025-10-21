@@ -2,6 +2,7 @@ import {useState, useEffect, useRef} from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import { SavedCard } from './saved-cards';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 const CreditCardPaymentMethod = (props) => {
   const { settings } = props;
@@ -14,6 +15,11 @@ const CreditCardPaymentMethod = (props) => {
 	const [hideCardForm, setHideCardForm] = useState(existing_cards && existing_cards.length > 0);
 	const {eventRegistration, emitResponse} = props;
   const {onPaymentSetup, onCheckoutValidation} = eventRegistration;
+
+	function getSelectedStateName(stateCode) {
+		const billingStateField = document.getElementById('billing-state');
+		return billingStateField?.querySelector(`option[value="${stateCode}"]`)?.innerText;
+	}
 
 	useEffect(() => {
 		if (!hideCardForm) {
@@ -42,7 +48,31 @@ const CreditCardPaymentMethod = (props) => {
 	useEffect( () => {
 		if (!hideCardForm) {
 			const unsubscribe = onCheckoutValidation( () => {
-				OmiseCard.requestCardToken()
+				const { select } = window.wp.data;
+				const { billingAddress } = select( CART_STORE_KEY ).getCartData();
+
+				if (billingAddress instanceof Object) {
+					OmiseCard.requestCardToken({
+						email: billingAddress.email,
+						billingAddress: {
+							street1: billingAddress.address_1,
+							street2: billingAddress.address_2,
+							city: billingAddress.city,
+							country: billingAddress.country,
+							state: getSelectedStateName(billingAddress.state),
+							postal_code: billingAddress.postcode,
+							phone_number: billingAddress.phone,
+						}
+					});
+				}	else {
+					/**
+					 * Expect billingAddress to always returned as an object.
+					 * In case if it's not, fallback to request card token without address.
+					 * https://github.com/woocommerce/woocommerce/blob/1601aa341e4f1bb6f785d39696d8f25448a7372d/plugins/woocommerce/client/blocks/assets/js/types/type-defs/cart.ts#L47
+					 */
+					OmiseCard.requestCardToken();
+				}
+
 				return true;
 			} );
 			return unsubscribe;
@@ -61,6 +91,7 @@ const CreditCardPaymentMethod = (props) => {
 								meta: {
 									paymentMethodData: {
 										"card_id": savedCardIdRef.current.value,
+										"wc_block_payment": true,
 									}
 								}
 							};
@@ -78,6 +109,7 @@ const CreditCardPaymentMethod = (props) => {
 									paymentMethodData: {
 										"omise_save_customer_card": saveCardRef.current,
 										"omise_token": cardTokenRef.current,
+										"wc_block_payment": true,
 									}
 								}
 							};

@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 6.4.0
+Stable tag: 7.0.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 7.0.0 =
+
+- Introduce new payment passkey to authenticate card transactions. (PR: [#535](https://github.com/omise/omise-woocommerce/issues/535), [#541](https://github.com/omise/omise-woocommerce/issues/541), [#545](https://github.com/omise/omise-woocommerce/issues/545))
+- Create card token with cardholder's email and phone number when provided. (PR: [#537](https://github.com/omise/omise-woocommerce/issues/537))
 
 = 6.4.0 =
 

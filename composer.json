@@ -25,5 +25,10 @@
             "automattic/jetpack-autoloader": true,
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omise\\Tests\\": "tests/unit/"
+        }
     }
 }
