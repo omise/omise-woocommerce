@@ -327,11 +327,11 @@ class Omise
 	{
 		$installed_version = get_option('omise_version', '0.0.0');
 
-		if (version_compare($installed_version, '7.0.0', '<=')) {
-			$this->migrate_rabbit_linepay_title();
-		}
+		if (version_compare($installed_version, $this->version, '<')) {
+			if (version_compare($installed_version, '7.0.0', '<')) {
+				$this->migrate_rabbit_linepay_title();
+			}
 
-		if ($installed_version !== $this->version) {
 			update_option('omise_version', $this->version);
 		}
 	}
