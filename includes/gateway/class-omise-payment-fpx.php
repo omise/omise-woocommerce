@@ -104,8 +104,8 @@ class Omise_Payment_FPX extends Omise_Payment_Offsite
 		$icon = Omise_Image::get_image([
 			'file' => 'fpx.svg',
 			'alternate_text' => 'FPX',
-			'width' => 60,
-			'height' => 60,
+			'width' => 45,
+			'height' => 45,
 		]);
 		return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
 	}

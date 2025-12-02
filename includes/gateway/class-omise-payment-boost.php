@@ -60,7 +60,7 @@ class Omise_Payment_Boost extends Omise_Payment_Offsite {
 	public function get_icon()
 	{
 		$icon = Omise_Image::get_image([
-			'file' => 'boost.png',
+			'file' => 'boost.svg',
 			'alternate_text' => 'Boost',
 		]);
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );

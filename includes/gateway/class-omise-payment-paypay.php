@@ -60,10 +60,8 @@ class Omise_Payment_PayPay extends Omise_Payment_Offsite {
 	public function get_icon()
 	{
 		$icon = Omise_Image::get_image([
-			'file' => 'paypay.png',
+			'file' => 'paypay.svg',
 			'alternate_text' => 'PayPay',
-			'width' => 18,
-			'height' => 18,
 		]);
 		return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 	}

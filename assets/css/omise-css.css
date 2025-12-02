@@ -65,6 +65,10 @@ fieldset.card-exists,
 	line-height: 1;
 }
 
+#payment .payment_methods .Omise-Image {
+	vertical-align: middle;
+}
+
 /**
  * Omise Bill Payment Lotus
  * CSS for the 'Thank You' (order-received) page.
@@ -105,10 +109,12 @@ fieldset.card-exists,
 	margin: auto;
 }
 .omise-paynow-logo {
-	background: url('../images/paynow.png');
+	background: url('../images/paynow.svg');
+	background-position: center;
 	background-size: cover;
-	width: 200px;
-	height: 51px;
+	background-repeat: no-repeat;
+	width: 150px;
+	height: 80px;
 	margin: auto;
 }
 
@@ -258,18 +264,20 @@ ul.omise-banks-list {
 
 .omise-banks-list .bank-logo {
 	display: inline-block;
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	margin-top: 4px;
 	border-radius: 2px;
 	border: 4px solid #fff;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
 .omise-banks-list .mobile-banking-logo {
 	display: inline-block;
 	background-size: cover;
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	margin-bottom: 6px;
 	margin-left: 10px;
 	vertical-align: middle;
@@ -351,103 +359,53 @@ ul.omise-banks-list {
 /**
  * 2.4). Bank logos
  */
+
+/**
+ * internet banking logos
+ */
+
 /** BAY **/
 .bank-logo.bay {
-	background: url('../images/bay.svg') #fec43b;
-	border-color: #fec43b;
+	background-image: url('../images/bay.svg');
 }
 
 /** BBL **/
 .bank-logo.bbl {
-	background: url('../images/bbl.svg') #1e4598;
-	border-color: #1e4598;
-}
-
-/** First Choice **/
-.bank-logo.first_choice {
-	background: url('../images/firstchoice.svg') #007bc4;
-	border-color: #007bc4;
-}
-
-/** KBANK **/
-.bank-logo.kbank {
-	background: url('../images/kbank.svg') #fbfbfb;
-	border-color: #fbfbfb;
-}
-
-/** KTB **/
-.bank-logo.ktb {
-	background: url('../images/ktb.svg') #1ba5e1;
-	border-color: #1ba5e1;
-}
-
-/** KTC **/
-.bank-logo.ktc {
-	background: url('../images/ktc.svg') #fbfbfb;
-	border-color: #fbfbfb;
-}
-
-/** SCB **/
-.bank-logo.scb {
-	background: url('../images/scb.svg') #4e2e7f;
-	border-color: #4e2e7f;
-}
-
-/** TTB **/
-.bank-logo.ttb {
-	background: url('../images/ttb.svg') #fbfbfb;
-	border-color: #fbfbfb;
-}
-
-/** UOB **/
-.bank-logo.uob {
-	background: url('../images/uob.svg') #05377c;
-	border-color: #05377c;
-}
-
-/** MAYBANK **/
-.bank-logo.mbb {
-	background: url('../images/maybank.svg') #ffcf00;
-	border-color: #ffcf00;
+	background-image: url('../images/bbl.svg');
 }
 
 /**
- * mobile banking logo
+ * mobile banking logos
  */
 
 /** KPLUS **/
 .mobile-banking-logo.kplus {
-	background: url('../images/kplus.png');
-	background-size: cover;
+	background-image: url('../images/kplus.svg');
 }
 
 /** SCB **/
 .mobile-banking-logo.scb {
-	background: url('../images/scb-easy.png');
-	background-size: cover;
+	background-image: url('../images/scb-easy.svg');
 }
 
 /** BAY **/
 .mobile-banking-logo.bay {
-	background: url('../images/kma.png');
-	background-size: cover;
+	background-image: url('../images/kma.svg');
 }
 
 /** BBL **/
 .mobile-banking-logo.bbl {
-	background: url('../images/bbl-m.png');
-	background-size: cover;
+	background-image: url('../images/bbl.svg');
 }
 
 /** KTB **/
 .mobile-banking-logo.ktb {
-	background: url('../images/ktb-m.png');
-	background-size: cover;
+	background-image: url('../images/ktb.svg');
 }
 
 /**
-fpx select & bank logos
-**/
+ * fpx select & bank logos
+ */
 .fpx-select-bank {
     position: relative;
 }
