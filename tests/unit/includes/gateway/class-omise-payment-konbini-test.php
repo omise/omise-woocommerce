@@ -12,6 +12,7 @@ class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
         parent::setUp();
         Monkey\Functions\expect('wp_kses');
         Monkey\Functions\expect('add_action');
+        Monkey\Functions\stubs(['sanitize_text_field' => 'Sanitized text']);
 
         // Mocking the parent class
         $offline = Mockery::mock('overload:Omise_Payment_Offline');
