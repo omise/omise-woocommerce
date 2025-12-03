@@ -189,7 +189,39 @@ class Omise_Test extends TestCase {
 			->andReturnTrue();
 		Monkey\Functions\expect( 'update_option' )
 			->never()
-			->with( 'woocommerce_omise_rabbit_linepay_settings' );
+			->with( 'woocommerce_omise_rabbit_linepay_settings', Mockery::any() );
+
+		$this->model->version = $updateVersion;
+		$this->model->upgrade_plugin();
+
+		// Monkey expectations are validated in tearDown
+		$this->assertTrue( true );
+	}
+
+	public function test_upgrade_plugin_does_not_update_rabbit_linepay_title_without_linepay_config() {
+		$currentVersion = '7.0.0';
+		$updateVersion = '7.1.0';
+
+		Monkey\Functions\expect( 'get_option' )
+			->andReturnUsing(
+				function ( $option_name, $default = false ) use ( $currentVersion ) {
+					if ( $option_name === 'omise_version' ) {
+						return $currentVersion;
+					}
+					if ( $option_name === 'woocommerce_omise_rabbit_linepay_settings' ) {
+						return false;
+					}
+					return $default;
+				}
+			);
+
+		Monkey\Functions\expect( 'update_option' )
+			->once()
+			->with( 'omise_version', $updateVersion )
+			->andReturnTrue();
+		Monkey\Functions\expect( 'update_option' )
+			->never()
+			->with( 'woocommerce_omise_rabbit_linepay_settings', Mockery::any() );
 
 		$this->model->version = $updateVersion;
 		$this->model->upgrade_plugin();
