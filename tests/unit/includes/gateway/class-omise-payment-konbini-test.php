@@ -2,6 +2,9 @@
 
 use Brain\Monkey;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class Omise_Payment_Konbini_Test extends Omise_Payment_Offline_Test
 {
     public $expectedAmount = 999999;

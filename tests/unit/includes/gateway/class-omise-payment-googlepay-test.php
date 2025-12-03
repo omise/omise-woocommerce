@@ -3,6 +3,9 @@
 use PHPUnit\Framework\TestCase;
 use Brain\Monkey;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class Omise_Payment_GooglePay_Test extends Omise_Test_Case
 {
     protected function setUp(): void
