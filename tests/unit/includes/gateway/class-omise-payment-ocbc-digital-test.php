@@ -3,6 +3,9 @@
 use Brain\Monkey;
 require_once __DIR__ . '/class-omise-offsite-test.php';
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class Omise_Payment_OCBC_Digital_Test extends Omise_Offsite_Test
 {
     private $obj;

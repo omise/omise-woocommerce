@@ -2,6 +2,9 @@
 
 use Brain\Monkey;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
 {
     public $mockOrder;

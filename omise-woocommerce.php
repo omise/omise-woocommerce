@@ -123,6 +123,7 @@ class Omise
 		$this->load_plugin_textdomain();
 		$this->include_classes();
 		$this->define_constants();
+		$this->upgrade_plugin();
 		$this->register_post_types();
 		$this->init_admin();
 		$this->init_route();
@@ -318,13 +319,50 @@ class Omise
 	}
 
 	/**
+	 * Handle plugin upgrades and migrations
+	 *
+	 * @since 7.x.x
+	 */
+	public function upgrade_plugin()
+	{
+		$installed_version = get_option( 'omise_version', '0.0.0' );
+
+		if ( version_compare( $installed_version, $this->version, '<' ) ) {
+			if ( version_compare( $installed_version, '7.0.0', '<=' ) ) {
+				$this->migrate_rabbit_linepay_title();
+			}
+
+			update_option( 'omise_version', $this->version );
+		}
+	}
+
+	/**
+	 * Migration: Update Rabbit LINE Pay title to LINE Pay
+	 *
+	 * @since 7.x.x
+	 */
+	private function migrate_rabbit_linepay_title()
+	{
+		$option_name = 'woocommerce_omise_rabbit_linepay_settings';
+		$settings = get_option( $option_name );
+
+		if ( $settings && isset( $settings['title'] ) && $settings['title'] === 'Rabbit LINE Pay' ) {
+			$settings['title'] = 'LINE Pay';
+			update_option( $option_name, $settings );
+		}
+	}
+
+	/**
 	 * @since  3.11
 	 */
 	public function register_payment_methods()
 	{
-		add_filter('woocommerce_payment_gateways', function ($methods) {
-			return array_merge($methods, $this->payment_methods());
-		});
+		add_filter(
+			'woocommerce_payment_gateways',
+			function ( $methods ) {
+				return array_merge( $methods, $this->payment_methods() );
+			}
+		);
 	}
 
 	/**

@@ -16,13 +16,21 @@ abstract class Omise_Payment_Offsite_Test extends Bootstrap_Test_Setup {
 		 *  * Move this to the bootstrap.php file.
 		 *  * Remove @runTestsInSeparateProcesses from all offsite tests.
 		 */
+		require_once __DIR__ . '/../../../../includes/classes/class-omise-image.php';
 		require_once __DIR__ . '/../../../../includes/backends/class-omise-backend.php';
 		require_once __DIR__ . '/../../../../includes/backends/class-omise-backend-installment.php';
+		require_once __DIR__ . '/../../../../includes/backends/class-omise-backend-fpx.php';
 		require_once __DIR__ . '/../../../../includes/gateway/traits/charge-request-builder-trait.php';
 		require_once __DIR__ . '/../../../../includes/gateway/traits/sync-order-trait.php';
 		require_once __DIR__ . '/../../../../includes/gateway/abstract-omise-payment-offsite.php';
 		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-atome.php';
+		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-boost.php';
+		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-fpx.php';
+		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-grabpay.php';
 		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-installment.php';
+		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-maybank-qr.php';
+		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-paypay.php';
+		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-shopeepay.php';
 
 		Monkey\Functions\stubs(
 			[
@@ -33,6 +41,7 @@ abstract class Omise_Payment_Offsite_Test extends Bootstrap_Test_Setup {
 				'wc_clean' => null,
 				'sanitize_text_field' => null,
 				'plugin_dir_path' => __DIR__ . '/../../../../',
+				'plugins_url' => null,
 			]
 		);
 
