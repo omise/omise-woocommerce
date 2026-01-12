@@ -81,10 +81,6 @@ abstract class Omise_Payment_Base_Card extends Omise_Payment
 			]);
 		}
 
-		if ( $is_wc_block && wc_string_to_bool( $this->get_option( 'is_passkey_enabled', 'no' ) ) ) {
-			$data['authentication'] = 'PASSKEY';
-		}
-
 		if (!empty($omise_customer_id) && ! empty($card_id)) {
 			$data['customer'] = $omise_customer_id;
 			$data['card'] = $card_id;

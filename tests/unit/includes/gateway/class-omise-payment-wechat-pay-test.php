@@ -23,6 +23,7 @@ class Omise_Payment_Wechat_Pay_Test extends Omise_Offsite_Test
         Monkey\Functions\expect('wp_kses');
         Monkey\Functions\expect('add_action');
 
+        require_once __DIR__ . '/../../../../includes/classes/class-omise-image.php';
         require_once __DIR__ . '/../../../../includes/libraries/omise-plugin/helpers/request.php';
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-wechat-pay.php';
     }

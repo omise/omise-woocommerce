@@ -102,7 +102,7 @@ class Omise_Payment_ShopeePay extends Omise_Payment_Offsite
 	 */
 	public function get_icon() {
 		$icon = Omise_Image::get_image([
-			'file' => 'shopeepay.png',
+			'file' => 'shopeepay.svg',
 			'alternate_text' => 'ShopeePay',
 		]);
 		return apply_filters('woocommerce_gateway_icon', $icon, $this->id);

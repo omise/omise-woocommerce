@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v7.0.1 _(Jan 12, 2026)_](https://github.com/omise/omise-woocommerce/releases/tag/v7.0.1)
+- Update RabbitLinePay to LinePay and payment logos. (PR: [#549](https://github.com/omise/omise-woocommerce/issues/549))
+- Remove passkey settings. (PR: [#548](https://github.com/omise/omise-woocommerce/issues/548))
+
 ## [v7.0.0 _(Oct 21, 2025)_](https://github.com/omise/omise-woocommerce/releases/tag/v7.0.0)
 - Introduce new payment passkey to authenticate card transactions. (PR: [#535](https://github.com/omise/omise-woocommerce/issues/535), [#541](https://github.com/omise/omise-woocommerce/issues/541), [#545](https://github.com/omise/omise-woocommerce/issues/545))
 - Create card token with cardholder's email and phone number when provided. (PR: [#537](https://github.com/omise/omise-woocommerce/issues/537))

@@ -42,20 +42,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 	 * @see woocommerce/includes/abstracts/abstract-wc-settings-api.php
 	 */
 	function init_form_fields() {
-		$passkey_settings = array();
-
-		if (defined('OMISE_FEATURE_PASSKEY') && OMISE_FEATURE_PASSKEY === true) {
-			$passkey_settings = array(
-				'is_passkey_enabled' => array(
-					'title'       => __( 'Authentication', 'omise' ),
-					'type'        => 'checkbox',
-					'label'       => __( 'Enable Passkey Authentication', 'omise' ),
-					'default'     => 'no',
-					'description' => __( 'This option will enable Passkey authentication for card payments on checkout page when available.', 'omise' ),
-				),
-			);
-		}
-
 		$this->form_fields = array_merge(
 			array(
 				'enabled' => array(
@@ -78,7 +64,6 @@ class Omise_Payment_Creditcard extends Omise_Payment_Base_Card {
 					'description' => __( 'This controls the description the user sees during checkout.', 'omise' )
 				),
 			),
-			$passkey_settings,
 			array(
 				'advanced' => array(
 					'title'       => __( 'Advanced Settings', 'omise' ),

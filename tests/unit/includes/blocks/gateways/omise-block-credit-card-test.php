@@ -61,7 +61,6 @@ class Omise_Block_Credit_Card_Test extends Omise_Test_Case {
 			'title' => 'Credit Card',
 			'description' => 'This is Credit Card payment method.',
 			'enabled' => 'yes',
-			'is_passkey_enabled' => 'no',
 		];
 		Monkey\Functions\expect( 'get_option' )
 			->once()
@@ -81,7 +80,6 @@ class Omise_Block_Credit_Card_Test extends Omise_Test_Case {
 		$this->assertEquals( 'th', $data['locale'] );
 		$this->assertEquals( 'pkey_xxx', $data['public_key'] );
 		$this->assertEquals( true, $data['is_active'] );
-		$this->assertEquals( false, $data['is_passkey_enabled'] );
 	}
 
 	public function test_get_payment_method_script_handles() {

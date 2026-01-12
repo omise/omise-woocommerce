@@ -221,4 +221,16 @@ class Omise_Payment_Atome_Test extends Omise_Payment_Offsite_Test {
 
 		$this->omise_atome->payment_fields();
 	}
+
+	public function test_atome_get_icon() {
+		Monkey\Functions\expect( 'apply_filters' )
+		->once()
+		->with(
+			'woocommerce_gateway_icon',
+			"<img src='../assets/images/atome.svg' class='Omise-Image' style='width: 30px; max-height: 30px;' alt='Atome logo' />",
+			'omise_atome'
+		);
+
+		$this->omise_atome->get_icon();
+	}
 }

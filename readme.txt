@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 7.0.0
+Stable tag: 7.0.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 7.0.1 =
+
+- Update RabbitLinePay to LinePay and payment logos. (PR: [#549](https://github.com/omise/omise-woocommerce/issues/549))
+- Remove passkey settings. (PR: [#548](https://github.com/omise/omise-woocommerce/issues/548))
 
 = 7.0.0 =
 

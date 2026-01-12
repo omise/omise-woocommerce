@@ -125,12 +125,4 @@ class Omise_Payment_CreditCard_Test extends Omise_Test_Case
             'accept_amex',
         ], array_keys($credit_card->form_fields));
     }
-
-    public function test_form_fields_include_passkey_setting_when_passkey_feature_is_enabled() {
-        define('OMISE_FEATURE_PASSKEY', true);
-
-        $credit_card = new Omise_Payment_Creditcard;
-
-        $this->assertArrayHasKey('is_passkey_enabled', $credit_card->form_fields);
-    }
 }
