@@ -1,11 +1,10 @@
-import {useState, useEffect, useRef} from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { SavedCard } from './saved-cards';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 const CreditCardPaymentMethod = (props) => {
-  const { settings } = props;
+	const { settings } = props;
 	const { existing_cards, description } = settings;
 	const el = useRef(null);
 	const saveCardRef = useRef(false);
@@ -13,8 +12,8 @@ const CreditCardPaymentMethod = (props) => {
 	const savedCardIdRef = useRef(null);
 	const cardFormErrors = useRef(null);
 	const [hideCardForm, setHideCardForm] = useState(existing_cards && existing_cards.length > 0);
-	const {eventRegistration, emitResponse} = props;
-  const {onPaymentSetup, onCheckoutValidation} = eventRegistration;
+	const { eventRegistration, emitResponse } = props;
+	const { onPaymentSetup, onCheckoutValidation } = eventRegistration;
 
 	function getSelectedStateName(stateCode) {
 		const billingStateField = document.getElementById('billing-state');
@@ -50,6 +49,7 @@ const CreditCardPaymentMethod = (props) => {
 			const unsubscribe = onCheckoutValidation( () => {
 				const { select } = window.wp.data;
 				const { billingAddress } = select( CART_STORE_KEY ).getCartData();
+				cardFormErrors.current = null;
 
 				if (billingAddress instanceof Object) {
 					OmiseCard.requestCardToken({
@@ -64,7 +64,7 @@ const CreditCardPaymentMethod = (props) => {
 							phone_number: billingAddress.phone,
 						}
 					});
-				}	else {
+				} else {
 					/**
 					 * Expect billingAddress to always returned as an object.
 					 * In case if it's not, fallback to request card token without address.
@@ -80,7 +80,7 @@ const CreditCardPaymentMethod = (props) => {
 	}, [ onCheckoutValidation, hideCardForm ] );
 
 	useEffect(() => {
-        const unsubscribe = onPaymentSetup(async () => {
+		const unsubscribe = onPaymentSetup( async () => {
 			return await new Promise( ( resolve, reject ) => {
 				const intervalId = setInterval( () => {
 					if (savedCardIdRef.current && savedCardIdRef.current.value !== "") {
@@ -128,9 +128,9 @@ const CreditCardPaymentMethod = (props) => {
 					}
 				}, 1000 );
 			} );
-        });
-        return () => unsubscribe();
-    }, [
+		} );
+		return () => unsubscribe();
+	}, [
 		emitResponse.responseTypes.ERROR,
 		emitResponse.responseTypes.SUCCESS,
 		onPaymentSetup,
@@ -147,12 +147,8 @@ const CreditCardPaymentMethod = (props) => {
 			<SavedCard existingCards={existing_cards} onChange={onChange} />
 		)}
 
-        {!hideCardForm && <p>{decodeEntities( description || '' )}</p>}
-		<div ref={el} id="omise-card" style={{width:"100%", display: hideCardForm ? "none" : "block"}}></div>
-		{!hideCardForm && <>
-			<input type="hidden" name="omise_save_customer_card" id="omise_save_customer_card" />
-			<input type="hidden" className="omise_token" name="omise_token" />
-		</>}
+		{!hideCardForm && <p>{decodeEntities(description || '')}</p>}
+		<div ref={el} id="omise-card" style={{ width: "100%", display: hideCardForm ? "none" : "block" }}></div>
 	</>)
 }
 
