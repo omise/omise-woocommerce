@@ -21,6 +21,33 @@ abstract class Omise_Payment_Offline extends Omise_Payment
 	/**
 	 * @inheritdoc
 	 */
+	public function process_payment( $order_id ) {
+		if ( ! Omise_Setting::instance()->is_upa_enabled() ) {
+			return parent::process_payment( $order_id );
+		}
+
+		if ( ! $this->load_order( $order_id ) ) {
+			return $this->invalid_order( $order_id );
+		}
+
+		if ( ! Omise_UPA_Feature_Flag::is_enabled_for_order( $this, $this->order() ) ) {
+			return parent::process_payment( $order_id );
+		}
+
+		$this->order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
+		$this->order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
+		$this->order->save();
+
+		try {
+			return Omise_UPA_Session_Service::create_checkout_session( $this, $order_id, $this->order );
+		} catch ( Exception $e ) {
+			return $this->payment_failed( null, $e->getMessage() );
+		}
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function charge( $order_id, $order )
 	{
 		$requestData = $this->build_charge_request(

@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from '@wordpress/element';
+import {useEffect, useState} from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
@@ -17,20 +17,24 @@ const MobileBankingPaymentMethod = (props) => {
     const description = decodeEntities( settings.description || '' )
     const backends = settings.data.backends;
     const noPaymentMethods = __( 'There are no payment methods available.', 'omise' )
-    const mobileBankRef = useRef({});
+    const [selectedBank, setSelectedBank] = useState(null);
 
 
     const onMobileBankSelected = (e) => {
-        mobileBankRef.current = e.target.value
+        setSelectedBank(e.target.value)
     }
 
     useEffect(() => {
         const unsubscribe = onPaymentSetup(async () => {
+            if (!selectedBank) {
+                return {type: emitResponse.responseTypes.ERROR, message: __( 'Select a bank', 'omise' )}
+            }
+
             try {
                 return {
                     type: emitResponse.responseTypes.SUCCESS,
                     meta: {
-                        paymentMethodData: { "omise-offsite": mobileBankRef.current }
+                        paymentMethodData: { "omise-offsite": selectedBank }
                     }
                 };
             } catch (error) {
@@ -38,7 +42,12 @@ const MobileBankingPaymentMethod = (props) => {
             }
         });
         return () => unsubscribe();
-    }, [ onPaymentSetup ]);
+    }, [
+        emitResponse.responseTypes.ERROR,
+		emitResponse.responseTypes.SUCCESS,
+		onPaymentSetup,
+        selectedBank
+    ]);
 
     return (<>
         {description && <p>{description}</p>}
