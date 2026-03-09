@@ -203,6 +203,11 @@ class Omise_Payment_Test extends Bootstrap_Test_Setup
     $this->assertEquals('Alipay_plus', $provider);
   }
 
+  public function test_protect_metadata_returns_true_for_upa_state_key()
+  {
+    $this->assertTrue($this->omisePayment->protectMetadata(false, 'omise_upa_state'));
+  }
+
   private function omisePaymentImpl($sourceType)
   {
     return new class ($sourceType) extends Omise_Payment {

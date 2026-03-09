@@ -8,6 +8,19 @@ if ( class_exists( 'Omise_Setting' ) ) {
 
 class Omise_Setting {
 	/**
+	 * wp-config.php flag to allow UPA feature rollout for pilot merchants.
+	 */
+	const FEATURE_UPA_FLAG = 'OMISE_FEATURE_UPA';
+
+	/**
+	 * Settings option key for merchant UPA toggle.
+	 */
+	const OPTION_ENABLE_UPA = 'enable_upa';
+	const UPA_API_SCHEME    = 'https';
+	const UPA_API_PATH      = '/api';
+	const UPA_API_HOST      = 'checkout-page.omise.co';
+
+	/**
 	 * The Omise_Setting Instance.
 	 *
 	 * @since 3.4
@@ -61,6 +74,7 @@ class Omise_Setting {
 			'live_public_key'  => '',
 			'live_private_key' => '',
 			'dynamic_webhook'  => 0,
+			self::OPTION_ENABLE_UPA => 0,
 			'backends' => null,
 		);
 	}
@@ -176,5 +190,112 @@ class Omise_Setting {
 	{
 		$dynamic_webhook = $this->settings['dynamic_webhook'];
 		return (bool)$dynamic_webhook;
+	}
+
+	/**
+	 * UPA flow is active only when both conditions are true:
+	 * 1) wp-config feature flag is enabled.
+	 * 2) merchant enabled the toggle in plugin settings.
+	 *
+	 * @return bool
+	 */
+	public function is_upa_enabled() {
+		return $this->is_upa_feature_flag_enabled() && $this->is_upa_enabled_by_merchant();
+	}
+
+	/**
+	 * Whether UPA pilot feature is enabled from wp-config.php
+	 *
+	 * @return bool
+	 */
+	public function is_upa_feature_flag_enabled() {
+		if ( ! defined( self::FEATURE_UPA_FLAG ) ) {
+			return false;
+		}
+
+		return $this->is_truthy( constant( self::FEATURE_UPA_FLAG ) );
+	}
+
+	/**
+	 * Whether merchant enabled UPA toggle in plugin settings.
+	 *
+	 * @return bool
+	 */
+	public function is_upa_enabled_by_merchant() {
+		$enable_upa = isset( $this->settings[ self::OPTION_ENABLE_UPA ] ) ? $this->settings[ self::OPTION_ENABLE_UPA ] : 0;
+
+		return $this->is_truthy( $enable_upa );
+	}
+
+	/**
+	 * Retrieve UPA API base URL.
+	 * Host can be provided from OMISE_UPA_API_BASE_URL env (host only).
+	 * When env is missing or invalid, production host is used.
+	 *
+	 * @return string
+	 */
+	public function get_upa_api_base_url() {
+		$env_host = $this->get_upa_api_host_from_env();
+		if ( ! empty( $env_host ) ) {
+			return self::UPA_API_SCHEME . '://' . $env_host . self::UPA_API_PATH;
+		}
+
+		return self::UPA_API_SCHEME . '://' . self::UPA_API_HOST . self::UPA_API_PATH;
+	}
+
+	/**
+	 * Resolve UPA host from environment and validate hostname.
+	 *
+	 * @return string
+	 */
+	private function get_upa_api_host_from_env() {
+		$env_host     = getenv( 'OMISE_UPA_API_BASE_URL' );
+
+		if ( ! is_string( $env_host ) || empty( trim( $env_host ) ) ) {
+			return '';
+		}
+
+		$env_host = trim( $env_host );
+
+		// Backward-compatible parsing in case a full URL is still provided.
+		if ( false !== strpos( $env_host, '://' ) ) {
+			$parsed_host = wp_parse_url( $env_host, PHP_URL_HOST );
+			if ( is_string( $parsed_host ) && ! empty( $parsed_host ) ) {
+				$env_host = $parsed_host;
+			}
+		}
+
+		$env_host = strtolower( trim( $env_host, " \t\n\r\0\x0B/" ) );
+		$env_host = sanitize_text_field( $env_host );
+
+		if ( false === filter_var( $env_host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
+			return '';
+		}
+
+		return $env_host;
+	}
+
+	/**
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	private function is_truthy( $value ) {
+		if ( is_bool( $value ) ) {
+			return $value;
+		}
+
+		if ( is_int( $value ) || is_float( $value ) ) {
+			return 1 === (int) $value;
+		}
+
+		if ( is_string( $value ) ) {
+			$normalized = strtolower( trim( $value ) );
+			$truthy     = array( '1', 'true', 'yes', 'on' );
+
+			return in_array( $normalized, $truthy, true );
+		}
+
+		return false;
 	}
 }

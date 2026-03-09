@@ -282,6 +282,14 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-payment-factory.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-feature-flag.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-client.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-payment-method-resolver.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-session-service.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-state-token.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-payment-resolver.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-callback.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-back-navigation-guard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-admin-page.php';
@@ -371,6 +379,8 @@ class Omise
 	public function register_hooks()
 	{
 		add_action('omise_async_webhook_event_handler', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3);
+		Omise_UPA_Callback::register_hooks();
+		Omise_UPA_Back_Navigation_Guard::register_hooks();
 	}
 
 	/**

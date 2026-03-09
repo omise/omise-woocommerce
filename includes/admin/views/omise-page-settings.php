@@ -1,4 +1,5 @@
 <div class="wrap omise">
+	<?php $is_upa_feature_flag_enabled = Omise_Setting::instance()->is_upa_feature_flag_enabled(); ?>
 	<style>
 		.omise-notice-testmode {
 			background: #ffce00;
@@ -112,13 +113,13 @@
 							<select class="regular-text" name="dynamic_webhook" id="dynamic_webhook">
 								<option
 									value="0"
-									<?php echo $settings['dynamic_webhook'] ? 'selected' : '' ?>
+									<?php echo empty( $settings['dynamic_webhook'] ) ? 'selected' : ''; ?>
 								>
 									No
 								</option>
 								<option
 									value="1"
-									<?php echo $settings['dynamic_webhook'] ? 'selected' : '' ?>
+									<?php echo ! empty( $settings['dynamic_webhook'] ) ? 'selected' : ''; ?>
 								>
 									Yes
 								</option>
@@ -149,7 +150,33 @@
 								?>
 						</fieldset>
 					</td>
-				</tr>
+					</tr>
+				<?php if ( $is_upa_feature_flag_enabled ) : ?>
+					<tr>
+						<th scope="row"><label><?php _e( 'Enable Omise UPA Flow', 'omise' ); ?></label></th>
+						<td>
+							<fieldset>
+								<select class="regular-text" name="enable_upa" id="enable_upa">
+									<option
+										value="0"
+										<?php echo empty( $settings['enable_upa'] ) ? 'selected' : ''; ?>
+									>
+										No
+									</option>
+									<option
+										value="1"
+										<?php echo ! empty( $settings['enable_upa'] ) ? 'selected' : ''; ?>
+									>
+										Yes
+									</option>
+								</select>
+								<p class="description">
+									<?php echo __( 'If enabled, supported payment methods will create payment sessions through Omise hosted checkout page.', 'omise' ); ?>
+								</p>
+							</fieldset>
+						</td>
+					</tr>
+				<?php endif; ?>
 			</tbody>
 		</table>
 
