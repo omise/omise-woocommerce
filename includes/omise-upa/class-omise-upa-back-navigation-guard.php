@@ -32,6 +32,10 @@ class Omise_UPA_Back_Navigation_Guard {
 			__( 'Payment is already completed. Back navigation to previous payment page is disabled.', 'omise' )
 		);
 
+		if ( false === $query_param_key || false === $notice_message ) {
+			return;
+		}
+
 		echo '<script id="omise-upa-back-navigation-guard">(function(){';
 		echo 'if(!window.history||!window.history.pushState||typeof URL==="undefined"){return;}';
 		echo 'var queryKey=' . $query_param_key . ';';

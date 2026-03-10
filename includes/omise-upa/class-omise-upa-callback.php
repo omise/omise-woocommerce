@@ -271,7 +271,11 @@ class Omise_UPA_Callback {
 			return null;
 		}
 
-		return wc_get_order( $order_id );
+		if ( ! ctype_digit( $order_id ) ) {
+			return null;
+		}
+
+		return wc_get_order( (int) $order_id );
 	}
 
 	/**

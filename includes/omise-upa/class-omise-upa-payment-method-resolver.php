@@ -34,9 +34,7 @@ class Omise_UPA_Payment_Method_Resolver {
 	 * @return string
 	 */
 	private static function resolve_from_request( $gateway_id ) {
-		$dynamic_source_gateways = array( 'omise_internetbanking', 'omise_mobilebanking' );
-
-		if ( ! in_array( $gateway_id, $dynamic_source_gateways, true ) ) {
+		if ( ! in_array( $gateway_id, Omise_UPA_Session_Service::DYNAMIC_SOURCE_GATEWAYS, true ) ) {
 			return '';
 		}
 

@@ -272,6 +272,11 @@ class Omise_Setting {
 			return '';
 		}
 
+		// Only allow omise hosts to prevent misconfiguration.
+		if ( false === strpos( $env_host, 'omise' ) ) {
+			return '';
+		}
+
 		return $env_host;
 	}
 
