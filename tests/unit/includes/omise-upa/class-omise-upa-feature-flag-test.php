@@ -4,18 +4,6 @@ use Brain\Monkey;
 
 require_once __DIR__ . '/../../class-omise-unit-test.php';
 
-if ( ! class_exists( 'Omise_Payment' ) ) {
-	class Omise_Payment {}
-}
-
-if ( ! class_exists( 'Omise_Payment_Offsite' ) ) {
-	class Omise_Payment_Offsite extends Omise_Payment {}
-}
-
-if ( ! class_exists( 'Omise_Payment_Offline' ) ) {
-	class Omise_Payment_Offline extends Omise_Payment {}
-}
-
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
@@ -23,6 +11,7 @@ if ( ! class_exists( 'Omise_Payment_Offline' ) ) {
 class Omise_UPA_Feature_Flag_Test extends Omise_Test_Case {
 	protected function setUp(): void {
 		parent::setUp();
+		require_once __DIR__ . '/stubs/payment-stubs.php';
 		require_once __DIR__ . '/../../../../includes/omise-upa/class-omise-upa-feature-flag.php';
 	}
 

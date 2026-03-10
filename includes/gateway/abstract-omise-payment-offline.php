@@ -2,6 +2,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
+if ( class_exists( 'Omise_Payment_Offline' ) ) {
+    return;
+}
+
 require_once dirname( __FILE__ ) . '/class-omise-payment.php';
 
 /**
