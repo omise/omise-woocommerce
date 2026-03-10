@@ -15,6 +15,8 @@ class Omise_UPA_Session_Service {
 	const COMPLETE_ENDPOINT = 'omise_upa_complete';
 	const CANCEL_ENDPOINT   = 'omise_upa_cancel';
 
+	const DYNAMIC_SOURCE_GATEWAYS = array( 'omise_internetbanking', 'omise_mobilebanking' );
+
 	/**
 	 * @param Omise_Payment $gateway
 	 * @param string|int    $order_id
@@ -82,12 +84,7 @@ class Omise_UPA_Session_Service {
 			return false;
 		}
 
-		$dynamic_source_gateways = array(
-			'omise_internetbanking',
-			'omise_mobilebanking',
-		);
-
-		return in_array( $gateway->id, $dynamic_source_gateways, true );
+		return in_array( $gateway->id, self::DYNAMIC_SOURCE_GATEWAYS, true );
 	}
 
 	/**

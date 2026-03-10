@@ -4,6 +4,7 @@ use Brain\Monkey;
 
 /**
  * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
  */
 class Omise_Payment_Base_Card_Test extends Omise_Test_Case {
 	private $base_charge = [
