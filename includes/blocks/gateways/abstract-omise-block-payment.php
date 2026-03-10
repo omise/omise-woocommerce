@@ -21,6 +21,30 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
     protected $additional_data;
 
     /**
+     * Returns the script asset metadata or a safe fallback when build artifacts are missing.
+     *
+     * @param string $asset_path Path to generated *.asset.php file.
+     * @return array
+     */
+    private function load_script_asset( $asset_path ) {
+        $defaults = [
+            'dependencies' => [],
+            'version'      => defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) ? OMISE_WOOCOMMERCE_PLUGIN_VERSION : null,
+        ];
+
+        if ( ! file_exists( $asset_path ) ) {
+            return $defaults;
+        }
+
+        $asset = require $asset_path;
+        if ( ! is_array( $asset ) ) {
+            return $defaults;
+        }
+
+        return array_merge( $defaults, $asset );
+    }
+
+    /**
      * Initializes the payment method type.
      */
     public function initialize() {
@@ -45,7 +69,7 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
      */
     public function get_payment_method_script_handles() {
         if (!wp_script_is("wc-{$this->name}-payments-blocks", 'enqueued')) {
-            $script_asset = require_once __DIR__ . "/../assets/js/build/{$this->name}.asset.php";
+            $script_asset = $this->load_script_asset( __DIR__ . "/../assets/js/build/{$this->name}.asset.php" );
             wp_enqueue_script(
                 "wc-{$this->name}-payments-blocks",
                 plugin_dir_url(__DIR__) . "assets/js/build/{$this->name}.js",

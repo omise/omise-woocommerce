@@ -17,9 +17,21 @@ class Omise_Block_Mobile_Banking_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
+        Monkey\Functions\stubs(
+            [
+                'get_option' => null,
+            ]
+        );
         $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-mobilebanking.php';
         $this->obj = new Omise_Block_Mobile_Banking;
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**

@@ -10,10 +10,17 @@ class Omise_Block_FPX_Test extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Monkey\setUp();
         $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/backends/class-omise-backend.php';
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/abstract-omise-block-payment.php';
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-fpx.php';
+    }
+
+    public function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**

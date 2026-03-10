@@ -17,11 +17,18 @@ class Omise_Block_Installment_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
         $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/abstract-omise-block-payment.php';
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-installment.php';
         $this->obj = new Omise_Block_Installment;
         $this->omiseSettingMock = Mockery::mock('alias:Omise_Setting');
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**

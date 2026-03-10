@@ -17,6 +17,13 @@ class Omise_Block_Payment_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
+        Monkey\Functions\stubs(
+            [
+                'get_option' => null,
+                'get_locale' => 'en',
+            ]
+        );
         $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/abstract-omise-block-payment.php';
         $this->obj = new class extends Omise_Block_Payment {
@@ -24,6 +31,12 @@ class Omise_Block_Payment_Test extends TestCase
                 $this->additional_data = [];
             }
         };
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**

@@ -17,9 +17,21 @@ class Omise_Block_Apm_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
+        Monkey\Functions\stubs(
+            [
+                'get_option' => null,
+            ]
+        );
         $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/abstract-omise-block-apm.php';
         $this->obj = new class extends Omise_Block_Apm {};
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**
