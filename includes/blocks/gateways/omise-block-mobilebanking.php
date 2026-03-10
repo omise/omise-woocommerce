@@ -85,14 +85,21 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
      * @return array
      */
     public function get_payment_method_data() {
-        $currency   = get_woocommerce_currency();
+        $currency = get_woocommerce_currency();
+        $is_upa_enabled = false;
+
+        if ( class_exists( 'Omise_Setting' ) && method_exists( 'Omise_Setting', 'instance' ) ) {
+            $is_upa_enabled = Omise_Setting::instance()->is_upa_enabled();
+        }
+
         return [
             'name'        => $this->name,
             'title'       => $this->get_setting('title'),
             'description' => $this->get_setting('description'),
             'supports'    => array_filter($this->gateway->supports, [$this->gateway, 'supports']),
             'data' => [
-                'backends' => $this->gateway->backend->get_available_providers($currency),
+                'backends' => $is_upa_enabled ? [] : $this->gateway->backend->get_available_providers($currency),
+                'is_upa_enabled' => (bool) $is_upa_enabled,
             ],
             'is_active'   => $this->is_active(),
         ];

@@ -15,7 +15,29 @@ class Omise_UPA_Payment_Method_Resolver_Test extends Omise_Test_Case {
 		parent::tearDown();
 	}
 
-	public function test_resolve_uses_selected_dynamic_source_from_request() {
+	public function test_resolve_uses_selected_dynamic_source_from_request_for_internet_banking() {
+		Monkey\Functions\stubs(
+			array(
+				'sanitize_text_field' => function( $value ) {
+					return trim( (string) $value );
+				},
+				'wp_unslash'          => function( $value ) {
+					return $value;
+				},
+			)
+		);
+
+		$_POST['omise-offsite'] = ' internet_banking_bbl ';
+
+		$gateway = (object) array(
+			'id'          => 'omise_internetbanking',
+			'source_type' => '',
+		);
+
+		$this->assertSame( 'internet_banking_bbl', Omise_UPA_Payment_Method_Resolver::resolve( $gateway ) );
+	}
+
+	public function test_resolve_returns_mobile_banking_for_mobile_banking_gateway() {
 		Monkey\Functions\stubs(
 			array(
 				'sanitize_text_field' => function( $value ) {
@@ -34,7 +56,7 @@ class Omise_UPA_Payment_Method_Resolver_Test extends Omise_Test_Case {
 			'source_type' => '',
 		);
 
-		$this->assertSame( 'mobile_banking_bbl', Omise_UPA_Payment_Method_Resolver::resolve( $gateway ) );
+		$this->assertSame( 'mobile_banking', Omise_UPA_Payment_Method_Resolver::resolve( $gateway ) );
 	}
 
 	public function test_resolve_falls_back_to_gateway_source_type_for_non_dynamic_gateways() {

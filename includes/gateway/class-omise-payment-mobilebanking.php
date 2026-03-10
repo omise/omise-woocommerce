@@ -65,13 +65,17 @@ class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 	 * @see woocommerce/includes/abstracts/abstract-wc-payment-gateway.php
 	 */
 	public function payment_fields() {
-		$currency   = get_woocommerce_currency();
+		$currency       = get_woocommerce_currency();
+		$is_upa_enabled = Omise_Setting::instance()->is_upa_enabled();
 		parent::payment_fields();
 
-		Omise_Util::render_view( 'templates/payment/form-mobilebanking.php', 
-		array(
-			'mobile_banking_backends' => $this->backend->get_available_providers( $currency ),
-		) );
+		Omise_Util::render_view(
+			'templates/payment/form-mobilebanking.php',
+			array(
+				'is_upa_enabled'          => $is_upa_enabled,
+				'mobile_banking_backends' => $is_upa_enabled ? array() : $this->backend->get_available_providers( $currency ),
+			)
+		);
 	}
 
 	/**
