@@ -8,6 +8,19 @@ class Omise_UPA_Payment_Resolver {
 	const STATE_PENDING    = 'pending';
 
 	/**
+	 * UPA/charge statuses that represent terminal success states.
+	 *
+	 * @var string[]
+	 */
+	private static $terminal_success_statuses = array(
+		'successful',
+		'succeeded',
+		'completed',
+		'complete',
+		'paid',
+	);
+
+	/**
 	 * UPA/charge statuses that represent terminal failure states.
 	 *
 	 * @var string[]
@@ -98,6 +111,7 @@ class Omise_UPA_Payment_Resolver {
 	private function determine_state( $session_status, $payment, $charge ) {
 		$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
 		$charge_status  = strtolower( isset( $charge['status'] ) ? (string) $charge['status'] : '' );
+		$session_status = strtolower( (string) $session_status );
 
 		$is_charge_successful = OmisePluginHelperCharge::isPaid( $charge ) || OmisePluginHelperCharge::isAuthorized( $charge );
 		if ( $is_charge_successful ) {
@@ -110,6 +124,11 @@ class Omise_UPA_Payment_Resolver {
 			|| OmisePluginHelperCharge::isFailed( $charge );
 		if ( $is_failed ) {
 			return self::STATE_FAILED;
+		}
+
+		$is_upa_successful = $this->is_terminal_success_status( $session_status ) || $this->is_terminal_success_status( $payment_status );
+		if ( $is_upa_successful ) {
+			return self::STATE_SUCCESSFUL;
 		}
 
 		return self::STATE_PENDING;
@@ -125,6 +144,15 @@ class Omise_UPA_Payment_Resolver {
 	}
 
 	/**
+	 * @param string $status
+	 *
+	 * @return bool
+	 */
+	private function is_terminal_success_status( $status ) {
+		return in_array( strtolower( (string) $status ), self::$terminal_success_statuses, true );
+	}
+
+	/**
 	 * @param array  $payments
 	 * @param string $session_status
 	 *
@@ -137,7 +165,7 @@ class Omise_UPA_Payment_Resolver {
 
 		foreach ( $payments as $payment ) {
 			$payment_status = strtolower( isset( $payment['status'] ) ? (string) $payment['status'] : '' );
-			if ( self::STATE_SUCCESSFUL === $payment_status && ! empty( $payment['charge_id'] ) ) {
+			if ( $this->is_terminal_success_status( $payment_status ) && ! empty( $payment['charge_id'] ) ) {
 				return $payment;
 			}
 		}
