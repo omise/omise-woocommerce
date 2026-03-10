@@ -1,1 +1,137 @@
-(()=>{"use strict";const e=window.React,t=window.wp.element,n=window.wp.i18n,a=window.wp.htmlEntities,s=window.wc.wcBlocksRegistry,l=(0,window.wc.wcSettings.getSetting)("omise_mobilebanking_data",{}),i=(0,a.decodeEntities)(l.title)||"No title set",m=s=>{const{eventRegistration:i,emitResponse:m}=s,{onPaymentSetup:o}=i,r=(0,a.decodeEntities)(l.description||""),c=l.data.backends,p=(0,n.__)("There are no payment methods available.","omise"),[d,u]=(0,t.useState)(null),E=e=>{u(e.target.value)};return(0,t.useEffect)((()=>{const e=o((async()=>{if(!d)return{type:m.responseTypes.ERROR,message:(0,n.__)("Select a bank","omise")};try{return{type:m.responseTypes.SUCCESS,meta:{paymentMethodData:{"omise-offsite":d}}}}catch(e){return{type:m.responseTypes.ERROR,message:e.message}}}));return()=>e()}),[m.responseTypes.ERROR,m.responseTypes.SUCCESS,o,d]),(0,e.createElement)(e.Fragment,null,r&&(0,e.createElement)("p",null,r),0==c.length?(0,e.createElement)("p",null,p):(0,e.createElement)("fieldset",{key:"omise-form-mobilebanking"+c.length,id:"omise-form-mobilebanking"},(0,e.createElement)("ul",{className:"omise-banks-list"},c.map(((t,n)=>(0,e.createElement)("li",{key:t.name+n,className:"item mobile-banking"},(0,e.createElement)("div",null,(0,e.createElement)("input",{id:t.name,type:"radio",name:"omise-offsite",value:t.name,onChange:E}),(0,e.createElement)("label",{htmlFor:t.name},(0,e.createElement)("div",{className:`mobile-banking-logo ${t.provider_logo}`}),(0,e.createElement)("div",{className:"mobile-banking-label"},(0,e.createElement)("span",{className:"title"},t.provider_name),(0,e.createElement)("br",null))))))))))};(0,s.registerPaymentMethod)({name:l.name||"",label:(0,e.createElement)((t=>{const{PaymentMethodLabel:n}=t.components;return(0,e.createElement)(n,{text:i})}),null),content:(0,e.createElement)(m,null),edit:(0,e.createElement)(m,null),canMakePayment:()=>l.is_active,ariaLabel:i,supports:{features:l.supports}})})();
+(() => {
+    "use strict";
+
+    const React = window.React;
+    const { useEffect, useState } = window.wp.element;
+    const { __ } = window.wp.i18n;
+    const { decodeEntities } = window.wp.htmlEntities;
+    const { registerPaymentMethod } = window.wc.wcBlocksRegistry;
+    const { getSetting } = window.wc.wcSettings;
+
+    const settings = getSetting("omise_mobilebanking_data", {});
+    const label = decodeEntities(settings.title) || "No title set";
+
+    const Label = (props) => {
+        const { PaymentMethodLabel } = props.components;
+        return React.createElement(PaymentMethodLabel, { text: label });
+    };
+
+    const MobileBankingPaymentMethod = (props) => {
+        const { eventRegistration, emitResponse } = props;
+        const { onPaymentSetup } = eventRegistration;
+        const description = decodeEntities(settings.description || "");
+        const data = settings.data || {};
+        const backends = data.backends || [];
+        const isUpaEnabled = !!data.is_upa_enabled;
+        const noPaymentMethods = __("There are no payment methods available.", "omise");
+        const [selectedBank, setSelectedBank] = useState(null);
+
+        const onMobileBankSelected = (event) => {
+            setSelectedBank(event.target.value);
+        };
+
+        useEffect(() => {
+            const unsubscribe = onPaymentSetup(async () => {
+                if (isUpaEnabled) {
+                    return {
+                        type: emitResponse.responseTypes.SUCCESS,
+                        meta: {
+                            paymentMethodData: { "omise-offsite": "mobile_banking" },
+                        },
+                    };
+                }
+
+                if (!selectedBank) {
+                    return {
+                        type: emitResponse.responseTypes.ERROR,
+                        message: __("Select a bank", "omise"),
+                    };
+                }
+
+                try {
+                    return {
+                        type: emitResponse.responseTypes.SUCCESS,
+                        meta: {
+                            paymentMethodData: { "omise-offsite": selectedBank },
+                        },
+                    };
+                } catch (error) {
+                    return {
+                        type: emitResponse.responseTypes.ERROR,
+                        message: error.message,
+                    };
+                }
+            });
+
+            return () => unsubscribe();
+        }, [
+            emitResponse.responseTypes.ERROR,
+            emitResponse.responseTypes.SUCCESS,
+            onPaymentSetup,
+            selectedBank,
+            isUpaEnabled,
+        ]);
+
+        const backendSelection =
+            !isUpaEnabled &&
+            (backends.length === 0
+                ? React.createElement("p", null, noPaymentMethods)
+                : React.createElement(
+                    "fieldset",
+                    { key: "omise-form-mobilebanking" + backends.length, id: "omise-form-mobilebanking" },
+                    React.createElement(
+                        "ul",
+                        { className: "omise-banks-list" },
+                        backends.map((backend, i) =>
+                            React.createElement(
+                                "li",
+                                { key: backend.name + i, className: "item mobile-banking" },
+                                React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("input", {
+                                        id: backend.name,
+                                        type: "radio",
+                                        name: "omise-offsite",
+                                        value: backend.name,
+                                        onChange: onMobileBankSelected,
+                                    }),
+                                    React.createElement(
+                                        "label",
+                                        { htmlFor: backend.name },
+                                        React.createElement("div", {
+                                            className: `mobile-banking-logo ${backend.provider_logo}`,
+                                        }),
+                                        React.createElement(
+                                            "div",
+                                            { className: "mobile-banking-label" },
+                                            React.createElement("span", { className: "title" }, backend.provider_name),
+                                            React.createElement("br", null)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ));
+
+        return React.createElement(
+            React.Fragment,
+            null,
+            description && React.createElement("p", null, description),
+            backendSelection
+        );
+    };
+
+    registerPaymentMethod({
+        name: settings.name || "",
+        label: React.createElement(Label, null),
+        content: React.createElement(MobileBankingPaymentMethod, null),
+        edit: React.createElement(MobileBankingPaymentMethod, null),
+        canMakePayment: () => settings.is_active,
+        ariaLabel: label,
+        supports: {
+            features: settings.supports,
+        },
+    });
+})();
