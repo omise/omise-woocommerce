@@ -1,6 +1,10 @@
 <?php
 defined('ABSPATH') or die('No direct script access allowed.');
 
+if ( class_exists( 'Omise_Payment_Offsite' ) ) {
+    return;
+}
+
 require_once dirname(__FILE__) . '/class-omise-payment.php';
 
 /**
