@@ -10,12 +10,12 @@ class Omise_UPA_State_Token_Test extends Omise_Test_Case {
 		require_once __DIR__ . '/../../../../includes/omise-upa/class-omise-upa-state-token.php';
 	}
 
-	public function test_create_generates_non_empty_state_token() {
+	public function test_create_generates_64_char_hex_state_token() {
 		$state = Omise_UPA_State_Token::create();
 
 		$this->assertIsString( $state );
-		$this->assertNotSame( '', $state );
-		$this->assertGreaterThan( 10, strlen( $state ) );
+		$this->assertSame( 64, strlen( $state ) );
+		$this->assertMatchesRegularExpression( '/^[a-f0-9]{64}$/', $state );
 	}
 
 	public function test_store_writes_state_meta_to_order() {

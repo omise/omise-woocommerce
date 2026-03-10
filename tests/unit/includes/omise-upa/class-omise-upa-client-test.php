@@ -417,4 +417,81 @@ class Omise_UPA_Client_Test extends Omise_Test_Case {
 		$method->invoke( $client, 'test_event', array( 'key' => 'value' ) );
 		$this->assertTrue( true ); // No exception means it passed
 	}
+
+	public function test_sanitize_and_redact_context_value_redacts_sensitive_key_and_nested_values() {
+		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
+
+		$client = new Omise_UPA_Client( 'https://upa.example.com', 'skey_test_123' );
+		$method = new ReflectionMethod( Omise_UPA_Client::class, 'sanitize_and_redact_context_value' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible( true );
+		}
+
+		$top_level_result = $method->invoke( $client, 'authorization', 'Basic c2tleV90ZXN0XzEyMw==' );
+		$this->assertSame( '[REDACTED]', $top_level_result );
+
+		$nested_result = $method->invoke(
+			$client,
+			'metadata',
+			array(
+				'secret_key' => 'skey_test_123',
+				'status'     => 'ok',
+				'headers'    => array(
+					'Authorization' => 'Basic c2tleV90ZXN0XzEyMw==',
+				),
+			)
+		);
+
+		$this->assertSame( '[REDACTED]', $nested_result['secret_key'] );
+		$this->assertSame( 'ok', $nested_result['status'] );
+		$this->assertSame( '[REDACTED]', $nested_result['headers']['Authorization'] );
+	}
+
+	public function test_sanitize_response_body_for_log_redacts_sensitive_json_fields() {
+		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
+
+		$client = new Omise_UPA_Client( 'https://upa.example.com', 'skey_test_123' );
+		$method = new ReflectionMethod( Omise_UPA_Client::class, 'sanitize_response_body_for_log' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible( true );
+		}
+
+		$body = json_encode(
+			array(
+				'message'      => 'request failed',
+				'secret_key'   => 'skey_test_123',
+				'access_token' => 'tokn_123',
+				'nested'       => array(
+					'authorization' => 'Basic c2tleV90ZXN0XzEyMw==',
+					'plain'         => 'not sensitive',
+				),
+			)
+		);
+
+		$result        = $method->invoke( $client, $body );
+		$decoded_result = json_decode( $result, true );
+
+		$this->assertSame( 'request failed', $decoded_result['message'] );
+		$this->assertSame( '[REDACTED]', $decoded_result['secret_key'] );
+		$this->assertSame( '[REDACTED]', $decoded_result['access_token'] );
+		$this->assertSame( '[REDACTED]', $decoded_result['nested']['authorization'] );
+		$this->assertSame( 'not sensitive', $decoded_result['nested']['plain'] );
+	}
+
+	public function test_sanitize_response_body_for_log_redacts_tokens_in_plain_text() {
+		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
+
+		$client = new Omise_UPA_Client( 'https://upa.example.com', 'skey_test_123' );
+		$method = new ReflectionMethod( Omise_UPA_Client::class, 'sanitize_response_body_for_log' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible( true );
+		}
+
+		$body   = 'failed with skey_test_abc123 and Basic c2tleV90ZXN0X2FiYzEyMw==';
+		$result = $method->invoke( $client, $body );
+
+		$this->assertStringNotContainsString( 'skey_test_abc123', $result );
+		$this->assertStringNotContainsString( 'c2tleV90ZXN0X2FiYzEyMw==', $result );
+		$this->assertStringContainsString( '[REDACTED]', $result );
+	}
 }
