@@ -11,7 +11,14 @@ class Omise_Block_Payments_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
         require_once __DIR__ . '/../../../../includes/blocks/omise-block-payments.php';
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**
