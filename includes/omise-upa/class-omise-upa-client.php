@@ -261,8 +261,10 @@ class Omise_UPA_Client {
 		$safe_context = array();
 
 		foreach ( (array) $context as $key => $value ) {
-			if ( is_string( $value ) ) {
-				$value = sanitize_text_field( $value );
+			if ( 'response_body' === $key && is_string( $value ) ) {
+				$value = $this->sanitize_response_body_for_log( $value );
+			} else {
+				$value = $this->sanitize_and_redact_context_value( $key, $value );
 			}
 
 			if ( 'response_body' === $key && is_string( $value ) ) {
@@ -273,5 +275,133 @@ class Omise_UPA_Client {
 		}
 
 		error_log( 'Omise UPA client ' . sanitize_key( $event ) . ': ' . wp_json_encode( $safe_context ) );
+	}
+
+	/**
+	 * @param string $key
+	 * @param mixed  $value
+	 *
+	 * @return mixed
+	 */
+	private function sanitize_and_redact_context_value( $key, $value ) {
+		if ( $this->is_sensitive_log_key( $key ) ) {
+			return '[REDACTED]';
+		}
+
+		if ( is_array( $value ) ) {
+			return $this->sanitize_and_redact_array( $value );
+		}
+
+		if ( is_object( $value ) ) {
+			return $this->sanitize_and_redact_array( (array) $value );
+		}
+
+		if ( is_string( $value ) ) {
+			return $this->redact_sensitive_fragments( sanitize_text_field( $value ) );
+		}
+
+		return $value;
+	}
+
+	/**
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	private function sanitize_and_redact_array( $data ) {
+		$safe_data = array();
+
+		foreach ( $data as $key => $value ) {
+			if ( $this->is_sensitive_log_key( (string) $key ) ) {
+				$safe_data[ $key ] = '[REDACTED]';
+				continue;
+			}
+
+			if ( is_array( $value ) ) {
+				$safe_data[ $key ] = $this->sanitize_and_redact_array( $value );
+				continue;
+			}
+
+			if ( is_object( $value ) ) {
+				$safe_data[ $key ] = $this->sanitize_and_redact_array( (array) $value );
+				continue;
+			}
+
+			if ( is_string( $value ) ) {
+				$safe_data[ $key ] = $this->redact_sensitive_fragments( sanitize_text_field( $value ) );
+				continue;
+			}
+
+			$safe_data[ $key ] = $value;
+		}
+
+		return $safe_data;
+	}
+
+	/**
+	 * @param string $body
+	 *
+	 * @return string
+	 */
+	private function sanitize_response_body_for_log( $body ) {
+		$decoded_body = json_decode( $body, true );
+
+		if ( is_array( $decoded_body ) ) {
+			return wp_json_encode( $this->sanitize_and_redact_array( $decoded_body ) );
+		}
+
+		return $this->redact_sensitive_fragments( sanitize_text_field( $body ) );
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	private function redact_sensitive_fragments( $value ) {
+		$patterns = array(
+			'/\bBasic\s+[A-Za-z0-9+\/=]+\b/i',
+			'/\bBearer\s+[A-Za-z0-9\-._~+\/]+=*\b/i',
+			'/\bskey_(?:test|live)_[A-Za-z0-9_]+\b/i',
+		);
+
+		$redacted_value = preg_replace( $patterns, '[REDACTED]', $value );
+
+		if ( null === $redacted_value ) {
+			return $value;
+		}
+
+		return $redacted_value;
+	}
+
+	/**
+	 * @param string $key
+	 *
+	 * @return bool
+	 */
+	private function is_sensitive_log_key( $key ) {
+		$key = strtolower( (string) $key );
+
+		if ( '' === $key ) {
+			return false;
+		}
+
+		$sensitive_key_signals = array(
+			'authorization',
+			'secret',
+			'skey',
+			'api_key',
+			'apikey',
+			'token',
+			'password',
+		);
+
+		foreach ( $sensitive_key_signals as $signal ) {
+			if ( false !== strpos( $key, $signal ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

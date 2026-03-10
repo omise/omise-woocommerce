@@ -7,7 +7,7 @@ class Omise_UPA_State_Token {
 	 * @return string
 	 */
 	public static function create() {
-		return Token::random( 32 );
+		return bin2hex( random_bytes( 32 ) );
 	}
 
 	/**

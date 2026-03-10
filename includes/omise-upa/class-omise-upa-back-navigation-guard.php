@@ -36,30 +36,47 @@ class Omise_UPA_Back_Navigation_Guard {
 			return;
 		}
 
-		echo '<script id="omise-upa-back-navigation-guard">(function(){';
-		echo 'if(!window.history||!window.history.pushState||typeof URL==="undefined"){return;}';
-		echo 'var queryKey=' . $query_param_key . ';';
-		echo 'var noticeMessage=' . $notice_message . ';';
-		echo 'var currentUrl;try{currentUrl=new URL(window.location.href);}catch(e){return;}';
-		echo 'currentUrl.searchParams.delete(queryKey);';
-		echo 'var cleanUrl=currentUrl.toString();';
-		echo 'var noticeRendered=false;';
-		echo 'function showNotice(){if(noticeRendered){return;}noticeRendered=true;';
-		echo 'var el=document.createElement("div");';
-		echo 'el.id="omise-upa-back-navigation-notice";';
-		echo 'el.textContent=noticeMessage;';
-		echo 'el.style.position="fixed";el.style.left="50%";el.style.bottom="24px";';
-		echo 'el.style.transform="translateX(-50%)";el.style.padding="10px 14px";';
-		echo 'el.style.background="#1f2937";el.style.color="#ffffff";';
-		echo 'el.style.borderRadius="6px";el.style.fontSize="13px";';
-		echo 'el.style.lineHeight="1.4";el.style.zIndex="99999";';
-		echo 'document.body.appendChild(el);}';
-		echo 'try{window.history.replaceState({omiseUpaGuard:true},document.title,cleanUrl);';
-		echo 'window.history.pushState({omiseUpaGuard:true},document.title,cleanUrl);}catch(e){return;}';
-		echo 'window.addEventListener("popstate",function(){';
-		echo 'try{window.history.pushState({omiseUpaGuard:true},document.title,cleanUrl);}catch(e){}';
-		echo 'showNotice();});';
-		echo '})();</script>';
+		$script = implode(
+			'',
+			array(
+				'(function(){',
+				'if(!window.history||!window.history.pushState||typeof URL==="undefined"){return;}',
+				'var queryKey=' . $query_param_key . ';',
+				'var noticeMessage=' . $notice_message . ';',
+				'var currentUrl;try{currentUrl=new URL(window.location.href);}catch(e){return;}',
+				'currentUrl.searchParams.delete(queryKey);',
+				'var cleanUrl=currentUrl.toString();',
+				'var noticeRendered=false;',
+				'function showNotice(){if(noticeRendered){return;}noticeRendered=true;',
+				'var el=document.createElement("div");',
+				'el.id="omise-upa-back-navigation-notice";',
+				'el.textContent=noticeMessage;',
+				'el.style.position="fixed";el.style.left="50%";el.style.bottom="24px";',
+				'el.style.transform="translateX(-50%)";el.style.padding="10px 14px";',
+				'el.style.background="#1f2937";el.style.color="#ffffff";',
+				'el.style.borderRadius="6px";el.style.fontSize="13px";',
+				'el.style.lineHeight="1.4";el.style.zIndex="99999";',
+				'document.body.appendChild(el);}',
+				'try{window.history.replaceState({omiseUpaGuard:true},document.title,cleanUrl);',
+				'window.history.pushState({omiseUpaGuard:true},document.title,cleanUrl);}catch(e){return;}',
+				'window.addEventListener("popstate",function(){',
+				'try{window.history.pushState({omiseUpaGuard:true},document.title,cleanUrl);}catch(e){}',
+				'showNotice();});',
+				'})();',
+			)
+		);
+
+		if ( function_exists( 'wp_print_inline_script_tag' ) ) {
+			wp_print_inline_script_tag(
+				$script,
+				array(
+					'id' => 'omise-upa-back-navigation-guard',
+				)
+			);
+			return;
+		}
+
+		echo '<script id="omise-upa-back-navigation-guard">' . $script . '</script>';
 	}
 
 	/**
