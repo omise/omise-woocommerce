@@ -156,4 +156,52 @@ class Omise_UPA_Payment_Resolver_Test extends Omise_Test_Case {
 		$this->assertSame( Omise_UPA_Payment_Resolver::STATE_FAILED, $result['state'] );
 		$this->assertSame( 'chrg_789', $result['charge']['id'] );
 	}
+
+	public function test_resolve_returns_successful_when_upa_marks_payment_completed_but_charge_is_pending() {
+		$client = Mockery::mock();
+		$client->shouldReceive( 'get_session' )
+			->once()
+			->with( 'sess_101' )
+			->andReturn(
+				array(
+					'id'     => 'sess_101',
+					'status' => 'completed',
+					'payments' => array(
+						array(
+							'charge_id'      => 'chrg_101',
+							'payment_method' => 'promptpay',
+							'status'         => 'completed',
+						),
+					),
+				)
+			);
+
+		Mockery::mock( 'alias:OmiseCharge' )
+			->shouldReceive( 'retrieve' )
+			->once()
+			->with( 'chrg_101' )
+			->andReturn(
+				array(
+					'object'          => 'charge',
+					'id'              => 'chrg_101',
+					'status'          => 'pending',
+					'paid'            => false,
+					'authorized'      => false,
+					'failure_code'    => null,
+					'failure_message' => null,
+				)
+			);
+
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_SESSION_ID )
+			->andReturn( 'sess_101' );
+
+		$resolver = new Omise_UPA_Payment_Resolver( $client );
+		$result   = $resolver->resolve( $order );
+
+		$this->assertSame( Omise_UPA_Payment_Resolver::STATE_SUCCESSFUL, $result['state'] );
+		$this->assertSame( 'chrg_101', $result['charge']['id'] );
+	}
 }
