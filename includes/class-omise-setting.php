@@ -16,9 +16,8 @@ class Omise_Setting {
 	 * Settings option key for merchant UPA toggle.
 	 */
 	const OPTION_ENABLE_UPA = 'enable_upa';
-	const UPA_API_SCHEME    = 'https';
-	const UPA_API_PATH      = '/api';
-	const UPA_API_HOST      = 'checkout-page.omise.co';
+	const UPA_API_BASE_URL  = 'https://checkout-page.omise.co/';
+	const UPA_API_PATH      = 'api';
 
 	/**
 	 * The Omise_Setting Instance.
@@ -229,55 +228,12 @@ class Omise_Setting {
 
 	/**
 	 * Retrieve UPA API base URL.
-	 * Host can be provided from OMISE_UPA_API_BASE_URL env (host only).
-	 * When env is missing or invalid, production host is used.
+	 * Production host is set by constants and can be rewritten during staging setup.
 	 *
 	 * @return string
 	 */
 	public function get_upa_api_base_url() {
-		$env_host = $this->get_upa_api_host_from_env();
-		if ( ! empty( $env_host ) ) {
-			return self::UPA_API_SCHEME . '://' . $env_host . self::UPA_API_PATH;
-		}
-
-		return self::UPA_API_SCHEME . '://' . self::UPA_API_HOST . self::UPA_API_PATH;
-	}
-
-	/**
-	 * Resolve UPA host from environment and validate hostname.
-	 *
-	 * @return string
-	 */
-	private function get_upa_api_host_from_env() {
-		$env_host     = getenv( 'OMISE_UPA_API_BASE_URL' );
-
-		if ( ! is_string( $env_host ) || empty( trim( $env_host ) ) ) {
-			return '';
-		}
-
-		$env_host = trim( $env_host );
-
-		// Backward-compatible parsing in case a full URL is still provided.
-		if ( false !== strpos( $env_host, '://' ) ) {
-			$parsed_host = wp_parse_url( $env_host, PHP_URL_HOST );
-			if ( is_string( $parsed_host ) && ! empty( $parsed_host ) ) {
-				$env_host = $parsed_host;
-			}
-		}
-
-		$env_host = strtolower( trim( $env_host, " \t\n\r\0\x0B/" ) );
-		$env_host = sanitize_text_field( $env_host );
-
-		if ( false === filter_var( $env_host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
-			return '';
-		}
-
-		// Only allow omise hosts to prevent misconfiguration.
-		if ( false === strpos( $env_host, 'omise' ) ) {
-			return '';
-		}
-
-		return $env_host;
+		return rtrim( self::UPA_API_BASE_URL, '/' ) . '/' . ltrim( self::UPA_API_PATH, '/' );
 	}
 
 	/**

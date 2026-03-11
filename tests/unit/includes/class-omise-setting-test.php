@@ -27,12 +27,6 @@ class Omise_Setting_Test extends TestCase
 				return $value;
 			}
 		}
-
-		if ( ! function_exists( 'wp_parse_url' ) ) {
-			function wp_parse_url( $url, $component = -1 ) {
-				return parse_url( $url, $component );
-			}
-		}
 	}
 
 	private function create_setting( $sandbox_mode = 'yes' ) {
@@ -59,24 +53,9 @@ class Omise_Setting_Test extends TestCase
 	/**
 	 * @runInSeparateProcess
 	 */
-	public function testGetUpaApiBaseUrlUsesEnvHostWhenValid()
+	public function testGetUpaApiBaseUrlUsesProductionHost()
 	{
-		putenv( 'OMISE_UPA_API_BASE_URL=checkout-page.staging-omise.co' );
 		$setting = $this->create_setting( 'no' );
-
-		$this->assertSame(
-			'https://checkout-page.staging-omise.co/api',
-			$setting->get_upa_api_base_url()
-		);
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 */
-	public function testGetUpaApiBaseUrlUsesEnvHostWhenFullUrlIsProvided()
-	{
-		putenv( 'OMISE_UPA_API_BASE_URL=https://checkout-page.omise.co/api' );
-		$setting = $this->create_setting( 'yes' );
 
 		$this->assertSame(
 			'https://checkout-page.omise.co/api',
@@ -87,10 +66,10 @@ class Omise_Setting_Test extends TestCase
 	/**
 	 * @runInSeparateProcess
 	 */
-	public function testGetUpaApiBaseUrlFallsBackToDefaultForInvalidEnvHost()
+	public function testGetUpaApiBaseUrlIgnoresLegacyEnvHostOverride()
 	{
-		putenv( 'OMISE_UPA_API_BASE_URL=example.com' );
-		$setting = $this->create_setting( 'no' );
+		putenv( 'OMISE_UPA_API_BASE_URL=checkout-page.evil.com' );
+		$setting = $this->create_setting( 'yes' );
 
 		$this->assertSame(
 			'https://checkout-page.omise.co/api',
