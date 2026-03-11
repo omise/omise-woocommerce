@@ -38,7 +38,7 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
             return $asset_cache[ $asset_path ];
         }
 
-        $asset = require $asset_path;
+        $asset = require $asset_path; // NOSONAR: asset files return arrays; require_once can return true on repeat include.
         if ( ! is_array( $asset ) ) {
             $asset_cache[ $asset_path ] = $defaults;
             return $asset_cache[ $asset_path ];
