@@ -499,6 +499,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
     /**
      * @param int|mixed $order_id
+     *
+     * @return array
      */
     protected function invalid_order( $order_id ) {
         $message = wp_kses( __(
@@ -510,11 +512,18 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         ), array( 'br' => array() ) );
 
         wc_add_notice( sprintf( $message, $order_id ), 'error' );
+
+        return array(
+            'result' => 'failure',
+        );
     }
 
     /**
      * @param OmiseCharge|null $charge
      * @param string $reason
+     *
+     * @return array
+     * @throws Exception
      */
     protected function payment_failed( $charge, $reason = '' ) {
         $message = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
@@ -525,7 +534,17 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             $this->order()->update_status( 'failed' );
         }
 
-        throw new \Exception(sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ));
+        $exception = new \Exception( sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ) );
+
+        // Backward compatibility: keep throwing by default, but allow a structured failure array for guarded flows.
+        if ( defined( 'OMISE_WC_RETURN_PAYMENT_FAILURE_RESULT' ) && OMISE_WC_RETURN_PAYMENT_FAILURE_RESULT ) {
+            return array(
+                'result'  => 'failure',
+                'message' => $exception->getMessage(),
+            );
+        }
+
+        throw $exception;
     }
 
     /**

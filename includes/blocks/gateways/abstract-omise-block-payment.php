@@ -36,7 +36,11 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
             return $defaults;
         }
 
-        $asset = require $asset_path;
+        $asset = require_once $asset_path;
+        if ( ! is_array( $asset ) ) {
+            $asset = include $asset_path;
+        }
+
         if ( ! is_array( $asset ) ) {
             return $defaults;
         }
