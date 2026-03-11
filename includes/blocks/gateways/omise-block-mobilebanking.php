@@ -33,7 +33,7 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
 
         $asset = require_once $asset_path;
         if ( ! is_array( $asset ) ) {
-            $asset = include $asset_path;
+            $asset = include_once $asset_path;
         }
 
         if ( ! is_array( $asset ) ) {
