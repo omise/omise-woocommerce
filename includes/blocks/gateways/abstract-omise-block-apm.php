@@ -22,25 +22,30 @@ abstract class Omise_Block_Apm extends AbstractPaymentMethodType {
      * @return array
      */
     private function load_script_asset( $asset_path ) {
+        static $asset_cache = [];
+
         $defaults = [
             'dependencies' => [],
             'version'      => defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) ? OMISE_WOOCOMMERCE_PLUGIN_VERSION : null,
         ];
 
+        if ( isset( $asset_cache[ $asset_path ] ) ) {
+            return $asset_cache[ $asset_path ];
+        }
+
         if ( ! file_exists( $asset_path ) ) {
-            return $defaults;
+            $asset_cache[ $asset_path ] = $defaults;
+            return $asset_cache[ $asset_path ];
         }
 
-        $asset = require_once $asset_path;
+        $asset = require $asset_path;
         if ( ! is_array( $asset ) ) {
-            $asset = include_once $asset_path;
+            $asset_cache[ $asset_path ] = $defaults;
+            return $asset_cache[ $asset_path ];
         }
 
-        if ( ! is_array( $asset ) ) {
-            return $defaults;
-        }
-
-        return array_merge( $defaults, $asset );
+        $asset_cache[ $asset_path ] = array_merge( $defaults, $asset );
+        return $asset_cache[ $asset_path ];
     }
 
     /**

@@ -534,7 +534,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             $this->order()->update_status( 'failed' );
         }
 
-        $exception = new \Exception( sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ) );
+        $safe_reason = wp_kses( (string) $reason, array() );
+        $exception   = new \Exception( sprintf( wp_kses( $message, array( 'br' => array() ) ), $safe_reason ) );
 
         // Backward compatibility: keep throwing by default, but allow a structured failure array for guarded flows.
         if ( defined( 'OMISE_WC_RETURN_PAYMENT_FAILURE_RESULT' ) && OMISE_WC_RETURN_PAYMENT_FAILURE_RESULT ) {
