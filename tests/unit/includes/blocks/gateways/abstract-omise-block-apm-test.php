@@ -108,4 +108,21 @@ class Omise_Block_Apm_Test extends TestCase
 
         $this->assertEquals([ 'wc-omise-one-click-apms-payments-blocks' ], $result);
     }
+
+    /**
+     * @test
+     */
+    public function load_script_asset_returns_metadata_across_multiple_reads()
+    {
+        $method = new \ReflectionMethod( Omise_Block_Apm::class, 'load_script_asset' );
+        $method->setAccessible( true );
+        $asset_path = __DIR__ . '/../../../../../includes/blocks/assets/js/build/omise-one-click-apms.asset.php';
+
+        $first = $method->invoke( $this->obj, $asset_path );
+        $second = $method->invoke( $this->obj, $asset_path );
+
+        $this->assertSame( $first, $second );
+        $this->assertNotEmpty( $first['dependencies'] );
+        $this->assertNotEmpty( $first['version'] );
+    }
 }
