@@ -41,6 +41,7 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment.php';
 		require_once __DIR__ . '/../../../../includes/gateway/traits/charge-request-builder-trait.php';
 		require_once __DIR__ . '/../../../../includes/gateway/abstract-omise-payment-offline.php';
+		require_once __DIR__ . '/../../../../includes/omise-upa/class-omise-upa-session-service.php';
 		require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-paynow.php';
 		require_once __DIR__ . '/../../../../omise-woocommerce.php';
 
@@ -54,6 +55,7 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 
 		$this->mockOmiseSetting( 'pkey_xxx', 'skey_xxx' );
 		$this->order = Mockery::mock( 'WC_Order' );
+		$this->order->shouldReceive( 'get_meta' )->byDefault()->andReturn( '' );
 		$this->omise_paynow = Mockery::mock( Omise_Payment_Paynow::class )->makePartial();
 		$this->omise_paynow->allows(
 			[
@@ -188,6 +190,24 @@ class Omise_Payment_Paynow_Test extends Bootstrap_Test_Setup {
 
 		ob_start();
 		$this->omise_paynow->display_qrcode( 999 );
+		$output = ob_get_clean();
+
+		$this->assertEmpty( $output );
+	}
+
+	public function test_paynow_display_qrcode_skips_for_upa_offline_order() {
+		$this->order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_SESSION_ID )
+			->andReturn( 'sess_test_123' );
+		$this->order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_FLOW )
+			->andReturn( Omise_UPA_Session_Service::FLOW_OFFLINE );
+		$this->order->shouldNotReceive( 'get_transaction_id' );
+
+		ob_start();
+		$this->omise_paynow->display_qrcode( $this->order );
 		$output = ob_get_clean();
 
 		$this->assertEmpty( $output );
