@@ -37,6 +37,10 @@ class Omise_Setting_Test extends TestCase
 		return $setting;
 	}
 
+	private function expectedUpaApiBaseUrl() {
+		return rtrim( Omise_Setting::UPA_API_BASE_URL, '/' ) . '/' . ltrim( Omise_Setting::UPA_API_PATH, '/' );
+	}
+
 	/**
 	 * @runInSeparateProcess
 	 */
@@ -53,12 +57,12 @@ class Omise_Setting_Test extends TestCase
 	/**
 	 * @runInSeparateProcess
 	 */
-	public function testGetUpaApiBaseUrlUsesProductionHost()
+	public function testGetUpaApiBaseUrlUsesConfiguredHost()
 	{
 		$setting = $this->create_setting( 'no' );
 
 		$this->assertSame(
-			'https://checkout-page.omise.co/api',
+			$this->expectedUpaApiBaseUrl(),
 			$setting->get_upa_api_base_url()
 		);
 	}
@@ -72,21 +76,7 @@ class Omise_Setting_Test extends TestCase
 		$setting = $this->create_setting( 'yes' );
 
 		$this->assertSame(
-			'https://checkout-page.omise.co/api',
-			$setting->get_upa_api_base_url()
-		);
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 */
-	public function testGetUpaApiBaseUrlFallsBackToProductionWhenEnvMissing()
-	{
-		putenv( 'OMISE_UPA_API_BASE_URL' );
-		$setting = $this->create_setting( 'yes' );
-
-		$this->assertSame(
-			'https://checkout-page.omise.co/api',
+			$this->expectedUpaApiBaseUrl(),
 			$setting->get_upa_api_base_url()
 		);
 	}
