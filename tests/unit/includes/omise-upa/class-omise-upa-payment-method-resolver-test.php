@@ -7,6 +7,8 @@ require_once __DIR__ . '/../../class-omise-unit-test.php';
 class Omise_UPA_Payment_Method_Resolver_Test extends Omise_Test_Case {
 	protected function setUp(): void {
 		parent::setUp();
+		require_once __DIR__ . '/stubs/payment-stubs.php';
+		require_once __DIR__ . '/../../../../includes/omise-upa/class-omise-upa-session-service.php';
 		require_once __DIR__ . '/../../../../includes/omise-upa/class-omise-upa-payment-method-resolver.php';
 	}
 

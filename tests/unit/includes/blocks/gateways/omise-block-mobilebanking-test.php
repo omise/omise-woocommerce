@@ -12,6 +12,7 @@ class Omise_Block_Mobile_Banking_Test extends TestCase
     use MockeryPHPUnitIntegration, MockPaymentGateways;
 
     public $obj;
+    public $omise_setting_mock;
 
     // @runInSeparateProcess
     protected function setUp() : void
@@ -24,6 +25,12 @@ class Omise_Block_Mobile_Banking_Test extends TestCase
             ]
         );
         $this->mockWcGateways();
+
+        $setting_instance = Mockery::mock( 'Omise_Setting_Instance' );
+        $setting_instance->shouldReceive( 'is_upa_enabled' )->andReturn( false );
+        $this->omise_setting_mock = Mockery::mock( 'alias:Omise_Setting' );
+        $this->omise_setting_mock->shouldReceive( 'instance' )->andReturn( $setting_instance );
+
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-mobilebanking.php';
         $this->obj = new Omise_Block_Mobile_Banking;
     }

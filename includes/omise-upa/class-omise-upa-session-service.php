@@ -15,7 +15,7 @@ class Omise_UPA_Session_Service {
 	const COMPLETE_ENDPOINT = 'omise_upa_complete';
 	const CANCEL_ENDPOINT   = 'omise_upa_cancel';
 
-	const DYNAMIC_SOURCE_GATEWAYS = array( 'omise_internetbanking', 'omise_mobilebanking' );
+	const DYNAMIC_SOURCE_GATEWAYS = array( 'omise_internetbanking' );
 
 	/**
 	 * @param Omise_Payment $gateway
@@ -187,17 +187,12 @@ class Omise_UPA_Session_Service {
 
 	/**
 	 * Resolve session id from UPA response payload.
-	 * UPA can return either "session_id" or "id" for the session identifier.
 	 *
 	 * @param array $session
 	 *
 	 * @return string
 	 */
 	private static function extract_session_id( $session ) {
-		if ( isset( $session['session_id'] ) && is_string( $session['session_id'] ) ) {
-			return sanitize_text_field( $session['session_id'] );
-		}
-
 		if ( isset( $session['id'] ) && is_string( $session['id'] ) ) {
 			return sanitize_text_field( $session['id'] );
 		}

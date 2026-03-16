@@ -3,11 +3,13 @@ defined( 'ABSPATH' ) or die( 'No direct script access allowed.' );
 
 class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite
 {
+	public const ID = 'omise_mobilebanking';
+
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->id                 = 'omise_mobilebanking';
+		$this->id                 = self::ID;
 		$this->has_fields         = true;
 		$this->method_title       = __( 'Omise Mobile Banking', 'omise' );
 		$this->method_description = wp_kses(

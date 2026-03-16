@@ -49,6 +49,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockOmisePaymentOffline->shouldReceive('get_option');
         $this->mockOmisePaymentOffline->shouldReceive('load_order')->andReturn(true);
         $this->mockOmisePaymentOffline->shouldReceive('order')->andReturn($this->mockOrder);
+        $this->mockOmisePaymentOffline->shouldReceive('is_upa_offline_order')->andReturn(false);
         $this->mockOmisePaymentOffline->shouldReceive('get_charge_id_from_order')->andReturn('charge_xxx');
         $this->mockOmisePaymentOffline->shouldReceive('get_pending_status')->andReturn('pending');
         $this->mockOmisePaymentOffline->shouldReceive('file_get_contents')->andReturn('');
@@ -86,10 +87,6 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockOrder->shouldReceive('get_order_key')
             ->once()
             ->andReturn('wc_order_12345');
-        $this->mockOrder->shouldReceive('get_meta')
-            ->once()
-            ->with(Omise_UPA_Session_Service::META_SESSION_ID)
-            ->andReturn('');
 
         $obj = new Omise_Payment_Promptpay();
         $result = $obj->display_qrcode($this->mockOrder, 'view');
@@ -110,15 +107,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockOmisePaymentOffline->shouldReceive('get_option');
         $this->mockOmisePaymentOffline->shouldReceive('load_order')->andReturn(true);
         $this->mockOmisePaymentOffline->shouldReceive('order')->andReturn($this->mockOrder);
-
-        $this->mockOrder->shouldReceive('get_meta')
-            ->once()
-            ->with(Omise_UPA_Session_Service::META_SESSION_ID)
-            ->andReturn('sess_test_123');
-        $this->mockOrder->shouldReceive('get_meta')
-            ->once()
-            ->with(Omise_UPA_Session_Service::META_FLOW)
-            ->andReturn(Omise_UPA_Session_Service::FLOW_OFFLINE);
+        $this->mockOmisePaymentOffline->shouldReceive('is_upa_offline_order')->andReturn(true);
 
         $this->mockOmiseCharge->shouldNotReceive('retrieve');
 

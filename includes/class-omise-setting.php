@@ -16,8 +16,7 @@ class Omise_Setting {
 	 * Settings option key for merchant UPA toggle.
 	 */
 	const OPTION_ENABLE_UPA = 'enable_upa';
-	const UPA_API_BASE_URL  = 'https://checkout-page.omise.co/';
-	const UPA_API_PATH      = 'api';
+	const UPA_API_BASE_URL = 'https://checkout-page.omise.co/api';
 
 	/**
 	 * The Omise_Setting Instance.
@@ -233,7 +232,7 @@ class Omise_Setting {
 	 * @return string
 	 */
 	public function get_upa_api_base_url() {
-		return rtrim( self::UPA_API_BASE_URL, '/' ) . '/' . ltrim( self::UPA_API_PATH, '/' );
+		return self::UPA_API_BASE_URL;
 	}
 
 	/**

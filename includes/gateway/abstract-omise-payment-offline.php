@@ -30,6 +30,31 @@ abstract class Omise_Payment_Offline extends Omise_Payment
 	}
 
 	/**
+	 * Check whether the given order was placed through the UPA offline flow.
+	 *
+	 * @param WC_Order|null $order
+	 *
+	 * @return bool
+	 */
+	protected function is_upa_offline_order( $order ) {
+		if ( ! $order || ! is_object( $order ) || ! class_exists( 'Omise_UPA_Session_Service' ) ) {
+			return false;
+		}
+
+		$session_id = $order->get_meta( Omise_UPA_Session_Service::META_SESSION_ID );
+		if ( empty( $session_id ) ) {
+			return false;
+		}
+
+		$flow = $order->get_meta( Omise_UPA_Session_Service::META_FLOW );
+		if ( empty( $flow ) ) {
+			return true;
+		}
+
+		return Omise_UPA_Session_Service::FLOW_OFFLINE === $flow;
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function charge( $order_id, $order )
