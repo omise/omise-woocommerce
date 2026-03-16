@@ -29,3 +29,9 @@ if ( ! class_exists( 'Omise_Payment_Offline' ) ) {
 	#[AllowDynamicProperties]
 	class Omise_Payment_Offline extends Omise_Payment {}
 }
+
+if ( ! class_exists( 'Omise_Payment_Mobilebanking' ) ) {
+	class Omise_Payment_Mobilebanking extends Omise_Payment_Offsite {
+		public const ID = 'omise_mobilebanking';
+	}
+}

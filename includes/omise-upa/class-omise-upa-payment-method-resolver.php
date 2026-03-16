@@ -3,8 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 class Omise_UPA_Payment_Method_Resolver {
-	const MOBILE_BANKING_GATEWAY_ID = 'omise_mobilebanking';
-	const MOBILE_BANKING_METHOD     = 'mobile_banking';
+	const MOBILE_BANKING_METHOD = 'mobile_banking';
 
 	/**
 	 * Resolve selected payment method for UPA session payload.
@@ -16,7 +15,7 @@ class Omise_UPA_Payment_Method_Resolver {
 	public static function resolve( $gateway ) {
 		$gateway_id = isset( $gateway->id ) ? $gateway->id : '';
 
-		if ( self::MOBILE_BANKING_GATEWAY_ID === $gateway_id ) {
+		if ( Omise_Payment_Mobilebanking::ID === $gateway_id ) {
 			return self::MOBILE_BANKING_METHOD;
 		}
 

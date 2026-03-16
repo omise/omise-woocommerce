@@ -38,7 +38,7 @@ class Omise_Setting_Test extends TestCase
 	}
 
 	private function expectedUpaApiBaseUrl() {
-		return rtrim( Omise_Setting::UPA_API_BASE_URL, '/' ) . '/' . ltrim( Omise_Setting::UPA_API_PATH, '/' );
+		return Omise_Setting::UPA_API_BASE_URL;
 	}
 
 	/**

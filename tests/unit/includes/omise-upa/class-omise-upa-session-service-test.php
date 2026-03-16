@@ -67,7 +67,7 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$client = Mockery::mock( 'overload:Omise_UPA_Client' );
 		$client->shouldReceive( 'create_session' )->once()->andReturn(
 			array(
-				'session_id'   => 'sess_123',
+				'id'           => 'sess_123',
 				'redirect_url' => 'https://upa.example.com/pay/sess_123',
 			)
 		);
@@ -118,7 +118,7 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 			)
 		)->andReturn(
 			array(
-				'session_id'   => 'sess_123',
+				'id'           => 'sess_123',
 				'redirect_url' => 'https://upa.example.com/pay/sess_123',
 			)
 		);
@@ -255,17 +255,17 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 
 	// ─── extract_session_id Tests ───────────────────────────────────────
 
-	public function test_extract_session_id_prefers_session_id_key() {
+	public function test_extract_session_id_returns_id_key() {
 		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'extract_session_id' );
 		if ( PHP_VERSION_ID < 80100 ) {
 			$method->setAccessible( true );
 		}
 
-		$result = $method->invoke( null, array( 'session_id' => 'sess_123', 'id' => 'sess_456' ) );
+		$result = $method->invoke( null, array( 'id' => 'sess_123' ) );
 		$this->assertSame( 'sess_123', $result );
 	}
 
-	public function test_extract_session_id_falls_back_to_id_key() {
+	public function test_extract_session_id_ignores_unknown_keys() {
 		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'extract_session_id' );
 		if ( PHP_VERSION_ID < 80100 ) {
 			$method->setAccessible( true );
@@ -299,7 +299,7 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$this->assertTrue( $method->invoke( null, $gateway ) );
 	}
 
-	public function test_is_dynamic_source_gateway_returns_true_for_mobilebanking() {
+	public function test_is_dynamic_source_gateway_returns_false_for_mobilebanking() {
 		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'is_dynamic_source_gateway' );
 		if ( PHP_VERSION_ID < 80100 ) {
 			$method->setAccessible( true );
@@ -308,7 +308,7 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$gateway     = new Omise_Payment_Offsite();
 		$gateway->id = 'omise_mobilebanking';
 
-		$this->assertTrue( $method->invoke( null, $gateway ) );
+		$this->assertFalse( $method->invoke( null, $gateway ) );
 	}
 
 	public function test_is_dynamic_source_gateway_returns_false_for_regular_gateway() {

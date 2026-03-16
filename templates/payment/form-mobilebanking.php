@@ -1,4 +1,4 @@
-<?php if ( empty( $viewData['is_upa_enabled'] ) && ! empty( $viewData['mobile_banking_backends'] ) ) : ?>
+<?php if ( ! $viewData['is_upa_enabled'] && ! empty( $viewData['mobile_banking_backends'] ) ) : ?>
 	<fieldset id="omise-form-mobilebanking">
 		<ul class="omise-banks-list">
 			<?php foreach ( $viewData['mobile_banking_backends'] as $backend ) : ?>
@@ -16,7 +16,7 @@
 			<?php endforeach; ?>
 		</ul>
 	</fieldset>
-<?php elseif ( empty( $viewData['is_upa_enabled'] ) ) : ?>
+<?php elseif ( ! $viewData['is_upa_enabled'] ) : ?>
 	<p>
 		<?php echo __( 'There are no payment methods available.', 'omise' ); ?>
 	</p>

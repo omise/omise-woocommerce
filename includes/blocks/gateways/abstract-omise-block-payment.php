@@ -2,7 +2,11 @@
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
+require_once __DIR__ . '/trait-omise-block-script-loader.php';
+
 abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
+    use Omise_Block_Script_Loader;
+
     /**
      * The gateway instance.
      */
@@ -19,39 +23,6 @@ abstract class Omise_Block_Payment extends AbstractPaymentMethodType {
      * Additional data required in the UI
      */
     protected $additional_data;
-
-    /**
-     * Returns the script asset metadata or a safe fallback when build artifacts are missing.
-     *
-     * @param string $asset_path Path to generated *.asset.php file.
-     * @return array
-     */
-    private function load_script_asset( $asset_path ) {
-        static $asset_cache = [];
-
-        $defaults = [
-            'dependencies' => [],
-            'version'      => defined( 'OMISE_WOOCOMMERCE_PLUGIN_VERSION' ) ? OMISE_WOOCOMMERCE_PLUGIN_VERSION : null,
-        ];
-
-        if ( isset( $asset_cache[ $asset_path ] ) ) {
-            return $asset_cache[ $asset_path ];
-        }
-
-        if ( ! file_exists( $asset_path ) ) {
-            $asset_cache[ $asset_path ] = $defaults;
-            return $asset_cache[ $asset_path ];
-        }
-
-        $asset = require $asset_path; // NOSONAR: asset files return arrays; require_once can return true on repeat include.
-        if ( ! is_array( $asset ) ) {
-            $asset_cache[ $asset_path ] = $defaults;
-            return $asset_cache[ $asset_path ];
-        }
-
-        $asset_cache[ $asset_path ] = array_merge( $defaults, $asset );
-        return $asset_cache[ $asset_path ];
-    }
 
     /**
      * Initializes the payment method type.
