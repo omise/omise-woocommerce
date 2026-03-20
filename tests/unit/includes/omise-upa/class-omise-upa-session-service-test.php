@@ -190,6 +190,164 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$this->assertSame( 'https://upa.example.com/pay/sess_123', $result['redirect'] );
 	}
 
+	public function test_create_checkout_session_includes_style_from_card_customization_settings() {
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_currency' )->andReturn( 'THB' );
+		$order->shouldReceive( 'get_total' )->andReturn( '1000.00' );
+		$order->shouldReceive( 'get_order_key' )->andReturn( 'wc_order_abc' );
+		$order->shouldReceive( 'update_meta_data' )->times( 5 );
+		$order->shouldReceive( 'delete_meta_data' )->once()->with( 'omise_upa_retry_attempts' );
+		$order->shouldReceive( 'save' )->once();
+		$order->shouldReceive( 'add_order_note' )->once();
+
+		$gateway = new Omise_Payment_Offsite();
+		$gateway->source_type = 'truemoney';
+
+		$setting = Mockery::mock( 'alias:Omise_Setting' );
+		$setting->shouldReceive( 'instance' )->andReturn( $setting );
+		$setting->shouldReceive( 'get_upa_api_base_url' )->andReturn( 'https://upa.example.com' );
+		$setting->shouldReceive( 'secret_key' )->andReturn( 'skey_test_123' );
+
+		$customization = Mockery::mock( 'alias:Omise_Page_Card_From_Customization' );
+		$customization->shouldReceive( 'get_instance' )->andReturn( $customization );
+		$customization->shouldReceive( 'get_upa_style_settings' )->andReturn(
+			array(
+				'theme_color' => '#096B68',
+				'text_color'  => '#fff',
+			)
+		);
+
+		$client = Mockery::mock( 'overload:Omise_UPA_Client' );
+		$client->shouldReceive( 'create_session' )->once()->with(
+			Mockery::on(
+				function( $payload ) {
+					return isset( $payload['style']['theme_color'], $payload['style']['text_color'] )
+						&& '#096B68' === $payload['style']['theme_color']
+						&& '#fff' === $payload['style']['text_color']
+						&& ! isset( $payload['auto_capture'] );
+				}
+			)
+		)->andReturn(
+			array(
+				'id'           => 'sess_123',
+				'redirect_url' => 'https://upa.example.com/pay/sess_123',
+			)
+		);
+		$client->shouldReceive( 'get_base_url' )->andReturn( 'https://upa.example.com' );
+
+		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
+		Monkey\Functions\expect( 'home_url' )->andReturn( 'https://shop.test/' );
+		Monkey\Functions\expect( 'add_query_arg' )->andReturnUsing(
+			function( $args, $url ) {
+				return $url . '?' . http_build_query( $args );
+			}
+		);
+		Monkey\Functions\expect( 'get_locale' )->andReturn( 'en_US' );
+
+		$result = Omise_UPA_Session_Service::create_checkout_session( $gateway, '99', $order );
+
+		$this->assertSame( 'success', $result['result'] );
+		$this->assertSame( 'https://upa.example.com/pay/sess_123', $result['redirect'] );
+	}
+
+	public function test_create_checkout_session_sets_auto_capture_true_when_payment_action_is_auto_capture() {
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_currency' )->andReturn( 'THB' );
+		$order->shouldReceive( 'get_total' )->andReturn( '1000.00' );
+		$order->shouldReceive( 'get_order_key' )->andReturn( 'wc_order_abc' );
+		$order->shouldReceive( 'update_meta_data' )->times( 5 );
+		$order->shouldReceive( 'delete_meta_data' )->once()->with( 'omise_upa_retry_attempts' );
+		$order->shouldReceive( 'save' )->once();
+		$order->shouldReceive( 'add_order_note' )->once();
+
+		$gateway = new Omise_Payment_Offsite();
+		$gateway->source_type = 'rabbit_linepay';
+		$gateway->payment_action = 'auto_capture';
+
+		$setting = Mockery::mock( 'alias:Omise_Setting' );
+		$setting->shouldReceive( 'instance' )->andReturn( $setting );
+		$setting->shouldReceive( 'get_upa_api_base_url' )->andReturn( 'https://upa.example.com' );
+		$setting->shouldReceive( 'secret_key' )->andReturn( 'skey_test_123' );
+
+		$client = Mockery::mock( 'overload:Omise_UPA_Client' );
+		$client->shouldReceive( 'create_session' )->once()->with(
+			Mockery::on(
+				function( $payload ) {
+					return isset( $payload['auto_capture'] ) && true === $payload['auto_capture'];
+				}
+			)
+		)->andReturn(
+			array(
+				'id'           => 'sess_123',
+				'redirect_url' => 'https://upa.example.com/pay/sess_123',
+			)
+		);
+		$client->shouldReceive( 'get_base_url' )->andReturn( 'https://upa.example.com' );
+
+		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
+		Monkey\Functions\expect( 'home_url' )->andReturn( 'https://shop.test/' );
+		Monkey\Functions\expect( 'add_query_arg' )->andReturnUsing(
+			function( $args, $url ) {
+				return $url . '?' . http_build_query( $args );
+			}
+		);
+		Monkey\Functions\expect( 'get_locale' )->andReturn( 'en_US' );
+
+		$result = Omise_UPA_Session_Service::create_checkout_session( $gateway, '99', $order );
+
+		$this->assertSame( 'success', $result['result'] );
+		$this->assertSame( 'https://upa.example.com/pay/sess_123', $result['redirect'] );
+	}
+
+	public function test_create_checkout_session_sets_auto_capture_false_when_payment_action_is_manual_capture() {
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_currency' )->andReturn( 'THB' );
+		$order->shouldReceive( 'get_total' )->andReturn( '1000.00' );
+		$order->shouldReceive( 'get_order_key' )->andReturn( 'wc_order_abc' );
+		$order->shouldReceive( 'update_meta_data' )->times( 5 );
+		$order->shouldReceive( 'delete_meta_data' )->once()->with( 'omise_upa_retry_attempts' );
+		$order->shouldReceive( 'save' )->once();
+		$order->shouldReceive( 'add_order_note' )->once();
+
+		$gateway = new Omise_Payment_Offsite();
+		$gateway->source_type = 'rabbit_linepay';
+		$gateway->payment_action = 'manual_capture';
+
+		$setting = Mockery::mock( 'alias:Omise_Setting' );
+		$setting->shouldReceive( 'instance' )->andReturn( $setting );
+		$setting->shouldReceive( 'get_upa_api_base_url' )->andReturn( 'https://upa.example.com' );
+		$setting->shouldReceive( 'secret_key' )->andReturn( 'skey_test_123' );
+
+		$client = Mockery::mock( 'overload:Omise_UPA_Client' );
+		$client->shouldReceive( 'create_session' )->once()->with(
+			Mockery::on(
+				function( $payload ) {
+					return isset( $payload['auto_capture'] ) && false === $payload['auto_capture'];
+				}
+			)
+		)->andReturn(
+			array(
+				'id'           => 'sess_123',
+				'redirect_url' => 'https://upa.example.com/pay/sess_123',
+			)
+		);
+		$client->shouldReceive( 'get_base_url' )->andReturn( 'https://upa.example.com' );
+
+		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
+		Monkey\Functions\expect( 'home_url' )->andReturn( 'https://shop.test/' );
+		Monkey\Functions\expect( 'add_query_arg' )->andReturnUsing(
+			function( $args, $url ) {
+				return $url . '?' . http_build_query( $args );
+			}
+		);
+		Monkey\Functions\expect( 'get_locale' )->andReturn( 'en_US' );
+
+		$result = Omise_UPA_Session_Service::create_checkout_session( $gateway, '99', $order );
+
+		$this->assertSame( 'success', $result['result'] );
+		$this->assertSame( 'https://upa.example.com/pay/sess_123', $result['redirect'] );
+	}
+
 	public function test_create_checkout_session_throws_when_source_type_empty() {
 		$gateway = new Omise_Payment_Offsite();
 		$gateway->source_type = '';

@@ -165,13 +165,29 @@ class Omise_UPA_Callback {
 		self::set_transaction_id( $order, $charge );
 
 		$order->payment_complete();
-		$order->add_order_note(
-			sprintf(
-				wp_kses( __( 'Omise UPA: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ), array( 'br' => array() ) ),
-				$order->get_total(),
-				$order->get_currency()
-			)
-		);
+		$is_paid            = isset( $charge['paid'] ) && (bool) $charge['paid'];
+		$is_authorized_only = isset( $charge['authorized'] ) && (bool) $charge['authorized'] && ! $is_paid;
+
+		if ( $is_authorized_only ) {
+			$order->add_order_note(
+				sprintf(
+					wp_kses( __( 'Omise UPA: Payment processing.<br/>An amount of %1$s %2$s has been authorized', 'omise' ), array( 'br' => array() ) ),
+					$order->get_total(),
+					$order->get_currency()
+				)
+			);
+			if ( self::supports_manual_capture_action( $order ) ) {
+				$order->update_meta_data( 'is_awaiting_capture', 'yes' );
+			}
+		} else {
+			$order->add_order_note(
+				sprintf(
+					wp_kses( __( 'Omise UPA: Payment successful.<br/>An amount of %1$s %2$s has been paid', 'omise' ), array( 'br' => array() ) ),
+					$order->get_total(),
+					$order->get_currency()
+				)
+			);
+		}
 		$order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
 		$order->update_meta_data( Omise_UPA_Session_Service::META_RESOLVED, 'yes' );
 		$order->delete_meta_data( self::META_RETRY_ATTEMPTS );
@@ -185,6 +201,39 @@ class Omise_UPA_Callback {
 		if ( $should_redirect ) {
 			self::redirect_to_thank_you( $order, true );
 		}
+	}
+
+	/**
+	 * @param WC_Order $order
+	 *
+	 * @return bool
+	 */
+	private static function supports_manual_capture_action( $order ) {
+		if ( ! is_object( $order ) ) {
+			return false;
+		}
+
+		$payment_method = $order->get_payment_method();
+		if ( ! is_string( $payment_method ) || '' === $payment_method ) {
+			return false;
+		}
+		if ( function_exists( 'sanitize_key' ) ) {
+			$payment_method = sanitize_key( $payment_method );
+		} else {
+			$payment_method = sanitize_text_field( $payment_method );
+		}
+
+		if ( '' === $payment_method ) {
+			return false;
+		}
+
+		if ( ! function_exists( 'has_action' ) ) {
+			return false;
+		}
+
+		$action_hook = 'woocommerce_order_action_' . $payment_method . '_charge_capture';
+
+		return (bool) has_action( $action_hook );
 	}
 
 	/**

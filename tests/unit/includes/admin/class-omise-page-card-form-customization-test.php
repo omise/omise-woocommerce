@@ -133,6 +133,90 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function testGetUpaStyleSettingsReturnsCheckboxColors()
+    {
+        $savedSettings = [
+            'font' => [
+                'name' => 'Poppins',
+                'size' => 16,
+                'custom_name' => '',
+            ],
+            'input' => [
+                'height' => '44px',
+                'border_radius' => '4px',
+                'border_color' => '#475266',
+                'active_border_color' => '#475266',
+                'background_color' => '#131926',
+                'label_color' => '#E6EAF2',
+                'text_color' => '#ffffff',
+                'placeholder_color' => '#DBDBDB',
+            ],
+            'checkbox' => [
+                'text_color' => '#fff',
+                'theme_color' => '#096B68',
+            ]
+        ];
+
+        Brain\Monkey\Functions\stubs([
+            'get_option' => $savedSettings,
+        ]);
+
+        $obj = Omise_Page_Card_From_Customization::get_instance();
+
+        $this->assertSame(
+            [
+                'theme_color' => '#096B68',
+                'text_color' => '#fff',
+            ],
+            $obj->get_upa_style_settings()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testGetUpaStyleSettingsFallsBackForInvalidColors()
+    {
+        $savedSettings = [
+            'font' => [
+                'name' => 'Poppins',
+                'size' => 16,
+                'custom_name' => '',
+            ],
+            'input' => [
+                'height' => '44px',
+                'border_radius' => '4px',
+                'border_color' => '#475266',
+                'active_border_color' => '#475266',
+                'background_color' => '#131926',
+                'label_color' => '#E6EAF2',
+                'text_color' => '#ffffff',
+                'placeholder_color' => '#DBDBDB',
+            ],
+            'checkbox' => [
+                'text_color' => 'invalid',
+                'theme_color' => '#invalid',
+            ]
+        ];
+
+        Brain\Monkey\Functions\stubs([
+            'get_option' => $savedSettings,
+        ]);
+
+        $obj = Omise_Page_Card_From_Customization::get_instance();
+
+        $this->assertSame(
+            [
+                'theme_color' => '#1451cc',
+                'text_color' => '#1c2433',
+            ],
+            $obj->get_upa_style_settings()
+        );
+    }
+
+    /**
      * Call protected/private method of a class.
      *
      * @param object $object    Instantiated object that we will run method on.

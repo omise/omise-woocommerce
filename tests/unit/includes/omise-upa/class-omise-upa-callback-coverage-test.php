@@ -163,6 +163,116 @@ class Omise_UPA_Callback_Coverage_Test extends Omise_Test_Case {
 		Omise_UPA_Callback::complete();
 	}
 
+	public function test_complete_processes_authorized_result_and_sets_awaiting_capture() {
+		$_GET = array(
+			'order_id'        => '44',
+			'omise_upa_state' => 'state_123',
+		);
+
+		Omise_UPA_Payment_Resolver::$responses = array(
+			array(
+				'state' => Omise_UPA_Payment_Resolver::STATE_SUCCESSFUL,
+				'charge' => array(
+					'id'         => 'chrg_auth_123',
+					'authorized' => true,
+					'paid'       => false,
+				),
+			),
+		);
+
+		$order_received_url = 'https://shop.test/checkout/order-received/44/?key=wc_order_abc';
+		$guarded_url        = $order_received_url . '&omise_upa_guard=1';
+
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_STATE )
+			->andReturn( 'state_123' );
+		$order->shouldReceive( 'is_paid' )->once()->andReturn( false );
+		$order->shouldReceive( 'get_transaction_id' )->once()->andReturn( '' );
+		$order->shouldReceive( 'set_transaction_id' )->once()->with( 'chrg_auth_123' );
+		$order->shouldReceive( 'payment_complete' )->once();
+		$order->shouldReceive( 'add_order_note' )
+			->once()
+			->with( Mockery::on( function( $note ) {
+				return false !== strpos( $note, 'has been authorized' );
+			} ) );
+		$order->shouldReceive( 'get_total' )->once()->andReturn( '1000.00' );
+		$order->shouldReceive( 'get_currency' )->once()->andReturn( 'THB' );
+		$order->shouldReceive( 'get_payment_method' )->once()->andReturn( 'omise_rabbit_linepay' );
+		$order->shouldReceive( 'update_meta_data' )->once()->with( 'is_awaiting_capture', 'yes' );
+		$order->shouldReceive( 'update_meta_data' )->once()->with( 'is_omise_payment_resolved', 'yes' );
+		$order->shouldReceive( 'update_meta_data' )->once()->with( Omise_UPA_Session_Service::META_RESOLVED, 'yes' );
+		$order->shouldReceive( 'delete_meta_data' )->once()->with( Omise_UPA_Callback::META_RETRY_ATTEMPTS );
+		$order->shouldReceive( 'delete_meta_data' )->once()->with( Omise_UPA_Session_Service::META_STATE );
+		$order->shouldReceive( 'save' )->once();
+		$order->shouldReceive( 'get_checkout_order_received_url' )->once()->andReturn( $order_received_url );
+
+		$cart = Mockery::mock( 'WC_Cart' );
+		$cart->shouldReceive( 'empty_cart' )->once();
+
+		$wc = Mockery::mock( 'WooCommerce' );
+		$wc->cart = $cart;
+		self::$wc_instance = $wc;
+
+		Monkey\Functions\expect( 'wc_get_order' )
+			->once()
+			->with( 44 )
+			->andReturn( $order );
+		Monkey\Functions\expect( 'add_query_arg' )
+			->once()
+			->with( 'omise_upa_guard', '1', $order_received_url )
+			->andReturn( $guarded_url );
+		Monkey\Functions\expect( 'has_action' )
+			->once()
+			->with( 'woocommerce_order_action_omise_rabbit_linepay_charge_capture' )
+			->andReturn( 10 );
+		Monkey\Functions\expect( 'nocache_headers' )->once();
+		Monkey\Functions\expect( 'wp_safe_redirect' )
+			->once()
+			->with( $guarded_url )
+			->andThrow( new Exception( 'redirected' ) );
+
+		$this->expectExceptionMessage( 'redirected' );
+		Omise_UPA_Callback::complete();
+	}
+
+	public function test_complete_authorized_result_skips_awaiting_capture_when_capture_action_is_unavailable() {
+		$charge = array(
+			'id'         => 'chrg_auth_456',
+			'authorized' => true,
+			'paid'       => false,
+		);
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_transaction_id' )->once()->andReturn( '' );
+		$order->shouldReceive( 'set_transaction_id' )->once()->with( 'chrg_auth_456' );
+		$order->shouldReceive( 'payment_complete' )->once();
+		$order->shouldReceive( 'add_order_note' )
+			->once()
+			->with( Mockery::on( function( $note ) {
+				return false !== strpos( $note, 'has been authorized' );
+			} ) );
+		$order->shouldReceive( 'get_total' )->once()->andReturn( '1000.00' );
+		$order->shouldReceive( 'get_currency' )->once()->andReturn( 'THB' );
+		$order->shouldReceive( 'get_payment_method' )->once()->andReturn( 'omise_mobilebanking' );
+		$order->shouldReceive( 'update_meta_data' )->never()->with( 'is_awaiting_capture', 'yes' );
+		$order->shouldReceive( 'update_meta_data' )->once()->with( 'is_omise_payment_resolved', 'yes' );
+		$order->shouldReceive( 'update_meta_data' )->once()->with( Omise_UPA_Session_Service::META_RESOLVED, 'yes' );
+		$order->shouldReceive( 'delete_meta_data' )->once()->with( Omise_UPA_Callback::META_RETRY_ATTEMPTS );
+		$order->shouldReceive( 'delete_meta_data' )->once()->with( Omise_UPA_Session_Service::META_STATE );
+		$order->shouldReceive( 'save' )->once();
+		Monkey\Functions\expect( 'has_action' )
+			->once()
+			->with( 'woocommerce_order_action_omise_mobilebanking_charge_capture' )
+			->andReturn( 0 );
+
+		$method = new ReflectionMethod( Omise_UPA_Callback::class, 'handle_successful_payment' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible( true );
+		}
+		$method->invoke( null, $order, array( 'charge' => $charge ), false );
+	}
+
 	public function test_complete_processes_pending_result_and_schedules_recheck() {
 		$_GET = array(
 			'order_id'        => '44',

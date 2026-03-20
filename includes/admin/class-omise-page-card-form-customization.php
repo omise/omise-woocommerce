@@ -100,6 +100,48 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 	}
 
 	/**
+	 * Retrieve style payload for UPA session customization.
+	 *
+	 * @return array
+	 */
+	public function get_upa_style_settings()
+	{
+		$formDesign = $this->get_design_setting();
+
+		$themeColor = isset($formDesign['checkbox']['theme_color'])
+			? $formDesign['checkbox']['theme_color']
+			: '#1451cc';
+		$textColor = isset($formDesign['checkbox']['text_color'])
+			? $formDesign['checkbox']['text_color']
+			: '#1c2433';
+
+		return [
+			'theme_color' => $this->sanitize_hex_color($themeColor, '#1451cc'),
+			'text_color' => $this->sanitize_hex_color($textColor, '#1c2433')
+		];
+	}
+
+	/**
+	 * @param mixed  $value
+	 * @param string $fallback
+	 *
+	 * @return string
+	 */
+	private function sanitize_hex_color($value, $fallback)
+	{
+		if (!is_string($value)) {
+			return $fallback;
+		}
+
+		$value = trim($value);
+		if (preg_match('/^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/', $value)) {
+			return $value;
+		}
+
+		return $fallback;
+	}
+
+	/**
 	 * @param array $data
 	 *
 	 * @since  3.1
