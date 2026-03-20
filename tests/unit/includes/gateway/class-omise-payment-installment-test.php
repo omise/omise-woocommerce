@@ -13,6 +13,16 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
     protected $backend_installment_mock;
     private $installment;
 
+    private function render_installment_template( $view_data )
+    {
+        $template_file = __DIR__ . '/../../../../templates/payment/form-installment.php';
+        $viewData      = $view_data;
+
+        ob_start();
+        include $template_file;
+        return ob_get_clean();
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -129,6 +139,107 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->perform_charge_test( $this->installment, $order, $test_charge_fn );
     }
 
+    public function test_process_payment_routes_wlb_to_standard_flow()
+    {
+        $_POST['omise_token'] = 'tokn_test_wlb';
+
+        $installment = new class extends Omise_Payment_Installment {
+            public function __construct() {}
+            protected function process_standard_payment($order_id) {
+                return ['result' => 'standard', 'order_id' => $order_id];
+            }
+        };
+
+        $result = $installment->process_payment(42);
+
+        $this->assertEquals('standard', $result['result']);
+        $this->assertEquals(42, $result['order_id']);
+
+        unset($_POST['omise_token']);
+    }
+
+    public function test_process_payment_routes_normal_to_parent_flow()
+    {
+        unset($_POST['omise_token']);
+
+        $feature_flag = Mockery::mock('alias:Omise_UPA_Feature_Flag');
+        $feature_flag->shouldReceive('is_enabled_for_order')->once()->andReturn(true);
+
+        $installment = new class extends Omise_Payment_Installment {
+            public function __construct() {}
+            protected function should_use_upa_installment_flow() {
+                return true;
+            }
+            public function load_order( $order ) {
+                $this->order = (object) [ 'id' => $order ];
+                return $this->order;
+            }
+            protected function process_upa_checkout_session_payment($order_id) {
+                return ['result' => 'upa', 'order_id' => $order_id];
+            }
+        };
+
+        $result = $installment->process_payment(42);
+
+        $this->assertEquals('upa', $result['result']);
+        $this->assertEquals(42, $result['order_id']);
+    }
+
+    public function test_process_payment_routes_to_standard_flow_when_upa_is_disabled()
+    {
+        unset($_POST['omise_token']);
+
+        $installment = new class extends Omise_Payment_Installment {
+            public function __construct() {}
+            protected function should_use_upa_installment_flow() {
+                return false;
+            }
+            protected function process_standard_payment($order_id) {
+                return ['result' => 'standard', 'order_id' => $order_id];
+            }
+        };
+
+        $result = $installment->process_payment(42);
+
+        $this->assertSame('standard', $result['result']);
+        $this->assertSame(42, $result['order_id']);
+    }
+
+    public function test_process_payment_fails_cleanly_when_upa_disabled_for_order_without_token()
+    {
+        unset($_POST['omise_token']);
+
+        $feature_flag = Mockery::mock('alias:Omise_UPA_Feature_Flag');
+        $feature_flag->shouldReceive('is_enabled_for_order')->once()->andReturn(false);
+
+        $installment = new class extends Omise_Payment_Installment {
+            public function __construct() {}
+            protected function should_use_upa_installment_flow() {
+                return true;
+            }
+            public function load_order( $order ) {
+                $this->order = (object) [ 'id' => $order ];
+                return $this->order;
+            }
+            protected function payment_failed( $charge, $reason = '' ) {
+                return [ 'result' => 'failure', 'message' => $reason ];
+            }
+        };
+
+        $result = $installment->process_payment(42);
+
+        $this->assertSame('failure', $result['result']);
+        $this->assertSame(
+            'Payment service is temporarily unavailable. Please try again or choose another payment method.',
+            $result['message']
+        );
+    }
+
+    public function test_installment_sets_source_type_for_upa_resolution()
+    {
+        $this->assertSame('installment', $this->installment->source_type);
+    }
+
     public function test_installment_get_view_data()
     {
         $capability = Mockery::mock('alias:Omise_Capability');
@@ -145,9 +256,14 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
                 public function getInstallmentMethods() {
                     return [];
                 }
+
+                public function getWlbInstallmentMethods() {
+                    return [];
+                }
             });
 
         $this->backend_installment_mock->shouldReceive('get_available_providers');
+        $this->backend_installment_mock->shouldReceive('has_wlb_providers')->andReturn(false);
         Monkey\Functions\expect('get_woocommerce_currency')->andReturn('thb');
 
         $cart = $this->get_cart_mock(['total' => 999999]);
@@ -159,6 +275,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->assertArrayHasKey('installments_enabled', $result);
         $this->assertArrayHasKey('is_zero_interest', $result);
         $this->assertArrayHasKey('installment_min_limit', $result);
+        $this->assertArrayHasKey('has_wlb_providers', $result);
+        $this->assertArrayHasKey('is_upa_enabled', $result);
     }
 
     public function test_installment_get_params_for_js()
@@ -172,7 +290,53 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->assertEquals([
             'key' => 'pkey_test_123',
             'amount' => 99999900,
+            'show_installment_form' => true,
         ], $result);
+    }
+
+    public function test_template_renders_form_when_upa_enabled_and_no_wlb_providers()
+    {
+        Monkey\Functions\expect('get_locale')->once()->andReturn('en_US');
+
+        $output = $this->render_installment_template([
+            'is_upa_enabled' => true,
+            'has_wlb_providers' => false,
+            'installments_enabled' => true,
+            'total_amount' => 100000,
+            'installment_min_limit' => 2000,
+        ]);
+
+        $this->assertStringContainsString('id="omise-installment"', $output);
+    }
+
+    public function test_template_renders_form_when_upa_enabled_and_wlb_providers_available()
+    {
+        Monkey\Functions\expect('get_locale')->once()->andReturn('en_US');
+
+        $output = $this->render_installment_template([
+            'is_upa_enabled' => true,
+            'has_wlb_providers' => true,
+            'installments_enabled' => true,
+            'total_amount' => 100000,
+            'installment_min_limit' => 2000,
+        ]);
+
+        $this->assertStringContainsString('id="omise-installment"', $output);
+    }
+
+    public function test_template_renders_form_when_upa_disabled()
+    {
+        Monkey\Functions\expect('get_locale')->once()->andReturn('en_US');
+
+        $output = $this->render_installment_template([
+            'is_upa_enabled' => false,
+            'has_wlb_providers' => false,
+            'installments_enabled' => true,
+            'total_amount' => 100000,
+            'installment_min_limit' => 2000,
+        ]);
+
+        $this->assertStringContainsString('id="omise-installment"', $output);
     }
 
     public function test_installment_convert_to_cents()

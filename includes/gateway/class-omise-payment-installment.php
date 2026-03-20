@@ -25,6 +25,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		$this->title                = $this->get_option('title');
 		$this->description          = $this->get_option('description');
 		$this->restricted_countries = array('TH', 'MY');
+		$this->source_type          = 'installment';
 
 		$this->backend     = new Omise_Backend_Installment;
 
@@ -66,6 +67,56 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	/**
 	 * @inheritdoc
 	 */
+	public function process_payment($order_id)
+	{
+		if (!$this->should_use_upa_installment_flow()) {
+			return $this->process_standard_payment($order_id);
+		}
+
+		if (!$this->load_order($order_id)) {
+			return $this->invalid_order($order_id);
+		}
+
+		if (!Omise_UPA_Feature_Flag::is_enabled_for_order($this, $this->order())) {
+			return $this->payment_failed(
+				null,
+				__('Payment service is temporarily unavailable. Please try again or choose another payment method.', 'omise')
+			);
+		}
+
+		return parent::process_payment($order_id);
+	}
+
+	/**
+	 * Normal installment should be redirected to UPA only when:
+	 * - UPA is enabled by environment + merchant settings.
+	 * - Checkout is not a WLB installment request.
+	 *
+	 * @return bool
+	 */
+	protected function should_use_upa_installment_flow()
+	{
+		return Omise_Setting::instance()->is_upa_enabled() && !$this->is_wlb_installment_request();
+	}
+
+	/**
+	 * WLB installment is identified by card token presence.
+	 *
+	 * @return bool
+	 */
+	protected function is_wlb_installment_request()
+	{
+		if (!isset($_POST['omise_token'])) {
+			return false;
+		}
+
+		$token = sanitize_text_field($_POST['omise_token']);
+		return '' !== $token;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function payment_fields()
 	{
 		parent::payment_fields();
@@ -82,11 +133,13 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		$installmentMinLimit = $capability->getInstallmentMinLimit();
 
 		return [
-			'installments_enabled' => $this->backend->get_available_providers($currency, $cart_total),
-			'is_zero_interest'     => $capability ? $capability->is_zero_interest() : false,
+			'installments_enabled'  => $this->backend->get_available_providers($currency, $cart_total),
+			'is_zero_interest'      => $capability ? $capability->is_zero_interest() : false,
 			'installment_min_limit' => Omise_Money::convert_currency_unit($installmentMinLimit, $currency),
-			'currency' => $currency,
-			'total_amount' => Omise_Money::to_subunit($cart_total, $currency),
+			'currency'              => $currency,
+			'total_amount'          => Omise_Money::to_subunit($cart_total, $currency),
+			'has_wlb_providers'     => $this->backend->has_wlb_providers($currency, $cart_total),
+			'is_upa_enabled'        => Omise_Setting::instance()->is_upa_enabled(),
 		];
 	}
 
@@ -197,8 +250,9 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	public function getParamsForJS()
 	{
 		return [
-			'key' => $this->public_key(),
-			'amount' => $this->convert_to_cents($this->get_total_amount()),
+			'key'                   => $this->public_key(),
+			'amount'                => $this->convert_to_cents($this->get_total_amount()),
+			'show_installment_form' => true,
 		];
 	}
 }

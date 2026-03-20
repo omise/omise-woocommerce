@@ -78,6 +78,23 @@ class Omise_UPA_Payment_Method_Resolver_Test extends Omise_Test_Case {
 		$this->assertSame( 'truemoney_wallet', Omise_UPA_Payment_Method_Resolver::resolve( $gateway ) );
 	}
 
+	public function test_resolve_falls_back_to_installment_source_type_for_installment_gateway() {
+		Monkey\Functions\stubs(
+			array(
+				'sanitize_text_field' => function( $value ) {
+					return trim( (string) $value );
+				},
+			)
+		);
+
+		$gateway = (object) array(
+			'id'          => 'omise_installment',
+			'source_type' => 'installment',
+		);
+
+		$this->assertSame( 'installment', Omise_UPA_Payment_Method_Resolver::resolve( $gateway ) );
+	}
+
 	public function test_resolve_returns_empty_string_when_source_type_is_not_string() {
 		Monkey\Functions\stubs(
 			array(

@@ -48,6 +48,8 @@ trait MockPaymentGateways
                                 'installment_min_limit' =>  2000,
                                 'total_amount' => 4000,
                                 'currency' => 'thb',
+                                'has_wlb_providers' => false,
+                                'is_upa_enabled' => false,
                             ];
                         }
 
