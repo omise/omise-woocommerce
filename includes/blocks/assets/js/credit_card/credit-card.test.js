@@ -283,25 +283,50 @@ describe('Credit Card', () => {
       });
     });
 
-    it('emits error response when card form has errors', async () => {
-      render(
-        <CreditCardPaymentMethod
-          {...wcBlockProps}
-          settings={settings}
-        />
-      );
+    describe('when card form returns errors', () => {
+      let onErrorCallback = null;
 
-      triggerCheckoutValidation();
+      beforeEach(() => {
+         render(
+          <CreditCardPaymentMethod
+            {...wcBlockProps}
+            settings={settings}
+          />
+        );
 
-      const mockCalls = window.showOmiseEmbeddedCardForm.mock.calls;
-      const onErrorCallback = (mockCalls[0][0]).onError;
-      onErrorCallback(['Please enter a valid card number']);
+        triggerCheckoutValidation();
 
-      await expect(triggerPaymentSetup).rejects.toEqual({
-        type: 'error',
-        message: ['Please enter a valid card number']
+        const mockCalls = window.showOmiseEmbeddedCardForm.mock.calls;
+        onErrorCallback = (mockCalls[0][0]).onError;
       });
-    });
+
+      it('emits the correct error response when card form returns error array', async () => {
+        onErrorCallback(['Please enter a valid card number']);
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Please enter a valid card number',
+        });
+      });
+
+      it('emits the correct error response when card form returns error string', async () => {
+        onErrorCallback('Please enter a valid card number');
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Please enter a valid card number',
+        });
+      });
+
+      it('emits the correct error response when card form returns error in unexpected format', async () => {
+        onErrorCallback({ success: false });
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Something went wrong. Please review your card details and try again.',
+        });
+      });
+    })
   })
 
   function triggerCheckoutValidation() {

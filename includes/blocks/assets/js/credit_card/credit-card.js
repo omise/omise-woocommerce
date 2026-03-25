@@ -81,50 +81,49 @@ const CreditCardPaymentMethod = (props) => {
 
 	useEffect(() => {
 		const unsubscribe = onPaymentSetup( async () => {
-			return await new Promise( ( resolve, reject ) => {
+			return await new Promise( ( resolve ) => {
 				const intervalId = setInterval( () => {
 					if (savedCardIdRef.current && savedCardIdRef.current.value !== "") {
 						clearInterval(intervalId); // Stop the interval once cardToken is not empty
-						try {
-							const response = {
-								type: emitResponse.responseTypes.SUCCESS,
-								meta: {
-									paymentMethodData: {
-										"card_id": savedCardIdRef.current.value,
-										"wc_block_payment": true,
-									}
+						const response = {
+							type: emitResponse.responseTypes.SUCCESS,
+							meta: {
+								paymentMethodData: {
+									"card_id": savedCardIdRef.current.value,
+									"wc_block_payment": true,
 								}
-							};
-							resolve(response)
-						} catch (error) {
-							const response = {type: emitResponse.responseTypes.ERROR, message: error.message}
-							reject(response)
-						}
+							}
+						};
+						resolve(response)
 					} else if (cardTokenRef.current && cardTokenRef.current.value !== "") {
 						clearInterval(intervalId); // Stop the interval once cardToken is not empty
-						try {
-							const response = {
-								type: emitResponse.responseTypes.SUCCESS,
-								meta: {
-									paymentMethodData: {
-										"omise_save_customer_card": saveCardRef.current,
-										"omise_token": cardTokenRef.current,
-										"wc_block_payment": true,
-									}
+						const response = {
+							type: emitResponse.responseTypes.SUCCESS,
+							meta: {
+								paymentMethodData: {
+									"omise_save_customer_card": saveCardRef.current,
+									"omise_token": cardTokenRef.current,
+									"wc_block_payment": true,
 								}
-							};
-							resolve(response)
-						} catch (error) {
-							const response = {type: emitResponse.responseTypes.ERROR, message: error.message}
-							reject(response)
-						}
+							}
+						};
+						resolve(response)
 					} else if (cardFormErrors.current) {
 						clearInterval(intervalId); // Stop the interval once cardToken is not empty
+
+						let errorMessage = 'Something went wrong. Please review your card details and try again.';
+
+						if (Array.isArray(cardFormErrors.current)) {
+							errorMessage = cardFormErrors.current[0];
+						} else if (typeof cardFormErrors.current === 'string') {
+							errorMessage = cardFormErrors.current;
+						}
+
 						const response = {
 							type: emitResponse.responseTypes.ERROR,
-							message: cardFormErrors.current
-						}
-						reject(response)
+							message: errorMessage,
+						};
+						resolve(response);
 					}
 				}, 1000 );
 			} );
