@@ -43,12 +43,6 @@ class Omise_Event_Charge_Complete extends Omise_Event_Charge {
 	 *     [status: 'failed'], [authorized: 'false'], [paid: 'false']
 	 *
 	 * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	 * Internet Banking
-	 * charge data in payload:
-	 *     [status: 'successful'], [authorized: 'true'], [paid: 'true']
-	 *     [status: 'failed'], [authorized: 'false'], [paid: 'false']
-	 *
-	 * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	 * Credit Card (3-D Secure)
 	 * CAPTURE = FALSE
 	 * charge data in payload could be one of these sets:

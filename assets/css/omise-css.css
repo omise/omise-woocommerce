@@ -44,8 +44,7 @@ fieldset.card-exists,
  * 1). Specific style
  * (usually designed specifically for only one purpose).
  */
-#payment .payment_methods li .payment_box fieldset#omise-form-installment,
-#payment .payment_methods li .payment_box fieldset#omise-form-internetbanking {
+#payment .payment_methods li .payment_box fieldset#omise-form-installment {
 	padding: 0;
 }
 
@@ -359,20 +358,6 @@ ul.omise-banks-list {
 /**
  * 2.4). Bank logos
  */
-
-/**
- * internet banking logos
- */
-
-/** BAY **/
-.bank-logo.bay {
-	background-image: url('../images/bay.svg');
-}
-
-/** BBL **/
-.bank-logo.bbl {
-	background-image: url('../images/bbl.svg');
-}
 
 /**
  * mobile banking logos
