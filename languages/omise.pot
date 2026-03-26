@@ -25,7 +25,6 @@ msgid "Accept payment through Alipay"
 msgstr "Omiseを通してアリペイ決済を提供します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:42 includes/gateway/class-omise-payment-creditcard.php:56
-#: includes/gateway/class-omise-payment-internetbanking.php:48
 msgid "Enable/Disable"
 msgstr "有効/無効"
 
@@ -34,12 +33,10 @@ msgid "Enable Omise Alipay Payment"
 msgstr "Omiseのアリペイ決済を有効化します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:49 includes/gateway/class-omise-payment-creditcard.php:63
-#: includes/gateway/class-omise-payment-internetbanking.php:55
 msgid "Title"
 msgstr "タイトル"
 
 #: includes/gateway/class-omise-payment-alipay.php:51 includes/gateway/class-omise-payment-creditcard.php:65
-#: includes/gateway/class-omise-payment-internetbanking.php:57
 msgid "This controls the title which the user sees during checkout."
 msgstr "入力内容は、購入者が決済を行う際に表示します。"
 
@@ -48,17 +45,14 @@ msgid "Alipay"
 msgstr "アリペイ"
 
 #: includes/gateway/class-omise-payment-alipay.php:56 includes/gateway/class-omise-payment-creditcard.php:70
-#: includes/gateway/class-omise-payment-internetbanking.php:62
 msgid "Description"
 msgstr "説明"
 
 #: includes/gateway/class-omise-payment-alipay.php:58 includes/gateway/class-omise-payment-creditcard.php:72
-#: includes/gateway/class-omise-payment-internetbanking.php:64
 msgid "This controls the description which the user sees during checkout."
 msgstr "入力内容は、購入者が決済を行う際に表示します。"
 
 #: includes/gateway/class-omise-payment-alipay.php:76 includes/gateway/class-omise-payment-creditcard.php:179
-#: includes/gateway/class-omise-payment-internetbanking.php:92
 msgid "We cannot process your payment.<br/>Note that nothing wrong by you, this might be from our store issue.<br/><br/>Please feel free to "
 msgstr "決済処理が正しく完了しませんでした。<br/>ストアのシステムエラーの可能性がございます。<br/><br/>誠に恐れ入りますが、もう一度始めから試し"
 
@@ -70,36 +64,31 @@ msgid "Omise: Processing a payment with Alipay solution."
 msgstr "Omise: アリペイソリューションで決済処理."
 
 #: includes/gateway/class-omise-payment-alipay.php:99 includes/gateway/class-omise-payment-creditcard.php:289
-#: includes/gateway/class-omise-payment-internetbanking.php:115
 msgid "Omise: Charge (ID: %s) has been created"
 msgstr "Omise: 課金（ID：%s）が作成されました。"
 
-#: includes/gateway/class-omise-payment-alipay.php:106 includes/gateway/class-omise-payment-internetbanking.php:122
+#: includes/gateway/class-omise-payment-alipay.php:106
 msgid "Omise: Redirecting buyer out to %s"
 msgstr "Omise: 購入者を %s にリダイレクトします。"
 
-#: includes/gateway/class-omise-payment-alipay.php:122 includes/gateway/class-omise-payment-internetbanking.php:138
+#: includes/gateway/class-omise-payment-alipay.php:122
 msgid "Please feel free to try submit your order again or contact our support team if you have any questions (Your temporary order id is '%s')"
 msgstr "注文をもう一度送信するか、不明な場合はサポートチームまでご連絡ください。（お問い合わせの際は注文ID '%s') をご提示ください。）"
 
 #: includes/gateway/class-omise-payment-alipay.php:132 includes/gateway/class-omise-payment-alipay.php:217
 #: includes/gateway/class-omise-payment-creditcard.php:375 includes/gateway/class-omise-payment-creditcard.php:566
-#: includes/gateway/class-omise-payment-internetbanking.php:148 includes/gateway/class-omise-payment-internetbanking.php:233
 msgid "Seems we cannot process your payment properly:<br/>%s"
 msgstr "お客様の決済を完了できませんでした。<br/>%s"
 
 #: includes/gateway/class-omise-payment-alipay.php:142 includes/gateway/class-omise-payment-creditcard.php:385
-#: includes/gateway/class-omise-payment-internetbanking.php:158
 msgid "Omise: Payment failed, %s"
 msgstr "Omise: 決済が完了できませんでした。%s"
 
 #: includes/gateway/class-omise-payment-alipay.php:158 includes/gateway/class-omise-payment-creditcard.php:492
-#: includes/gateway/class-omise-payment-internetbanking.php:174
 msgid "We cannot validate your payment result:<br/>Note that your payment might already has been processed. Please contact our support team if you have any questions."
 msgstr "お客様の決済結果を確認できませんでした。<br/>すでに決済が完了している可能性がありますので、ご注意ください。ご不明な点がございましたら、サポートチームまでお問い合わせください。"
 
 #: includes/gateway/class-omise-payment-alipay.php:168 includes/gateway/class-omise-payment-creditcard.php:502
-#: includes/gateway/class-omise-payment-internetbanking.php:184
 msgid "Omise: Validating the payment result.."
 msgstr "Omise: 決済処理の結果を返します。"
 
@@ -108,7 +97,7 @@ msgid "Omise: The payment has been processing.<br/>Due to the Alipay process, th
 msgstr "Omise: 決済処理中です。<br/>アリペイ側の決済処理により、反映には数秒から1時間程かかる場合がございます。Order Actionsパネルから手動で「決済スータスを同期する」を実行いただくか、またはOmiseダッシュボードにてご確認ください。"
 
 #: includes/gateway/class-omise-payment-alipay.php:196 includes/gateway/class-omise-payment-creditcard.php:338
-#: includes/gateway/class-omise-payment-creditcard.php:532 includes/gateway/class-omise-payment-internetbanking.php:212
+#: includes/gateway/class-omise-payment-creditcard.php:532
 msgid "Omise: Payment successful.<br/>An amount %1$s %2$s has been paid"
 msgstr "Omise: 決済が完了しました。<br/>%1$s %2$sが支払われました。"
 
@@ -117,7 +106,6 @@ msgid "Note that your payment might already has been processed. Please contact o
 msgstr "決済処理中の可能性がありますのでご注意ください。ご不明な点がございましたら、Omiseサポートチームまでお問い合わせください。"
 
 #: includes/gateway/class-omise-payment-alipay.php:228 includes/gateway/class-omise-payment-creditcard.php:577
-#: includes/gateway/class-omise-payment-internetbanking.php:244
 msgid "Omise: Payment failed.<br/>%s"
 msgstr "Omise: 決済を完了できませんでした。<br/>%s"
 
@@ -221,30 +209,6 @@ msgstr "Omise: %1$s %2$sが返金済です。<br/>返金IDは %3$sです。"
 msgid "Omise: Refund failed.<br/>%s"
 msgstr "Omise: 返金が完了できませんでした。"
 
-#: includes/gateway/class-omise-payment-internetbanking.php:21
-msgid "Omise Internet Banking"
-msgstr "Omise インターネットバンキング"
-
-#: includes/gateway/class-omise-payment-internetbanking.php:23
-msgid "Accept payment through <strong>Internet Banking</strong> via Omise payment gateway (only available in Thailand)."
-msgstr "Omise決済ゲートウェイを通して<strong>インターネットバンキング<strong>をご提供します（現在、タイ契約加盟店様のみご利用可能です）"
-
-#: includes/gateway/class-omise-payment-internetbanking.php:50
-msgid "Enable Omise Internet Banking Payment"
-msgstr "Omiseのインターネットバンキングを有効化にします。"
-
-#: includes/gateway/class-omise-payment-internetbanking.php:58
-msgid "Internet Banking"
-msgstr "インターネットバンキング"
-
-#: includes/gateway/class-omise-payment-internetbanking.php:104
-msgid "Omise: Processing a payment with Internet Banking solution.."
-msgstr "Omise: インターネットバンキングで決済を行います。"
-
-#: includes/gateway/class-omise-payment-internetbanking.php:196
-msgid "Omise: The payment has been processing.<br/>Due to the Bank process, this might takes a few seconds or an hour. Please do a manual 'Sync Payment Status' action from the Order Actions panel or check the payment status directly at Omise dashboard again later"
-msgstr "Omise: 決済処理中です。<br/>銀行側の決済処理により、反映には数秒から1時間程度かかる場合がございます。Order Actionsバネルから手動で「決済ステータスを同期する」を実行いただくか、またはOmiseダッシュボードにてご確認ください。"
-
 #: includes/gateway/class-omise-payment.php:57
 msgid "Payment Settings"
 msgstr "設定"
@@ -345,34 +309,6 @@ msgstr "年"
 msgid "Security code"
 msgstr "セキュリティコード"
 
-#: templates/payment/form-internetbanking.php:11
-msgid "Siam Commercial Bank"
-msgstr "サイアム商業銀行"
-
-#: templates/payment/form-internetbanking.php:12
-msgid "Fee: 15 THB (same zone), 30 THB (out zone)"
-msgstr "料金：15バーツ（同区間）、30バーツ（区外）"
-
-#: templates/payment/form-internetbanking.php:25
-msgid "Krungthai Bank"
-msgstr "クルンタイ銀行"
-
-#: templates/payment/form-internetbanking.php:26 templates/payment/form-internetbanking.php:40
-msgid "Fee: 15 THB (same zone), 15 THB (out zone)"
-msgstr "料金：15バーツ（同区間）、15バーツ（区外）"
-
-#: templates/payment/form-internetbanking.php:39
-msgid "Krungsri Bank"
-msgstr "アユタヤ銀行（クルンシィ）"
-
-#: templates/payment/form-internetbanking.php:53
-msgid "Bangkok Bank"
-msgstr "バンコク銀行"
-
-#: templates/payment/form-internetbanking.php:54
-msgid "Fee: 10 THB (same zone), 20 THB (out zone)"
-msgstr "料金：10バーツ（同区間）、20バーツ（区外）"
-
 #: templates/payment/form.php:5
 msgid "Use an existing card"
 msgstr "登録済みカードで支払う"
@@ -436,3 +372,4 @@ msgstr "お客様の決済を完了することができませんでした。<br
 #: includes/class-omise-callback.php:156
 msgid "name cannot be blank, email is in invalid format, and phone_number must contain 10-11 digit characters"
 msgstr "名前欄が空白でないこと、メールアドレスが無効な形式でないこと、電話番号が10～11文字で入力されていることを確認してください。"
+

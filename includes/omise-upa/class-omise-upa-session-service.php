@@ -18,7 +18,7 @@ class Omise_UPA_Session_Service {
 	const COMPLETE_ENDPOINT = 'omise_upa_complete';
 	const CANCEL_ENDPOINT   = 'omise_upa_cancel';
 
-	const DYNAMIC_SOURCE_GATEWAYS = array( 'omise_internetbanking' );
+	const DYNAMIC_SOURCE_GATEWAYS = array();
 
 	/**
 	 * @param Omise_Payment $gateway

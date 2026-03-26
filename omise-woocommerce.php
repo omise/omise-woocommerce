@@ -174,7 +174,6 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-obw.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-konbini.php';
 		Omise_Block::init();
@@ -250,7 +249,6 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-fpx.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-installment.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-mobilebanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-konbini.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-paynow.php';
