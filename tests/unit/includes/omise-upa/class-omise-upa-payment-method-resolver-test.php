@@ -29,7 +29,7 @@ class Omise_UPA_Payment_Method_Resolver_Test extends Omise_Test_Case {
 			)
 		);
 
-		$_POST['omise-offsite'] = ' promptpay ';
+		$_POST['omise-offsite'] = ' mobile_banking_bbl ';
 
 		$gateway = (object) array(
 			'id'          => 'omise_promptpay',

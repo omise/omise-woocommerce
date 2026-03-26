@@ -483,14 +483,14 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 
 	// ─── is_dynamic_source_gateway Tests ────────────────────────────────
 
-	public function test_is_dynamic_source_gateway_returns_false_for_removed_gateway() {
+	public function test_is_dynamic_source_gateway_returns_false_for_internetbanking() {
 		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'is_dynamic_source_gateway' );
 		if ( PHP_VERSION_ID < 80100 ) {
 			$method->setAccessible( true );
 		}
 
 		$gateway     = new Omise_Payment_Offsite();
-		$gateway->id = 'omise_removed_gateway';
+		$gateway->id = 'omise_internetbanking';
 
 		$this->assertFalse( $method->invoke( null, $gateway ) );
 	}
