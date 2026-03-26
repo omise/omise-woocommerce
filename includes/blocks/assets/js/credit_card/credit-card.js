@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { SavedCard } from './saved-cards';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
+import { __ } from '@wordpress/i18n';
 
 const CreditCardPaymentMethod = (props) => {
 	const { settings } = props;
@@ -95,7 +96,7 @@ const CreditCardPaymentMethod = (props) => {
 							}
 						};
 						resolve(response)
-					} else if (cardTokenRef.current && cardTokenRef.current.value !== "") {
+					} else if (cardTokenRef.current && cardTokenRef.current !== "") {
 						clearInterval(intervalId); // Stop the interval once cardToken is not empty
 						const response = {
 							type: emitResponse.responseTypes.SUCCESS,
@@ -111,10 +112,10 @@ const CreditCardPaymentMethod = (props) => {
 					} else if (cardFormErrors.current) {
 						clearInterval(intervalId); // Stop the interval once cardToken is not empty
 
-						let errorMessage = 'Something went wrong. Please review your card details and try again.';
+						let errorMessage = __('Something went wrong. Please review your card details and try again.', 'omise');
 
 						if (Array.isArray(cardFormErrors.current) && cardFormErrors.current.length > 0) {
-							errorMessage = cardFormErrors.current[0];
+							errorMessage = cardFormErrors.current.join(', ');
 						} else if (typeof cardFormErrors.current === 'string') {
 							errorMessage = cardFormErrors.current;
 						}

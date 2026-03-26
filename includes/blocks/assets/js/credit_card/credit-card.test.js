@@ -239,7 +239,7 @@ describe('Credit Card', () => {
         expect(response.type).toBe('success');
         expect(response.meta.paymentMethodData).toEqual({
           omise_save_customer_card: true,
-          omise_token: { value: 'tokn_test_123456' },
+          omise_token: 'tokn_test_123456',
           wc_block_payment: true,
         });
         done();
@@ -249,7 +249,7 @@ describe('Credit Card', () => {
 
       const onSuccessCallback = (mockCalls[0][0]).onSuccess;
       onSuccessCallback({
-        token: { value: 'tokn_test_123456' },
+        token: 'tokn_test_123456',
         remember: true
       });
 
@@ -269,7 +269,7 @@ describe('Credit Card', () => {
       const mockCalls = window.showOmiseEmbeddedCardForm.mock.calls;
       const onSuccessCallback = (mockCalls[0][0]).onSuccess;
       onSuccessCallback({
-        token: { value: 'tokn_test_123456' },
+        token: 'tokn_test_123456',
         remember: false
       });
 
@@ -278,7 +278,7 @@ describe('Credit Card', () => {
       expect(response.type).toBe('success');
       expect(response.meta.paymentMethodData).toEqual({
         omise_save_customer_card: false,
-        omise_token: { value: 'tokn_test_123456' },
+        omise_token: 'tokn_test_123456',
         wc_block_payment: true,
       });
     });
@@ -301,11 +301,11 @@ describe('Credit Card', () => {
       });
 
       it('emits the correct error response when card form returns error array', async () => {
-        onErrorCallback(['Please enter a valid card number']);
+        onErrorCallback(['Please enter a valid card number', 'Expiry date cannot be in the past']);
 
         await expect(triggerPaymentSetup()).resolves.toEqual({
           type: 'error',
-          message: 'Please enter a valid card number',
+          message: 'Please enter a valid card number, Expiry date cannot be in the past',
         });
       });
 
