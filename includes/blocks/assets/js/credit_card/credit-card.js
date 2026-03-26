@@ -113,7 +113,7 @@ const CreditCardPaymentMethod = (props) => {
 
 						let errorMessage = 'Something went wrong. Please review your card details and try again.';
 
-						if (Array.isArray(cardFormErrors.current)) {
+						if (Array.isArray(cardFormErrors.current) && cardFormErrors.current.length > 0) {
 							errorMessage = cardFormErrors.current[0];
 						} else if (typeof cardFormErrors.current === 'string') {
 							errorMessage = cardFormErrors.current;

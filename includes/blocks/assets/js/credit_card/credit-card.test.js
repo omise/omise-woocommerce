@@ -309,6 +309,15 @@ describe('Credit Card', () => {
         });
       });
 
+      it('emits the correct error response when card form returns empty error array', async () => {
+        onErrorCallback([]);
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Something went wrong. Please review your card details and try again.',
+        });
+      });
+
       it('emits the correct error response when card form returns error string', async () => {
         onErrorCallback('Please enter a valid card number');
 
