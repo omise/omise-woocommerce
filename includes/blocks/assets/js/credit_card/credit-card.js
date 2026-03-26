@@ -50,7 +50,9 @@ const CreditCardPaymentMethod = (props) => {
 			const unsubscribe = onCheckoutValidation( () => {
 				const { select } = window.wp.data;
 				const { billingAddress } = select( CART_STORE_KEY ).getCartData();
+				// Reset card form state before requesting card token
 				cardFormErrors.current = null;
+				cardTokenRef.current = null;
 
 				if (billingAddress instanceof Object) {
 					OmiseCard.requestCardToken({
