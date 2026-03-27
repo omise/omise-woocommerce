@@ -239,7 +239,7 @@ describe('Credit Card', () => {
         expect(response.type).toBe('success');
         expect(response.meta.paymentMethodData).toEqual({
           omise_save_customer_card: true,
-          omise_token: { value: 'tokn_test_123456' },
+          omise_token: 'tokn_test_123456',
           wc_block_payment: true,
         });
         done();
@@ -249,7 +249,7 @@ describe('Credit Card', () => {
 
       const onSuccessCallback = (mockCalls[0][0]).onSuccess;
       onSuccessCallback({
-        token: { value: 'tokn_test_123456' },
+        token: 'tokn_test_123456',
         remember: true
       });
 
@@ -269,7 +269,7 @@ describe('Credit Card', () => {
       const mockCalls = window.showOmiseEmbeddedCardForm.mock.calls;
       const onSuccessCallback = (mockCalls[0][0]).onSuccess;
       onSuccessCallback({
-        token: { value: 'tokn_test_123456' },
+        token: 'tokn_test_123456',
         remember: false
       });
 
@@ -278,30 +278,64 @@ describe('Credit Card', () => {
       expect(response.type).toBe('success');
       expect(response.meta.paymentMethodData).toEqual({
         omise_save_customer_card: false,
-        omise_token: { value: 'tokn_test_123456' },
+        omise_token: 'tokn_test_123456',
         wc_block_payment: true,
       });
     });
 
-    it('emits error response when card form has errors', async () => {
-      render(
-        <CreditCardPaymentMethod
-          {...wcBlockProps}
-          settings={settings}
-        />
-      );
+    describe('when card form returns errors', () => {
+      let onErrorCallback = null;
 
-      triggerCheckoutValidation();
+      beforeEach(() => {
+         render(
+          <CreditCardPaymentMethod
+            {...wcBlockProps}
+            settings={settings}
+          />
+        );
 
-      const mockCalls = window.showOmiseEmbeddedCardForm.mock.calls;
-      const onErrorCallback = (mockCalls[0][0]).onError;
-      onErrorCallback(['Please enter a valid card number']);
+        triggerCheckoutValidation();
 
-      await expect(triggerPaymentSetup).rejects.toEqual({
-        type: 'error',
-        message: ['Please enter a valid card number']
+        const mockCalls = window.showOmiseEmbeddedCardForm.mock.calls;
+        onErrorCallback = (mockCalls[0][0]).onError;
       });
-    });
+
+      it('emits the correct error response when card form returns error array', async () => {
+        onErrorCallback(['Please enter a valid card number', 'Expiry date cannot be in the past']);
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Please enter a valid card number, Expiry date cannot be in the past',
+        });
+      });
+
+      it('emits the correct error response when card form returns empty error array', async () => {
+        onErrorCallback([]);
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Something went wrong. Please review your card details and try again.',
+        });
+      });
+
+      it('emits the correct error response when card form returns error string', async () => {
+        onErrorCallback('Please enter a valid card number');
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Please enter a valid card number',
+        });
+      });
+
+      it('emits the correct error response when card form returns error in unexpected format', async () => {
+        onErrorCallback({ success: false });
+
+        await expect(triggerPaymentSetup()).resolves.toEqual({
+          type: 'error',
+          message: 'Something went wrong. Please review your card details and try again.',
+        });
+      });
+    })
   })
 
   function triggerCheckoutValidation() {
