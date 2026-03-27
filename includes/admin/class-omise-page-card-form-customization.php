@@ -108,37 +108,52 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 	{
 		$formDesign = $this->get_design_setting();
 
+		if (!isset($formDesign['checkbox']) || !is_array($formDesign['checkbox'])) {
+			return [];
+		}
+
 		$themeColor = isset($formDesign['checkbox']['theme_color'])
-			? $formDesign['checkbox']['theme_color']
-			: '#1451cc';
+			? $this->sanitize_hex_color($formDesign['checkbox']['theme_color'])
+			: '';
 		$textColor = isset($formDesign['checkbox']['text_color'])
-			? $formDesign['checkbox']['text_color']
-			: '#1c2433';
+			? $this->sanitize_hex_color($formDesign['checkbox']['text_color'])
+			: '';
+
+		if ('' === $themeColor || '' === $textColor) {
+			return [];
+		}
 
 		return [
-			'theme_color' => $this->sanitize_hex_color($themeColor, '#1451cc'),
-			'text_color' => $this->sanitize_hex_color($textColor, '#1c2433')
+			'theme_color' => $themeColor,
+			'text_color' => $textColor
 		];
 	}
 
 	/**
-	 * @param mixed  $value
-	 * @param string $fallback
+	 * @param mixed $value
 	 *
 	 * @return string
 	 */
-	private function sanitize_hex_color($value, $fallback)
+	private function sanitize_hex_color($value)
 	{
 		if (!is_string($value)) {
-			return $fallback;
+			return '';
 		}
 
 		$value = trim($value);
+		if (function_exists('sanitize_hex_color')) {
+			$sanitized = sanitize_hex_color($value);
+
+			if (is_string($sanitized) && '' !== $sanitized) {
+				return $sanitized;
+			}
+		}
+
 		if (preg_match('/^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/', $value)) {
 			return $value;
 		}
 
-		return $fallback;
+		return '';
 	}
 
 	/**

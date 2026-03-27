@@ -142,8 +142,12 @@ class Omise_UPA_Session_Service {
 				'order_id'  => (string) $order_id,
 				'order_key' => (string) $order->get_order_key(),
 			),
-			'style'           => self::resolve_style_payload(),
 		);
+
+		$style = self::resolve_style_payload();
+		if ( ! empty( $style ) ) {
+			$payload['style'] = $style;
+		}
 
 		$locale = substr( strtolower( get_locale() ), 0, 2 );
 		if ( ! empty( $locale ) ) {
@@ -164,31 +168,26 @@ class Omise_UPA_Session_Service {
 	 * @return array
 	 */
 	private static function resolve_style_payload() {
-		$defaults = array(
-			'theme_color' => '#1451cc',
-			'text_color'  => '#1c2433',
-		);
-
 		if ( ! class_exists( 'Omise_Page_Card_From_Customization' ) ) {
-			return $defaults;
+			return array();
 		}
 
 		$page = Omise_Page_Card_From_Customization::get_instance();
 		if ( ! $page ) {
-			return $defaults;
+			return array();
 		}
 
 		$style = $page->get_upa_style_settings();
 		if ( ! is_array( $style ) ) {
-			return $defaults;
+			return array();
 		}
 
 		if ( empty( $style['theme_color'] ) || ! is_string( $style['theme_color'] ) ) {
-			$style['theme_color'] = $defaults['theme_color'];
+			return array();
 		}
 
 		if ( empty( $style['text_color'] ) || ! is_string( $style['text_color'] ) ) {
-			$style['text_color'] = $defaults['text_color'];
+			return array();
 		}
 
 		return array(

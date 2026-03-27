@@ -177,7 +177,7 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
     /**
      * @test
      */
-    public function testGetUpaStyleSettingsFallsBackForInvalidColors()
+    public function testGetUpaStyleSettingsReturnsEmptyForInvalidColors()
     {
         $savedSettings = [
             'font' => [
@@ -208,10 +208,45 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
         $obj = Omise_Page_Card_From_Customization::get_instance();
 
         $this->assertSame(
-            [
-                'theme_color' => '#1451cc',
-                'text_color' => '#1c2433',
+            [],
+            $obj->get_upa_style_settings()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testGetUpaStyleSettingsReturnsEmptyWhenColorKeyMissing()
+    {
+        $savedSettings = [
+            'font' => [
+                'name' => 'Poppins',
+                'size' => 16,
+                'custom_name' => '',
             ],
+            'input' => [
+                'height' => '44px',
+                'border_radius' => '4px',
+                'border_color' => '#475266',
+                'active_border_color' => '#475266',
+                'background_color' => '#131926',
+                'label_color' => '#E6EAF2',
+                'text_color' => '#ffffff',
+                'placeholder_color' => '#DBDBDB',
+            ],
+            'checkbox' => [
+                'theme_color' => '#1451CC',
+            ]
+        ];
+
+        Brain\Monkey\Functions\stubs([
+            'get_option' => $savedSettings,
+        ]);
+
+        $obj = Omise_Page_Card_From_Customization::get_instance();
+
+        $this->assertSame(
+            [],
             $obj->get_upa_style_settings()
         );
     }
