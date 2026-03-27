@@ -205,7 +205,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->assertSame(42, $result['order_id']);
     }
 
-    public function test_process_payment_fails_cleanly_when_upa_disabled_for_order_without_token()
+    public function test_process_payment_routes_to_standard_flow_when_upa_disabled_for_order_without_token()
     {
         unset($_POST['omise_token']);
 
@@ -221,18 +221,15 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
                 $this->order = (object) [ 'id' => $order ];
                 return $this->order;
             }
-            protected function payment_failed( $charge, $reason = '' ) {
-                return [ 'result' => 'failure', 'message' => $reason ];
+            protected function process_standard_payment($order_id) {
+                return ['result' => 'standard', 'order_id' => $order_id];
             }
         };
 
         $result = $installment->process_payment(42);
 
-        $this->assertSame('failure', $result['result']);
-        $this->assertSame(
-            'Payment service is temporarily unavailable. Please try again or choose another payment method.',
-            $result['message']
-        );
+        $this->assertSame('standard', $result['result']);
+        $this->assertSame(42, $result['order_id']);
     }
 
     public function test_installment_sets_source_type_for_upa_resolution()
@@ -290,7 +287,6 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->assertEquals([
             'key' => 'pkey_test_123',
             'amount' => 99999900,
-            'show_installment_form' => true,
         ], $result);
     }
 
@@ -307,6 +303,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         ]);
 
         $this->assertStringContainsString('id="omise-installment"', $output);
+        $this->assertStringContainsString('window.OMISE_UPDATED_CART_AMOUNT = 100000;', $output);
+        $this->assertStringContainsString('window.LOCALE = "en_US";', $output);
     }
 
     public function test_template_renders_form_when_upa_enabled_and_wlb_providers_available()
@@ -337,6 +335,21 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         ]);
 
         $this->assertStringContainsString('id="omise-installment"', $output);
+    }
+
+    public function test_template_renders_thb_minimum_message_with_placeholder_value()
+    {
+        Monkey\Functions\expect('get_woocommerce_currency')->once()->andReturn('THB');
+
+        $output = $this->render_installment_template([
+            'installments_enabled' => false,
+            'installment_min_limit' => 2000,
+        ]);
+
+        $this->assertStringContainsString(
+            'There are no installment plans available for this purchase amount (minimum amount is 2000 THB).',
+            $output
+        );
     }
 
     public function test_installment_convert_to_cents()

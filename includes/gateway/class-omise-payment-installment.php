@@ -78,10 +78,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		}
 
 		if (!Omise_UPA_Feature_Flag::is_enabled_for_order($this, $this->order())) {
-			return $this->payment_failed(
-				null,
-				__('Payment service is temporarily unavailable. Please try again or choose another payment method.', 'omise')
-			);
+			return $this->process_standard_payment($order_id);
 		}
 
 		return parent::process_payment($order_id);
@@ -250,9 +247,8 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	public function getParamsForJS()
 	{
 		return [
-			'key'                   => $this->public_key(),
-			'amount'                => $this->convert_to_cents($this->get_total_amount()),
-			'show_installment_form' => true,
+			'key'    => $this->public_key(),
+			'amount' => $this->convert_to_cents($this->get_total_amount()),
 		];
 	}
 }
