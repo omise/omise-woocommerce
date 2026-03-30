@@ -270,7 +270,7 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->assertSame(42, $result['order_id']);
     }
 
-    public function test_process_payment_returns_failure_when_upa_disabled_for_order_without_token()
+    public function test_process_payment_routes_to_standard_flow_when_upa_disabled_for_order_without_token()
     {
         unset($_POST['omise_token']);
 
@@ -286,15 +286,15 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
                 $this->order = (object) [ 'id' => $order ];
                 return $this->order;
             }
-            protected function payment_failed( $charge, $reason = '' ) {
-                return ['result' => 'failure', 'reason' => $reason];
+            protected function process_standard_payment($order_id) {
+                return ['result' => 'standard', 'order_id' => $order_id];
             }
         };
 
         $result = $installment->process_payment(42);
 
-        $this->assertSame('failure', $result['result']);
-        $this->assertStringContainsString('Payment service is temporarily unavailable', $result['reason']);
+        $this->assertSame('standard', $result['result']);
+        $this->assertSame(42, $result['order_id']);
     }
 
     public function test_installment_sets_source_type_for_upa_resolution()

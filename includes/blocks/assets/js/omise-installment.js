@@ -12,13 +12,17 @@ const Label = ( props ) => {
     return <PaymentMethodLabel text={ label } />
 }
 
+const Description = () => {
+    return decodeEntities( settings.description || '' )
+}
+
 const { select, subscribe } = window.wp.data;
 
 const InstallmentPaymentMethod = (props) => {
     const {eventRegistration, emitResponse} = props;
     const {onPaymentSetup, onCheckoutValidation, onCheckoutFail} = eventRegistration;
     const description = decodeEntities( settings.description || '' )
-    const { installments_enabled, public_key, show_installment_form } = settings.data;
+    const { installments_enabled, public_key } = settings.data;
     const noPaymentMethods = __( 'Purchase Amount is lower than the monthly minimum payment amount.', 'omise' );
     const el = useRef(null);
     const wlbInstallmentRef = useRef(null);
@@ -26,7 +30,7 @@ const InstallmentPaymentMethod = (props) => {
     const totalAmount = useRef(null);
 
     const loadInstallmentForm = () => {
-        if (installments_enabled && show_installment_form) {
+        if (installments_enabled) {
             // Getting the new total price that might be updated when shipping method
             // was updated while other payment method was selected
             const cart = select( CART_STORE_KEY ).getCartData();
@@ -72,14 +76,11 @@ const InstallmentPaymentMethod = (props) => {
 
     useEffect(() => {
         const unsubscribe = onCheckoutValidation(() => {
-            if (!show_installment_form) {
-                return true;
-            }
             OmiseCard.requestCardToken()
             return true;
         } );
         return unsubscribe;
-	}, [onCheckoutValidation, show_installment_form]);
+	}, [onCheckoutValidation]);
 
     useEffect(() => {
         const unsubscribe = onCheckoutFail(() => {
@@ -93,17 +94,6 @@ const InstallmentPaymentMethod = (props) => {
 
     useEffect(() => {
         const unsubscribe = onPaymentSetup(async () => {
-            if (!show_installment_form) {
-                return {
-                    type: emitResponse.responseTypes.SUCCESS,
-                    meta: {
-                        paymentMethodData: {
-                            "omise_installment_flow": 'normal',
-                        }
-                    }
-                };
-            }
-
             return await new Promise(( resolve, reject ) => {
 				const intervalId = setInterval( () => {
                     if (wlbInstallmentRef.current) {
@@ -135,16 +125,14 @@ const InstallmentPaymentMethod = (props) => {
 			});
         });
         return () => unsubscribe();
-    }, [ onPaymentSetup, show_installment_form ]);
+    }, [ onPaymentSetup ]);
 
     return (<>
         {description && <p>{description}</p>}
         {
             !installments_enabled
                 ? <p>{noPaymentMethods}</p>
-                : show_installment_form
-                    ? <div ref={el} id="omise-installment" style={{ width:"100%", maxWidth: "400px" }}></div>
-                    : null
+                : <div ref={el} id="omise-installment" style={{ width:"100%", maxWidth: "400px" }}></div>
         }
     </>)
 }
@@ -152,8 +140,8 @@ const InstallmentPaymentMethod = (props) => {
 registerPaymentMethod( {
     name: settings.name || "",
     label: <Label />,
-    content: <InstallmentPaymentMethod />,
-    edit: <InstallmentPaymentMethod />,
+    content: settings.data?.show_installment_form ? <InstallmentPaymentMethod /> : <Description />,
+    edit: settings.data?.show_installment_form ? <InstallmentPaymentMethod /> : <Description />,
     canMakePayment: () => settings.is_active,
     ariaLabel: label,
     supports: {
