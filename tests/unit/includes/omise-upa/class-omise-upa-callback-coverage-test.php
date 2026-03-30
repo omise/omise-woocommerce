@@ -264,7 +264,7 @@ class Omise_UPA_Callback_Coverage_Test extends Omise_Test_Case {
 		Monkey\Functions\expect( 'has_action' )
 			->once()
 			->with( 'woocommerce_order_action_omise_mobilebanking_charge_capture' )
-			->andReturn( 0 );
+			->andReturn( false );
 
 		$method = new ReflectionMethod( Omise_UPA_Callback::class, 'handle_successful_payment' );
 		if ( PHP_VERSION_ID < 80100 ) {

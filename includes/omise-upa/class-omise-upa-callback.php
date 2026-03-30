@@ -233,7 +233,7 @@ class Omise_UPA_Callback {
 
 		$action_hook = 'woocommerce_order_action_' . $payment_method . '_charge_capture';
 
-		return (bool) has_action( $action_hook );
+		return false !== has_action( $action_hook );
 	}
 
 	/**
