@@ -127,24 +127,8 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 	public function get_upa_style_settings()
 	{
 		$formDesign = $this->get_design_setting();
-		$themeColor = self::DEFAULT_UPA_THEME_COLOR;
-		$textColor = self::DEFAULT_UPA_TEXT_COLOR;
-
-		if (isset($formDesign['upa']) && is_array($formDesign['upa'])) {
-			if (isset($formDesign['upa']['theme_color'])) {
-				$sanitizedThemeColor = $this->sanitize_hex_color($formDesign['upa']['theme_color']);
-				if ('' !== $sanitizedThemeColor) {
-					$themeColor = $sanitizedThemeColor;
-				}
-			}
-
-			if (isset($formDesign['upa']['text_color'])) {
-				$sanitizedTextColor = $this->sanitize_hex_color($formDesign['upa']['text_color']);
-				if ('' !== $sanitizedTextColor) {
-					$textColor = $sanitizedTextColor;
-				}
-			}
-		}
+		$themeColor = $this->sanitize_hex_color($formDesign['upa']['theme_color']) ?: self::DEFAULT_UPA_THEME_COLOR;
+		$textColor = $this->sanitize_hex_color($formDesign['upa']['text_color']) ?: self::DEFAULT_UPA_TEXT_COLOR;
 
 		return [
 			'theme_color' => $themeColor,
@@ -163,13 +147,7 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 			return '';
 		}
 
-		$value = trim($value);
-		$sanitized = sanitize_hex_color($value);
-		if (is_string($sanitized) && '' !== $sanitized) {
-			return $sanitized;
-		}
-
-		return '';
+		return sanitize_hex_color(trim($value)) ?: '';
 	}
 
 	/**

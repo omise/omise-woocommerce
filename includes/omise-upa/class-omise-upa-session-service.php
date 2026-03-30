@@ -179,23 +179,7 @@ class Omise_UPA_Session_Service {
 			return $defaults;
 		}
 
-		$style = $page->get_upa_style_settings();
-		if ( ! is_array( $style ) ) {
-			return $defaults;
-		}
-
-		if ( empty( $style['theme_color'] ) || ! is_string( $style['theme_color'] ) ) {
-			$style['theme_color'] = $defaults['theme_color'];
-		}
-
-		if ( empty( $style['text_color'] ) || ! is_string( $style['text_color'] ) ) {
-			$style['text_color'] = $defaults['text_color'];
-		}
-
-		return array(
-			'theme_color' => $style['theme_color'],
-			'text_color'  => $style['text_color'],
-		);
+		return $page->get_upa_style_settings();
 	}
 
 	/**
