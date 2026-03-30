@@ -19,6 +19,7 @@ class Omise_Block_Installment extends Omise_Block_Payment {
             'installment_min_limit' => $viewData['installment_min_limit'],
             'has_wlb_providers'     => $viewData['has_wlb_providers'],
             'is_upa_enabled'        => $viewData['is_upa_enabled'],
+            'show_installment_form' => $viewData['show_installment_form'],
         ];
     }
 

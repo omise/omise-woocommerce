@@ -18,7 +18,7 @@ const InstallmentPaymentMethod = (props) => {
     const {eventRegistration, emitResponse} = props;
     const {onPaymentSetup, onCheckoutValidation, onCheckoutFail} = eventRegistration;
     const description = decodeEntities( settings.description || '' )
-    const { installments_enabled, public_key } = settings.data;
+    const { installments_enabled, public_key, show_installment_form } = settings.data;
     const noPaymentMethods = __( 'Purchase Amount is lower than the monthly minimum payment amount.', 'omise' );
     const el = useRef(null);
     const wlbInstallmentRef = useRef(null);
@@ -26,7 +26,7 @@ const InstallmentPaymentMethod = (props) => {
     const totalAmount = useRef(null);
 
     const loadInstallmentForm = () => {
-        if (installments_enabled) {
+        if (installments_enabled && show_installment_form) {
             // Getting the new total price that might be updated when shipping method
             // was updated while other payment method was selected
             const cart = select( CART_STORE_KEY ).getCartData();
@@ -72,11 +72,14 @@ const InstallmentPaymentMethod = (props) => {
 
     useEffect(() => {
         const unsubscribe = onCheckoutValidation(() => {
+            if (!show_installment_form) {
+                return true;
+            }
             OmiseCard.requestCardToken()
             return true;
         } );
         return unsubscribe;
-	}, [onCheckoutValidation]);
+	}, [onCheckoutValidation, show_installment_form]);
 
     useEffect(() => {
         const unsubscribe = onCheckoutFail(() => {
@@ -90,18 +93,35 @@ const InstallmentPaymentMethod = (props) => {
 
     useEffect(() => {
         const unsubscribe = onPaymentSetup(async () => {
+            if (!show_installment_form) {
+                return {
+                    type: emitResponse.responseTypes.SUCCESS,
+                    meta: {
+                        paymentMethodData: {
+                            "omise_installment_flow": 'normal',
+                        }
+                    }
+                };
+            }
+
             return await new Promise(( resolve, reject ) => {
 				const intervalId = setInterval( () => {
                     if (wlbInstallmentRef.current) {
                         clearInterval(intervalId);
                         try {
+                            const paymentMethodData = {
+                                "omise_source": wlbInstallmentRef.current.source,
+                                "omise_installment_flow": wlbInstallmentRef.current.token ? 'wlb' : 'normal',
+                            };
+
+                            if (wlbInstallmentRef.current.token) {
+                                paymentMethodData.omise_token = wlbInstallmentRef.current.token;
+                            }
+
                             const response = {
                                 type: emitResponse.responseTypes.SUCCESS,
                                 meta: {
-                                    paymentMethodData: {
-                                        "omise_source": wlbInstallmentRef.current.source,
-                                        "omise_token": wlbInstallmentRef.current.token,
-                                    }
+                                    paymentMethodData
                                 }
                             };
                             resolve(response)
@@ -115,14 +135,16 @@ const InstallmentPaymentMethod = (props) => {
 			});
         });
         return () => unsubscribe();
-    }, [ onPaymentSetup ]);
+    }, [ onPaymentSetup, show_installment_form ]);
 
     return (<>
         {description && <p>{description}</p>}
         {
             !installments_enabled
                 ? <p>{noPaymentMethods}</p>
-                : <div ref={el} id="omise-installment" style={{ width:"100%", maxWidth: "400px" }}></div>
+                : show_installment_form
+                    ? <div ref={el} id="omise-installment" style={{ width:"100%", maxWidth: "400px" }}></div>
+                    : null
         }
     </>)
 }

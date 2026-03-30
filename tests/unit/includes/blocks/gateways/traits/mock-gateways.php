@@ -50,6 +50,7 @@ trait MockPaymentGateways
                                 'currency' => 'thb',
                                 'has_wlb_providers' => false,
                                 'is_upa_enabled' => false,
+                                'show_installment_form' => true,
                             ];
                         }
 

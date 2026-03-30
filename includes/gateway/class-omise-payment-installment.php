@@ -78,7 +78,10 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 		}
 
 		if (!Omise_UPA_Feature_Flag::is_enabled_for_order($this, $this->order())) {
-			return $this->process_standard_payment($order_id);
+			return $this->payment_failed(
+				null,
+				__('Payment service is temporarily unavailable. Please try again or choose another payment method.', 'omise')
+			);
 		}
 
 		return parent::process_payment($order_id);
@@ -103,6 +106,18 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 	 */
 	protected function is_wlb_installment_request()
 	{
+		if (isset($_POST['omise_installment_flow'])) {
+			$flow = sanitize_text_field($_POST['omise_installment_flow']);
+
+			if ('wlb' === $flow) {
+				return true;
+			}
+
+			if ('normal' === $flow) {
+				return false;
+			}
+		}
+
 		if (!isset($_POST['omise_token'])) {
 			return false;
 		}
@@ -128,6 +143,8 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 
 		$capability = $this->backend->capability();
 		$installmentMinLimit = $capability->getInstallmentMinLimit();
+		$is_upa_enabled = Omise_Setting::instance()->is_upa_enabled();
+		$has_wlb_providers = $this->backend->has_wlb_providers($currency, $cart_total);
 
 		return [
 			'installments_enabled'  => $this->backend->get_available_providers($currency, $cart_total),
@@ -135,8 +152,9 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			'installment_min_limit' => Omise_Money::convert_currency_unit($installmentMinLimit, $currency),
 			'currency'              => $currency,
 			'total_amount'          => Omise_Money::to_subunit($cart_total, $currency),
-			'has_wlb_providers'     => $this->backend->has_wlb_providers($currency, $cart_total),
-			'is_upa_enabled'        => Omise_Setting::instance()->is_upa_enabled(),
+			'has_wlb_providers'     => $has_wlb_providers,
+			'is_upa_enabled'        => $is_upa_enabled,
+			'show_installment_form' => !$is_upa_enabled || $has_wlb_providers,
 		];
 	}
 

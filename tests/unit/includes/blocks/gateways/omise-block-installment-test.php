@@ -54,6 +54,7 @@ class Omise_Block_Installment_Test extends TestCase
         $this->assertArrayHasKey('total_amount', $result);
         $this->assertArrayHasKey('has_wlb_providers', $result);
         $this->assertArrayHasKey('is_upa_enabled', $result);
+        $this->assertArrayHasKey('show_installment_form', $result);
     }
 
     /**
