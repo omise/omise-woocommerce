@@ -164,19 +164,41 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 		}
 
 		$value = trim($value);
-		if (function_exists('sanitize_hex_color')) {
-			$sanitized = sanitize_hex_color($value);
-
-			if (is_string($sanitized) && '' !== $sanitized) {
-				return $sanitized;
-			}
-		}
-
-		if (preg_match('/^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/', $value)) {
-			return $value;
+		$sanitized = sanitize_hex_color($value);
+		if (is_string($sanitized) && '' !== $sanitized) {
+			return $sanitized;
 		}
 
 		return '';
+	}
+
+	/**
+	 * Sanitize UPA color settings on save to ensure persisted values are valid hex colors.
+	 *
+	 * @param string $componentKey
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	private function sanitize_upa_color_setting($componentKey, $key, $value)
+	{
+		if ('upa' !== $componentKey) {
+			return $value;
+		}
+
+		if ('theme_color' !== $key && 'text_color' !== $key) {
+			return $value;
+		}
+
+		$sanitized = $this->sanitize_hex_color($value);
+		if ('' !== $sanitized) {
+			return $sanitized;
+		}
+
+		return 'theme_color' === $key
+			? self::DEFAULT_UPA_THEME_COLOR
+			: self::DEFAULT_UPA_TEXT_COLOR;
 	}
 
 	/**
@@ -199,7 +221,8 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 		foreach ($defaultValues as $componentKey => $componentValue) {
 			foreach ($componentValue as $key => $val) {
 				$value = isset($data[$componentKey][$key]) ? $data[$componentKey][$key] : $existingValues[$componentKey][$key];
-				$options[$componentKey][$key] = sanitize_text_field($value);
+				$sanitizedValue = sanitize_text_field($value);
+				$options[$componentKey][$key] = $this->sanitize_upa_color_setting($componentKey, $key, $sanitizedValue);
 			}
 		}
 

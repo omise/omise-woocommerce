@@ -204,30 +204,25 @@ class Omise_UPA_Session_Service {
 	 * @return array
 	 */
 	private static function get_default_style_payload() {
-		$defaults = array(
-			'theme_color' => '#173799',
-			'text_color'  => '#FFFFFF',
+		$theme_color = defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' )
+			? constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' )
+			: '#173799';
+		$text_color = defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' )
+			? constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' )
+			: '#FFFFFF';
+
+		if ( ! is_string( $theme_color ) || '' === $theme_color ) {
+			$theme_color = '#173799';
+		}
+
+		if ( ! is_string( $text_color ) || '' === $text_color ) {
+			$text_color = '#FFFFFF';
+		}
+
+		return array(
+			'theme_color' => $theme_color,
+			'text_color'  => $text_color,
 		);
-
-		if ( ! class_exists( 'Omise_Page_Card_From_Customization' ) ) {
-			return $defaults;
-		}
-
-		if ( defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' ) ) {
-			$theme = constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' );
-			if ( is_string( $theme ) && '' !== $theme ) {
-				$defaults['theme_color'] = $theme;
-			}
-		}
-
-		if ( defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' ) ) {
-			$text = constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' );
-			if ( is_string( $text ) && '' !== $text ) {
-				$defaults['text_color'] = $text;
-			}
-		}
-
-		return $defaults;
 	}
 
 	/**
@@ -258,31 +253,15 @@ class Omise_UPA_Session_Service {
 	}
 
 	/**
-	 * Resolve canonical payment-action values while reusing gateway constants
-	 * when available.
+	 * Resolve canonical payment-action values used by UPA.
 	 *
 	 * @return array
 	 */
 	private static function get_payment_action_values() {
-		$values = array(
-			'auto_capture' => array( self::PAYMENT_ACTION_AUTO_CAPTURE ),
+		return array(
+			'auto_capture'   => array( self::PAYMENT_ACTION_AUTO_CAPTURE ),
 			'manual_capture' => array( self::PAYMENT_ACTION_MANUAL_CAPTURE ),
 		);
-
-		if ( class_exists( 'Omise_Payment_Base_Card' ) ) {
-			$values['auto_capture'][] = Omise_Payment_Base_Card::PAYMENT_ACTION_AUTHORIZE_CAPTURE;
-			$values['manual_capture'][] = Omise_Payment_Base_Card::PAYMENT_ACTION_AUTHORIZE;
-		}
-
-		if ( class_exists( 'Omise_Payment_RabbitLinePay' ) ) {
-			$values['auto_capture'][] = Omise_Payment_RabbitLinePay::PAYMENT_ACTION_AUTO_CAPTURE;
-			$values['manual_capture'][] = Omise_Payment_RabbitLinePay::PAYMENT_ACTION_MANUAL_CAPTURE;
-		}
-
-		$values['auto_capture'] = array_unique( $values['auto_capture'] );
-		$values['manual_capture'] = array_unique( $values['manual_capture'] );
-
-		return $values;
 	}
 
 	/**
