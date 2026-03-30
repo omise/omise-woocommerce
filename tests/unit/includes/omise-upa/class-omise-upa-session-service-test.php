@@ -250,7 +250,7 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$this->assertSame( 'https://upa.example.com/pay/sess_123', $result['redirect'] );
 	}
 
-	public function test_create_checkout_session_omits_style_when_customization_returns_empty_array() {
+	public function test_create_checkout_session_uses_default_style_when_customization_returns_empty_array() {
 		$order = Mockery::mock( 'WC_Order' );
 		$order->shouldReceive( 'get_currency' )->andReturn( 'THB' );
 		$order->shouldReceive( 'get_total' )->andReturn( '1000.00' );
@@ -276,7 +276,9 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$client->shouldReceive( 'create_session' )->once()->with(
 			Mockery::on(
 				function( $payload ) {
-					return ! isset( $payload['style'] );
+					return isset( $payload['style']['theme_color'], $payload['style']['text_color'] )
+						&& '#173799' === $payload['style']['theme_color']
+						&& '#FFFFFF' === $payload['style']['text_color'];
 				}
 			)
 		)->andReturn(
@@ -302,7 +304,7 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$this->assertSame( 'https://upa.example.com/pay/sess_123', $result['redirect'] );
 	}
 
-	public function test_create_checkout_session_omits_style_when_customization_class_not_available() {
+	public function test_create_checkout_session_uses_default_style_when_customization_class_not_available() {
 		$order = Mockery::mock( 'WC_Order' );
 		$order->shouldReceive( 'get_currency' )->andReturn( 'THB' );
 		$order->shouldReceive( 'get_total' )->andReturn( '1000.00' );
@@ -324,7 +326,9 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		$client->shouldReceive( 'create_session' )->once()->with(
 			Mockery::on(
 				function( $payload ) {
-					return ! isset( $payload['style'] );
+					return isset( $payload['style']['theme_color'], $payload['style']['text_color'] )
+						&& '#173799' === $payload['style']['theme_color']
+						&& '#FFFFFF' === $payload['style']['text_color'];
 				}
 			)
 		)->andReturn(

@@ -44,6 +44,10 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
 			'checkbox' => [
 				'text_color' => '#1c2433',
 				'theme_color' => '#1451cc',
+			],
+			'upa' => [
+				'theme_color' => '#173799',
+				'text_color' => '#FFFFFF',
 			]
 		];
 
@@ -79,6 +83,10 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
 			'checkbox' => [
 				'text_color' => '#E6EAF2',
 				'theme_color' => '#1451CC',
+			],
+			'upa' => [
+				'theme_color' => '#173799',
+				'text_color' => '#FFFFFF',
 			]
 		];
 
@@ -128,14 +136,19 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
 
         $expected = $savedSettings;
         $expected['font']['custom_name'] = '';
+        $expected['upa'] = [
+            'theme_color' => '#173799',
+            'text_color' => '#FFFFFF',
+        ];
         $this->assertEqualsCanonicalizing($expected, $designValues);
         $this->assertArrayHasKey('custom_name', $designValues['font']);
+        $this->assertArrayHasKey('upa', $designValues);
     }
 
     /**
      * @test
      */
-    public function testGetUpaStyleSettingsReturnsCheckboxColors()
+    public function testGetUpaStyleSettingsReturnsUpaColorsAndIgnoresCheckboxColors()
     {
         $savedSettings = [
             'font' => [
@@ -154,6 +167,10 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
                 'placeholder_color' => '#DBDBDB',
             ],
             'checkbox' => [
+                'text_color' => '#111111',
+                'theme_color' => '#222222',
+            ],
+            'upa' => [
                 'text_color' => '#fff',
                 'theme_color' => '#096B68',
             ]
@@ -177,7 +194,7 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
     /**
      * @test
      */
-    public function testGetUpaStyleSettingsReturnsEmptyForInvalidColors()
+    public function testGetUpaStyleSettingsReturnsDefaultColorsForInvalidValues()
     {
         $savedSettings = [
             'font' => [
@@ -196,6 +213,10 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
                 'placeholder_color' => '#DBDBDB',
             ],
             'checkbox' => [
+                'text_color' => '#E6EAF2',
+                'theme_color' => '#1451CC',
+            ],
+            'upa' => [
                 'text_color' => 'invalid',
                 'theme_color' => '#invalid',
             ]
@@ -208,7 +229,10 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
         $obj = Omise_Page_Card_From_Customization::get_instance();
 
         $this->assertSame(
-            [],
+            [
+                'theme_color' => '#173799',
+                'text_color' => '#FFFFFF',
+            ],
             $obj->get_upa_style_settings()
         );
     }
@@ -216,7 +240,7 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
     /**
      * @test
      */
-    public function testGetUpaStyleSettingsReturnsEmptyWhenColorKeyMissing()
+    public function testGetUpaStyleSettingsReturnsDefaultsWhenColorKeyMissing()
     {
         $savedSettings = [
             'font' => [
@@ -236,6 +260,10 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
             ],
             'checkbox' => [
                 'theme_color' => '#1451CC',
+                'text_color' => '#E6EAF2',
+            ],
+            'upa' => [
+                'theme_color' => '#1451CC',
             ]
         ];
 
@@ -246,7 +274,10 @@ class Omise_Page_Card_From_Customization_Test extends TestCase
         $obj = Omise_Page_Card_From_Customization::get_instance();
 
         $this->assertSame(
-            [],
+            [
+                'theme_color' => '#1451CC',
+                'text_color' => '#FFFFFF',
+            ],
             $obj->get_upa_style_settings()
         );
     }

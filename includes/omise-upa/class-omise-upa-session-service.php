@@ -168,32 +168,66 @@ class Omise_UPA_Session_Service {
 	 * @return array
 	 */
 	private static function resolve_style_payload() {
+		$defaults = self::get_default_style_payload();
+
 		if ( ! class_exists( 'Omise_Page_Card_From_Customization' ) ) {
-			return array();
+			return $defaults;
 		}
 
 		$page = Omise_Page_Card_From_Customization::get_instance();
 		if ( ! $page ) {
-			return array();
+			return $defaults;
 		}
 
 		$style = $page->get_upa_style_settings();
 		if ( ! is_array( $style ) ) {
-			return array();
+			return $defaults;
 		}
 
 		if ( empty( $style['theme_color'] ) || ! is_string( $style['theme_color'] ) ) {
-			return array();
+			$style['theme_color'] = $defaults['theme_color'];
 		}
 
 		if ( empty( $style['text_color'] ) || ! is_string( $style['text_color'] ) ) {
-			return array();
+			$style['text_color'] = $defaults['text_color'];
 		}
 
 		return array(
 			'theme_color' => $style['theme_color'],
 			'text_color'  => $style['text_color'],
 		);
+	}
+
+	/**
+	 * Resolve default UPA style colors.
+	 *
+	 * @return array
+	 */
+	private static function get_default_style_payload() {
+		$defaults = array(
+			'theme_color' => '#173799',
+			'text_color'  => '#FFFFFF',
+		);
+
+		if ( ! class_exists( 'Omise_Page_Card_From_Customization' ) ) {
+			return $defaults;
+		}
+
+		if ( defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' ) ) {
+			$theme = constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' );
+			if ( is_string( $theme ) && '' !== $theme ) {
+				$defaults['theme_color'] = $theme;
+			}
+		}
+
+		if ( defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' ) ) {
+			$text = constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' );
+			if ( is_string( $text ) && '' !== $text ) {
+				$defaults['text_color'] = $text;
+			}
+		}
+
+		return $defaults;
 	}
 
 	/**

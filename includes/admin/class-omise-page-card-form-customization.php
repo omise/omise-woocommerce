@@ -9,6 +9,8 @@ if (class_exists('Omise_Page_Settings')) {
 class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 {
 	private static $instance;
+	const DEFAULT_UPA_THEME_COLOR = '#173799';
+	const DEFAULT_UPA_TEXT_COLOR  = '#FFFFFF';
 
 	public static function get_instance()
 	{
@@ -42,6 +44,10 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 			'checkbox' => [
 				'text_color' => '#1c2433',
 				'theme_color' => '#1451cc',
+			],
+			'upa' => [
+				'theme_color' => self::DEFAULT_UPA_THEME_COLOR,
+				'text_color' => self::DEFAULT_UPA_TEXT_COLOR,
 			]
 		];
 	}
@@ -67,13 +73,21 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 			'checkbox' => [
 				'text_color' => '#E6EAF2',
 				'theme_color' => '#1451CC',
+			],
+			'upa' => [
+				'theme_color' => self::DEFAULT_UPA_THEME_COLOR,
+				'text_color' => self::DEFAULT_UPA_TEXT_COLOR,
 			]
 		];
 	}
 
 	protected function get_default_design_setting()
 	{
-		$theme = (new Omise_Payment_Creditcard())->get_option('card_form_theme');
+		$theme = 'light';
+		if (class_exists('Omise_Payment_Creditcard')) {
+			$theme = (new Omise_Payment_Creditcard())->get_option('card_form_theme');
+		}
+
 		return (empty($theme) || $theme == 'light')
 			? $this->get_light_theme()
 			: $this->get_dark_theme();
@@ -85,15 +99,21 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 	public function get_design_setting()
 	{
 		$formDesign = get_option(self::PAGE_NAME);
-		if (empty($formDesign)) {
-			$formDesign = $this->get_default_design_setting();
+		if (!is_array($formDesign)) {
+			$formDesign = [];
 		}
 
-		// Old saved settings might not have the newer fields. Make sure
-		// we add the missing field
-		// TODO: Find a better way to handle this
-		if (!in_array('custom_name', $formDesign['font'])) {
-			$formDesign['font']['custom_name'] = '';
+		$defaultValues = $this->get_default_design_setting();
+		foreach ($defaultValues as $componentKey => $componentValues) {
+			if (!isset($formDesign[$componentKey]) || !is_array($formDesign[$componentKey])) {
+				$formDesign[$componentKey] = [];
+			}
+
+			foreach ($componentValues as $key => $defaultValue) {
+				if (!array_key_exists($key, $formDesign[$componentKey])) {
+					$formDesign[$componentKey][$key] = $defaultValue;
+				}
+			}
 		}
 
 		return $formDesign;
@@ -107,20 +127,23 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 	public function get_upa_style_settings()
 	{
 		$formDesign = $this->get_design_setting();
+		$themeColor = self::DEFAULT_UPA_THEME_COLOR;
+		$textColor = self::DEFAULT_UPA_TEXT_COLOR;
 
-		if (!isset($formDesign['checkbox']) || !is_array($formDesign['checkbox'])) {
-			return [];
-		}
+		if (isset($formDesign['upa']) && is_array($formDesign['upa'])) {
+			if (isset($formDesign['upa']['theme_color'])) {
+				$sanitizedThemeColor = $this->sanitize_hex_color($formDesign['upa']['theme_color']);
+				if ('' !== $sanitizedThemeColor) {
+					$themeColor = $sanitizedThemeColor;
+				}
+			}
 
-		$themeColor = isset($formDesign['checkbox']['theme_color'])
-			? $this->sanitize_hex_color($formDesign['checkbox']['theme_color'])
-			: '';
-		$textColor = isset($formDesign['checkbox']['text_color'])
-			? $this->sanitize_hex_color($formDesign['checkbox']['text_color'])
-			: '';
-
-		if ('' === $themeColor || '' === $textColor) {
-			return [];
+			if (isset($formDesign['upa']['text_color'])) {
+				$sanitizedTextColor = $this->sanitize_hex_color($formDesign['upa']['text_color']);
+				if ('' !== $sanitizedTextColor) {
+					$textColor = $sanitizedTextColor;
+				}
+			}
 		}
 
 		return [
@@ -168,13 +191,15 @@ class Omise_Page_Card_From_Customization extends Omise_Admin_Page
 		}
 		$options = [];
 		$defaultValues = $this->get_default_design_setting();
+		$existingValues = $this->get_design_setting();
 
 		// Sanitize the field POST params
 		// the fist loop get the component name. i.e input, checkout, font
 		// and send loop get the styling key of the component. i.e name, size, border, color
 		foreach ($defaultValues as $componentKey => $componentValue) {
 			foreach ($componentValue as $key => $val) {
-				$options[$componentKey][$key] = sanitize_text_field($data[$componentKey][$key]);
+				$value = isset($data[$componentKey][$key]) ? $data[$componentKey][$key] : $existingValues[$componentKey][$key];
+				$options[$componentKey][$key] = sanitize_text_field($value);
 			}
 		}
 
