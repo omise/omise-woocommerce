@@ -173,7 +173,7 @@
           <td class="text-bold">UPA theme color</td>
           <td>
             <div class="color-input-container">
-              <input class="color-input" name="upa[theme_color]" type="color" value="#173799">
+              <input class="color-input" name="upa[theme_color]" type="color" value="<?php echo esc_attr( isset( $formDesign['upa']['theme_color'] ) ? $formDesign['upa']['theme_color'] : Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR ); ?>">
             </div>
             <div class="description">Select your theme color to apply with your UPA checkout page</div>
           </td>
@@ -183,7 +183,7 @@
           <td class="text-bold">UPA text color</td>
           <td>
             <div class="color-input-container">
-              <input class="color-input" name="upa[text_color]" type="color" value="#FFFFFF">
+              <input class="color-input" name="upa[text_color]" type="color" value="<?php echo esc_attr( isset( $formDesign['upa']['text_color'] ) ? $formDesign['upa']['text_color'] : Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR ); ?>">
             </div>
             <div class="description">Select your text color to apply with your UPA checkout page</div>
           </td>
