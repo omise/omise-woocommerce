@@ -168,22 +168,20 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $_POST['omise_installment_flow'] = 'normal';
         $_POST['omise_token'] = 'tokn_test_stale';
 
-        $feature_flag = Mockery::mock('alias:Omise_UPA_Feature_Flag');
-        $feature_flag->shouldReceive('is_enabled_for_order')->once()->andReturn(true);
-
         $installment = new class extends Omise_Payment_Installment {
+            public $upa_calls = 0;
+            public $standard_calls = 0;
+
             public function __construct() {}
             protected function should_use_upa_installment_flow() {
                 return !$this->is_wlb_installment_request();
             }
-            public function load_order( $order ) {
-                $this->order = (object) [ 'id' => $order ];
-                return $this->order;
-            }
             protected function process_upa_checkout_session_payment($order_id) {
+                $this->upa_calls++;
                 return ['result' => 'upa', 'order_id' => $order_id];
             }
             protected function process_standard_payment($order_id) {
+                $this->standard_calls++;
                 return ['result' => 'standard', 'order_id' => $order_id];
             }
         };
@@ -192,6 +190,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
         $this->assertSame('upa', $result['result']);
         $this->assertSame(42, $result['order_id']);
+        $this->assertSame(1, $installment->upa_calls);
+        $this->assertSame(0, $installment->standard_calls);
 
         unset($_POST['omise_installment_flow'], $_POST['omise_token']);
     }
@@ -227,20 +227,21 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
     {
         unset($_POST['omise_token']);
 
-        $feature_flag = Mockery::mock('alias:Omise_UPA_Feature_Flag');
-        $feature_flag->shouldReceive('is_enabled_for_order')->once()->andReturn(true);
-
         $installment = new class extends Omise_Payment_Installment {
+            public $upa_calls = 0;
+            public $standard_calls = 0;
+
             public function __construct() {}
             protected function should_use_upa_installment_flow() {
                 return true;
             }
-            public function load_order( $order ) {
-                $this->order = (object) [ 'id' => $order ];
-                return $this->order;
-            }
             protected function process_upa_checkout_session_payment($order_id) {
+                $this->upa_calls++;
                 return ['result' => 'upa', 'order_id' => $order_id];
+            }
+            protected function process_standard_payment($order_id) {
+                $this->standard_calls++;
+                return ['result' => 'standard', 'order_id' => $order_id];
             }
         };
 
@@ -248,6 +249,8 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
 
         $this->assertEquals('upa', $result['result']);
         $this->assertEquals(42, $result['order_id']);
+        $this->assertSame(1, $installment->upa_calls);
+        $this->assertSame(0, $installment->standard_calls);
     }
 
     public function test_process_payment_routes_to_standard_flow_when_upa_is_disabled()
@@ -270,31 +273,34 @@ class Omise_Payment_Installment_Test extends Omise_Payment_Offsite_Test
         $this->assertSame(42, $result['order_id']);
     }
 
-    public function test_process_payment_routes_to_standard_flow_when_upa_disabled_for_order_without_token()
+    public function test_process_payment_delegates_non_wlb_flow_once_to_shared_upa_method()
     {
         unset($_POST['omise_token']);
 
-        $feature_flag = Mockery::mock('alias:Omise_UPA_Feature_Flag');
-        $feature_flag->shouldReceive('is_enabled_for_order')->once()->andReturn(false);
-
         $installment = new class extends Omise_Payment_Installment {
+            public $upa_calls = 0;
+            public $standard_calls = 0;
+
             public function __construct() {}
             protected function should_use_upa_installment_flow() {
                 return true;
             }
-            public function load_order( $order ) {
-                $this->order = (object) [ 'id' => $order ];
-                return $this->order;
+            protected function process_upa_checkout_session_payment($order_id) {
+                $this->upa_calls++;
+                return ['result' => 'upa', 'order_id' => $order_id];
             }
             protected function process_standard_payment($order_id) {
+                $this->standard_calls++;
                 return ['result' => 'standard', 'order_id' => $order_id];
             }
         };
 
         $result = $installment->process_payment(42);
 
-        $this->assertSame('standard', $result['result']);
+        $this->assertSame('upa', $result['result']);
         $this->assertSame(42, $result['order_id']);
+        $this->assertSame(1, $installment->upa_calls);
+        $this->assertSame(0, $installment->standard_calls);
     }
 
     public function test_installment_sets_source_type_for_upa_resolution()

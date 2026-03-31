@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') or die('No direct script access allowed.');
 
-if ( class_exists( 'Omise_Payment_Offsite' ) ) {
+if ( class_exists( 'Omise_Payment_Offsite', false ) ) {
     return;
 }
 

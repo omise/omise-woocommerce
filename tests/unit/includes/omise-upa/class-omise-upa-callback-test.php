@@ -55,6 +55,13 @@ class Omise_UPA_Callback_Test extends Omise_Test_Case {
 			->once()
 			->with( Omise_UPA_Session_Service::META_STATE )
 			->andReturn( 'state_123' );
+		$order->shouldReceive( 'is_paid' )
+			->once()
+			->andReturn( false );
+		$order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_RESOLVED )
+			->andReturn( 'no' );
 		$order->shouldReceive( 'add_order_note' )
 			->once()
 			->with( 'Omise UPA: Payment was cancelled by customer.' );
@@ -67,6 +74,121 @@ class Omise_UPA_Callback_Test extends Omise_Test_Case {
 		$order->shouldReceive( 'update_meta_data' )
 			->once()
 			->with( Omise_UPA_Session_Service::META_RESOLVED, 'yes' );
+		$order->shouldReceive( 'delete_meta_data' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_STATE );
+		$order->shouldReceive( 'save' )->once();
+
+		Monkey\Functions\expect( 'wc_get_order' )
+			->once()
+			->with( '44' )
+			->andReturn( $order );
+
+		$this->expectExceptionMessage( 'redirected' );
+		Omise_UPA_Callback::cancel();
+	}
+
+	public function test_cancel_does_not_cancel_paid_order() {
+		$_GET = array(
+			'order_id'        => '44',
+			'omise_upa_state' => 'state_123',
+		);
+
+		Monkey\Functions\stubs(
+			array(
+				'sanitize_text_field' => function( $value ) {
+					return $value;
+				},
+				'wp_unslash'          => function( $value ) {
+					return $value;
+				},
+			)
+		);
+
+		$thank_you_url = 'https://shop.test/checkout/order-received/44/?key=wc_order_abc';
+
+		Monkey\Functions\expect( 'wc_add_notice' )->never();
+		Monkey\Functions\expect( 'nocache_headers' )->once();
+		Monkey\Functions\expect( 'wp_safe_redirect' )
+			->once()
+			->with( $thank_you_url )
+			->andThrow( new Exception( 'redirected' ) );
+
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_STATE )
+			->andReturn( 'state_123' );
+		$order->shouldReceive( 'is_paid' )
+			->once()
+			->andReturn( true );
+		$order->shouldReceive( 'update_status' )->never();
+		$order->shouldReceive( 'add_order_note' )->never();
+		$order->shouldReceive( 'update_meta_data' )
+			->once()
+			->with( 'is_omise_payment_resolved', 'yes' );
+		$order->shouldReceive( 'update_meta_data' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_RESOLVED, 'yes' );
+		$order->shouldReceive( 'delete_meta_data' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_STATE );
+		$order->shouldReceive( 'save' )->once();
+		$order->shouldReceive( 'get_checkout_order_received_url' )
+			->once()
+			->andReturn( $thank_you_url );
+
+		Monkey\Functions\expect( 'wc_get_order' )
+			->once()
+			->with( '44' )
+			->andReturn( $order );
+
+		$this->expectExceptionMessage( 'redirected' );
+		Omise_UPA_Callback::cancel();
+	}
+
+	public function test_cancel_does_not_mutate_status_for_resolved_order() {
+		$_GET = array(
+			'order_id'        => '44',
+			'omise_upa_state' => 'state_123',
+		);
+
+		Monkey\Functions\stubs(
+			array(
+				'sanitize_text_field' => function( $value ) {
+					return $value;
+				},
+				'wp_unslash'          => function( $value ) {
+					return $value;
+				},
+			)
+		);
+
+		Monkey\Functions\expect( 'wc_get_checkout_url' )
+			->once()
+			->andReturn( 'https://shop.test/checkout/' );
+		Monkey\Functions\expect( 'wc_add_notice' )->never();
+		Monkey\Functions\expect( 'nocache_headers' )->once();
+		Monkey\Functions\expect( 'wp_safe_redirect' )
+			->once()
+			->with( 'https://shop.test/checkout/' )
+			->andThrow( new Exception( 'redirected' ) );
+
+		$order = Mockery::mock( 'WC_Order' );
+		$order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_STATE )
+			->andReturn( 'state_123' );
+		$order->shouldReceive( 'is_paid' )
+			->once()
+			->andReturn( false );
+		$order->shouldReceive( 'get_meta' )
+			->once()
+			->with( Omise_UPA_Session_Service::META_RESOLVED )
+			->andReturn( 'yes' );
+		$order->shouldReceive( 'update_status' )->never();
+		$order->shouldReceive( 'add_order_note' )->never();
+		$order->shouldReceive( 'update_meta_data' )->never();
 		$order->shouldReceive( 'delete_meta_data' )
 			->once()
 			->with( Omise_UPA_Session_Service::META_STATE );

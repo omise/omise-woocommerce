@@ -299,6 +299,21 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             return $this->invalid_order( $order_id );
         }
 
+        return $this->process_standard_payment_with_loaded_order( $order_id );
+    }
+
+    /**
+     * Shared default flow that creates an Omise charge directly using a preloaded order.
+     *
+     * @param int $order_id
+     *
+     * @return array
+     */
+    protected function process_standard_payment_with_loaded_order( $order_id ) {
+        if ( ! $this->order ) {
+            return $this->invalid_order( $order_id );
+        }
+
         $this->order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
         $this->order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
         $this->order->save();
@@ -332,7 +347,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         }
 
         if ( ! Omise_UPA_Feature_Flag::is_enabled_for_order( $this, $this->order() ) ) {
-            return $this->process_standard_payment( $order_id );
+            return $this->process_standard_payment_with_loaded_order( $order_id );
         }
 
         $this->order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );

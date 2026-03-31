@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'Omise_Payment_Offline' ) ) {
+if ( class_exists( 'Omise_Payment_Offline', false ) ) {
     return;
 }
 

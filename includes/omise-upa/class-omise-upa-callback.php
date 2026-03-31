@@ -80,6 +80,20 @@ class Omise_UPA_Callback {
 			self::handle_invalid_state( $order, __( 'Omise UPA: Invalid cancellation callback state.', 'omise' ) );
 		}
 
+		if ( $order->is_paid() ) {
+			$order->update_meta_data( 'is_omise_payment_resolved', 'yes' );
+			$order->update_meta_data( Omise_UPA_Session_Service::META_RESOLVED, 'yes' );
+			Omise_UPA_State_Token::invalidate( $order );
+			$order->save();
+			self::redirect_to_thank_you( $order );
+		}
+
+		if ( 'yes' === $order->get_meta( Omise_UPA_Session_Service::META_RESOLVED ) ) {
+			Omise_UPA_State_Token::invalidate( $order );
+			$order->save();
+			self::redirect_to_checkout();
+		}
+
 		$order->add_order_note( __( 'Omise UPA: Payment was cancelled by customer.', 'omise' ) );
 		$order->update_status( 'cancelled' );
 		$order->update_meta_data( 'is_omise_payment_resolved', 'yes' );

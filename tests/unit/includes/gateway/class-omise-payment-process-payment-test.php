@@ -252,16 +252,18 @@ class Omise_Payment_Process_Payment_Test extends Omise_Test_Case {
 
 		$gateway = new class ( $order ) extends Omise_Payment {
 			public $order_to_load;
+			public $load_order_calls = 0;
 			public function __construct( $order ) {
 				$this->order_to_load = $order;
 			}
 			public function charge( $order_id, $order ) {}
 			public function result( $order_id, $order, $charge ) {}
 			public function load_order( $order ) {
+				$this->load_order_calls++;
 				$this->order = $this->order_to_load;
 				return $this->order;
 			}
-			protected function process_standard_payment( $order_id ) {
+			protected function process_standard_payment_with_loaded_order( $order_id ) {
 				return array( 'result' => 'standard', 'order_id' => $order_id );
 			}
 			protected function payment_failed( $charge, $reason = '' ) {
@@ -276,6 +278,7 @@ class Omise_Payment_Process_Payment_Test extends Omise_Test_Case {
 
 		$this->assertSame( 'standard', $result['result'] );
 		$this->assertSame( 11, $result['order_id'] );
+		$this->assertSame( 1, $gateway->load_order_calls );
 	}
 
 	public function test_process_upa_checkout_session_calls_session_service_when_enabled() {

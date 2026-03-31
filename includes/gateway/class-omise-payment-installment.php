@@ -73,15 +73,7 @@ class Omise_Payment_Installment extends Omise_Payment_Offsite
 			return $this->process_standard_payment($order_id);
 		}
 
-		if (!$this->load_order($order_id)) {
-			return $this->invalid_order($order_id);
-		}
-
-		if (!Omise_UPA_Feature_Flag::is_enabled_for_order($this, $this->order())) {
-			return $this->process_standard_payment($order_id);
-		}
-
-		return parent::process_payment($order_id);
+		return $this->process_upa_checkout_session_payment($order_id);
 	}
 
 	/**
