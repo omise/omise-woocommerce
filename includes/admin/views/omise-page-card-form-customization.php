@@ -4,6 +4,7 @@
   $cardFormTheme = $omiseCardGateway->get_option('card_form_theme');
   $cardIcons = $omiseCardGateway->get_card_icons();
   $publicKey = Omise()->settings()->public_key();
+  $isUpaEnabled = Omise_Setting::instance()->is_upa_enabled();
   $customFontOther = 'Other';
 ?>
 
@@ -162,6 +163,32 @@
           <div class="description">Select your theme color to apply with your checkbox</div>
         </td>
       </tr>
+
+      <?php if ($isUpaEnabled) : ?>
+        <tr>
+          <td class="text-extra-bold" colspan="2">UPA</td>
+        </tr>
+
+        <tr>
+          <td class="text-bold">UPA theme color</td>
+          <td>
+            <div class="color-input-container">
+              <input class="color-input" name="upa[theme_color]" type="color" value="<?php echo esc_attr( isset( $formDesign['upa']['theme_color'] ) ? $formDesign['upa']['theme_color'] : Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR ); ?>">
+            </div>
+            <div class="description">Select your theme color to apply with your UPA checkout page</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="text-bold">UPA text color</td>
+          <td>
+            <div class="color-input-container">
+              <input class="color-input" name="upa[text_color]" type="color" value="<?php echo esc_attr( isset( $formDesign['upa']['text_color'] ) ? $formDesign['upa']['text_color'] : Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR ); ?>">
+            </div>
+            <div class="description">Select your text color to apply with your UPA checkout page</div>
+          </td>
+        </tr>
+      <?php endif; ?>
 
       <tr>
         <td>

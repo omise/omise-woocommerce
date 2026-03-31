@@ -9,6 +9,9 @@ class Omise_UPA_Session_Service {
 	const META_FLOW           = 'omise_upa_flow';
 	const META_RESOLVED       = 'omise_upa_resolved';
 
+	const PAYMENT_ACTION_AUTO_CAPTURE   = 'auto_capture';
+	const PAYMENT_ACTION_MANUAL_CAPTURE = 'manual_capture';
+
 	const FLOW_OFFSITE = 'offsite';
 	const FLOW_OFFLINE = 'offline';
 
@@ -40,7 +43,7 @@ class Omise_UPA_Session_Service {
 		$state = Omise_UPA_State_Token::create();
 		$client = self::create_client();
 
-		$payload = self::build_payload( $order, $order_id, $source_type, $state );
+		$payload = self::build_payload( $gateway, $order, $order_id, $source_type, $state );
 		$session = $client->create_session( $payload );
 		$session_id = self::extract_session_id( $session );
 
@@ -115,14 +118,15 @@ class Omise_UPA_Session_Service {
 	}
 
 	/**
-	 * @param WC_Order $order
-	 * @param string   $order_id
-	 * @param string   $source_type
-	 * @param string   $state
+	 * @param Omise_Payment $gateway
+	 * @param WC_Order      $order
+	 * @param string        $order_id
+	 * @param string        $source_type
+	 * @param string        $state
 	 *
 	 * @return array
 	 */
-	private static function build_payload( $order, $order_id, $source_type, $state ) {
+	private static function build_payload( $gateway, $order, $order_id, $source_type, $state ) {
 		$currency = strtoupper( $order->get_currency() );
 		$payload = array(
 			'amount'          => Omise_Money::to_subunit( $order->get_total(), $currency ),
@@ -140,12 +144,122 @@ class Omise_UPA_Session_Service {
 			),
 		);
 
+		$style = self::resolve_style_payload();
+		if ( ! empty( $style ) ) {
+			$payload['style'] = $style;
+		}
+
 		$locale = substr( strtolower( get_locale() ), 0, 2 );
 		if ( ! empty( $locale ) ) {
 			$payload['locale'] = $locale;
 		}
 
+		$auto_capture = self::resolve_auto_capture_flag( $gateway );
+		if ( ! is_null( $auto_capture ) ) {
+			$payload['auto_capture'] = $auto_capture;
+		}
+
 		return $payload;
+	}
+
+	/**
+	 * Resolve UPA style configuration from merchant card customization settings.
+	 *
+	 * @return array
+	 */
+	private static function resolve_style_payload() {
+		$defaults = self::get_default_style_payload();
+
+		if ( ! class_exists( 'Omise_Page_Card_From_Customization' ) ) {
+			return $defaults;
+		}
+
+		$page = Omise_Page_Card_From_Customization::get_instance();
+		if ( ! $page ) {
+			return $defaults;
+		}
+
+		$style = $page->get_upa_style_settings();
+		if (
+			! is_array( $style ) ||
+			empty( $style['theme_color'] ) ||
+			! is_string( $style['theme_color'] ) ||
+			empty( $style['text_color'] ) ||
+			! is_string( $style['text_color'] )
+		) {
+			return $defaults;
+		}
+
+		return array(
+			'theme_color' => $style['theme_color'],
+			'text_color'  => $style['text_color'],
+		);
+	}
+
+	/**
+	 * Resolve default UPA style colors.
+	 *
+	 * @return array
+	 */
+	private static function get_default_style_payload() {
+		$theme_color = defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' )
+			? constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_THEME_COLOR' )
+			: '#173799';
+		$text_color = defined( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' )
+			? constant( 'Omise_Page_Card_From_Customization::DEFAULT_UPA_TEXT_COLOR' )
+			: '#FFFFFF';
+
+		if ( ! is_string( $theme_color ) || '' === $theme_color ) {
+			$theme_color = '#173799';
+		}
+
+		if ( ! is_string( $text_color ) || '' === $text_color ) {
+			$text_color = '#FFFFFF';
+		}
+
+		return array(
+			'theme_color' => $theme_color,
+			'text_color'  => $text_color,
+		);
+	}
+
+	/**
+	 * Resolve auto-capture behavior from gateway payment action.
+	 *
+	 * @param Omise_Payment $gateway
+	 *
+	 * @return bool|null
+	 */
+	private static function resolve_auto_capture_flag( $gateway ) {
+		$payment_action = isset( $gateway->payment_action ) ? $gateway->payment_action : null;
+
+		if ( ! is_string( $payment_action ) ) {
+			return null;
+		}
+
+		$payment_action = sanitize_text_field( $payment_action );
+		$action_values = self::get_payment_action_values();
+		if ( in_array( $payment_action, $action_values['auto_capture'], true ) ) {
+			return true;
+		}
+
+		if ( in_array( $payment_action, $action_values['manual_capture'], true ) ) {
+			return false;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Resolve canonical payment-action values used by UPA.
+	 *
+	 * @return array
+	 */
+	private static function get_payment_action_values() {
+		return array(
+			'auto_capture'   => array( self::PAYMENT_ACTION_AUTO_CAPTURE ),
+			'manual_capture' => array( self::PAYMENT_ACTION_MANUAL_CAPTURE ),
+		);
 	}
 
 	/**
