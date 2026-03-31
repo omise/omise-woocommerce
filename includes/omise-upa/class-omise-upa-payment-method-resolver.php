@@ -19,36 +19,11 @@ class Omise_UPA_Payment_Method_Resolver {
 			return self::MOBILE_BANKING_METHOD;
 		}
 
-		$selected   = self::resolve_from_request( $gateway_id );
-
-		if ( ! empty( $selected ) ) {
-			return $selected;
-		}
-
 		$source_type = isset( $gateway->source_type ) ? $gateway->source_type : '';
 		if ( ! is_string( $source_type ) ) {
 			return '';
 		}
 
 		return sanitize_text_field( $source_type );
-	}
-
-	/**
-	 * Resolve source type from checkout request payload.
-	 *
-	 * @param string $gateway_id
-	 *
-	 * @return string
-	 */
-	private static function resolve_from_request( $gateway_id ) {
-		if ( ! in_array( $gateway_id, Omise_UPA_Session_Service::DYNAMIC_SOURCE_GATEWAYS, true ) ) {
-			return '';
-		}
-
-		if ( ! isset( $_POST['omise-offsite'] ) ) {
-			return '';
-		}
-
-		return sanitize_text_field( wp_unslash( $_POST['omise-offsite'] ) );
 	}
 }

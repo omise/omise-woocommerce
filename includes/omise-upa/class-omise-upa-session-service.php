@@ -18,8 +18,6 @@ class Omise_UPA_Session_Service {
 	const COMPLETE_ENDPOINT = 'omise_upa_complete';
 	const CANCEL_ENDPOINT   = 'omise_upa_cancel';
 
-	const DYNAMIC_SOURCE_GATEWAYS = array( 'omise_internetbanking' );
-
 	/**
 	 * @param Omise_Payment $gateway
 	 * @param string|int    $order_id
@@ -33,10 +31,6 @@ class Omise_UPA_Session_Service {
 		$source_type = Omise_UPA_Payment_Method_Resolver::resolve( $gateway );
 
 		if ( empty( $source_type ) ) {
-			if ( self::is_dynamic_source_gateway( $gateway ) ) {
-				throw new Exception( __( 'Please select bank below', 'omise' ) );
-			}
-
 			throw new Exception( __( 'Payment service is temporarily unavailable. Please try again or choose another payment method.', 'omise' ) );
 		}
 
@@ -73,21 +67,6 @@ class Omise_UPA_Session_Service {
 			'result'   => 'success',
 			'redirect' => $redirect_url,
 		);
-	}
-
-	/**
-	 * Gateways where customers must choose a bank source before creating UPA session.
-	 *
-	 * @param Omise_Payment $gateway
-	 *
-	 * @return bool
-	 */
-	private static function is_dynamic_source_gateway( $gateway ) {
-		if ( ! isset( $gateway->id ) || ! is_string( $gateway->id ) ) {
-			return false;
-		}
-
-		return in_array( $gateway->id, self::DYNAMIC_SOURCE_GATEWAYS, true );
 	}
 
 	/**

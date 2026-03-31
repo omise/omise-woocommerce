@@ -464,19 +464,6 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 		Omise_UPA_Session_Service::create_checkout_session( $gateway, '99', $order );
 	}
 
-	public function test_create_checkout_session_throws_select_bank_for_dynamic_gateway() {
-		$gateway = new Omise_Payment_Offsite();
-		$gateway->id = 'omise_internetbanking';
-		$gateway->source_type = '';
-
-		$order = Mockery::mock( 'WC_Order' );
-
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessage( 'Please select bank below' );
-
-		Omise_UPA_Session_Service::create_checkout_session( $gateway, '99', $order );
-	}
-
 	public function test_create_checkout_session_throws_when_session_id_missing() {
 		$gateway = new Omise_Payment_Offsite();
 		$gateway->source_type = 'truemoney';
@@ -596,55 +583,6 @@ class Omise_UPA_Session_Service_Test extends Omise_Test_Case {
 
 		$result = $method->invoke( null, array( 'status' => 'created' ) );
 		$this->assertSame( '', $result );
-	}
-
-	// ─── is_dynamic_source_gateway Tests ────────────────────────────────
-
-	public function test_is_dynamic_source_gateway_returns_true_for_internetbanking() {
-		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'is_dynamic_source_gateway' );
-		if ( PHP_VERSION_ID < 80100 ) {
-			$method->setAccessible( true );
-		}
-
-		$gateway     = new Omise_Payment_Offsite();
-		$gateway->id = 'omise_internetbanking';
-
-		$this->assertTrue( $method->invoke( null, $gateway ) );
-	}
-
-	public function test_is_dynamic_source_gateway_returns_false_for_mobilebanking() {
-		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'is_dynamic_source_gateway' );
-		if ( PHP_VERSION_ID < 80100 ) {
-			$method->setAccessible( true );
-		}
-
-		$gateway     = new Omise_Payment_Offsite();
-		$gateway->id = 'omise_mobilebanking';
-
-		$this->assertFalse( $method->invoke( null, $gateway ) );
-	}
-
-	public function test_is_dynamic_source_gateway_returns_false_for_regular_gateway() {
-		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'is_dynamic_source_gateway' );
-		if ( PHP_VERSION_ID < 80100 ) {
-			$method->setAccessible( true );
-		}
-
-		$gateway     = new Omise_Payment_Offsite();
-		$gateway->id = 'omise_truemoney';
-
-		$this->assertFalse( $method->invoke( null, $gateway ) );
-	}
-
-	public function test_is_dynamic_source_gateway_returns_false_when_id_not_set() {
-		$method = new ReflectionMethod( Omise_UPA_Session_Service::class, 'is_dynamic_source_gateway' );
-		if ( PHP_VERSION_ID < 80100 ) {
-			$method->setAccessible( true );
-		}
-
-		$gateway = new stdClass();
-
-		$this->assertFalse( $method->invoke( null, $gateway ) );
 	}
 
 	// ─── validate_redirect_url Tests ────────────────────────────────────
