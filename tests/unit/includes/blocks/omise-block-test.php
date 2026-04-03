@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Brain\Monkey;
 
 class Omise_Block_Test extends TestCase
 {
@@ -14,8 +15,22 @@ class Omise_Block_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
+        Monkey\Functions\stubs(
+            [
+                'WC' => (object) [
+                    'version' => '6.8.9',
+                ],
+            ]
+        );
         require_once __DIR__ . '/../../../../includes/blocks/omise-block.php';
         $this->obj = new Omise_Block;
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**

@@ -12,14 +12,33 @@ class Omise_Block_Mobile_Banking_Test extends TestCase
     use MockeryPHPUnitIntegration, MockPaymentGateways;
 
     public $obj;
+    public $omise_setting_mock;
 
     // @runInSeparateProcess
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
+        Monkey\Functions\stubs(
+            [
+                'get_option' => null,
+            ]
+        );
         $this->mockWcGateways();
+
+        $setting_instance = Mockery::mock( 'Omise_Setting_Instance' );
+        $setting_instance->shouldReceive( 'is_upa_enabled' )->andReturn( false );
+        $this->omise_setting_mock = Mockery::mock( 'alias:Omise_Setting' );
+        $this->omise_setting_mock->shouldReceive( 'instance' )->andReturn( $setting_instance );
+
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-mobilebanking.php';
         $this->obj = new Omise_Block_Mobile_Banking;
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**
@@ -89,5 +108,22 @@ class Omise_Block_Mobile_Banking_Test extends TestCase
         $result = $this->obj->get_payment_method_script_handles();
 
         $this->assertEquals([ 'wc-omise-mobilebanking-payments-blocks' ], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function load_script_asset_returns_metadata_across_multiple_reads()
+    {
+        $method = new \ReflectionMethod( Omise_Block_Mobile_Banking::class, 'load_script_asset' );
+        $method->setAccessible( true );
+        $asset_path = __DIR__ . '/../../../../../includes/blocks/assets/js/build/omise-mobilebanking.asset.php';
+
+        $first = $method->invoke( $this->obj, $asset_path );
+        $second = $method->invoke( $this->obj, $asset_path );
+
+        $this->assertSame( $first, $second );
+        $this->assertNotEmpty( $first['dependencies'] );
+        $this->assertNotEmpty( $first['version'] );
     }
 }

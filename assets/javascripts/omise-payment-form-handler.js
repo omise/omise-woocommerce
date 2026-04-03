@@ -3,6 +3,12 @@
 	const $formCheckout = $('form.checkout'); // Form in Normal Checkout Page
 	const $formOrderReview = $('form#order_review'); // Form in Pay for Order Page
 
+	function clearOmisePaymentArtifacts() {
+		$('.omise_token').remove();
+		$('.omise_source').remove();
+		$('.omise_installment_flow').remove();
+	}
+
 	function hideError() {
 		$(".woocommerce-error").remove();
 	}
@@ -71,7 +77,12 @@
 			return true;
 		}
 
-		if (0 === $('input.omise_token').length && 0 === $('input.omise_source').length) {
+		if (!document.getElementById('omise-installment')) {
+			return true;
+		}
+
+		// Installment flow must always provide source; token is optional (WLB only).
+		if (0 === $('input.omise_source').length) {
 			requestCardToken();
 			return false;
 		}
@@ -202,6 +213,13 @@
 
 	function handleCreateOrder(payload) {
 		$form.unblock();
+		clearOmisePaymentArtifacts();
+
+		if ($('#payment_method_omise_installment').is(':checked')) {
+			const installmentFlow = payload.token ? 'wlb' : 'normal';
+			$form.append('<input type="hidden" class="omise_installment_flow" name="omise_installment_flow" value="' + installmentFlow + '"/>');
+		}
+
 		if (payload.token) {
 			if (payload.remember) {
 				$('.omise_save_customer_card').val(payload.remember)
@@ -273,8 +291,7 @@
 
 	$(function () {
 		$('body').on('checkout_error', function () {
-			$('.omise_token').remove();
-			$('.omise_source').remove();
+			clearOmisePaymentArtifacts();
 		});
 
 		$($formCheckout).unbind('checkout_place_order_omise');
@@ -300,11 +317,11 @@
 
 		/* Both Forms */
 		$($form).on('change', '#omise_cc_form input', function() {
-			$('.omise_token').remove();
-			$('.omise_source').remove();
+			clearOmisePaymentArtifacts();
 		});
 
 		$($form).on('change', 'input[name="payment_method"]', function() {
+			clearOmisePaymentArtifacts();
 			setupOmiseForm();
 		});
 

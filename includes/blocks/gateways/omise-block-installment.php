@@ -12,11 +12,14 @@ class Omise_Block_Installment extends Omise_Block_Payment {
         $viewData = $this->gateway->get_view_data();
 
         $this->additional_data = [
-            'installments_enabled' => $viewData['installments_enabled'],
-            'total_amount' => $viewData['total_amount'],
-            'currency' => $viewData['currency'],
-            'public_key'  => Omise_Setting::instance()->public_key(),
-            'installment_min_limit' => $viewData['installment_min_limit']
+            'installments_enabled'  => $viewData['installments_enabled'],
+            'total_amount'          => $viewData['total_amount'],
+            'currency'              => $viewData['currency'],
+            'public_key'            => Omise_Setting::instance()->public_key(),
+            'installment_min_limit' => $viewData['installment_min_limit'],
+            'has_wlb_providers'     => $viewData['has_wlb_providers'],
+            'is_upa_enabled'        => $viewData['is_upa_enabled'],
+            'show_installment_form' => $viewData['show_installment_form'],
         ];
     }
 

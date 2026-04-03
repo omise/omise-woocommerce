@@ -85,6 +85,10 @@ class Omise_Payment_Paynow extends Omise_Payment_Offline {
 			return;
 		}
 
+		if ( $this->is_upa_offline_order( $order ) ) {
+			return;
+		}
+
 		$charge_id = $this->get_charge_id_from_order();
 		$charge    = OmiseCharge::retrieve( $charge_id );
 		if ( self::STATUS_PENDING !== $charge['status'] ) {

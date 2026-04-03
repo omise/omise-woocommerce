@@ -57,7 +57,7 @@ class Charge_Request_Builder_Test extends TestCase
         $setting = Mockery::mock('alias:Omise_Setting')->makePartial();
 
         $setting->shouldReceive('is_dynamic_webhook_enabled')
-            ->andReturn(true);
+            ->andReturn(false);
 
         // Define expectations for the mock
         $setting->shouldReceive('instance')
@@ -74,6 +74,7 @@ class Charge_Request_Builder_Test extends TestCase
         $this->assertEquals($source_type, $result['source']['type']);
         $this->assertEquals($expectedAmount*100, $result['amount']);
         $this->assertEquals($expectedCurrency, $result['currency']);
+        $this->assertArrayNotHasKey('webhook_endpoints', $result);
     }
 
     public function testBuildChargeRequestForOfflinePayment()

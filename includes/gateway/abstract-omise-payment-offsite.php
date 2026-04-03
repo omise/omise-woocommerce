@@ -1,6 +1,10 @@
 <?php
 defined('ABSPATH') or die('No direct script access allowed.');
 
+if ( class_exists( 'Omise_Payment_Offsite', false ) ) {
+    return;
+}
+
 require_once dirname(__FILE__) . '/class-omise-payment.php';
 
 /**
@@ -15,6 +19,13 @@ abstract class Omise_Payment_Offsite extends Omise_Payment
 	 */
 	public function payment_fields() {
 		parent::payment_fields();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function process_payment( $order_id ) {
+		return $this->process_upa_checkout_session_payment( $order_id );
 	}
 
 	/**
