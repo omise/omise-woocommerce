@@ -94,6 +94,47 @@ class Omise_UPA_Client_Test extends Omise_Test_Case {
 		$this->assertSame( $expected, $result );
 	}
 
+	public function test_create_session_sends_user_agent_header_with_omise_identity() {
+		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
+
+		if ( ! defined( 'OMISE_API_VERSION' ) ) {
+			define( 'OMISE_API_VERSION', '2019-05-29' );
+		}
+
+		if ( ! defined( 'OMISE_USER_AGENT_SUFFIX' ) ) {
+			define( 'OMISE_USER_AGENT_SUFFIX', 'OmiseWooCommerce/9.1.0 WordPress/6.4.2 WooCommerce/1.0.0' );
+		}
+
+		$expected = array( 'session_id' => 'sess_123' );
+
+		Monkey\Functions\expect( 'wp_remote_request' )
+			->once()
+			->with(
+				'https://upa.example.com/sessions',
+				Mockery::on(
+					function ( $args ) {
+						if ( ! isset( $args['headers']['User-Agent'] ) ) {
+							return false;
+						}
+
+						$user_agent = $args['headers']['User-Agent'];
+
+						return false !== strpos( $user_agent, 'OmiseWooCommerce' ) &&
+							false !== strpos( $user_agent, 'OmisePHP' );
+					}
+				)
+			)
+			->andReturn( array() );
+		Monkey\Functions\expect( 'wp_remote_retrieve_response_code' )->once()->andReturn( 200 );
+		Monkey\Functions\expect( 'wp_remote_retrieve_body' )->once()->andReturn( json_encode( $expected ) );
+		Monkey\Functions\expect( 'is_wp_error' )->once()->andReturn( false );
+
+		$client = new Omise_UPA_Client( 'https://upa.example.com', 'skey_test_123' );
+		$result = $client->create_session( array( 'amount' => 1000 ) );
+
+		$this->assertSame( $expected, $result );
+	}
+
 	public function test_create_session_throws_on_non_json_response() {
 		Monkey\Functions\expect( 'wp_http_validate_url' )->andReturn( true );
 

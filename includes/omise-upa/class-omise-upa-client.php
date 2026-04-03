@@ -167,6 +167,20 @@ class Omise_UPA_Client {
 			'Authorization' => 'Basic ' . base64_encode( $this->secret_key . ':' ),
 		);
 
+		if ( defined( 'OMISE_PHP_LIB_VERSION' ) ) {
+			$user_agent = 'OmisePHP/' . OMISE_PHP_LIB_VERSION . ' PHP/' . PHP_VERSION;
+
+			if ( defined( 'OMISE_API_VERSION' ) ) {
+				$user_agent .= ' OmiseAPI/' . OMISE_API_VERSION;
+			}
+
+			if ( defined( 'OMISE_USER_AGENT_SUFFIX' ) ) {
+				$user_agent .= ' ' . OMISE_USER_AGENT_SUFFIX;
+			}
+
+			$headers['User-Agent'] = $user_agent;
+		}
+
 		if ( $include_content_type ) {
 			$headers['Content-Type'] = 'application/json';
 		}
