@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 7.0.1
+Stable tag: 7.1.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,12 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 7.1.0 =
+
+- Sunset Internet Banking. (PR: [#559](https://github.com/omise/omise-woocommerce/issues/559))
+- Display card form error on Block component. (PR: [#557](https://github.com/omise/omise-woocommerce/issues/557))
+- Properly clear errors before card form submission on Block component. (PR: [#553](https://github.com/omise/omise-woocommerce/issues/553))
 
 = 7.0.1 =
 
