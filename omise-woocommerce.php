@@ -4,7 +4,7 @@
  * Plugin Name: Omise Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Omise Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
- * Version:     7.0.1
+ * Version:     7.1.0
  * Author:      Omise and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
@@ -23,7 +23,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '7.0.1';
+	public $version = '7.1.0';
 
 	/**
 	 * The Omise Instance.
@@ -174,7 +174,6 @@ class Omise
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-atome.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-truemoney.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-googlepay.php';
-		require_once __DIR__ . '/includes/blocks/gateways/omise-block-internetbanking.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-duitnow-obw.php';
 		require_once __DIR__ . '/includes/blocks/gateways/omise-block-konbini.php';
 		Omise_Block::init();
@@ -250,7 +249,6 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-fpx.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-creditcard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-installment.php';
-		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-internetbanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-mobilebanking.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-konbini.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/gateway/class-omise-payment-paynow.php';

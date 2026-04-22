@@ -229,9 +229,17 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		$this->mockCapabilityRetrieve();
 
 		$paymentMethods = Omise_Capability::retrieve()->getPaymentMethods();
+		$paymentMethodNames = array_map(
+			function ($method) {
+				return $method->name;
+			},
+			$paymentMethods
+		);
 
 		$this->assertIsArray($paymentMethods);
-		$this->assertCount(45, $paymentMethods);
+		$this->assertCount(43, $paymentMethods);
+		$this->assertNotContains('internet_banking_bay', $paymentMethodNames);
+		$this->assertNotContains('internet_banking_bbl', $paymentMethodNames);
 
 		$paymentMethod = $paymentMethods[0];
 		$this->assertObjectHasProperty('object', $paymentMethod);
@@ -262,7 +270,9 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 
 		$this->assertIsArray($availablePaymentMethods);
 		// Extra 2 methods from the tokenization method
-		$this->assertCount(47, $availablePaymentMethods);
+		$this->assertCount(45, $availablePaymentMethods);
+		$this->assertNotContains('internet_banking_bay', $availablePaymentMethods);
+		$this->assertNotContains('internet_banking_bbl', $availablePaymentMethods);
 		$this->assertContains('card', $availablePaymentMethods);
 		$this->assertContains('googlepay', $availablePaymentMethods);
 		$this->assertContains('applepay', $availablePaymentMethods);

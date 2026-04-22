@@ -18,7 +18,6 @@ class Omise_Payment_Factory {
 		'Omise_Payment_FPX',
 		'Omise_Payment_Creditcard',
 		'Omise_Payment_Installment',
-		'Omise_Payment_Internetbanking',
 		'Omise_Payment_Konbini',
 		'Omise_Payment_Mobilebanking',
 		'Omise_Payment_Paynow',
