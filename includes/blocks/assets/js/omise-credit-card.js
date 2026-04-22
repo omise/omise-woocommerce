@@ -4,7 +4,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import CreditCardPaymentMethod from './credit_card/credit-card';
 
-const settings = getSetting( 'omise_data', {} )
+const settings = getSetting( 'omise_data', getSetting( 'omise', {} ) )
 const defaultLabel = __( 'Credit/Debit card', 'omise' );
 const label = decodeEntities( settings.title ) || defaultLabel;
 window.OMISE_CUSTOM_FONT_OTHER = 'Other';
