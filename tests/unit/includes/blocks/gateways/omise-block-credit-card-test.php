@@ -82,6 +82,50 @@ class Omise_Block_Credit_Card_Test extends Omise_Test_Case {
 		$this->assertEquals( true, $data['is_active'] );
 	}
 
+	public function test_get_payment_method_data_uses_card_icons_from_secure_form_config() {
+		$mock_settings = [
+			'title' => 'Credit Card',
+			'description' => 'This is Credit Card payment method.',
+			'enabled' => 'yes',
+		];
+		Monkey\Functions\expect( 'get_option' )
+			->once()
+			->with( 'woocommerce_omise_settings', [] )
+			->andReturn( $mock_settings );
+		Monkey\Functions\expect( 'get_locale' )->andReturn( 'th' );
+		$this->omise_setting_mock->shouldReceive( 'instance' )->andReturn( $this->omise_setting_mock );
+		$this->omise_setting_mock->shouldReceive( 'public_key' )->andReturn( 'pkey_xxx' );
+
+		$this->obj->initialize();
+
+		$reflection = new \ReflectionClass( $this->obj );
+		$gateway_property = $reflection->getProperty( 'gateway' );
+		$gateway_property->setAccessible( true );
+		$gateway_property->setValue(
+			$this->obj,
+			new class {
+				public $supports = [ 'products' ];
+
+				public function supports() {
+					return true;
+				}
+
+				public function get_existing_cards() {
+					return [ 'user_logged_in' => false ];
+				}
+
+				public function get_secure_form_config() {
+					return [ 'card_icons' => [ 'visa', 'mastercard' ] ];
+				}
+			}
+		);
+
+		$data = $this->obj->get_payment_method_data();
+
+		$this->assertEquals( [ 'visa', 'mastercard' ], $data['card_icons'] );
+		$this->assertArrayNotHasKey( 'card_brand_icons', $data );
+	}
+
 	public function test_get_payment_method_script_handles() {
 		Monkey\Functions\stubs(
 			[
