@@ -30,7 +30,7 @@ const CreditCardPaymentMethod = (props) => {
 				locale: settings.locale,
 				theme: settings.card_form_theme ?? 'light',
 				design: settings.form_design,
-				brandIcons: settings.card_brand_icons,
+				brandIcons: settings.card_icons ?? null,
 				onSuccess: (payload) => {
 					if (payload.remember) {
 						saveCardRef.current = payload.remember
