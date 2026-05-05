@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [v7.1.0 _(Apr 22, 2026)_](https://github.com/omise/omise-woocommerce/releases/tag/v7.1.0)
+- Sunset Internet Banking. (PR: [#559](https://github.com/omise/omise-woocommerce/issues/559))
+- Display card form error on Block component. (PR: [#557](https://github.com/omise/omise-woocommerce/issues/557))
+- Properly clear errors before card form submission on Block component. (PR: [#553](https://github.com/omise/omise-woocommerce/issues/553))
+
 ## [v7.0.1 _(Jan 12, 2026)_](https://github.com/omise/omise-woocommerce/releases/tag/v7.0.1)
 - Update RabbitLinePay to LinePay and payment logos. (PR: [#549](https://github.com/omise/omise-woocommerce/issues/549))
 - Remove passkey settings. (PR: [#548](https://github.com/omise/omise-woocommerce/issues/548))
