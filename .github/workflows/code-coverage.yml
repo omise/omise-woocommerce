@@ -22,7 +22,7 @@ jobs:
           coverage: xdebug
 
       - name: Install dependencies with composer
-        run: composer update --no-ansi --no-interaction --no-progress
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress
 
       - name: Generate Code Coverage
         run: composer run test:coverage:xml
