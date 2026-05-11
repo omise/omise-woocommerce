@@ -12,6 +12,10 @@ const Label = ( props ) => {
     return <PaymentMethodLabel text={ label } />
 }
 
+const Description = () => {
+    return decodeEntities( settings.description || '' )
+}
+
 const { select, subscribe } = window.wp.data;
 
 const InstallmentPaymentMethod = (props) => {
@@ -95,13 +99,19 @@ const InstallmentPaymentMethod = (props) => {
                     if (wlbInstallmentRef.current) {
                         clearInterval(intervalId);
                         try {
+                            const paymentMethodData = {
+                                "omise_source": wlbInstallmentRef.current.source,
+                                "omise_installment_flow": wlbInstallmentRef.current.token ? 'wlb' : 'normal',
+                            };
+
+                            if (wlbInstallmentRef.current.token) {
+                                paymentMethodData.omise_token = wlbInstallmentRef.current.token;
+                            }
+
                             const response = {
                                 type: emitResponse.responseTypes.SUCCESS,
                                 meta: {
-                                    paymentMethodData: {
-                                        "omise_source": wlbInstallmentRef.current.source,
-                                        "omise_token": wlbInstallmentRef.current.token,
-                                    }
+                                    paymentMethodData
                                 }
                             };
                             resolve(response)
@@ -130,8 +140,8 @@ const InstallmentPaymentMethod = (props) => {
 registerPaymentMethod( {
     name: settings.name || "",
     label: <Label />,
-    content: <InstallmentPaymentMethod />,
-    edit: <InstallmentPaymentMethod />,
+    content: settings.data?.show_installment_form ? <InstallmentPaymentMethod /> : <Description />,
+    edit: settings.data?.show_installment_form ? <InstallmentPaymentMethod /> : <Description />,
     canMakePayment: () => settings.is_active,
     ariaLabel: label,
     supports: {

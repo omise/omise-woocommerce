@@ -22,6 +22,7 @@ trait Omise_Setting_Helper {
 				'public_key' => $pkey,
 				'secret_key' => $skey,
 				'is_dynamic_webhook_enabled' => false,
+				'is_upa_enabled' => false,
 			]
 		);
 		$omise_setting_mock->shouldReceive( 'get_settings' )->andReturn( [] )->byDefault();

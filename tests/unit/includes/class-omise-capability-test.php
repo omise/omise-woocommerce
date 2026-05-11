@@ -224,6 +224,19 @@ class Omise_Capability_Test extends Bootstrap_Test_Setup
 		$this->assertEmpty($installmentMethods);
 	}
 
+	public function test_get_wlb_installment_methods_returns_only_wlb_providers()
+	{
+		$this->mockCapabilityRetrieve();
+
+		$wlbMethods = Omise_Capability::retrieve()->getWlbInstallmentMethods();
+
+		$this->assertIsArray($wlbMethods);
+		$this->assertNotEmpty($wlbMethods);
+		foreach ($wlbMethods as $method) {
+			$this->assertStringStartsWith('installment_wlb', $method->name);
+		}
+	}
+
 	public function test_get_payment_methods_returns_all_available_payment_methods()
 	{
 		$this->mockCapabilityRetrieve();

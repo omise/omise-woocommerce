@@ -68,7 +68,7 @@ describe('Credit Card', () => {
       locale: 'th',
       user_logged_in: false,
       card_form_theme: 'dark',
-      card_brand_icons: ['visa', 'mastercard'],
+      card_icons: ['visa', 'mastercard'],
       form_design: {
         font: { size: 20 },
       },

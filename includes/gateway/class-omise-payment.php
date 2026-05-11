@@ -133,7 +133,7 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
      */
     public function protectMetadata($protected, $metadataKeys)
     {
-        if ( in_array( $metadataKeys, [ 'token', 'is_omise_payment_resolved' ] )) {
+        if ( in_array( $metadataKeys, [ 'token', 'is_omise_payment_resolved', 'omise_upa_state' ] )) {
             return true;
         }
 
@@ -284,7 +284,33 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
      * @return array
      */
     public function process_payment( $order_id ) {
+        return $this->process_standard_payment( $order_id );
+    }
+
+    /**
+     * Shared default flow that creates an Omise charge directly.
+     *
+     * @param  int $order_id
+     *
+     * @return array
+     */
+    protected function process_standard_payment( $order_id ) {
         if ( ! $this->load_order( $order_id ) ) {
+            return $this->invalid_order( $order_id );
+        }
+
+        return $this->process_standard_payment_with_loaded_order( $order_id );
+    }
+
+    /**
+     * Shared default flow that creates an Omise charge directly using a preloaded order.
+     *
+     * @param int $order_id
+     *
+     * @return array
+     */
+    protected function process_standard_payment_with_loaded_order( $order_id ) {
+        if ( ! $this->order ) {
             return $this->invalid_order( $order_id );
         }
 
@@ -302,6 +328,37 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         $this->set_order_transaction_id( $charge['id'] );
 
         return $this->result( $order_id, $this->order, $charge );
+    }
+
+    /**
+     * Shared UPA checkout-session flow for Offsite/Offline payment methods.
+     *
+     * @param int $order_id
+     *
+     * @return array
+     */
+    protected function process_upa_checkout_session_payment( $order_id ) {
+        if ( ! Omise_Setting::instance()->is_upa_enabled() ) {
+            return $this->process_standard_payment( $order_id );
+        }
+
+        if ( ! $this->load_order( $order_id ) ) {
+            return $this->invalid_order( $order_id );
+        }
+
+        if ( ! Omise_UPA_Feature_Flag::is_enabled_for_order( $this, $this->order() ) ) {
+            return $this->process_standard_payment_with_loaded_order( $order_id );
+        }
+
+        $this->order->add_order_note( sprintf( __( 'Omise: Processing a payment with %s', 'omise' ), $this->method_title ) );
+        $this->order->add_meta_data( 'is_omise_payment_resolved', 'no', true );
+        $this->order->save();
+
+        try {
+            return Omise_UPA_Session_Service::create_checkout_session( $this, $order_id, $this->order );
+        } catch ( Exception $e ) {
+            return $this->payment_failed( null, $e->getMessage() );
+        }
     }
 
     /**
@@ -457,6 +514,8 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
 
     /**
      * @param int|mixed $order_id
+     *
+     * @return array
      */
     protected function invalid_order( $order_id ) {
         $message = wp_kses( __(
@@ -468,11 +527,18 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
         ), array( 'br' => array() ) );
 
         wc_add_notice( sprintf( $message, $order_id ), 'error' );
+
+        return array(
+            'result' => 'failure',
+        );
     }
 
     /**
      * @param OmiseCharge|null $charge
      * @param string $reason
+     *
+     * @return array
+     * @throws Exception
      */
     protected function payment_failed( $charge, $reason = '' ) {
         $message = __( "It seems we've been unable to process your payment properly:<br/>%s", 'omise' );
@@ -483,7 +549,18 @@ abstract class Omise_Payment extends WC_Payment_Gateway {
             $this->order()->update_status( 'failed' );
         }
 
-        throw new \Exception(sprintf( wp_kses( $message, array( 'br' => array() ) ), __( $reason, 'omise' ) ));
+        $safe_reason = wp_kses( (string) $reason, array() );
+        $exception   = new \Exception( sprintf( wp_kses( $message, array( 'br' => array() ) ), $safe_reason ) );
+
+        // Backward compatibility: keep throwing by default, but allow a structured failure array for guarded flows.
+        if ( defined( 'OMISE_WC_RETURN_PAYMENT_FAILURE_RESULT' ) && OMISE_WC_RETURN_PAYMENT_FAILURE_RESULT ) {
+            return array(
+                'result'  => 'failure',
+                'message' => $exception->getMessage(),
+            );
+        }
+
+        throw $exception;
     }
 
     /**

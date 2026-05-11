@@ -22,12 +22,12 @@ jobs:
           coverage: xdebug
 
       - name: Install dependencies with composer
-        run: composer update --no-ansi --no-interaction --no-progress
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-progress
 
       - name: Generate Code Coverage
         run: composer run test:coverage:xml
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
+        uses: SonarSource/sonarqube-scan-action@v8.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}

@@ -28,6 +28,7 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockOmiseCharge = Mockery::mock('overload:OmiseCharge');
         $this->mockFileGetContent = Mockery::mock('overload:File_Get_Contents_Wrapper');
 
+        require_once __DIR__ . '/../../../../includes/omise-upa/class-omise-upa-session-service.php';
         require_once __DIR__ . '/../../../../includes/gateway/class-omise-payment-promptpay.php';
     }
 
@@ -47,6 +48,8 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
         $this->mockOmisePaymentOffline->shouldReceive('init_settings');
         $this->mockOmisePaymentOffline->shouldReceive('get_option');
         $this->mockOmisePaymentOffline->shouldReceive('load_order')->andReturn(true);
+        $this->mockOmisePaymentOffline->shouldReceive('order')->andReturn($this->mockOrder);
+        $this->mockOmisePaymentOffline->shouldReceive('is_upa_offline_order')->andReturn(false);
         $this->mockOmisePaymentOffline->shouldReceive('get_charge_id_from_order')->andReturn('charge_xxx');
         $this->mockOmisePaymentOffline->shouldReceive('get_pending_status')->andReturn('pending');
         $this->mockOmisePaymentOffline->shouldReceive('file_get_contents')->andReturn('');
@@ -87,6 +90,30 @@ class Omise_Payment_Promptpay_Test extends Omise_Payment_Offline_Test
 
         $obj = new Omise_Payment_Promptpay();
         $result = $obj->display_qrcode($this->mockOrder, 'view');
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function displayQrcodeSkipsViewForUpaOfflineOrder()
+    {
+        Monkey\Functions\expect('wp_enqueue_script');
+        Monkey\Functions\expect('wp_kses');
+        Monkey\Functions\expect('add_action');
+        Monkey\Functions\expect('plugins_url');
+
+        $this->mockOmisePaymentOffline->shouldReceive('init_settings');
+        $this->mockOmisePaymentOffline->shouldReceive('get_option');
+        $this->mockOmisePaymentOffline->shouldReceive('load_order')->andReturn(true);
+        $this->mockOmisePaymentOffline->shouldReceive('order')->andReturn($this->mockOrder);
+        $this->mockOmisePaymentOffline->shouldReceive('is_upa_offline_order')->andReturn(true);
+
+        $this->mockOmiseCharge->shouldNotReceive('retrieve');
+
+        $obj = new Omise_Payment_Promptpay();
+        $result = $obj->display_qrcode($this->mockOrder, 'view');
+
         $this->assertNull($result);
     }
 }

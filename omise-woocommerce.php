@@ -4,7 +4,7 @@
  * Plugin Name: Omise Payments
  * Plugin URI:  https://www.omise.co/woocommerce
  * Description: Omise Payments is a WordPress plugin designed specifically for WooCommerce. The plugin adds support for Omise Payment Gateway's payment methods to WooCommerce.
- * Version:     7.1.0
+ * Version:     7.2.0
  * Author:      Omise and contributors
  * Author URI:  https://github.com/omise/omise-woocommerce/graphs/contributors
  * Text Domain: omise
@@ -23,7 +23,7 @@ class Omise
 	 *
 	 * @var string
 	 */
-	public $version = '7.1.0';
+	public $version = '7.2.0';
 
 	/**
 	 * The Omise Instance.
@@ -41,7 +41,7 @@ class Omise
 	 */
 	protected static $can_initiate = false;
 
-	CONST OMISE_JS_LINK = 'https://cdn.omise.co/omise.js';
+	CONST OMISE_JS_LINK = 'https://cdn.staging-omise.co/omise.js';
 
 	/**
 	 * @since  3.0
@@ -280,6 +280,14 @@ class Omise
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-payment-factory.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-rest-webhooks-controller.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-setting.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-feature-flag.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-client.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-payment-method-resolver.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-session-service.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-state-token.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-payment-resolver.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-callback.php';
+		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/omise-upa/class-omise-upa-back-navigation-guard.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/class-omise-wc-myaccount.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/omise-util.php';
 		require_once OMISE_WOOCOMMERCE_PLUGIN_PATH . '/includes/admin/class-omise-admin-page.php';
@@ -369,6 +377,8 @@ class Omise
 	public function register_hooks()
 	{
 		add_action('omise_async_webhook_event_handler', 'Omise_Queue_Runner::execute_webhook_event_handler', 10, 3);
+		Omise_UPA_Callback::register_hooks();
+		Omise_UPA_Back_Navigation_Guard::register_hooks();
 	}
 
 	/**

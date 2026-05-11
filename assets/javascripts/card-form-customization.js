@@ -1,6 +1,6 @@
 function setDesignFormValues() {
   Object.keys(DEFAULT_FORM_DESIGN).forEach(function (componentKey) {
-    componentValues = DEFAULT_FORM_DESIGN[componentKey];
+    const componentValues = DEFAULT_FORM_DESIGN[componentKey];
     Object.keys(componentValues).forEach(function (key) {
       setInputValue(`${componentKey}\\[${key}\\]`, componentValues[key])
     })
@@ -8,15 +8,25 @@ function setDesignFormValues() {
 }
 
 function setInputValue(name, val) {
-  document.querySelector(`[name=${name}]`).value = val
+  const input = document.querySelector(`[name=${name}]`);
+  if (!input) {
+    return;
+  }
+
+  input.value = val;
 }
 
 function getInputValue(name) {
-  return document.querySelector(`[name=${name}]`).value
+  const input = document.querySelector(`[name=${name}]`);
+  return input ? input.value : null;
 }
 
 function setColorInputValue(element) {
-  valueElement = element.nextElementSibling
+  if (!element) {
+    return;
+  }
+
+  const valueElement = element.nextElementSibling
   if (!valueElement) {
     element.insertAdjacentHTML('afterend', `<span>${element.value}</span>`);
   } else {
@@ -30,29 +40,48 @@ function handleColorInputChanges() {
   colorInputs.forEach((element) => {
     const input = element.querySelector('.color-input')
 
+    if (!input) {
+      return;
+    }
+
     setColorInputValue(input)
     input.addEventListener('change', (event) => {
       setColorInputValue(event.target)
     });
 
     element.addEventListener('click', (event) => {
-      let input = event.target.querySelector('.color-input')
-      if (!input) {
-        input = event.target.previousElementSibling
+      if (event.target.classList && event.target.classList.contains('color-input')) {
+        return;
       }
+
+      let targetInput = null;
+      if (typeof event.target.querySelector === 'function') {
+        targetInput = event.target.querySelector('.color-input')
+      }
+
+      if (!targetInput) {
+        targetInput = element.querySelector('.color-input');
+      }
+
+      if (!targetInput) {
+        return;
+      }
+
       var clickEvent = new MouseEvent('click');
-      input.dispatchEvent(clickEvent);
+      targetInput.dispatchEvent(clickEvent);
     });
   })
 }
 
 function getDesignFormValues() {
-  let formValues = DEFAULT_FORM_DESIGN
+  let formValues = JSON.parse(JSON.stringify(DEFAULT_FORM_DESIGN))
   Object.keys(DEFAULT_FORM_DESIGN).forEach(function (componentKey) {
-    componentValues = DEFAULT_FORM_DESIGN[componentKey];
+    const componentValues = DEFAULT_FORM_DESIGN[componentKey];
     Object.keys(componentValues).forEach(function (key) {
       const val = getInputValue(`${componentKey}\\[${key}\\]`)
-      formValues[componentKey][key] = val;
+      if (val !== null) {
+        formValues[componentKey][key] = val;
+      }
     })
   });
   return formValues;
@@ -60,14 +89,22 @@ function getDesignFormValues() {
 
 function handleFontChange() {
   const fontName = document.getElementById('omise_sf_font_name');
+  const customFontName = document.getElementById('omise_sf_custom_font_name');
+
+  if (!fontName || !customFontName) {
+    return;
+  }
 
   if (fontName.value === OMISE_CUSTOM_FONT_OTHER) {
-    document.getElementById('omise_sf_custom_font_name').style.display = null
+    customFontName.style.display = null
   }
 
   fontName.addEventListener('change', (event) => {
-    const customFontName = document.getElementById('omise_sf_custom_font_name');
     const inputCustomFont = customFontName.querySelector('input')
+
+    if (!inputCustomFont) {
+      return;
+    }
 
     if (event.target.value === OMISE_CUSTOM_FONT_OTHER) {
       customFontName.style.display = null;

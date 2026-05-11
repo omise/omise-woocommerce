@@ -29,4 +29,24 @@ class Omise_Backend_Installment extends Omise_Backend
 		$installments = $capability->getInstallmentMethods($currency, ($purchase_amount * 100));
 		return count($installments) > 0;
 	}
+
+	/**
+	 * Returns true if there are any WLB (whitelabel) installment providers available.
+	 *
+	 * @param  string $currency
+	 * @param  float  $purchase_amount
+	 *
+	 * @return bool
+	 */
+	public function has_wlb_providers($currency, $purchase_amount)
+	{
+		$capability = $this->capability();
+
+		if (!$capability) {
+			return false;
+		}
+
+		$wlb = $capability->getWlbInstallmentMethods($currency, ($purchase_amount * 100));
+		return count($wlb) > 0;
+	}
 }

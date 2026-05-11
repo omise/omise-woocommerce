@@ -12,10 +12,17 @@ class Omise_Block_Konbini_Test extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
+        Monkey\setUp();
         $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/abstract-omise-block-payment.php';
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-konbini.php';
         $this->obj = new Omise_Block_Konbini;
+    }
+
+    protected function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**

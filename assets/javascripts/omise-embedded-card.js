@@ -10,6 +10,9 @@ function showOmiseEmbeddedCardForm({
   brandIcons
 }) {
   const noop = () => { }
+  // Clone the array to avoid sharing references with React props on `element`.
+  // OmiseJS postMessage de-duplicates already-visited objects and can drop shared refs.
+  const normalizedBrandIcons = Array.isArray(brandIcons) ? [...brandIcons] : null
   const iframeHeightMatching = {
     '40px': 258,
     '44px': 270,
@@ -44,7 +47,9 @@ function showOmiseEmbeddedCardForm({
       locale: locale,
       customCardFormTheme: theme,
       customCardFormHideRememberCard: hideRememberCard ?? false,
-      customCardFormBrandIcons: brandIcons ?? null,
+      // Keep both keys for OmiseJS compatibility across versions.
+      customCardFormBrandIcons: normalizedBrandIcons,
+      cardBrands: normalizedBrandIcons ? normalizedBrandIcons.join(' ') : undefined,
       style: {
         fontFamily: fontName,
         fontSize: font.size,

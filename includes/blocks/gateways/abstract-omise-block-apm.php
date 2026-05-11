@@ -2,7 +2,11 @@
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
+require_once __DIR__ . '/trait-omise-block-script-loader.php';
+
 abstract class Omise_Block_Apm extends AbstractPaymentMethodType {
+    use Omise_Block_Script_Loader;
+
     /**
      * The gateway instance.
      */
@@ -40,7 +44,7 @@ abstract class Omise_Block_Apm extends AbstractPaymentMethodType {
      */
     public function get_payment_method_script_handles() {
         if ( ! wp_script_is( 'wc-omise-one-click-apms-payments-blocks', 'enqueued' ) ) {
-            $script_asset = require __DIR__ . '/../assets/js/build/omise-one-click-apms.asset.php';
+            $script_asset = $this->load_script_asset( __DIR__ . '/../assets/js/build/omise-one-click-apms.asset.php' );
             wp_enqueue_script(
                 "wc-omise-one-click-apms-payments-blocks",
                 plugin_dir_url( __DIR__ ) . 'assets/js/build/omise-one-click-apms.js',

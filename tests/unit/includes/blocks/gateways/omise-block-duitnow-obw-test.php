@@ -10,9 +10,16 @@ class Omise_Block_DuitNow_OBW_Test extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Monkey\setUp();
         $this->mockWcGateways();
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/abstract-omise-block-payment.php';
         require_once __DIR__ . '/../../../../../includes/blocks/gateways/omise-block-duitnow-obw.php';
+    }
+
+    public function tearDown(): void
+    {
+        Monkey\tearDown();
+        parent::tearDown();
     }
 
     /**

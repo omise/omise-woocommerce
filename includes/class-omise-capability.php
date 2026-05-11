@@ -222,6 +222,28 @@ class Omise_Capability {
 	}
 
 	/**
+	 * Retrieves details of WLB installment payment methods from capability.
+	 *
+	 * @param  string $currency
+	 * @param  int|null $amount  Amount in subunits
+	 *
+	 * @return array
+	 */
+	public function getWlbInstallmentMethods( $currency = '', $amount = null ) {
+		$params   = array();
+		$params[] = $this->capability->filterPaymentMethod['name']('installment_wlb');
+
+		if ( $currency ) {
+			$params[] = $this->capability->filterPaymentMethod['currency']( $currency );
+		}
+		if ( ! is_null( $amount ) ) {
+			$params[] = $this->capability->filterPaymentMethod['chargeAmount']( $amount );
+		}
+
+		return $this->capability->getPaymentMethods( $params );
+	}
+
+	/**
 	 * Retrieves details of payment methods from capability.
 	 *
 	 * @return array

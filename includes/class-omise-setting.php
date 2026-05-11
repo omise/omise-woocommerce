@@ -8,6 +8,17 @@ if ( class_exists( 'Omise_Setting' ) ) {
 
 class Omise_Setting {
 	/**
+	 * wp-config.php flag to allow UPA feature rollout for pilot merchants.
+	 */
+	const FEATURE_UPA_FLAG = 'OMISE_FEATURE_UPA';
+
+	/**
+	 * Settings option key for merchant UPA toggle.
+	 */
+	const OPTION_ENABLE_UPA = 'enable_upa';
+	const UPA_API_BASE_URL = 'https://checkout-page.omise.co/api';
+
+	/**
 	 * The Omise_Setting Instance.
 	 *
 	 * @since 3.4
@@ -61,6 +72,7 @@ class Omise_Setting {
 			'live_public_key'  => '',
 			'live_private_key' => '',
 			'dynamic_webhook'  => 0,
+			self::OPTION_ENABLE_UPA => 0,
 			'backends' => null,
 		);
 	}
@@ -176,5 +188,74 @@ class Omise_Setting {
 	{
 		$dynamic_webhook = $this->settings['dynamic_webhook'];
 		return (bool)$dynamic_webhook;
+	}
+
+	/**
+	 * UPA flow is active only when both conditions are true:
+	 * 1) wp-config feature flag is enabled.
+	 * 2) merchant enabled the toggle in plugin settings.
+	 *
+	 * @return bool
+	 */
+	public function is_upa_enabled() {
+		return $this->is_upa_feature_flag_enabled() && $this->is_upa_enabled_by_merchant();
+	}
+
+	/**
+	 * Whether UPA pilot feature is enabled from wp-config.php
+	 *
+	 * @return bool
+	 */
+	public function is_upa_feature_flag_enabled() {
+		if ( ! defined( self::FEATURE_UPA_FLAG ) ) {
+			return false;
+		}
+
+		return $this->is_truthy( constant( self::FEATURE_UPA_FLAG ) );
+	}
+
+	/**
+	 * Whether merchant enabled UPA toggle in plugin settings.
+	 *
+	 * @return bool
+	 */
+	public function is_upa_enabled_by_merchant() {
+		$enable_upa = isset( $this->settings[ self::OPTION_ENABLE_UPA ] ) ? $this->settings[ self::OPTION_ENABLE_UPA ] : 0;
+
+		return $this->is_truthy( $enable_upa );
+	}
+
+	/**
+	 * Retrieve UPA API base URL.
+	 * Production host is set by constants and can be rewritten during staging setup.
+	 *
+	 * @return string
+	 */
+	public function get_upa_api_base_url() {
+		return self::UPA_API_BASE_URL;
+	}
+
+	/**
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	private function is_truthy( $value ) {
+		if ( is_bool( $value ) ) {
+			return $value;
+		}
+
+		if ( is_int( $value ) || is_float( $value ) ) {
+			return 1 === (int) $value;
+		}
+
+		if ( is_string( $value ) ) {
+			$normalized = strtolower( trim( $value ) );
+			$truthy     = array( '1', 'true', 'yes', 'on' );
+
+			return in_array( $normalized, $truthy, true );
+		}
+
+		return false;
 	}
 }

@@ -2,7 +2,11 @@
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
+require_once __DIR__ . '/trait-omise-block-script-loader.php';
+
 class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
+    use Omise_Block_Script_Loader;
+
     /**
      * The gateway instance.
      */
@@ -40,7 +44,7 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
      */
     public function get_payment_method_script_handles() {
         if (!wp_script_is('wc-omise-mobilebanking-payments-blocks', 'enqueued')) {
-            $script_asset = require_once __DIR__ . '/../assets/js/build/omise-mobilebanking.asset.php';
+            $script_asset = $this->load_script_asset( __DIR__ . '/../assets/js/build/omise-mobilebanking.asset.php' );
             wp_register_script(
                 "wc-omise-mobilebanking-payments-blocks",
                 plugin_dir_url(__DIR__) . 'assets/js/build/omise-mobilebanking.js',
@@ -61,14 +65,17 @@ class Omise_Block_Mobile_Banking extends AbstractPaymentMethodType {
      * @return array
      */
     public function get_payment_method_data() {
-        $currency   = get_woocommerce_currency();
+        $currency = get_woocommerce_currency();
+        $is_upa_enabled = Omise_Setting::instance()->is_upa_enabled();
+
         return [
             'name'        => $this->name,
             'title'       => $this->get_setting('title'),
             'description' => $this->get_setting('description'),
             'supports'    => array_filter($this->gateway->supports, [$this->gateway, 'supports']),
             'data' => [
-                'backends' => $this->gateway->backend->get_available_providers($currency),
+                'backends' => $is_upa_enabled ? [] : $this->gateway->backend->get_available_providers($currency),
+                'is_upa_enabled' => (bool) $is_upa_enabled,
             ],
             'is_active'   => $this->is_active(),
         ];
