@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 7.2.0
+Stable tag: 7.2.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -34,11 +34,13 @@ From there:
 
 == Changelog ==
 
+= 7.2.1 =
+
+- Fix card checkout by restoring the Omise.js production CDN URL.
+- Add automated checks to prevent staging Omise endpoint URLs in release files.
+
 = 7.2.0 =
 
-- Add Omise UPA checkout-session flow for supported offline and offsite payment methods with controlled rollout, callback validation, redirect host validation, and pending payment rechecks. (PR: [#554](https://github.com/omise/omise-woocommerce/pull/554))
-- Support UPA installment redirection while keeping WLB installment on the legacy flow. (PR: [#555](https://github.com/omise/omise-woocommerce/pull/555))
-- Pass card form customization colors and capture behavior into UPA sessions. (PR: [#556](https://github.com/omise/omise-woocommerce/pull/556))
 - Fix Block checkout card brand icons to follow the Omise card form settings. (PR: [#562](https://github.com/omise/omise-woocommerce/pull/562))
 
 = 7.1.0 =

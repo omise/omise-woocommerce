@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v7.2.1 _(May 14, 2026)_](https://github.com/omise/omise-woocommerce/releases/tag/v7.2.1)
+- Fix card checkout by restoring the Omise.js production CDN URL.
+- Add automated checks to prevent staging Omise endpoint URLs in release files.
+
 ## [v7.2.0 _(May 3, 2026)_](https://github.com/omise/omise-woocommerce/releases/tag/v7.2.0)
 - Add Omise UPA checkout-session flow for supported offline and offsite payment methods with controlled rollout, callback validation, redirect host validation, and pending payment rechecks. (PR: [#554](https://github.com/omise/omise-woocommerce/pull/554))
 - Support UPA installment redirection while keeping WLB installment on the legacy flow. (PR: [#555](https://github.com/omise/omise-woocommerce/pull/555))
