@@ -131,8 +131,8 @@ class Omise_Test extends TestCase {
 	}
 
 	public function test_upgrade_plugin_updates_omise_version() {
-		$currentVersion = '7.1.0';
-		$updateVersion = '7.2.0';
+		$currentVersion = '7.2.0';
+		$updateVersion = '7.2.1';
 
 		Monkey\Functions\expect( 'get_option' )
 			->with( 'omise_version' )
