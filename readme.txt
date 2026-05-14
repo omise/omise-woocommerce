@@ -36,9 +36,6 @@ From there:
 
 = 7.2.0 =
 
-- Add Omise UPA checkout-session flow for supported offline and offsite payment methods with controlled rollout, callback validation, redirect host validation, and pending payment rechecks. (PR: [#554](https://github.com/omise/omise-woocommerce/pull/554))
-- Support UPA installment redirection while keeping WLB installment on the legacy flow. (PR: [#555](https://github.com/omise/omise-woocommerce/pull/555))
-- Pass card form customization colors and capture behavior into UPA sessions. (PR: [#556](https://github.com/omise/omise-woocommerce/pull/556))
 - Fix Block checkout card brand icons to follow the Omise card form settings. (PR: [#562](https://github.com/omise/omise-woocommerce/pull/562))
 
 = 7.1.0 =

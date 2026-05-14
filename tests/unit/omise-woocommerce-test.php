@@ -81,6 +81,55 @@ class Omise_Test extends TestCase {
 		$this->assertEmpty( $output );
 	}
 
+	public function test_omise_js_link_uses_production_cdn() {
+		$this->assertSame( 'https://cdn.omise.co/omise.js', Omise::OMISE_JS_LINK );
+	}
+
+	public function test_production_omise_urls_are_used_in_committed_runtime_files() {
+		$root = realpath( __DIR__ . '/../..' );
+		$files = [
+			'omise-woocommerce.php' => [
+				'https://cdn.omise.co/omise.js',
+			],
+			'includes/class-omise-setting.php' => [
+				'https://checkout-page.omise.co/api',
+			],
+			'includes/gateway/abstract-omise-payment-base-card.php' => [
+				'Omise::OMISE_JS_LINK',
+			],
+			'includes/libraries/omise-php/lib/omise/res/OmiseApiResource.php' => [
+				'https://api.omise.co/',
+				'https://vault.omise.co/',
+			],
+		];
+		$violations = [];
+
+		foreach ( $files as $relativePath => $expectedValues ) {
+			$content = file_get_contents( $root . DIRECTORY_SEPARATOR . $relativePath );
+
+			foreach ( $expectedValues as $expectedValue ) {
+				if ( strpos( $content, $expectedValue ) === false ) {
+					$violations[] = $relativePath . ': missing ' . $expectedValue;
+				}
+			}
+
+			preg_match_all( '#https://[^\\s\'"]*omise[^\\s\'"]*#', $content, $matches );
+
+			foreach ( $matches[0] as $url ) {
+				$host = parse_url( $url, PHP_URL_HOST );
+
+				if (
+					preg_match( '/^(cdn|api|vault|checkout-page)\./', $host )
+					&& ! preg_match( '/(^|\.)omise\.co$/', $host )
+				) {
+					$violations[] = $relativePath . ': unexpected Omise URL ' . $url;
+				}
+			}
+		}
+
+		$this->assertSame( [], $violations, 'Committed runtime files must use omise.co URLs.' );
+	}
+
 	public function test_upgrade_plugin_updates_omise_version() {
 		$currentVersion = '7.1.0';
 		$updateVersion = '7.2.0';
