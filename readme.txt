@@ -3,7 +3,7 @@ Contributors: Omise
 Tags: omise, payment, payment gateway, woocommerce, plugin
 Requires at least: 4.3.1
 Tested up to: 6.8.1
-Stable tag: 7.2.0
+Stable tag: 7.2.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,6 +33,11 @@ From there:
 3. Omise Dashboard
 
 == Changelog ==
+
+= 7.2.1 =
+
+- Fix card checkout by restoring the Omise.js production CDN URL.
+- Add automated checks to prevent staging Omise endpoint URLs in release files.
 
 = 7.2.0 =
 
